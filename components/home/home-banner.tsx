@@ -55,9 +55,9 @@ export default function HomeBanner() {
                         <div key={slideImage.url} className="w-full bg-gradient-to-b from-white to-[#FAC225]">
                             <div className="w-full h-[500px] flex flex-col">
                                 <div className="flex flex-col md:flex-row items-center h-full justify-center">
-                                    <div className="w-[300px] h-[200px] md:h-[300px] md:w-[450px] mt-[-40px] relative duration-500 ease-in transition-all">
+                                    <motion.div whileInView={{scale : 1}} initial={{scale:0}} className="w-[300px] h-[200px] md:h-[300px] md:w-[450px] mt-[-40px] relative duration-500 ease-in transition-all">
                                         <Image fill src="/images/banner_anim_2.webp" alt="banner animation" />
-                                    </div>
+                                    </motion.div>
                                     <motion.div initial={{scale : 0}} whileInView={{scale: 1}} className="flex flex-col items-start text-[#154B6F] mx-16 pt-2">
                                         <h1 className="text-4xl font-bold">BE A <span className="text-[#199FD6]">HERO</span></h1>
                                         <h2 className="text-xl font-semibold">BY SPENDING <span className="text-[#199FD6]">ZERO</span></h2>

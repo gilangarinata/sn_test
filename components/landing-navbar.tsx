@@ -16,6 +16,7 @@ import {
 import {SignOutButton} from "@clerk/nextjs";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import Sidebar from "@/components/sidebar";
+import React from "react";
 
 const font = Montserrat({
     weight: "600",
@@ -42,7 +43,7 @@ const routes = [
     {
         label : "MEDIA",
         isDropDown: true,
-        href : "/music"
+        href : "/media"
     },
     {
         label : "CAREER",
@@ -59,7 +60,6 @@ const routes = [
 ]
 
 export const LandingNavBar = () => {
-    const pathName = usePathname();
 
     return (
         <nav className="bg-white flex items-center justify-between sticky top-0 z-50 px-6 py-4">
@@ -75,63 +75,60 @@ export const LandingNavBar = () => {
                   </SheetTrigger>
                     <SheetContent side="right" className="p-0">
                         <div className="flex flex-col px-4 gap-4 py-20">
-                            {routes.map(route =>
-                                route.label === "Language" ?
-                                    (
-                                        <DropdownMenu key={route.label}>
-                                            <DropdownMenuTrigger>
-                                                <div className="rounded-sm border border-slate-500">
-                                                    <div className="flex items-center px-2 py-1 gap-1">
-                                                        <Globe width={15} />
-                                                        <p className="text-sm">English</p>
-                                                        <ChevronDown width={15} />
-                                                    </div>
-                                                </div>
-                                            </DropdownMenuTrigger>
-
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem>English</DropdownMenuItem>
-                                                <DropdownMenuItem>Indonesia</DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    ) : (
-                                        <Link href="/" key={route.label} >
-                                            <p className={cn("font-semibold", pathName == route.href ? "text-[#FAC225]" : "text-[#15527B]/80")}>{route.label}</p>
-                                        </Link>
-                                    )
-                            )}
+                            <NavContent />
                         </div>
                     </SheetContent>
                 </Sheet>
             </div>
             <div className="hidden lg:flex items-center gap-x-8 ">
-                {routes.map(route =>
-                    route.label === "Language" ?
-                        (
-                            <DropdownMenu key={route.label}>
-                                <DropdownMenuTrigger>
-                                    <div className="rounded-sm border border-slate-500">
-                                        <div className="flex items-center px-2 py-1 gap-1">
-                                            <Globe width={15} />
-                                            <p className="text-sm">English</p>
-                                            <ChevronDown width={15} />
-                                        </div>
-                                    </div>
-                                </DropdownMenuTrigger>
-
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem>English</DropdownMenuItem>
-                                    <DropdownMenuItem>Indonesia</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        ) : (
-                            <Link href="/" key={route.label} >
-                                <p className={cn("font-semibold", pathName == route.href ? "text-[#FAC225]" : "text-[#15527B]/80")}>{route.label}</p>
-                            </Link>
-                        )
-                )}
+                <NavContent />
             </div>
         </nav>
+    )
+}
+
+
+export default function NavContent() {
+    const pathName = usePathname();
+    return routes.map(route =>
+        route.label === "Language" ?
+            (
+                <DropdownMenu key={route.label}>
+                    <DropdownMenuTrigger>
+                        <div className="rounded-sm border border-slate-500">
+                            <div className="flex items-center px-2 py-1 gap-1">
+                                <Globe width={15} />
+                                <p className="text-sm">English</p>
+                                <ChevronDown width={15} />
+                            </div>
+                        </div>
+                    </DropdownMenuTrigger>
+
+                    <DropdownMenuContent>
+                        <DropdownMenuItem>English</DropdownMenuItem>
+                        <DropdownMenuItem>Indonesia</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            ) : route.isDropDown == true ?
+                (
+                    <DropdownMenu key={route.label}>
+                        <DropdownMenuTrigger>
+                            <div className="flex">
+                                <p className={cn("font-semibold", pathName == route.href ? "text-[#FAC225]" : "text-[#15527B]/80")}>{route.label}</p>
+                                <ChevronDown className={cn("hidden",route.isDropDown == true ? "block" : "hidden")} />
+                            </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="hover:cursor-pointer">
+                            <DropdownMenuItem><Link className="w-full" href="/media/news">News</Link></DropdownMenuItem>
+                            <DropdownMenuItem><Link className="w-full" href="/media/video">Video</Link></DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+
+                ) : (
+                    <Link href={route.href} key={route.label} >
+                        <p className={cn("font-semibold", pathName == route.href ? "text-[#FAC225]" : "text-[#15527B]/80")}>{route.label}</p>
+                    </Link>
+                )
     )
 }
 
