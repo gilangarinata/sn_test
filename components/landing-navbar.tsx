@@ -14,6 +14,8 @@ import {
     DropdownMenuSeparator, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {SignOutButton} from "@clerk/nextjs";
+import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
+import Sidebar from "@/components/sidebar";
 
 const font = Montserrat({
     weight: "600",
@@ -67,7 +69,40 @@ export const LandingNavBar = () => {
                 </div>
             </Link>
             <div className="block lg:hidden mr-4">
-                <Menu />
+                <Sheet>
+                  <SheetTrigger>
+                      <Menu />
+                  </SheetTrigger>
+                    <SheetContent side="right" className="p-0">
+                        <div className="flex flex-col px-4 gap-4 py-20">
+                            {routes.map(route =>
+                                route.label === "Language" ?
+                                    (
+                                        <DropdownMenu key={route.label}>
+                                            <DropdownMenuTrigger>
+                                                <div className="rounded-sm border border-slate-500">
+                                                    <div className="flex items-center px-2 py-1 gap-1">
+                                                        <Globe width={15} />
+                                                        <p className="text-sm">English</p>
+                                                        <ChevronDown width={15} />
+                                                    </div>
+                                                </div>
+                                            </DropdownMenuTrigger>
+
+                                            <DropdownMenuContent>
+                                                <DropdownMenuItem>English</DropdownMenuItem>
+                                                <DropdownMenuItem>Indonesia</DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    ) : (
+                                        <Link href="/" key={route.label} >
+                                            <p className={cn("font-semibold", pathName == route.href ? "text-[#FAC225]" : "text-[#15527B]/80")}>{route.label}</p>
+                                        </Link>
+                                    )
+                            )}
+                        </div>
+                    </SheetContent>
+                </Sheet>
             </div>
             <div className="hidden lg:flex items-center gap-x-8 ">
                 {routes.map(route =>
@@ -99,3 +134,4 @@ export const LandingNavBar = () => {
         </nav>
     )
 }
+
