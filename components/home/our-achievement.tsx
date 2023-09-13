@@ -1,5 +1,5 @@
 "use client";
-
+import { motion } from "framer-motion"
 import Image from "next/image";
 import React, {useEffect, useState} from "react";
 import {
@@ -54,10 +54,14 @@ export default function OurAchievement() {
             if(currentIndex < achievementAnimation.length - 1) {
                 setCurrentIndex(currentIndex + 1)
             }
-        }, 1000)
+        }, 400)
     }, [currentIndex]);
 
     const ref = React.useRef();
+
+    function onViewPortEnter() {
+        setCurrentIndex(0);
+    }
 
 
     return (
@@ -65,9 +69,9 @@ export default function OurAchievement() {
             <div className="w-full flex flex-col px-6 md:px-20 my-10">
                 <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">OUR ACHIEVEMENT</h1>
                 <div className="w-full flex flex-col items-center justify-center">
-                    <div className="w-full">
+                    <motion.div onViewportEnter={onViewPortEnter} initial={{ scale: 0 }} whileInView={{ scale: 1 }} className="w-full">
                         <Image className="fade-in duration-200 transition-all mx-auto" width={300} height={300} src={achievementAnimation[currentIndex].icon} alt=""/>
-                    </div>
+                    </motion.div>
                     <div className="w-full">
                         <ResponsiveContainer
                             carouselRef={ref}
@@ -104,9 +108,9 @@ export const AchievementCard = React.memo(function (props) {
     const { icon } = data[dataIndex];
     const { label } = data[dataIndex];
     return (
-        <div className={cn("rounded-3xl p-8 flex flex-col items-center justify-center w-full", isCenterSlide == false ? "bg-[#15537A]/80" : "bg-[#15537A]")}>
+        <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} whileHover={{scale : 1.02}} className={cn("rounded-3xl p-8 flex flex-col items-center justify-center w-full", isCenterSlide == false ? "bg-[#15537A]/80" : "bg-[#15537A]")}>
             <Image width={100} height={100} src={icon} alt={label} draggable={false}/>
             <p className={cn(" text-center pt-8", isCenterSlide ? "text-white" : "text-white/80")}>{label}</p>
-        </div>
+        </motion.div>
     );
 });

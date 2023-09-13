@@ -1,5 +1,5 @@
 "use client";
-
+import { motion } from "framer-motion"
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image';
@@ -58,12 +58,12 @@ export default function HomeBanner() {
                                     <div className="w-[300px] h-[200px] md:h-[300px] md:w-[450px] mt-[-40px] relative duration-500 ease-in transition-all">
                                         <Image fill src="/images/banner_anim_2.webp" alt="banner animation" />
                                     </div>
-                                    <div className="flex flex-col items-start text-[#154B6F] mx-16 pt-2">
+                                    <motion.div initial={{scale : 0}} whileInView={{scale: 1}} className="flex flex-col items-start text-[#154B6F] mx-16 pt-2">
                                         <h1 className="text-4xl font-bold">BE A <span className="text-[#199FD6]">HERO</span></h1>
                                         <h2 className="text-xl font-semibold">BY SPENDING <span className="text-[#199FD6]">ZERO</span></h2>
                                         <p>We Specially provide a design with no investment (capital expenditure)</p>
                                         <Button className="mt-4">Discover More</Button>
-                                    </div>
+                                    </motion.div>
                                 </div>
                             </div>
                         </div>

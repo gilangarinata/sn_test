@@ -1,4 +1,6 @@
+"use client";
 import Image from "next/image";
+import { motion } from "framer-motion"
 
 const experiences = [
     {
@@ -41,24 +43,24 @@ export default function SesnaGroup() {
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare varius nulla, quis aliquam augue varius nec. Morbi malesuada consequat nibh. Aliquam non arcu id lorem consectetur auctor. Phasellus venenatis quam vel erat lacinia pulvinar. Integer a pulvinar metus. Phasellus leo nulla.
                         </p>
                     </div>
-                    <div className="w-full relative">
+                    <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="w-full relative">
                         <div className="relative w-[250px] h-[340px] m-auto mt-4 md:mt-0">
                             <Image fill src="/images/captain_surya.webp" alt="Captain Surya" />
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
                 <div className="w-[300px] mx-auto md:w-full bg-[#15537A] rounded-2xl mt-1">
                     <div className="w-full flex flex-col md:flex-row px-4">
                         {experiences.map(experience => {
                             return (
-                                <div className="w-full flex flex-row my-4 items-center gap-2 justify-start" key={experience.label}>
+                                <motion.div whileHover={{ scale: 1.1 }} className="w-full flex flex-row my-4 items-center gap-2 justify-start" key={experience.label}>
                                     <Image width={100} height={100} src={experience.icon} alt={experience.label} />
                                     <div className="flex flex-col text-white items-center w-full text-center">
                                         <p>More Than</p>
                                         <span className="text-yellow-400 font-bold">{experience.value}</span>
                                         <p>{experience.label}</p>
                                     </div>
-                                </div>
+                                </motion.div>
                             )
                         })}
                     </div>

@@ -1,5 +1,5 @@
 "use client";
-
+import { motion } from "framer-motion"
 import Image from "next/image";
 import React, {useEffect, useState} from "react";
 import {
@@ -63,15 +63,23 @@ const satisfiedCustomers = [
 export default function SatisfiedCustomer() {
     const ref = React.useRef<StackedCarousel>();
 
+    function onPrevClick() {
+        ref.current?.goBack();
+    }
+
+    function onNextClick() {
+        ref.current?.goNext();
+    }
+
     return (
         <section>
             <div className="w-full flex flex-col px-6 md:px-20 my-10">
                 <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">OUR SATISFIED CUSTOMER</h1>
                 <div className="w-full flex justify-center items-center">
-                    <div onClick={ref.current?.goBack} className="hover:cursor-pointer">
+                    <div onClick={onPrevClick} className="hover:cursor-pointer">
                         <ChevronLeftCircle />
                     </div>
-                    <div className="w-full">
+                    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} className="w-full">
                         <ResponsiveContainer
                             carouselRef={ref}
                             render={(parentWidth, carouselRef) => {
@@ -94,8 +102,8 @@ export default function SatisfiedCustomer() {
                                 );
                             }}
                         />
-                    </div>
-                    <div onClick={ref.current?.goNext} className="hover:cursor-pointer" >
+                    </motion.div>
+                    <div onClick={onNextClick} className="hover:cursor-pointer" >
                         <ChevronRightCircle />
                     </div>
                 </div>
