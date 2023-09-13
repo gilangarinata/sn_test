@@ -27,7 +27,7 @@ export default function SesnaGroup() {
     return (
         <section>
             <div className="w-full flex flex-col px-6 md:px-20 my-10">
-                <h1 className="w-full text-center text-2xl font-bold mb-8">EXPERIENCE</h1>
+                <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">EXPERIENCE</h1>
                 <div className="w-full flex flex-col md:flex-row">
                     <div className="flex w-full flex-col gap-6">
                         <h1 className="text-[#15537A] text-2xl font-semibold">
@@ -63,11 +63,6 @@ export default function SesnaGroup() {
                         })}
                     </div>
                 </div>
-
-
-
-
-                <div className="w-full h-[400px]"></div>
             </div>
         </section>
     )

@@ -2,6 +2,7 @@ import '@/app/globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import {LandingNavBar} from "@/components/landing-navbar";
+import FooterLanding from "@/components/footer-landing";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,8 +19,11 @@ export default function RootLayout({
   return (
         <main className="h-full overflow-auto">
           <div className="mx-auto h-full">
-            <LandingNavBar />
-            {children}
+              <LandingNavBar />
+              <div className="flex flex-col">
+                  {children}
+                  <FooterLanding />
+              </div>
           </div>
         </main>
   )
