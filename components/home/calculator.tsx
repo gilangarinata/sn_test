@@ -32,7 +32,7 @@ export default function Calculator() {
                             <Input type="email" placeholder="" />
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">
-                            <p>Maximum solar panel capacity installed (kWp)</p>
+                            <p>Max solar panel capacity installed (kWp)</p>
                             <Input disabled={true} type="email" placeholder="" />
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">

@@ -17,20 +17,35 @@ const divStyle = {
 const slideImages = [
     {
         url: '/',
-        caption: '-',
-        isCustomBanner: true
+        heading_title: "BE A <b class='text-[#199FD6]'>HERO</b>",
+        sub_heading: "BY SPENDING <b class='text-[#199FD6]'>ZERO</b>",
+        description: 'We specially provide you a design with <b>no Investment fee required or Zero Capex</b> (Capital Expenditure) <br/> It allows you to allocate costs over the duration of the solar energy project contract-term, providing mode flexibility in budgeting and cash flow management',
+        isCustomBanner: true,
+        logo: ""
     },
     {
-        url: 'https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-        caption: 'Slide 1'
+        url: '/',
+        description: "IPP WEWARIA <br/> INSTALLED CAPACITY 1 MWp",
+        image: "/images/banner_1.jpg",
+        logo: "/images/logo_pln.png"
     },
     {
-        url: 'https://images.unsplash.com/photo-1506710507565-203b9f24669b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1536&q=80',
-        caption: 'Slide 2'
+        url: '/',
+        description: "IPP WEIBLELER <br/> INSTALLED CAPACITY 1 MWp",
+        image: "/images/banner_2.jpg",
+        logo: "/images/logo_pln.png"
     },
     {
-        url: 'https://images.unsplash.com/photo-1536987333706-fc9adfb10d91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80',
-        caption: 'Slide 3'
+        url: '/',
+        description: "IPP HAMBAPRAING <br/> INSTALLED CAPACITY 1 MWp" ,
+        image: "/images/banner_3.jpg",
+        logo: "/images/logo_pln.png"
+    },
+    {
+        url: '/',
+        description: "INDORAMA CILEGON <br/> INSTALLED CAPACITY 1,36 MWp",
+        image: "/images/banner_3.jpg",
+        logo: "/images/indorama_logo.png"
     },
 ];
 
@@ -43,7 +58,7 @@ const buttonStyle = {
 const properties = {
     prevArrow: <ChevronLeftCircle color="white" className="mx-4"/>,
     nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
-    autoplay: false,
+    autoplay: true,
 }
 export default function HomeBanner() {
     return (
@@ -55,13 +70,21 @@ export default function HomeBanner() {
                         <div key={slideImage.url} className="w-full bg-gradient-to-b from-white to-[#FAC225]">
                             <div className="w-full h-[500px] flex flex-col">
                                 <div className="flex flex-col md:flex-row items-center h-full justify-center">
-                                    <motion.div whileInView={{scale : 1}} initial={{scale:0}} className="w-[300px] h-[200px] md:h-[300px] md:w-[450px] mt-[-40px] relative duration-500 ease-in transition-all">
-                                        <Image fill src="/images/banner_anim_2.webp" alt="banner animation" />
+                                    <motion.div whileInView={{scale : 1}} initial={{scale:0}} className="flex items-center justify-center w-full">
+                                        <div className="w-[120px] h-[120px] md:w-[350px] md:h-[350px] relative">
+                                            <Image fill src="/images/banner_anim_2.webp" alt="banner animation" />
+                                        </div>
                                     </motion.div>
-                                    <motion.div initial={{scale : 0}} whileInView={{scale: 1}} className="flex flex-col items-start text-[#154B6F] mx-16 pt-2">
-                                        <h1 className="text-4xl font-bold">BE A <span className="text-[#199FD6]">HERO</span></h1>
-                                        <h2 className="text-xl font-semibold">BY SPENDING <span className="text-[#199FD6]">ZERO</span></h2>
-                                        <p>We Specially provide a design with no investment (capital expenditure)</p>
+                                    <motion.div initial={{scale : 0}} whileInView={{scale: 1}} className="flex flex-col items-start text-[#154B6F] px-16 pt-2 w-full gap-1">
+                                        <h1 className="text-4xl font-bold" dangerouslySetInnerHTML={{
+                                            __html: slideImage.heading_title,
+                                        }}/>
+                                        <h2 className="text-xl font-semibold" dangerouslySetInnerHTML={{
+                                            __html: slideImage.sub_heading,
+                                        }}/>
+                                        <p dangerouslySetInnerHTML={{
+                                            __html: slideImage.description,
+                                        }}/>
                                         <Button className="mt-4">Discover More</Button>
                                     </motion.div>
                                 </div>
@@ -70,8 +93,13 @@ export default function HomeBanner() {
                     ) :
                     (
                     <div key={index}>
-                        <div style={{ ...divStyle, 'backgroundImage': `url(${slideImage.url})` }}>
-                            {/*<span style={spanStyle}>{slideImage.caption}</span>*/}
+                        <div style={{ ...divStyle, 'backgroundImage': `url(${slideImage.image})` }}>
+                            <div className="w-full h-full px-20 pt-10 bg-gradient-to-b from-white to-transparent">
+                                <div className="flex text-[#154B6F] font-bold text-shadow-lg gap-2 items-center divide-x divide-[#154B6F]">
+                                    <Image width={50} height={50} src={slideImage.logo} alt=""/>
+                                    <h2 className="px-4" dangerouslySetInnerHTML={{__html : slideImage.description}}/>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     )
