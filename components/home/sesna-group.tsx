@@ -50,7 +50,7 @@ export default function SesnaGroup() {
                         <p className="text-[#15537A]" dangerouslySetInnerHTML={{__html : experience.description}} />
                     </div>
                     <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="w-full relative">
-                        <div className="relative w-[250px] h-[340px] m-auto mt-4 md:mt-0">
+                        <div className="relative w-[190px] h-[340px] m-auto mt-4 md:mt-0">
                             <Image fill src="/images/captain_surya.webp" alt="Captain Surya" />
                         </div>
                     </motion.div>

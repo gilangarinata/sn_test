@@ -10,16 +10,20 @@ import {cn} from "@/lib/utils";
 
 const achievements = [
     {
-        icon : '/images/icon_experience_1.webp',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        icon : '/images/logo_world_economic.png',
+        label: 'Contributor of Policy Paper "Policy Opportunities to Advance Clean Energy Investment in Indonesia" in collaboration with RE100 Climate Group & World Economic Forum',
     },
     {
-        icon : '/images/icon_experience_1.webp',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        icon : '/images/logo_solar_summit.png',
+        label: 'Signed the Declaration Towards Bringing Gigawatt Order of Solar Energy in Indonesia in Indonesia Solar Summit 2022',
     },
     {
-        icon : '/images/icon_experience_1.webp',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        icon : '/images/logo_mordor.png',
+        label: 'Indonesia Solar Energy Market Top Players<br/>version of Mordor Intelligence, 2022',
+    },
+    {
+        icon : '/images/logo_solar_ai.png',
+        label: 'Top 10 Solar Energy Companies in Indonesia<br/>version of Solar AI Technologies,2022',
     },
 ];
 
@@ -82,7 +86,7 @@ export default function OurAchievement() {
                                     <StackedCarousel
                                         ref={carouselRef}
                                         slideComponent={AchievementCard}
-                                        height={250}
+                                        height={400}
                                         slideWidth={300}  //{parentWidth < 800 ? parentWidth - 40 : 750}
                                         carouselWidth={parentWidth}
                                         data={achievements}
@@ -108,9 +112,11 @@ export const AchievementCard = React.memo(function (props) {
     const { icon } = data[dataIndex];
     const { label } = data[dataIndex];
     return (
-        <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} whileHover={{scale : 1.02}} className={cn("rounded-3xl p-8 flex flex-col items-center justify-center w-full", isCenterSlide == false ? "bg-[#15537A]/80" : "bg-[#15537A]")}>
-            <Image width={100} height={100} src={icon} alt={label} draggable={false}/>
-            <p className={cn(" text-center pt-8", isCenterSlide ? "text-white" : "text-white/80")}>{label}</p>
+        <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} whileHover={{scale : 1.01}} className={cn("rounded-3xl p-6 flex flex-col items-center justify-center w-full", isCenterSlide == false ? "bg-[#15537A]/80" : "bg-[#15537A]")}>
+            <div className="rounded-full bg-white w-[100px] h-[100px] relative">
+                <Image className="rounded-full" fill src={icon} alt={label} draggable={false}/>
+            </div>
+            <p className={cn("text-center text-sm mt-4", isCenterSlide ? "text-white" : "text-white/80")} dangerouslySetInnerHTML={{__html : label}} />
         </motion.div>
     );
 });
