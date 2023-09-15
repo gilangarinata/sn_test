@@ -7,6 +7,7 @@ import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import {updateBanner} from "@/lib/actions/admin/dashboard.action";
 import {useEffect} from "react";
+import Link from "next/link";
 
 
 const divStyle = {
@@ -14,7 +15,7 @@ const divStyle = {
 }
 const slideImages = [
     {
-        url: '/',
+        url: '/zero-capex',
         heading_title: "BE A <b class='text-[#199FD6]'>HERO</b>",
         sub_heading: "BY SPENDING <b class='text-[#199FD6]'>ZERO</b>",
         description: 'We specially provide you a design with <b>no Investment fee required or Zero Capex</b> (Capital Expenditure) <br/> It allows you to allocate costs over the duration of the solar energy project contract-term, providing mode flexibility in budgeting and cash flow management',
@@ -84,7 +85,9 @@ export default function HomeBanner() {
                                         <p dangerouslySetInnerHTML={{
                                             __html: slideImage.description,
                                         }}/>
-                                        <Button className="mt-4">Discover More</Button>
+                                        <Link href={slideImage.url} className="mt-4">
+                                            <Button>Discover More</Button>
+                                        </Link>
                                     </motion.div>
                                 </div>
                             </div>
