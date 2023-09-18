@@ -22,17 +22,8 @@ export default function RootLayout({
   return (
 
       <ClerkProvider>
-        <html lang="en">
-        <Head>
-            {/* link your fonts here */}
-            <link rel="preconnect" href="https://fonts.googleapis.com" />
-            <link rel="preconnect" href="https://fonts.gstatic.com" />
-            <link
-                href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
-                rel="stylesheet"
-            />
-        </Head>
-          <body className={poppins.className}>{children}</body>
+        <html lang="en" className={poppins.className}>
+          <body /*className={poppins.className}*/>{children}</body>
         </html>
       </ClerkProvider>
   )
