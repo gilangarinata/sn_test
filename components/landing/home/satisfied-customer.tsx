@@ -119,6 +119,6 @@ export const SatisfiedCustomerCard = React.memo(function (props) {
     const { icon } = data[dataIndex];
     const { label } = data[dataIndex];
     return (
-        <Image width={200} height={200} src={icon} alt={label} draggable={false}/>
+        <Image width={240} height={240} src={icon} alt={label} draggable={false} className="px-4"/>
     );
 });

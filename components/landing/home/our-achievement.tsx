@@ -86,8 +86,8 @@ export default function OurAchievement() {
                                     <StackedCarousel
                                         ref={carouselRef}
                                         slideComponent={AchievementCard}
-                                        height={320}
-                                        slideWidth={240}  //{parentWidth < 800 ? parentWidth - 40 : 750}
+                                        height={340}
+                                        slideWidth={220}  //{parentWidth < 800 ? parentWidth - 40 : 750}
                                         carouselWidth={parentWidth}
                                         data={achievements}
                                         currentVisibleSlide={currentVisibleSlide}
