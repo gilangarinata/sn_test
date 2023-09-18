@@ -11,11 +11,11 @@ import localFont from '@next/font/local'
 const poppinsLocal = localFont({
     src: [
         {
-            path: '../../public/fonts/Poppins-Regular.ttf',
+            path: '../public/fonts/Poppins-Regular.ttf',
             weight: '400'
         },
         {
-            path: '../../public/fonts/Poppins-Bold.ttf',
+            path: '../public/fonts/Poppins-Bold.ttf',
             weight: '700'
         }
     ],
