@@ -4,71 +4,182 @@ import Link from "next/link";
 import Image from "next/image";
 import {cn} from "@/lib/utils";
 import {Montserrat} from "next/font/google";
-import {Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon} from "lucide-react";
+// import { TECollapse } from "tw-elements-react";
+
+
+import {
+    BriefcaseIcon, BuildingIcon,
+    ChevronDown, ChevronRight, CircleIcon,
+    Code, ContactIcon,
+    HomeIcon,
+    ImageIcon,
+    LayoutDashboard,
+    MessageSquare,
+    Music, NewspaperIcon, PersonStandingIcon,
+    Settings, SettingsIcon,
+    VideoIcon
+} from "lucide-react";
 import {usePathname} from "next/navigation";
+import React, {useState} from "react";
 
 const montserrat = Montserrat({ weight : "600", subsets : ["latin"]});
 
 const routes = [
     {
-        label : "Dashboard",
-        icon : LayoutDashboard,
-        href : "/dashboard"
+        label : "Home",
+        icon : HomeIcon,
+        href : "/",
+        children : [
+            {
+                label : "Banner",
+                href: "/admin-panel"
+            },
+            {
+                label : "Experience",
+                href: "/"
+            },
+            {
+                label : "Achievements",
+                href: "/"
+            },
+            {
+                label : "Customers",
+                href: "/"
+            },
+        ]
     },
     {
-        label : "Conversation",
-        icon : MessageSquare,
-        href : "/conversation"
+        label : "Who We Are",
+        icon : PersonStandingIcon,
+        href : "/conversation",
+        children: [
+            {
+                label : "Banner12",
+                href: "/"
+            },
+            {
+                label : "Banner312",
+                href: "/"
+            },
+            {
+                label : "Banner1212",
+                href: "/"
+            },
+            {
+                label : "Banner12112",
+                href: "/"
+            },
+        ]
     },
     {
-        label : "Image Generation",
-        icon : ImageIcon,
-        href : "/images"
+        label : "Business",
+        icon : BriefcaseIcon,
+        href : "/images",
+        children: []
     },
     {
-        label : "Video Generation",
-        icon : VideoIcon,
-        href : "/video"
+        label : "Zero Capex",
+        icon : CircleIcon,
+        href : "/video",
+        children: []
     },
     {
-        label : "Music Generation",
-        icon : Music,
-        href : "/music"
+        label : "Media",
+        icon : NewspaperIcon,
+        href : "/music",
+        children: [
+            {
+                label : "News",
+                href: "/"
+            },
+            {
+                label : "Video",
+                href: "/"
+            },
+        ]
     },
     {
-        label : "Code Generation",
-        icon : Code,
-        href : "/code"
+        label : "Career",
+        icon : BuildingIcon,
+        href : "/code",
+        children: []
+    },
+    {
+        label : "Get In Touch",
+        icon : ContactIcon,
+        href : "/get_in_touch",
+        children: []
     },
     {
         label : "Setting",
-        icon : Settings,
-        href : "/setting"
+        icon : SettingsIcon,
+        href : "/setting",
+        children: [
+            {
+                label : "SEO",
+                href: "/"
+            },
+        ]
     },
 ]
 
+const selectedRoute = {
+    label: "Home",
+    isExpanded: true
+}
+
 const Sidebar = ( {isMobile = false} ) => {
     const pathName = usePathname();
+    const [selectedManu,setSelectedMenu] = useState(selectedRoute);
 
     return (
         <div className="flex h-full overflow-auto">
             <div className="space-y-4 py-4 flex flex-col h-full bg-white">
                 <div className="px-6 py-2 flex-1" >
-                    <Link href="/dashboard" className="flex items-center pl-3 mb-14">
-                        <div className="relative w-8 h-8 mr-4">
-                            <Image fill src="/mindwave_logo.svg" alt="Logo" />
+                    <Link href="/admin-panel" className="flex items-center mb-14">
+                        <div className="relative h-8 w-36 mr-6">
+                            <Image fill src="/images/logo_sesna.png" alt="logo" />
                         </div>
-                        <h1 className={cn("text-2xl font-bold", montserrat.className)}>MindWave AI</h1>
+                        <h1 className={cn("text-xl font-bold ml-[-4]", montserrat.className)}>CMS</h1>
                     </Link>
                     <div className="space-y-1">
-                        {routes.map((route) => (
-                            <Link href={route.href} key={route.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition", pathName === route.href ? "text-white bg-primary" : "text-zinc-600 hover:bg-primary/10")} >
-                                <div className="flex items-center flex-1">
-                                    <route.icon className="h-5 w5 mr-5"/>
-                                    {route.label}
+                        {routes.map(function(route, index, elements) {
+                            return (
+                                <div className="flex flex-col space-y-1" key={route.href}>
+                                    <Link onClick={ (e) => {
+                                        if(route.children.length > 0) {
+                                            e.preventDefault();
+                                            setSelectedMenu({
+                                                label: route.label,
+                                                isExpanded: !selectedManu.isExpanded
+                                            })
+                                        }
+                                    } } href={route.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition", selectedManu.label === route.label ? "text-white bg-primary/60" : "text-zinc-600 hover:bg-primary/10")} >
+                                        <div className="flex items-center flex-1">
+                                            <route.icon className="h-5 w5 mr-5"/>
+                                            <p className="w-full">
+                                                {route.label}
+                                            </p>
+
+                                            <div className={cn("",route.children.length > 0 ? "block" : "hidden")}>
+                                                {selectedManu.label === route.label && selectedManu.isExpanded ? (<ChevronDown className="w-5 h-5" />) : <ChevronRight className="w-5 h-5" />}
+
+                                            </div>
+                                        </div>
+                                    </Link>
+                                    <div className={cn("", selectedManu.isExpanded && selectedManu.label == route.label ? "block" : "hidden")}>
+                                        {route.children.map(child => (
+                                            <Link key={child.label} href={child.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition", pathName === child.href ? "text-primary" : "text-zinc-600 hover:bg-primary/10")} >
+                                                <div className="flex items-center flex-1">
+                                                    <div className="h-5 w-5 mr-6 flex items-center justify-center"><p>-</p></div>
+                                                    {child.label}
+                                                </div>
+                                            </Link>
+                                        ))}
+                                    </div>
                                 </div>
-                            </Link>
-                        ))}
+                            )
+                        })}
                     </div>
                 </div>
             </div>

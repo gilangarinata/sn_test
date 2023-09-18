@@ -3,6 +3,7 @@
 import {connectToDb} from "@/lib/mongoose";
 import Banner from "@/lib/models/banner.model";
 import {revalidatePath} from "next/cache";
+import BannerModel from "@/lib/models/banner.model";
 
 interface Params {
     id: string,
@@ -13,6 +14,32 @@ interface Params {
     isCustomBanner: boolean,
     logo: string,
     path: string
+}
+
+export async function fetchBanners() {
+    console.log("featch banner 1");
+    await connectToDb();
+    try {
+        const pageNumber = 1;
+        const pageSize = 20;
+        const skipAmount = (pageNumber - 1) * pageSize;
+
+        const bannersQuery = Banner.find()
+            .skip(skipAmount)
+            .limit(pageSize)
+
+        const totalBannersCount = await Banner.countDocuments();
+
+        const banners = await bannersQuery.exec();
+        const isNext = totalBannersCount > skipAmount + banners.length;
+        return {
+            banners,
+            isNext
+        };
+    }catch (error) {
+        console.log("Failed to get banners")
+        return null;
+    }
 }
 
 export async function updateBanner({
@@ -38,10 +65,6 @@ export async function updateBanner({
                 logo: logo
             }, { upsert: true }
         )
-
-        if(path === '/dashboard/banner/edit') {
-            revalidatePath(path);
-        }
     }catch (error) {
         throw new Error(`Failed to update banner : ${error}`)
     }

@@ -64,7 +64,7 @@ export const LandingNavBar = () => {
     return (
         <nav className="bg-white flex items-center justify-between sticky top-0 z-50 px-6 py-4">
             <Link href="/" className="flex items-center">
-                <div className="relative h-8 w-32 mr-6">
+                <div className="relative h-[calc(25px*1.3)] w-[calc(128px*1.3)] mr-6">
                     <Image fill src="/images/logo_sesna.png" alt="logo" />
                 </div>
             </Link>
@@ -119,8 +119,8 @@ export default function NavContent() {
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="hover:cursor-pointer">
-                            <DropdownMenuItem><Link className="w-full" href="/media/news">News</Link></DropdownMenuItem>
-                            <DropdownMenuItem><Link className="w-full" href="/media/video">Video</Link></DropdownMenuItem>
+                            <DropdownMenuItem><Link className="w-full" href="/landing/media/news">News</Link></DropdownMenuItem>
+                            <DropdownMenuItem><Link className="w-full" href="/landing/media/video">Video</Link></DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
 

@@ -1,10 +1,10 @@
 import {LandingNavBar} from "@/components/landing-navbar";
-import HomeBanner from "@/components/home/home-banner";
-import SesnaGroup from "@/components/home/sesna-group";
-import OurAchievement from "@/components/home/our-achievement";
-import SatisfiedCustomer from "@/components/home/satisfied-customer";
+import HomeBanner from "@/components/landing/home/home-banner";
+import SesnaGroup from "@/components/landing/home/sesna-group";
+import OurAchievement from "@/components/landing/home/our-achievement";
+import SatisfiedCustomer from "@/components/landing/home/satisfied-customer";
 import React from "react";
-import Calculator from "@/components/home/calculator";
+import Calculator from "@/components/landing/home/calculator";
 import FooterLanding from "@/components/footer-landing";
 
 const LandingPage = () => {

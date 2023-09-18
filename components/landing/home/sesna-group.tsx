@@ -41,7 +41,7 @@ const experience = {
 
 export default function SesnaGroup() {
     return (
-        <section>
+        <section className="lg:max-w-5xl mx-auto">
             <div className="w-full flex flex-col px-6 md:px-20 my-10">
                 <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">EXPERIENCE</h1>
                 <div className="w-full flex flex-col md:flex-row">
@@ -50,12 +50,12 @@ export default function SesnaGroup() {
                         <p className="text-[#15537A]" dangerouslySetInnerHTML={{__html : experience.description}} />
                     </div>
                     <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="w-full relative">
-                        <div className="relative w-[190px] h-[340px] m-auto mt-4 md:mt-0">
+                        <div className="relative w-[280px] h-[480px] m-auto mt-4 md:mt-0">
                             <Image fill src="/images/captain_surya.webp" alt="Captain Surya" />
                         </div>
                     </motion.div>
                 </div>
-                <div className="w-[300px] mx-auto md:w-full bg-[#15537A] rounded-2xl mt-1">
+                <div className="w-[300px] mx-auto md:w-full bg-[#15537A] rounded-2xl mt-[-50px] z-50">
                     <div className="w-full flex flex-col md:flex-row px-4">
                         {experience.experiences.map(experience => {
                             return (

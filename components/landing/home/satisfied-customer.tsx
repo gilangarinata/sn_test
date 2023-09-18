@@ -72,7 +72,7 @@ export default function SatisfiedCustomer() {
     }
 
     return (
-        <section>
+        <section className="lg:max-w-5xl mx-auto">
             <div className="w-full flex flex-col px-6 md:px-20 my-10">
                 <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">OUR SATISFIED CUSTOMER</h1>
                 <div className="w-full flex justify-center items-center">

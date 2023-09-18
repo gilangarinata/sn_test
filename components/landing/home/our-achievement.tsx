@@ -69,12 +69,12 @@ export default function OurAchievement() {
 
 
     return (
-        <section>
+        <section className="lg:max-w-5xl mx-auto">
             <div className="w-full flex flex-col px-6 md:px-20 my-10">
                 <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">OUR ACHIEVEMENT</h1>
-                <div className="w-full flex flex-col items-center justify-center">
-                    <motion.div onViewportEnter={onViewPortEnter} initial={{ scale: 0 }} whileInView={{ scale: 1 }} className="w-full">
-                        <Image className="fade-in duration-200 transition-all mx-auto" width={300} height={300} src={achievementAnimation[currentIndex].icon} alt=""/>
+                <div className="w-full flex flex-col md:flex-row items-center justify-center">
+                    <motion.div onViewportEnter={onViewPortEnter} initial={{ scale: 0 }} whileInView={{ scale: 1 }} className="w-full flex flex-col justify-center items-center mt">
+                        <Image className="fade-in duration-200 transition-all mt-4" width={300} height={300} src={achievementAnimation[currentIndex].icon} alt=""/>
                     </motion.div>
                     <div className="w-full">
                         <ResponsiveContainer
@@ -86,7 +86,7 @@ export default function OurAchievement() {
                                     <StackedCarousel
                                         ref={carouselRef}
                                         slideComponent={AchievementCard}
-                                        height={300}
+                                        height={280}
                                         slideWidth={300}  //{parentWidth < 800 ? parentWidth - 40 : 750}
                                         carouselWidth={parentWidth}
                                         data={achievements}
@@ -112,7 +112,7 @@ export const AchievementCard = React.memo(function (props) {
     const { icon } = data[dataIndex];
     const { label } = data[dataIndex];
     return (
-        <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} whileHover={{scale : 1.01}} className={cn("rounded-3xl p-6 flex flex-col items-center justify-center w-full", isCenterSlide == false ? "bg-[#15537A]/80" : "bg-[#15537A]")}>
+        <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} whileHover={{scale : 1.001}} className={cn("rounded-3xl p-6 flex flex-col items-center justify-center w-full", isCenterSlide == false ? "bg-[#15537A]/80" : "bg-[#15537A]")}>
             <div className="rounded-full bg-white w-[100px] h-[100px] relative">
                 <Image className="rounded-full" fill src={icon} alt={label} draggable={false}/>
             </div>

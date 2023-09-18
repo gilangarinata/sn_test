@@ -10,7 +10,7 @@ export default function Calculator() {
 
     return (
         <section>
-            <div className="w-full flex flex-col px-6 md:px-20 bg-[#FABD24] py-20 h-fit lg:h-screen">
+            <div className="w-full flex flex-col px-6 md:px-20 bg-[#FABD24] py-20 h-fit lg:h-screen justify-center">
                 <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">TRY OUR CALCULATOR</h1>
                 <div className="flex flex-col md:flex-row items-center gap-4">
                     <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="w-1/2 flex flex-row items-center justify-center">
