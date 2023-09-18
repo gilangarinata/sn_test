@@ -5,7 +5,8 @@ const nextConfig = {
     },
     experimental: {
         serverActions: true,
-    }
+    },
+    optimizeFonts: false,
 }
 
 module.exports = nextConfig
