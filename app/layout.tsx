@@ -6,6 +6,21 @@ import "tw-elements-react/dist/css/tw-elements-react.min.css";
 import '@fontsource/poppins';
 import Head from "next/head";
 
+import localFont from '@next/font/local'
+
+const poppinsLocal = localFont({
+    src: [
+        {
+            path: '../../public/fonts/Poppins-Regular.ttf',
+            weight: '400'
+        },
+        {
+            path: '../../public/fonts/Poppins-Bold.ttf',
+            weight: '700'
+        }
+    ],
+    variable: '--font-poppins'
+})
 
 const poppins = Poppins({ subsets: ['latin'], weight: "400" })
 
@@ -22,7 +37,7 @@ export default function RootLayout({
   return (
 
       <ClerkProvider>
-        <html lang="en" className={poppins.className}>
+        <html lang="en" className={`${poppinsLocal.variable} font-sans`} /*className={poppins.className}*/>
           <body /*className={poppins.className}*/>{children}</body>
         </html>
       </ClerkProvider>
