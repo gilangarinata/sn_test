@@ -119,8 +119,8 @@ export default function NavContent() {
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="hover:cursor-pointer">
-                            <DropdownMenuItem><Link className="w-full" href="/landing/media/news">News</Link></DropdownMenuItem>
-                            <DropdownMenuItem><Link className="w-full" href="/landing/media/video">Video</Link></DropdownMenuItem>
+                            <DropdownMenuItem><Link className="w-full" href="/media/news">News</Link></DropdownMenuItem>
+                            <DropdownMenuItem><Link className="w-full" href="/media/video">Video</Link></DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
 
