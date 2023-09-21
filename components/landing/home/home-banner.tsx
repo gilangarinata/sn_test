@@ -5,7 +5,7 @@ import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image';
 import {Button} from "@/components/ui/button";
 import Image from "next/image";
-import {updateBanner} from "@/lib/actions/admin/dashboard.action";
+import {updateBanner} from "@/lib/actions/admin/banner.action";
 import {useEffect} from "react";
 import Link from "next/link";
 

@@ -2,8 +2,6 @@
 
 import {connectToDb} from "@/lib/mongoose";
 import Banner from "@/lib/models/banner.model";
-import {revalidatePath} from "next/cache";
-import BannerModel from "@/lib/models/banner.model";
 
 interface Params {
     id: string,
@@ -13,7 +11,7 @@ interface Params {
     subHeading: string,
     isCustomBanner: boolean,
     logo: string,
-    path: string
+    description: string
 }
 
 export async function fetchBanners() {
@@ -42,6 +40,17 @@ export async function fetchBanners() {
     }
 }
 
+export async function fetchMainBanners() {
+    await connectToDb();
+    try {
+        const bannersQuery = Banner.findOne({id:"main-banner"})
+        return await bannersQuery.exec();
+    }catch (error) {
+        console.log("Failed to get banners")
+        return null;
+    }
+}
+
 export async function updateBanner({
        id,
        image,
@@ -50,22 +59,40 @@ export async function updateBanner({
        subHeading,
        isCustomBanner,
        logo,
-       path
+       description
    } : Params): Promise<void> {
     await connectToDb();
+    console.log(`${id} ${image} ${url} ${headingTitle} ${subHeading} ${isCustomBanner} ${logo}`);
     try {
+        const now = Date.now();
+        const currentId = id === "" ? now.toString() : id
+        console.log(currentId);
         await Banner.findOneAndUpdate(
-            {id: id},
+            {id: currentId},
             {
                 image: image,
                 url: url,
                 headingTitle: headingTitle,
                 subHeading: subHeading,
                 isCustomBanner: isCustomBanner,
-                logo: logo
+                logo: logo,
+                description: description,
             }, { upsert: true }
         )
     }catch (error) {
         throw new Error(`Failed to update banner : ${error}`)
+    }
+}
+
+
+export async function deleteBanner({id} : {id:string}): Promise<void> {
+    await connectToDb();
+
+    try {
+        await Banner.findOneAndDelete(
+            {id: id }
+        )
+    }catch (error) {
+        throw new Error(`Failed to delete banner : ${error}`)
     }
 }

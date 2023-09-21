@@ -36,15 +36,15 @@ const routes = [
             },
             {
                 label : "Experience",
-                href: "/"
+                href: "/admin-panel/home/experience"
             },
             {
                 label : "Achievements",
-                href: "/"
+                href: "/admin-panel/home/achievement"
             },
             {
                 label : "Customers",
-                href: "/"
+                href: "/admin-panel/home/customers"
             },
         ]
     },

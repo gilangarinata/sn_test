@@ -28,7 +28,7 @@ const RichTextEditor = (
                 toolbar={{
                     options: ['inline'],
                 }}
-                editorClassName="px-2"
+                editorClassName="px-2 font-normal"
                 onEditorStateChange={onEditorChange}
                 editorState={editorState}
             />
