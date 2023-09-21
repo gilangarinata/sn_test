@@ -24,47 +24,40 @@ import Spinner from "@/components/spinner";
 import {deleteExperience, fetchExperiences, fetchMainExperience} from "@/lib/actions/admin/experience.action";
 import AddEditExperience from "@/components/admin/home/experience/edit-experience";
 import {Label} from "@/components/ui/label";
+import {deleteAchievement, fetchAchievement} from "@/lib/actions/admin/achievement.action";
+import AddEditAchievement from "@/components/admin/home/achievement/edit-achievement";
 
-export type Experience = {
+export type Achievement = {
     id: string,
-    title: string,
     description: string,
-    total: string,
     icon: string
 }
 
-function ExperienceTable() {
+function AchievementTable() {
 
-    const [experiences, setExperiences] = useState<Experience[]>()
-    const [mainExperiences, setMainExperiences] = useState<Experience>()
-
-    async function getExperiences() {
-        const banners = (await fetchExperiences())?.banners?.filter((element, index, array) => {
-            return element.id !== "main-experience"
-        });
-        setExperiences(banners);
-
-
-        setMainExperiences(await fetchMainExperience());
+    const [achievements, setAchievements] = useState<Achievement[]>()
+    async function getAchievements() {
+        const achievements = await fetchAchievement()
+        setAchievements(achievements?.banners);
     }
 
     useEffect(() => {
-        getExperiences()
+        getAchievements()
     }, [])
 
     const [open, setOpen] = useState(false);
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Experience | null, isOpen : boolean, isMainContent: boolean}>({banner: null, isOpen: false, isMainContent : false})
+    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Achievement | null, isOpen : boolean}>({banner: null, isOpen: false})
 
     const handleDelete = async (id: string,logo: string) => {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
             await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
-            await deleteExperience({id: id});
+            await deleteAchievement({id: id});
             setDeleteLoading(false);
             setOpen(false)
-            await getExperiences()
+            await getAchievements()
         } catch (e) {
             setDeleteLoading(false);
             console.log("eror delete " + e);
@@ -73,41 +66,21 @@ function ExperienceTable() {
 
     return (
             <div className="flex flex-col">
-                <div className="grid grid-cols-2 gap-4 mx-8 mb-6">
-                    <div className="grid w-full items-center gap-1.5">
-                        <Label htmlFor="email">Title</Label>
-                        <div className="rounded-lg border p-2">
-                            <p dangerouslySetInnerHTML={{__html: mainExperiences?.title ?? "-"}} />
-                        </div>
-                    </div>
-                    <div className="grid w-full items-center gap-1.5">
-                        <Label htmlFor="email">Description</Label>
-                        <div className="rounded-lg border p-2 max-h-14 overflow-y-scroll">
-                            <p dangerouslySetInnerHTML={{__html: mainExperiences?.description ?? "-"}} />
-                        </div>
-                    </div>
-                    <Button onClick={(bt) => {
-                        bt.preventDefault();
-                        setCreateBannerOpen({ banner: mainExperiences ?? null, isOpen:true, isMainContent: true})
-                    }} variant="outline" className="w-fit"><EditIcon className="w-4 h-4 mr-2"/> Edit</Button>
-                </div>
-
-
                 <Dialog open={createBannerOpen.isOpen} onOpenChange={(isOpen) => setCreateBannerOpen(prevState => {
-                    return  {isOpen: isOpen, banner: null, isMainContent: prevState.isMainContent}
+                    return  {isOpen: isOpen, banner: null}
                 })}>
                     <Button onClick={(bt) => {
                         bt.preventDefault();
-                        setCreateBannerOpen({banner: null, isOpen:true, isMainContent: false})
-                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Experience</Button>
+                        setCreateBannerOpen({banner: null, isOpen:true,})
+                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Achievement</Button>
                     <DialogContent className="w-8">
                         <DialogHeader>
-                            <DialogTitle>{createBannerOpen.isMainContent ? "Edit content experience" : " Add new experience"}</DialogTitle>
+                            <DialogTitle>{"Add new achievement"}</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto h-[420px]">
-                            <AddEditExperience isMainContent={createBannerOpen.isMainContent} experience={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
-                                setCreateBannerOpen({banner: null, isOpen:false, isMainContent: false})
-                                getExperiences();
+                            <AddEditAchievement achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
+                                setCreateBannerOpen({banner: null, isOpen:false})
+                                getAchievements();
                             }} />
                         </DialogBody>
                     </DialogContent>
@@ -116,20 +89,18 @@ function ExperienceTable() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Type</TableHead>
-                                <TableHead>Total</TableHead>
+                                <TableHead>Description</TableHead>
                                 <TableHead className="text-center">Icon</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {experiences?.map((experience) => (
-                                <TableRow key={experience.id}>
-                                    <TableCell>{experience.description}</TableCell>
-                                    <TableCell>{experience.total}</TableCell>
+                            {achievements?.map((achievements) => (
+                                <TableRow key={achievements.id}>
+                                    <TableCell>{achievements.description}</TableCell>
                                     <TableCell>
                                         <Image className="mx-auto" width={60} height={60}
-                                                      src={experience.icon} alt=""/>
+                                                      src={achievements.icon} alt=""/>
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
@@ -152,7 +123,7 @@ function ExperienceTable() {
                                                             }}>Cancel</Button>
                                                             <Button variant="destructive" onClick={(bt) => {
                                                                 bt.preventDefault();
-                                                                handleDelete(experience.id, experience.icon);
+                                                                handleDelete(achievements.id, achievements.icon);
                                                             }}>{deleteLoading ? <Spinner /> : "Delete"}</Button>
                                                         </div>
                                                     </DialogFooter>
@@ -160,7 +131,7 @@ function ExperienceTable() {
                                             </Dialog>
                                             <EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {
                                                 bt.preventDefault();
-                                                setCreateBannerOpen({banner: experience, isOpen: true, isMainContent: false})
+                                                setCreateBannerOpen({banner: achievements, isOpen: true})
                                             }} />
                                         </div>
                                     </TableCell>
@@ -173,4 +144,4 @@ function ExperienceTable() {
     )
 }
 
-export default ExperienceTable;
+export default AchievementTable;

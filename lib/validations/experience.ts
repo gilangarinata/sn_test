@@ -5,5 +5,6 @@ export const ExperienceValidation = z.object({
         .string(),
     icon: z
         .string(),
+
 });
 

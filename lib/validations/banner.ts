@@ -6,5 +6,6 @@ export const BannerValidation = z.object({
         .url({message: "Should be correct url format"}),
     image: z
         .string(),
-    logo: z.string()
+    logo: z.string(),
+    total: z.string()
 });

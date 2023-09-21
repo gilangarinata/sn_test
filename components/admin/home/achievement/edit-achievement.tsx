@@ -27,6 +27,8 @@ import {updateBanner} from "@/lib/actions/admin/banner.action";
 import Spinner from "@/components/spinner";
 import {ExperienceValidation} from "@/lib/validations/experience";
 import {updateExperience} from "@/lib/actions/admin/experience.action";
+import {AchievementValidation} from "@/lib/validations/achievement";
+import {updateAchievement} from "@/lib/actions/admin/achievement.action";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -34,73 +36,54 @@ const Editor = dynamic(() => import("react-draft-wysiwyg")
     }
 );
 
-export type Experience = {
+export type Achievement = {
     id: string,
-    title: string,
     description: string,
-    total: string,
     icon: string
 }
 
 interface Props {
-    isMainContent: boolean;
-    experience?: Experience;
+    achievement?: Achievement;
     onNeedRefresh : () => void
 }
 
-function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
-    const descContent = convertFromValidHtmlStyle(experience?.description ?? "")
+function AddEditAchievement({ achievement, onNeedRefresh}: Props) {
+    const descContent = convertFromValidHtmlStyle(achievement?.description ?? "")
     const descInitState = convertHTMLToEditorState(`<p>${descContent}</p>`)
 
-    const titleContent = convertFromValidHtmlStyle(experience?.title ?? "")
-    const titleInitState = convertHTMLToEditorState(`<p>${titleContent}</p>`)
-
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
-    const [editorTitleState, setEditorTitleState] = useState(titleInitState !== undefined ? titleInitState : EditorState?.createEmpty() )
 
     const {startUpload} = useUploadThing("media");
     const [saveLoading, setSaveLoading] = useState(false);
 
     const [logo, setLogo] = useState<File[]>([]);
 
-    const form = useForm<z.infer<typeof ExperienceValidation>>({
-        resolver: zodResolver(ExperienceValidation),
+    const form = useForm<z.infer<typeof AchievementValidation>>({
+        resolver: zodResolver(AchievementValidation),
         defaultValues: {
-            icon: experience?.icon ?? "",
-            total: experience?.total ?? "",
+            icon: achievement?.icon ?? "",
         },
     });
 
-    console.log(`isMainContent : ${isMainContent}`)
-
-    const onSubmit = async (values: z.infer<typeof ExperienceValidation>) => {
+    const onSubmit = async (values: z.infer<typeof AchievementValidation>) => {
         try {
             setSaveLoading(true)
-            console.log(`submitting`)
 
-            if(!isMainContent) {
-                const logoBlob = values.icon;
-                const hasLogoChanged = isBase64Image(logoBlob);
-                if(hasLogoChanged) {
-                    const logoRes = await startUpload(logo);
-                    if (logoRes && logoRes[0].fileUrl) {
-                        values.icon = logoRes[0].fileUrl;
-                    }
+            const logoBlob = values.icon;
+            const hasLogoChanged = isBase64Image(logoBlob);
+            if(hasLogoChanged) {
+                const logoRes = await startUpload(logo);
+                if (logoRes && logoRes[0].fileUrl) {
+                    values.icon = logoRes[0].fileUrl;
                 }
             }
-
-
-            let headingTitle = draftToHtml(convertToRaw(editorTitleState?.getCurrentContent()));
-            headingTitle = convertToValidHtmlStyle(headingTitle)
 
             let descTitle = draftToHtml(convertToRaw(editorDescState?.getCurrentContent()));
             descTitle = convertToValidHtmlStyle(descTitle)
 
-            await updateExperience({
-                id: isMainContent ? "main-experience" : experience?.id === undefined || experience?.id === null ? "" : experience?.id,
-                title: headingTitle,
+            await updateAchievement({
+                id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
                 icon: values.icon,
-                total: values.total,
                 description: descTitle
             })
 
@@ -141,34 +124,6 @@ function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
             <form
                 className='flex flex-col justify-start gap-4 px-4'
                 onSubmit={form.handleSubmit(onSubmit)}>
-                {isMainContent ? <></> : <FormField
-                    control={form.control}
-                    name='total'
-                    render={({ field }) => (
-                        <FormItem className='flex w-full flex-col'>
-                            <FormLabel className='text-base-semibold text-light-2'>
-                                Total
-                            </FormLabel>
-                            <FormControl>
-                                <Input
-                                    type='text'
-                                    className='account-form_input no-focus'
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />}
-                {isMainContent ? <div className="flex flex-col gap-2">
-                    <p>Title</p>
-                    <RichTextEditor
-                        editorState={editorTitleState}
-                        onEditorChange={(state) => {
-                            setEditorTitleState(state);
-                        }}
-                    />
-                </div> : <></>}
                 <div className="flex flex-col gap-2">
                     <p>Description</p>
                     <RichTextEditor
@@ -179,7 +134,7 @@ function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
                     />
                 </div>
 
-                {isMainContent ? <></> : <FormField
+                <FormField
                     control={form.control}
                     name='icon'
                     render={({field}) => (
@@ -214,7 +169,7 @@ function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
                             </div>
                         </FormItem>
                     )}
-                />}
+                />
                 <Button disabled={saveLoading} type='submit' className='bg-primary-500'>
                     {saveLoading ? <Spinner /> : "Save"}
                 </Button>
@@ -224,4 +179,4 @@ function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
 
 }
 
-export default AddEditExperience;
+export default AddEditAchievement;
