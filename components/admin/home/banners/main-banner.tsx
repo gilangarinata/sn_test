@@ -63,7 +63,7 @@ function MainBanner() {
                     onOpenChange={(isOpen) => setCreateBannerOpen({isOpen: isOpen, banner: null})}>
                 <DialogContent className="w-8">
                     <DialogHeader>
-                        <DialogTitle>Edit Main banner</DialogTitle>
+                        <DialogTitle>Edit Zero Capex banner</DialogTitle>
                     </DialogHeader>
                     <DialogBody className="overflow-y-auto h-[420px]">
                         <AddEditMainBanner banner={banners}
@@ -75,7 +75,7 @@ function MainBanner() {
                 </DialogContent>
             </Dialog>
             <div className="flex flex-col mx-8 mb-8 gap-4">
-                <h2 className="font-bold">Main Banner</h2>
+                <h2 className="font-bold">Zero Capex Banner</h2>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="grid w-full items-center gap-1.5">
                         <Label htmlFor="email">Heading</Label>
@@ -105,7 +105,7 @@ function MainBanner() {
                         <Button onClick={(bt) => {
                             bt.preventDefault();
                             setCreateBannerOpen({banner: null, isOpen: true})
-                        }} variant="outline"><EditIcon width={15}/>&nbsp;Edit Main Banner</Button>
+                        }} variant="outline"><EditIcon width={15}/>&nbsp;Edit Zero Capex Banner</Button>
                     </div>
 
                 </div>

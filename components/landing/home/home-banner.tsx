@@ -8,46 +8,47 @@ import Image from "next/image";
 import {updateBanner} from "@/lib/actions/admin/banner.action";
 import {useEffect} from "react";
 import Link from "next/link";
+import {Banner} from "@/components/admin/home/banners/edit-banner";
 
 
 const divStyle = {
     backgroundSize: 'cover',
 }
-const slideImages = [
-    {
-        url: '/zero-capex',
-        heading_title: "BE A <b class='text-[#199FD6]'>HERO</b>",
-        sub_heading: "BY SPENDING <b class='text-[#199FD6]'>ZERO</b>",
-        description: 'We specially provide you a design with <b>no Investment fee required or Zero Capex</b> (Capital Expenditure) <br/> It allows you to allocate costs over the duration of the solar energy project contract-term, providing mode flexibility in budgeting and cash flow management',
-        isCustomBanner: true,
-        image: "",
-        logo: ""
-    },
-    {
-        url: '/',
-        description: "IPP WEWARIA <br/> INSTALLED CAPACITY 1 MWp",
-        image: "/images/banner_1.jpg",
-        logo: "/images/logo_pln.png"
-    },
-    {
-        url: '/',
-        description: "IPP WEIBLELER <br/> INSTALLED CAPACITY 1 MWp",
-        image: "/images/banner_2.jpg",
-        logo: "/images/logo_pln.png"
-    },
-    {
-        url: '/',
-        description: "IPP HAMBAPRAING <br/> INSTALLED CAPACITY 1 MWp" ,
-        image: "/images/banner_3.jpg",
-        logo: "/images/logo_pln.png"
-    },
-    {
-        url: '/',
-        description: "INDORAMA CILEGON <br/> INSTALLED CAPACITY 1,36 MWp",
-        image: "/images/banner_3.jpg",
-        logo: "/images/indorama_logo.png"
-    },
-];
+// const slideImages = [
+//     {
+//         url: '/zero-capex',
+//         heading_title: "BE A <b class='text-[#199FD6]'>HERO</b>",
+//         sub_heading: "BY SPENDING <b class='text-[#199FD6]'>ZERO</b>",
+//         description: 'We specially provide you a design with <b>no Investment fee required or Zero Capex</b> (Capital Expenditure) <br/> It allows you to allocate costs over the duration of the solar energy project contract-term, providing mode flexibility in budgeting and cash flow management',
+//         isCustomBanner: true,
+//         image: "",
+//         logo: ""
+//     },
+//     {
+//         url: '/',
+//         description: "IPP WEWARIA <br/> INSTALLED CAPACITY 1 MWp",
+//         image: "/images/banner_1.jpg",
+//         logo: "/images/logo_pln.png"
+//     },
+//     {
+//         url: '/',
+//         description: "IPP WEIBLELER <br/> INSTALLED CAPACITY 1 MWp",
+//         image: "/images/banner_2.jpg",
+//         logo: "/images/logo_pln.png"
+//     },
+//     {
+//         url: '/',
+//         description: "IPP HAMBAPRAING <br/> INSTALLED CAPACITY 1 MWp" ,
+//         image: "/images/banner_3.jpg",
+//         logo: "/images/logo_pln.png"
+//     },
+//     {
+//         url: '/',
+//         description: "INDORAMA CILEGON <br/> INSTALLED CAPACITY 1,36 MWp",
+//         image: "/images/banner_3.jpg",
+//         logo: "/images/indorama_logo.png"
+//     },
+// ];
 
 const buttonStyle = {
     width: "30px",
@@ -60,12 +61,12 @@ const properties = {
     nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
     autoplay: true,
 }
-export default function HomeBanner() {
+export default function HomeBanner({banners} : {banners: Banner[]}) {
     return (
         <div className="">
             <Slide {...properties}>
-                {slideImages.map((slideImage, index) =>
-                    slideImage.isCustomBanner === true ?
+                {banners.map((slideImage, index) =>
+                    slideImage.id === "main-banner" ?
                     (
                         <div key={slideImage.url} className="w-full bg-gradient-to-b from-white to-[#FAC225]">
                             <div className="w-full h-[500px] lg:lg:h-[calc(100vh-60px)] flex flex-col">
@@ -77,10 +78,10 @@ export default function HomeBanner() {
                                     </motion.div>
                                     <motion.div initial={{scale : 0}} whileInView={{scale: 1}} className="flex flex-col items-start text-[#154B6F] px-16 pt-2 w-full gap-1">
                                         <h1 className="text-4xl font-bold" dangerouslySetInnerHTML={{
-                                            __html: slideImage.heading_title,
+                                            __html: slideImage.headingTitle,
                                         }}/>
                                         <h2 className="text-xl font-semibold" dangerouslySetInnerHTML={{
-                                            __html: slideImage.sub_heading,
+                                            __html: slideImage.subHeading,
                                         }}/>
                                         <p dangerouslySetInnerHTML={{
                                             __html: slideImage.description,

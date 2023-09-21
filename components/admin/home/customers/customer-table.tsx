@@ -21,56 +21,45 @@ import React, {ChangeEvent, useEffect, useState} from "react";
 import AddEditBanner from "@/components/admin/home/banners/edit-banner";
 import {deleteBanner, fetchBanners} from "@/lib/actions/admin/banner.action";
 import Spinner from "@/components/spinner";
-import {Achievement} from "@/components/admin/home/achievement/achievement-table";
+import {deleteExperience, fetchExperiences, fetchMainExperience} from "@/lib/actions/admin/experience.action";
+import AddEditExperience from "@/components/admin/home/experience/edit-experience";
+import {Label} from "@/components/ui/label";
+import {deleteCustomer, fetchCustomers} from "@/lib/actions/admin/customer.action";
+import AddEditCustomer from "@/components/admin/home/customers/edit-customer";
 
-export type Banner = {
+export type Customer = {
     id: string,
-    image: string,
+    title: string,
     url: string,
-    headingTitle: string,
-    subHeading: string,
-    description: string,
-    isCustomBanner: boolean,
-    logo: string
+    icon: string
 }
 
-interface Props {
-    bannersInit?: Banner[];
-    isNext: boolean;
-}
+function CustomerTable() {
 
-function UniversalBanners() {
+    const [customers, setCustomer] = useState<Customer[]>()
 
-    const [banners, setBanners] = useState<Banner[]>()
-
-    async function getBanners() {
-        const banners = (await fetchBanners())?.banners?.filter((element, index, array) => {
-            return element.id !== "main-banner"
-        });
-        setBanners(banners);
+    async function getCustomers() {
+        const customers = await fetchCustomers();
+        setCustomer(customers?.banners);
     }
 
     useEffect(() => {
-        getBanners()
+        getCustomers()
     }, [])
 
-    const [open, setOpen] = useState<{banner : Banner | null, isOpen : boolean}>({banner: null, isOpen:false});
+    const [open, setOpen] = useState<{banner : Customer | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Banner | null, isOpen : boolean}>({banner: null, isOpen: false})
+    const [createCustomerOpen, setCreateCustomerOpen] = useState<{banner : Customer | null, isOpen : boolean}>({banner: null, isOpen: false})
 
-    const handleDelete = async (id: string, image:string, logo: string) => {
+    const handleDelete = async (id: string,logo: string) => {
         try {
-            console.log("submitting")
             setDeleteLoading(true);
-            const fileImage = image.substring(image.lastIndexOf('/') + 1)
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            console.log(fileLogo + "   " + fileImage);
-            await fetch(`/api/uploadthing/delete/${fileImage}`, { method: 'DELETE',})
             await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
-            await deleteBanner({id: id});
+            await deleteCustomer({id: id});
             setDeleteLoading(false);
-            setOpen({banner: null, isOpen: false})
-            await getBanners()
+            setOpen({banner : null, isOpen: false})
+            await getCustomers()
         } catch (e) {
             setDeleteLoading(false);
             console.log("eror delete " + e);
@@ -95,26 +84,27 @@ function UniversalBanners() {
                                 }}>Cancel</Button>
                                 <Button variant="destructive" onClick={(bt) => {
                                     bt.preventDefault();
-                                    handleDelete(open?.banner?.id ?? "", open?.banner?.image ?? "",open?.banner?.logo ?? "" );
-                                }}>{deleteLoading ? <Spinner /> : `Delete item`}</Button>
+                                    handleDelete(open?.banner?.id ?? "", open?.banner?.icon ?? "");
+                                }}>{deleteLoading ? <Spinner /> : `Delete ${open?.banner?.title}`}</Button>
                             </div>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
-
-                <Dialog open={createBannerOpen.isOpen} onOpenChange={(isOpen) => setCreateBannerOpen({isOpen: isOpen, banner: null})}>
+                <Dialog open={createCustomerOpen.isOpen} onOpenChange={(isOpen) => setCreateCustomerOpen(prevState => {
+                    return  {isOpen: isOpen, banner: null}
+                })}>
                     <Button onClick={(bt) => {
                         bt.preventDefault();
-                        setCreateBannerOpen({banner: null, isOpen:true})
-                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Universal Banner</Button>
+                        setCreateCustomerOpen({banner: null, isOpen:true})
+                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Customer</Button>
                     <DialogContent className="w-8">
                         <DialogHeader>
-                            <DialogTitle>Add new banner</DialogTitle>
+                            <DialogTitle>{"Add new customer"}</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto h-[420px]">
-                            <AddEditBanner banner={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
-                                setCreateBannerOpen({banner: null, isOpen:false})
-                                getBanners();
+                            <AddEditCustomer customer={createCustomerOpen.banner == null ? undefined : createCustomerOpen.banner} onNeedRefresh={() => {
+                                setCreateCustomerOpen({banner: null, isOpen:false})
+                                getCustomers();
                             }} />
                         </DialogBody>
                     </DialogContent>
@@ -123,33 +113,27 @@ function UniversalBanners() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Image</TableHead>
+                                <TableHead>Tag</TableHead>
                                 <TableHead>Link</TableHead>
-                                <TableHead>Description</TableHead>
-                                <TableHead className="text-center">Logo</TableHead>
+                                <TableHead className="text-center">Image</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {banners?.map((banner) => (
-                                <TableRow key={banner.id}>
-                                    <TableCell className="font-medium">
-                                        <Image width={100} height={100} src={banner.image}
-                                                                              alt=""/></TableCell>
-                                    <TableCell>{banner.url}</TableCell>
-                                    <TableCell><h2 className="text-xl font-semibold" dangerouslySetInnerHTML={{
-                                        __html: banner.description,
-                                    }}/></TableCell>
+                            {customers?.map((customer) => (
+                                <TableRow key={customer.id}>
+                                    <TableCell>{customer.title}</TableCell>
+                                    <TableCell>{customer.url}</TableCell>
                                     <TableCell>
                                         <Image className="mx-auto" width={60} height={60}
-                                                      src={banner.logo} alt=""/>
+                                                      src={customer.icon} alt=""/>
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
-                                            <Trash2Icon onClick={()=> setOpen({banner: banner, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
+                                            <Trash2Icon onClick={()=> setOpen({isOpen: true, banner: customer})} width={18} color="red" className="hover:cursor-pointer" />
                                             <EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {
                                                 bt.preventDefault();
-                                                setCreateBannerOpen({banner: banner, isOpen: true})
+                                                setCreateCustomerOpen({banner: customer, isOpen: true})
                                             }} />
                                         </div>
                                     </TableCell>
@@ -162,4 +146,4 @@ function UniversalBanners() {
     )
 }
 
-export default UniversalBanners;
+export default CustomerTable;

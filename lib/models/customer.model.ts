@@ -7,5 +7,5 @@ const customerSchema = new  mongoose.Schema({
     url: String
 });
 
-const Customer = mongoose.models.Experience || mongoose.model('Customers', customerSchema);
+const Customer = mongoose.models.Customer || mongoose.model('Customer', customerSchema);
 export default Customer;

@@ -6,14 +6,16 @@ import SatisfiedCustomer from "@/components/landing/home/satisfied-customer";
 import React from "react";
 import Calculator from "@/components/landing/home/calculator";
 import FooterLanding from "@/components/footer-landing";
+import {fetchHome} from "@/lib/actions/landing/home.action";
 
-const LandingPage = () => {
+async function LandingPage() {
+    const data = await fetchHome()
     return (
        <div className="h-full">
-           <HomeBanner/>
-           <SesnaGroup />
-           <OurAchievement />
-           <SatisfiedCustomer />
+           <HomeBanner banners={data.banners}/>
+           <SesnaGroup experience={data.experiences} />
+           <OurAchievement achievements={data.achievements} />
+           <SatisfiedCustomer customers={data.customers} />
            <Calculator />
        </div>
     )

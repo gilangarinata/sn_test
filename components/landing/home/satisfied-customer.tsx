@@ -8,59 +8,11 @@ import {
 } from "react-stacked-center-carousel";
 import {cn} from "@/lib/utils";
 import {ChevronLeftCircle, ChevronRightCircle} from "lucide-react";
+import {Customer} from "@/components/admin/home/customers/edit-customer";
+import Link from "next/link";
 
-const satisfiedCustomers = [
-    {
-        icon : '/images/logo_client_1.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_2.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_3.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_4.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_5.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_6.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_7.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_8.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_9.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_10.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_11.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-    {
-        icon : '/images/logo_client_12.png',
-        label: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    },
-];
 
-export default function SatisfiedCustomer() {
+export default function SatisfiedCustomer({customers} : {customers : Customer[]}) {
     const ref = React.useRef<StackedCarousel>();
 
     function onPrevClick() {
@@ -94,7 +46,7 @@ export default function SatisfiedCustomer() {
                                         height={200}
                                         slideWidth={200}  //{parentWidth < 800 ? parentWidth - 40 : 750}
                                         carouselWidth={parentWidth}
-                                        data={satisfiedCustomers}
+                                        data={customers}
                                         currentVisibleSlide={currentVisibleSlide}
                                         maxVisibleSlide={5}
                                         useGrabCursor
@@ -117,8 +69,11 @@ export const SatisfiedCustomerCard = React.memo(function (props) {
     // @ts-ignore
     const { data, dataIndex, isCenterSlide } = props;
     const { icon } = data[dataIndex];
-    const { label } = data[dataIndex];
+    const { title } = data[dataIndex];
+    const { url } = data[dataIndex];
     return (
-        <Image width={240} height={240} src={icon} alt={label} draggable={false} className="px-4"/>
+        <Link href={url}>
+            <Image width={240} height={240} src={icon} alt={title} draggable={false} className="px-4"/>
+        </Link>
     );
 });

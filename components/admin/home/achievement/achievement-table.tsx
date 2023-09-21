@@ -26,6 +26,7 @@ import AddEditExperience from "@/components/admin/home/experience/edit-experienc
 import {Label} from "@/components/ui/label";
 import {deleteAchievement, fetchAchievement} from "@/lib/actions/admin/achievement.action";
 import AddEditAchievement from "@/components/admin/home/achievement/edit-achievement";
+import {Customer} from "@/components/admin/home/customers/customer-table";
 
 export type Achievement = {
     id: string,
@@ -45,7 +46,7 @@ function AchievementTable() {
         getAchievements()
     }, [])
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<{banner : Achievement | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Achievement | null, isOpen : boolean}>({banner: null, isOpen: false})
 
@@ -56,7 +57,7 @@ function AchievementTable() {
             await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
             await deleteAchievement({id: id});
             setDeleteLoading(false);
-            setOpen(false)
+            setOpen({banner: null, isOpen: false})
             await getAchievements()
         } catch (e) {
             setDeleteLoading(false);
@@ -66,6 +67,28 @@ function AchievementTable() {
 
     return (
             <div className="flex flex-col">
+                <Dialog open={open.isOpen} onOpenChange={(isOpen) => setOpen({banner: null, isOpen})}>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Delete Item</DialogTitle>
+                            <DialogDescription>
+                                Are you sure want to delete this item?
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <div className="flex gap-2">
+                                <Button variant="outline" onClick={(bt) => {
+                                    bt.preventDefault();
+                                    setOpen({banner:null, isOpen:false})
+                                }}>Cancel</Button>
+                                <Button variant="destructive" onClick={(bt) => {
+                                    bt.preventDefault();
+                                    handleDelete(open?.banner?.id ?? "", open?.banner?.icon ?? "");
+                                }}>{deleteLoading ? <Spinner /> : `Delete ${open?.banner?.description}`}</Button>
+                            </div>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
                 <Dialog open={createBannerOpen.isOpen} onOpenChange={(isOpen) => setCreateBannerOpen(prevState => {
                     return  {isOpen: isOpen, banner: null}
                 })}>
@@ -95,43 +118,19 @@ function AchievementTable() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {achievements?.map((achievements) => (
-                                <TableRow key={achievements.id}>
-                                    <TableCell>{achievements.description}</TableCell>
+                            {achievements?.map((achievement) => (
+                                <TableRow key={achievement.id}>
+                                    <TableCell>{achievement.description}</TableCell>
                                     <TableCell>
                                         <Image className="mx-auto" width={60} height={60}
-                                                      src={achievements.icon} alt=""/>
+                                                      src={achievement.icon} alt=""/>
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
-                                            <Dialog open={open} onOpenChange={setOpen}>
-                                                <DialogTrigger asChild>
-                                                    <Trash2Icon width={18} color="red" className="hover:cursor-pointer" />
-                                                </DialogTrigger>
-                                                <DialogContent className="sm:max-w-[425px]">
-                                                    <DialogHeader>
-                                                        <DialogTitle>Delete Item</DialogTitle>
-                                                        <DialogDescription>
-                                                            Are you sure want to delete this item?
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-                                                    <DialogFooter>
-                                                        <div className="flex gap-2">
-                                                            <Button variant="outline" onClick={(bt) => {
-                                                                bt.preventDefault();
-                                                                setOpen(false)
-                                                            }}>Cancel</Button>
-                                                            <Button variant="destructive" onClick={(bt) => {
-                                                                bt.preventDefault();
-                                                                handleDelete(achievements.id, achievements.icon);
-                                                            }}>{deleteLoading ? <Spinner /> : "Delete"}</Button>
-                                                        </div>
-                                                    </DialogFooter>
-                                                </DialogContent>
-                                            </Dialog>
+                                            <Trash2Icon onClick={() => setOpen({banner: achievement, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
                                             <EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {
                                                 bt.preventDefault();
-                                                setCreateBannerOpen({banner: achievements, isOpen: true})
+                                                setCreateBannerOpen({banner: achievement, isOpen: true})
                                             }} />
                                         </div>
                                     </TableCell>

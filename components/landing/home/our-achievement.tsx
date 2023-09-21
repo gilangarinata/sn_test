@@ -7,25 +7,7 @@ import {
     ResponsiveContainer,
 } from "react-stacked-center-carousel";
 import {cn} from "@/lib/utils";
-
-const achievements = [
-    {
-        icon : '/images/logo_world_economic.png',
-        label: 'Contributor of Policy Paper "Policy Opportunities to Advance Clean Energy Investment in Indonesia" in collaboration with RE100 Climate Group & World Economic Forum',
-    },
-    {
-        icon : '/images/logo_solar_summit.png',
-        label: 'Signed the Declaration Towards Bringing Gigawatt Order of Solar Energy in Indonesia in Indonesia Solar Summit 2022',
-    },
-    {
-        icon : '/images/logo_mordor.png',
-        label: 'Indonesia Solar Energy Market Top Players<br/>version of Mordor Intelligence, 2022',
-    },
-    {
-        icon : '/images/logo_solar_ai.png',
-        label: 'Top 10 Solar Energy Companies in Indonesia<br/>version of Solar AI Technologies,2022',
-    },
-];
+import {Achievement} from "@/components/admin/home/achievement/edit-achievement";
 
 const achievementAnimation = [
     {
@@ -50,7 +32,7 @@ const achievementAnimation = [
 
 
 
-export default function OurAchievement() {
+export default function OurAchievement({achievements} : {achievements: Achievement[]}) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
@@ -110,13 +92,13 @@ export const AchievementCard = React.memo(function (props) {
     // @ts-ignore
     const { data, dataIndex, isCenterSlide } = props;
     const { icon } = data[dataIndex];
-    const { label } = data[dataIndex];
+    const { description } = data[dataIndex];
     return (
         <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} whileHover={{scale : 1.001}} className={cn("rounded-3xl p-4 flex flex-col items-center justify-center w-full", isCenterSlide == false ? "bg-[#15537A]/80" : "bg-[#15537A]")}>
             <div className="rounded-full bg-white w-[150px] h-[150px] relative">
-                <Image className="rounded-full" fill src={icon} alt={label} draggable={false}/>
+                <Image className="rounded-full" fill src={icon} alt={description} draggable={false}/>
             </div>
-            <p className={cn("text-center text-sm mt-4 max-w-[220px]", isCenterSlide ? "text-white" : "text-white/80")} dangerouslySetInnerHTML={{__html : label}} />
+            <p className={cn("text-center text-sm mt-4 max-w-[220px]", isCenterSlide ? "text-white" : "text-white/80")} dangerouslySetInnerHTML={{__html : description}} />
         </motion.div>
     );
 });

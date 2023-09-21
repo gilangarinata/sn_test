@@ -24,6 +24,7 @@ import Spinner from "@/components/spinner";
 import {deleteExperience, fetchExperiences, fetchMainExperience} from "@/lib/actions/admin/experience.action";
 import AddEditExperience from "@/components/admin/home/experience/edit-experience";
 import {Label} from "@/components/ui/label";
+import {Achievement} from "@/components/admin/home/achievement/achievement-table";
 
 export type Experience = {
     id: string,
@@ -52,7 +53,7 @@ function ExperienceTable() {
         getExperiences()
     }, [])
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<{banner : Experience | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Experience | null, isOpen : boolean, isMainContent: boolean}>({banner: null, isOpen: false, isMainContent : false})
 
@@ -63,7 +64,7 @@ function ExperienceTable() {
             await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
             await deleteExperience({id: id});
             setDeleteLoading(false);
-            setOpen(false)
+            setOpen({banner: null, isOpen: true})
             await getExperiences()
         } catch (e) {
             setDeleteLoading(false);
@@ -91,6 +92,29 @@ function ExperienceTable() {
                         setCreateBannerOpen({ banner: mainExperiences ?? null, isOpen:true, isMainContent: true})
                     }} variant="outline" className="w-fit"><EditIcon className="w-4 h-4 mr-2"/> Edit</Button>
                 </div>
+
+                <Dialog open={open.isOpen} onOpenChange={(isOpen) => setOpen({banner: null, isOpen})}>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Delete Item</DialogTitle>
+                            <DialogDescription>
+                                Are you sure want to delete this item?
+                            </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <div className="flex gap-2">
+                                <Button variant="outline" onClick={(bt) => {
+                                    bt.preventDefault();
+                                    setOpen({banner:null, isOpen:false})
+                                }}>Cancel</Button>
+                                <Button variant="destructive" onClick={(bt) => {
+                                    bt.preventDefault();
+                                    handleDelete(open?.banner?.id ?? "", open?.banner?.icon ?? "");
+                                }}>{deleteLoading ? <Spinner /> : `Delete ${open?.banner?.title}`}</Button>
+                            </div>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
 
 
                 <Dialog open={createBannerOpen.isOpen} onOpenChange={(isOpen) => setCreateBannerOpen(prevState => {
@@ -133,31 +157,7 @@ function ExperienceTable() {
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
-                                            <Dialog open={open} onOpenChange={setOpen}>
-                                                <DialogTrigger asChild>
-                                                    <Trash2Icon width={18} color="red" className="hover:cursor-pointer" />
-                                                </DialogTrigger>
-                                                <DialogContent className="sm:max-w-[425px]">
-                                                    <DialogHeader>
-                                                        <DialogTitle>Delete Item</DialogTitle>
-                                                        <DialogDescription>
-                                                            Are you sure want to delete this item?
-                                                        </DialogDescription>
-                                                    </DialogHeader>
-                                                    <DialogFooter>
-                                                        <div className="flex gap-2">
-                                                            <Button variant="outline" onClick={(bt) => {
-                                                                bt.preventDefault();
-                                                                setOpen(false)
-                                                            }}>Cancel</Button>
-                                                            <Button variant="destructive" onClick={(bt) => {
-                                                                bt.preventDefault();
-                                                                handleDelete(experience.id, experience.icon);
-                                                            }}>{deleteLoading ? <Spinner /> : "Delete"}</Button>
-                                                        </div>
-                                                    </DialogFooter>
-                                                </DialogContent>
-                                            </Dialog>
+                                            <Trash2Icon onClick={() => setOpen({banner: experience, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
                                             <EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {
                                                 bt.preventDefault();
                                                 setCreateBannerOpen({banner: experience, isOpen: true, isMainContent: false})
