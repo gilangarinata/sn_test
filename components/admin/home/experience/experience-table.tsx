@@ -128,7 +128,7 @@ function ExperienceTable() {
                         <DialogHeader>
                             <DialogTitle>{createBannerOpen.isMainContent ? "Edit content experience" : " Add new experience"}</DialogTitle>
                         </DialogHeader>
-                        <DialogBody className="overflow-y-auto h-[420px]">
+                        <DialogBody className="overflow-y-auto max-h-[420px]">
                             <AddEditExperience isMainContent={createBannerOpen.isMainContent} experience={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
                                 setCreateBannerOpen({banner: null, isOpen:false, isMainContent: false})
                                 getExperiences();

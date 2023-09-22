@@ -15,7 +15,7 @@ import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal
 import {Input} from "@/components/ui/input";
 import RichTextEditor from "@/components/rich-text-editor";
 import Image from "next/image";
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, SetStateAction, useEffect, useState} from "react";
 
 
 import AddEditBanner from "@/components/admin/home/banners/edit-banner";
@@ -24,41 +24,51 @@ import Spinner from "@/components/spinner";
 import {deleteExperience, fetchExperiences, fetchMainExperience} from "@/lib/actions/admin/experience.action";
 import AddEditExperience from "@/components/admin/home/experience/edit-experience";
 import {Label} from "@/components/ui/label";
-import {deleteAchievement, fetchAchievement} from "@/lib/actions/admin/achievement.action";
-import AddEditAchievement from "@/components/admin/home/achievement/edit-achievement";
-import {Customer} from "@/components/admin/home/customers/customer-table";
+import {Achievement} from "@/components/admin/home/achievement/achievement-table";
+import mongoose from "mongoose";
+import {deleteNews, fetchAllNews} from "@/lib/actions/admin/news.action";
+import AddEditNews from "@/components/admin/home/news/edit-news";
+import {formatDateString} from "@/lib/utils";
+import {Category} from "@/components/admin/media/category/category-table";
 
-export type Achievement = {
+export type News = {
+    _id: any,
     id: string,
-    description: string,
-    icon: string
+    title: string,
+    content: string,
+    image: string,
+    category: Category,
+    createdAt: string
 }
 
-function AchievementTable() {
+function NewsTable() {
 
-    const [achievements, setAchievements] = useState<Achievement[]>()
-    async function getAchievements() {
-        const achievements = await fetchAchievement()
-        setAchievements(achievements?.banners);
+    const [news, setNews] = useState<News[]>()
+
+    async function getExperiences() {
+        const banners = await fetchAllNews(1,20);
+        console.log("banner:-")
+        // console.log(banners)
+        setNews(banners?.banners as SetStateAction<News[] | undefined>);
     }
 
     useEffect(() => {
-        getAchievements()
+        getExperiences()
     }, [])
 
-    const [open, setOpen] = useState<{banner : Achievement | null, isOpen : boolean}>({banner: null, isOpen:false});
+    const [open, setOpen] = useState<{banner : News | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Achievement | null, isOpen : boolean}>({banner: null, isOpen: false})
+    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : News | null, isOpen : boolean}>({banner: null, isOpen: false})
 
     const handleDelete = async (id: string,logo: string) => {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
             await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
-            await deleteAchievement({id: id});
+            await deleteNews({id: id});
             setDeleteLoading(false);
-            setOpen({banner: null, isOpen: false})
-            await getAchievements()
+            setOpen({banner: null, isOpen: true})
+            await getExperiences()
         } catch (e) {
             setDeleteLoading(false);
             console.log("eror delete " + e);
@@ -67,6 +77,7 @@ function AchievementTable() {
 
     return (
             <div className="flex flex-col">
+
                 <Dialog open={open.isOpen} onOpenChange={(isOpen) => setOpen({banner: null, isOpen})}>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>
@@ -83,27 +94,29 @@ function AchievementTable() {
                                 }}>Cancel</Button>
                                 <Button variant="destructive" onClick={(bt) => {
                                     bt.preventDefault();
-                                    handleDelete(open?.banner?.id ?? "", open?.banner?.icon ?? "");
-                                }}>{deleteLoading ? <Spinner /> : `Delete ${open?.banner?.description}`}</Button>
+                                    handleDelete(open?.banner?.id ?? "", open?.banner?.image ?? "");
+                                }}>{deleteLoading ? <Spinner /> : `Delete Item`}</Button>
                             </div>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
+
+
                 <Dialog open={createBannerOpen.isOpen} onOpenChange={(isOpen) => setCreateBannerOpen(prevState => {
                     return  {isOpen: isOpen, banner: null}
                 })}>
                     <Button onClick={(bt) => {
                         bt.preventDefault();
-                        setCreateBannerOpen({banner: null, isOpen:true,})
-                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Achievement</Button>
+                        setCreateBannerOpen({banner: null, isOpen:true})
+                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add News</Button>
                     <DialogContent className="w-8">
                         <DialogHeader>
-                            <DialogTitle>{"Add new achievement"}</DialogTitle>
+                            <DialogTitle>Add news</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto max-h-[420px]">
-                            <AddEditAchievement achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
+                            <AddEditNews achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
                                 setCreateBannerOpen({banner: null, isOpen:false})
-                                getAchievements();
+                                getExperiences();
                             }} />
                         </DialogBody>
                     </DialogContent>
@@ -112,25 +125,31 @@ function AchievementTable() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Description</TableHead>
-                                <TableHead className="text-center">Icon</TableHead>
+                                <TableHead>Title</TableHead>
+                                <TableHead>Created at</TableHead>
+                                <TableHead>Content</TableHead>
+                                <TableHead>Category</TableHead>
+                                <TableHead className="text-center">Image</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {achievements?.map((achievement) => (
-                                <TableRow key={achievement.id}>
-                                    <TableCell>{achievement.description}</TableCell>
+                            {news?.map((experience) => (
+                                <TableRow key={experience.id}>
+                                    <TableCell>{experience.title}</TableCell>
+                                    <TableCell>{formatDateString(experience.createdAt)}</TableCell>
+                                    <TableCell dangerouslySetInnerHTML={{__html: experience.content}}></TableCell>
+                                    <TableCell>{experience.category.name}</TableCell>
                                     <TableCell>
                                         <Image className="mx-auto" width={60} height={60}
-                                                      src={achievement.icon} alt=""/>
+                                                      src={experience.image} alt=""/>
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
-                                            <Trash2Icon onClick={() => setOpen({banner: achievement, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
+                                            <Trash2Icon onClick={() => setOpen({banner: experience, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
                                             <EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {
                                                 bt.preventDefault();
-                                                setCreateBannerOpen({banner: achievement, isOpen: true})
+                                                setCreateBannerOpen({banner: experience, isOpen: true})
                                             }} />
                                         </div>
                                     </TableCell>
@@ -143,4 +162,4 @@ function AchievementTable() {
     )
 }
 
-export default AchievementTable;
+export default NewsTable;

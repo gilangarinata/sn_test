@@ -89,12 +89,16 @@ const routes = [
         href : "/music",
         children: [
             {
+                label : "Category",
+                href: "/admin-panel/media/category"
+            },
+            {
                 label : "News",
-                href: "/"
+                href: "/admin-panel/media/news"
             },
             {
                 label : "Video",
-                href: "/"
+                href: "/admin-panel/media/video"
             },
         ]
     },

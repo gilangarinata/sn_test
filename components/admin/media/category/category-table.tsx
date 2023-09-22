@@ -27,35 +27,39 @@ import {Label} from "@/components/ui/label";
 import {deleteAchievement, fetchAchievement} from "@/lib/actions/admin/achievement.action";
 import AddEditAchievement from "@/components/admin/home/achievement/edit-achievement";
 import {Customer} from "@/components/admin/home/customers/customer-table";
+import {deleteNewsCategory, fetchCategories} from "@/lib/actions/admin/news-category.action";
+import AddEditCategory from "@/components/admin/media/category/edit-category";
 
-export type Achievement = {
+export type Category = {
+    _id: string,
     id: string,
-    description: string,
-    icon: string
+    name: string,
+    banner: string,
+    description: string
 }
 
-function AchievementTable() {
+function CategoryTable() {
 
-    const [achievements, setAchievements] = useState<Achievement[]>()
+    const [achievements, setAchievements] = useState<Category[]>()
     async function getAchievements() {
-        const achievements = await fetchAchievement()
-        setAchievements(achievements?.banners);
+        const achievements = await fetchCategories()
+        setAchievements(achievements?.categories);
     }
 
     useEffect(() => {
         getAchievements()
     }, [])
 
-    const [open, setOpen] = useState<{banner : Achievement | null, isOpen : boolean}>({banner: null, isOpen:false});
+    const [open, setOpen] = useState<{banner : Category | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Achievement | null, isOpen : boolean}>({banner: null, isOpen: false})
+    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Category | null, isOpen : boolean}>({banner: null, isOpen: false})
 
     const handleDelete = async (id: string,logo: string) => {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
             await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
-            await deleteAchievement({id: id});
+            await deleteNewsCategory({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})
             await getAchievements()
@@ -83,7 +87,7 @@ function AchievementTable() {
                                 }}>Cancel</Button>
                                 <Button variant="destructive" onClick={(bt) => {
                                     bt.preventDefault();
-                                    handleDelete(open?.banner?.id ?? "", open?.banner?.icon ?? "");
+                                    handleDelete(open?.banner?.id ?? "", open?.banner?.banner ?? "");
                                 }}>{deleteLoading ? <Spinner /> : `Delete ${open?.banner?.description}`}</Button>
                             </div>
                         </DialogFooter>
@@ -95,13 +99,13 @@ function AchievementTable() {
                     <Button onClick={(bt) => {
                         bt.preventDefault();
                         setCreateBannerOpen({banner: null, isOpen:true,})
-                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Achievement</Button>
+                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Category</Button>
                     <DialogContent className="w-8">
                         <DialogHeader>
-                            <DialogTitle>{"Add new achievement"}</DialogTitle>
+                            <DialogTitle>{"Add new Category"}</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto max-h-[420px]">
-                            <AddEditAchievement achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
+                            <AddEditCategory achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
                                 setCreateBannerOpen({banner: null, isOpen:false})
                                 getAchievements();
                             }} />
@@ -112,18 +116,20 @@ function AchievementTable() {
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                <TableHead>Name</TableHead>
                                 <TableHead>Description</TableHead>
-                                <TableHead className="text-center">Icon</TableHead>
+                                <TableHead className="text-center">Banner</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {achievements?.map((achievement) => (
                                 <TableRow key={achievement.id}>
+                                    <TableCell>{achievement.name}</TableCell>
                                     <TableCell>{achievement.description}</TableCell>
                                     <TableCell>
                                         <Image className="mx-auto" width={60} height={60}
-                                                      src={achievement.icon} alt=""/>
+                                                      src={achievement.banner} alt=""/>
                                     </TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
@@ -143,4 +149,4 @@ function AchievementTable() {
     )
 }
 
-export default AchievementTable;
+export default CategoryTable;

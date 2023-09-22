@@ -65,7 +65,7 @@ function MainBanner() {
                     <DialogHeader>
                         <DialogTitle>Edit Zero Capex banner</DialogTitle>
                     </DialogHeader>
-                    <DialogBody className="overflow-y-auto h-[420px]">
+                    <DialogBody className="overflow-y-auto max-h-[420px]">
                         <AddEditMainBanner banner={banners}
                                        onNeedRefresh={() => {
                                            setCreateBannerOpen({banner: null, isOpen: false})

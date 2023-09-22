@@ -101,7 +101,7 @@ function CustomerTable() {
                         <DialogHeader>
                             <DialogTitle>{"Add new customer"}</DialogTitle>
                         </DialogHeader>
-                        <DialogBody className="overflow-y-auto h-[420px]">
+                        <DialogBody className="overflow-y-auto max-h-[420px]">
                             <AddEditCustomer customer={createCustomerOpen.banner == null ? undefined : createCustomerOpen.banner} onNeedRefresh={() => {
                                 setCreateCustomerOpen({banner: null, isOpen:false})
                                 getCustomers();

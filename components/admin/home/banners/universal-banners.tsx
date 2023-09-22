@@ -111,7 +111,7 @@ function UniversalBanners() {
                         <DialogHeader>
                             <DialogTitle>Add new banner</DialogTitle>
                         </DialogHeader>
-                        <DialogBody className="overflow-y-auto h-[420px]">
+                        <DialogBody className="overflow-y-auto max-h-[420px]">
                             <AddEditBanner banner={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
                                 setCreateBannerOpen({banner: null, isOpen:false})
                                 getBanners();
