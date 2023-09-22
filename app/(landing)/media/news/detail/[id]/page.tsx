@@ -14,11 +14,12 @@ import {News} from "@/components/admin/home/news/news-table";
 
 async function MediaPage ({ params }: { params: { id: string } }) {
     const news = await fetchNewsById(params.id)
+    const relatedNews = await fetchAllNews(1,10)
 
 
     return (
        <div className="h-full">
-        <NewsDetail news={news?.news as News} />
+        <NewsDetail news={news?.news as News} relatedNews={relatedNews?.banners as News[]} />
        </div>
     )
 }

@@ -12,7 +12,7 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import React from "react";
 import {News} from "@/components/admin/home/news/news-table";
 
-export default function NewsDetail({news} : {news : News}) {
+export default function NewsDetail({news, relatedNews} : {news : News, relatedNews: News[]}) {
 
     return (
         <div className="w-full flex flex-col mx-auto max-w-5xl my-10 px-4">
@@ -28,12 +28,17 @@ export default function NewsDetail({news} : {news : News}) {
                 <div className="flex flex-col w-[400px] gap-4">
                     <h2 className="font-bold text-2xl">Related News</h2>
                     <hr className="w-64 h-0.5 bg-gray-500 border-0 rounded"/>
-                    <div className="flex items-center gap-2">
-                        <div className="w-[200px] h-[100px] rounded-lg relative overflow-hidden">
-                            <Image style={{objectFit:"cover"}} fill src="https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80" alt="" />
-                        </div>
-                        <p className="w-full font-bold hover:text-yellow-500 hover:cursor-pointer">Automatic Timer for Lamp to Reduce Electricity Usage in Nusa Prima Logistik</p>
-                    </div>
+                    {relatedNews
+                        .filter((n) => n.id !== news.id)
+                        .map((n) => {
+                        return ( <div key={n.id} className="flex items-center gap-2">
+                            <div className="w-[200px] h-[100px] rounded-lg relative overflow-hidden">
+                                <Image style={{objectFit:"cover"}} fill src={n.image} alt="" />
+                            </div>
+                            <p className="w-full font-bold hover:text-yellow-500 hover:cursor-pointer">{n.title}</p>
+                        </div>)
+                    })}
+
                 </div>
             </div>
             <div></div>
