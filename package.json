@@ -39,7 +39,7 @@
     "html-to-draftjs": "^1.5.0",
     "lucide-react": "^0.265.0",
     "mongoose": "^7.5.1",
-    "next": "13.4.12",
+    "next": "13.5.2",
     "openai": "^3.3.0",
     "postcss": "8.4.27",
     "react": "18.2.0",

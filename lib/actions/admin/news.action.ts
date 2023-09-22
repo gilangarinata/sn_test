@@ -41,7 +41,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number) {
     await connectToDb();
     try {
         const skipAmount = (pageNumber - 1) * pageSize;
-        console.log(`Failed 1`)
+
         const bannersQuery = News.find()
             .skip(skipAmount)
             .limit(pageSize)
@@ -55,7 +55,6 @@ export async function fetchAllNews(pageNumber: number, pageSize: number) {
         const banners = await bannersQuery.exec();
         // const isNext = totalBannersCount > skipAmount + banners.length;
 
-        console.log(`Failed aaa ${banners}`)
         return {
             banners
         };
@@ -73,7 +72,6 @@ export async function fetchNewsById(id: string) {
         const news = await bannersQuery.exec();
         // const isNext = totalBannersCount > skipAmount + banners.length;
 
-        console.log(`Failed aaa ${news}`)
         return {
             news
         };
