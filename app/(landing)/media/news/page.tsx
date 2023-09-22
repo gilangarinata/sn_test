@@ -19,7 +19,7 @@ async function MediaPage() {
 
     return (
        <div className="h-full">
-           <NewsBanner />
+           <NewsBanner image="" title="" />
            <NewsContent news={news?.banners as News[]} categories={categories?.categories as Category[]} />
        </div>
     )
