@@ -32,15 +32,15 @@ const properties = {
     nextArrow: <ChevronRightCircle color="transparent" className="mx-4"/>,
     autoplay: false,
 }
-export default function NewsBanner() {
+export default function NewsBanner({image, title} : {image: string, title: string}) {
     return (
         <div className="">
             <Slide {...properties}>
                 {slideImages.map((slideImage, index) =>
                     (
                     <div key={index}>
-                        <div style={{ ...divStyle, 'backgroundImage': `url(${slideImage.url})` }}>
-                            <div className="w-full text-3xl text-white text-shadow-lg text-end pr-8">Find the latest need and information</div>
+                        <div style={{ ...divStyle, 'backgroundImage': `url(${image === "" ? slideImage.url : image})` }}>
+                            <div className="w-full text-3xl text-white text-shadow-lg text-end pr-8">{title === "" ? "Find the latest need and information" : title}</div>
                         </div>
                     </div>
                     )

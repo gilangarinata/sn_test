@@ -27,6 +27,20 @@ export async function fetchCategories() {
     }
 }
 
+export async function fetchCategory(_id : string) {
+    await connectToDb();
+    try {
+        const bannersQuery = NewsCategory.findOne({_id : _id})
+        const categories = await bannersQuery.exec();
+        return {
+            categories
+        }
+    }catch (error) {
+        console.log("Failed to get banners")
+        return null;
+    }
+}
+
 export async function updateNewsCategory({
        id,
        name,
