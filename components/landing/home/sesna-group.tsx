@@ -26,7 +26,7 @@ export default function SesnaGroup({experience} : {experience: Experience[]}) {
                     <div className="w-full flex flex-col md:flex-row px-4">
                         {experiences.map(experience => {
                             return (
-                                <motion.div whileHover={{ scale: 1.1 }} className="w-full flex flex-row my-4 items-center gap-2 justify-start" key={experience.title}>
+                                <motion.div whileHover={{ scale: 1.1 }} className="w-full flex flex-row my-4 items-center gap-2 justify-start" key={experience.id}>
                                     <Image width={100} height={100} src={experience.icon} alt={experience.title} />
                                     <div className="flex flex-col text-white items-center w-full text-center">
                                         <p>More Than</p>

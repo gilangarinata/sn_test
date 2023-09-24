@@ -83,11 +83,11 @@ export default function NewsContent({news, categories} : {news: News[], categori
     const pathName = usePathname();
 
     return (
-        <div className="w-full flex flex-col">
-            <div className="w-full flex justify-between p-6 max-w-5xl mx-auto items-center justify-center">
+        <div className="w-full flex flex-col mb-8">
+            <div className="w-full flex justify-between p-6 max-w-5xl mx-auto items-center">
                 <div className="w-full flex gap-4 overflow-scroll">
                     {categories.map(category => (
-                        <Link key={"/media/news/"+category._id} href={"/media/news/"+category._id}>
+                        <Link key={category.id} href={"/media/news/"+category._id}>
                             <p className={cn("font-bold", pathName == "/media/news/"+category._id ? "text-yellow-400 underline underline-offset-8" : "")}>
                                 {category.name}
                             </p>

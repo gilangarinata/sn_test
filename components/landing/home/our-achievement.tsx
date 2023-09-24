@@ -63,7 +63,6 @@ export default function OurAchievement({achievements} : {achievements: Achieveme
                             carouselRef={ref}
                             render={(parentWidth, carouselRef) => {
                                 let currentVisibleSlide = 3;
-                                console.log(parentWidth);
                                 return (
                                     <StackedCarousel
                                         ref={carouselRef}
