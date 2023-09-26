@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image";
-import {ScrollRotate} from "react-scroll-rotate";
 
 const banner = {
     title: "<b class='text-yellow-500'>SESNA Group</b> at A Glance",
@@ -19,7 +18,7 @@ export function Banner() {
                 <div className="absolute">
                     <div className="flex p-12 gap-4">
                         <div className="bg-white w-[10px]"></div>
-                        <p className="text-4xl text-white font-bold"><ScrollRotate>JUST---</ScrollRotate> LIKE THE SUN<br/>WE ARE HERE<br/>FOR YOU</p>
+                        <p className="text-4xl text-white font-bold">JUST LIKE THE SUN<br/>WE ARE HERE<br/>FOR YOU</p>
                     </div>
                 </div>
             </div>

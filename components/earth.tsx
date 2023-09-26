@@ -1,11 +1,15 @@
 "use client"
 
-import  { ScrollRotate } from 'react-scroll-rotate';
+import {useScroll, useSpring, motion} from "framer-motion";
+
 
 export function Earth() {
+    const { scrollYProgress } = useScroll()
+    const scaleX = useSpring(scrollYProgress)
+
     return(
-        <div className="w-24 h-24 bg-blue-500 z-50 mr-6">
-            Your content goes <ScrollRotate loops={3}>Here</ScrollRotate>
-        </div>
+        <motion.div style={{ scaleX }}  className="w-24 h-24 bg-blue-500 z-50 mr-6">
+            Your content goes Here
+        </motion.div>
 )
 }
