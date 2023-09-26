@@ -1,15 +1,48 @@
 "use client"
 
-import {useScroll, useSpring, motion} from "framer-motion";
+import {useScroll, useSpring, motion, useAnimation} from "framer-motion";
+import {LegacyRef, RefObject, useEffect, useState} from "react";
+import Image from "next/image";
 
 
 export function Earth() {
-    const { scrollYProgress } = useScroll()
-    const scaleX = useSpring(scrollYProgress)
+    const controls = useAnimation();
+    const [scrollY, setScrollY] = useState(0);
 
-    return(
-        <motion.div style={{ scaleX }}  className="w-24 h-24 bg-blue-500 z-50 mr-6">
-            Your content goes Here
+    useEffect(() => {
+        const scrollListener = () => {
+            console.log(`scroll : ${window.scrollY}`)
+            setScrollY(window.scrollY);
+        };
+
+        window.addEventListener('scroll', scrollListener);
+
+        return () => {
+            window.removeEventListener('scroll', scrollListener);
+        };
+    }, []);
+
+    useEffect(() => {
+        // Define the animation properties here
+        const maxRotation = 360; // Maximum rotation angle in degrees
+        const scrollThreshold = 6000; // Adjust the threshold where the animation starts
+
+        // Calculate the normalized scroll progress between 0 and 1
+        const normalizedScroll = Math.min(scrollY / scrollThreshold, 1);
+
+        // Apply the rotation animation based on scroll position
+        controls.start({
+            rotate: normalizedScroll * maxRotation,
+        });
+    }, [scrollY, controls]);
+
+    return (
+        <motion.div
+            className="w-[550px] h-[550px] relative opacity-30 md:opacity-100"
+            initial={{ rotate: 0 }}
+            animate={controls}
+        >
+            <Image fill style={{objectFit:"cover"}} src="/images/earth.png" alt="" />
         </motion.div>
-)
+    );
 }

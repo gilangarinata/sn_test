@@ -21,7 +21,7 @@ import Link from "next/link";
 
 export default function FooterLanding() {
     return (
-        <section>
+        <section className="z-[1000px] relative">
             <div className="w-full flex flex-col px-6 md:px-20 bg-[#15537A] my-0 divide-y divide-blue-100/20">
                 <div className="py-16 flex w-full text-white">
                     <div className="flex flex-col gap-4 w-full">

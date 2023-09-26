@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import {LandingNavBar} from "@/components/landing-navbar";
 import FooterLanding from "@/components/footer-landing";
+import {useMotionValueEvent, useScroll} from "framer-motion";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-        <main className="h-full overflow-auto">
+        <main className="overflow-auto overflow-y-scroll">
           <div className="mx-auto h-full">
               <LandingNavBar />
               <div className="flex flex-col">
