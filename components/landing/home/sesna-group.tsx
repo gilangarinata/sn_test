@@ -1,11 +1,14 @@
 "use client";
 import Image from "next/image";
-import { motion } from "framer-motion"
+import {motion, useAnimation} from "framer-motion"
 import {Experience} from "@/components/admin/home/experience/edit-experience";
+import {useEffect} from "react";
+import Counter from "@/components/counting-animation";
 
 export default function SesnaGroup({experience} : {experience: Experience[]}) {
     const mainExp = experience.find((ex) => ex.id === "main-experience");
     const experiences = experience.filter((ex) => ex.id !== "main-experience")
+
 
     return (
         <section className="lg:max-w-5xl mx-auto">
@@ -30,7 +33,7 @@ export default function SesnaGroup({experience} : {experience: Experience[]}) {
                                     <Image width={100} height={100} src={experience.icon} alt={experience.title} />
                                     <div className="flex flex-col text-white items-center w-full text-center">
                                         <p>More Than</p>
-                                        <span className="text-yellow-400 font-bold">{experience.total}</span>
+                                        <Counter value={Number(experience.total)} />
                                         <p>{experience.description}</p>
                                     </div>
                                 </motion.div>

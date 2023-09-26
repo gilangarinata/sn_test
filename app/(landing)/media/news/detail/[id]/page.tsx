@@ -10,16 +10,14 @@ import NewsBanner from "@/components/landing/media/news/news-banner";
 import NewsContent from "@/components/landing/media/news/news-content";
 import NewsDetail from "@/components/landing/media/news/news-detail";
 import {fetchAllNews, fetchNewsById} from "@/lib/actions/admin/news.action";
-import {News} from "@/components/admin/home/news/news-table";
+import {News} from "@/components/admin/media/news/news-table";
 
 async function MediaPage ({ params }: { params: { id: string } }) {
     const news = await fetchNewsById(params.id)
-    const relatedNews = await fetchAllNews(1,10)
-
 
     return (
        <div className="h-full">
-        <NewsDetail news={news?.news as News} relatedNews={relatedNews?.banners as News[]} />
+        <NewsDetail news={news?.news as News} />
        </div>
     )
 }

@@ -9,7 +9,7 @@ import FooterLanding from "@/components/footer-landing";
 import NewsBanner from "@/components/landing/media/news/news-banner";
 import NewsContent from "@/components/landing/media/news/news-content";
 import {fetchAllNews} from "@/lib/actions/admin/news.action";
-import {News} from "@/components/admin/home/news/news-table";
+import {News} from "@/components/admin/media/news/news-table";
 import {fetchCategories} from "@/lib/actions/admin/news-category.action";
 import {Category} from "@/components/admin/media/category/category-table";
 

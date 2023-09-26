@@ -216,6 +216,7 @@ function AddEditBanner({banner, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setEditorState(state);
                         }}
+                        isFull={false}
                     />
                 </div>
                 <FormField

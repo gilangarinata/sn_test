@@ -5,5 +5,7 @@ export const NewsValidation = z.object({
         .string(),
     image: z
         .string(),
+    tags: z.string(),
+    relatedNews: z.string()
 });
 

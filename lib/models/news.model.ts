@@ -12,7 +12,19 @@ const newsSchema = new  mongoose.Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "NewsCategory"
-    }
+    },
+    tags: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Tag",
+        },
+    ],
+    relatedNews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "News",
+        },
+    ]
 });
 
 const News = mongoose.models.News || mongoose.model('News', newsSchema);

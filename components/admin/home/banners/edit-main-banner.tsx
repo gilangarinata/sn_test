@@ -204,6 +204,7 @@ function AddEditMainBanner({banner, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setHeadingEditorState(state);
                         }}
+                        isFull={false}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -213,6 +214,7 @@ function AddEditMainBanner({banner, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setSubHeadingEditorState(state);
                         }}
+                        isFull={false}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
@@ -222,6 +224,7 @@ function AddEditMainBanner({banner, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setDescEditorState(state);
                         }}
+                        isFull={false}
                     />
                 </div>
 

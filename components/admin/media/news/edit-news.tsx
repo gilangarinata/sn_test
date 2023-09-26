@@ -35,7 +35,7 @@ import {ExperienceValidation} from "@/lib/validations/experience";
 import {updateExperience} from "@/lib/actions/admin/experience.action";
 import {AchievementValidation} from "@/lib/validations/achievement";
 import {updateAchievement} from "@/lib/actions/admin/achievement.action";
-import {News} from "@/components/admin/home/news/news-table";
+import {News} from "@/components/admin/media/news/news-table";
 import {NewsValidation} from "@/lib/validations/news";
 import {updateNews} from "@/lib/actions/admin/news.action";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
@@ -71,7 +71,9 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
         resolver: zodResolver(NewsValidation),
         defaultValues: {
             title: achievement?.title ?? "",
-            image: achievement?.image ?? ""
+            image: achievement?.image ?? "",
+            tags: achievement?.tags?.map(t => t.tag).join(",") ?? "",
+            relatedNews: achievement?.relatedNews?.map(t => t._id).join(",") ?? "",
         },
     });
 
@@ -97,6 +99,10 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                 }
             }
 
+            const tags = values.tags.split(",")
+            const related = values.relatedNews.split(",")
+
+
             let descTitle = draftToHtml(convertToRaw(editorDescState?.getCurrentContent()));
             descTitle = convertToValidHtmlStyle(descTitle)
 
@@ -110,7 +116,9 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                 title: values.title,
                 content: descTitle,
                 category: value ?? "",
-                image:values.image
+                image:values.image,
+                tags: tags,
+                relatedNews: related
             })
 
             setSaveLoading(false)
@@ -219,8 +227,47 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setEditorDescState(state);
                         }}
+                        isFull={true}
                     />
                 </div>
+                <FormField
+                    control={form.control}
+                    name='relatedNews'
+                    render={({ field }) => (
+                        <FormItem className='flex w-full flex-col'>
+                            <FormLabel className='text-base-semibold text-light-2'>
+                                Related News ID (Seperated by comma ,)
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    type='text'
+                                    className='account-form_input no-focus'
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name='tags'
+                    render={({ field }) => (
+                        <FormItem className='flex w-full flex-col'>
+                            <FormLabel className='text-base-semibold text-light-2'>
+                                Tags (Seperated by comma ,)
+                            </FormLabel>
+                            <FormControl>
+                                <Input
+                                    type='text'
+                                    className='account-form_input no-focus'
+                                    {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 <FormField
                     control={form.control}

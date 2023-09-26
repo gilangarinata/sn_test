@@ -35,7 +35,7 @@ export async function fetchBanners() {
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log(`Failed to get banners ${error}`)
         return null;
     }
 }

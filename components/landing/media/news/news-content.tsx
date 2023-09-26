@@ -10,7 +10,7 @@ import {usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import React from "react";
-import {News} from "@/components/admin/home/news/news-table";
+import {News} from "@/components/admin/media/news/news-table";
 import {Category} from "@/components/admin/media/category/category-table";
 
 // const categories = [
@@ -122,7 +122,7 @@ export default function NewsContent({news, categories} : {news: News[], categori
                         <Link href={"/media/news/detail/"+content.id} >
                             <h1 className="text-xl font-bold hover:text-yellow-400">{content.title}</h1>
                         </Link>
-                        <p className="max-h-[160px] overflow-ellipsis" dangerouslySetInnerHTML={{__html: content.content}} />
+                        <p className="max-h-[165px] overflow-hidden text-justify" dangerouslySetInnerHTML={{__html: content.content}} />
                     </div>
                 ))}
             </div>

@@ -27,7 +27,7 @@ import {Label} from "@/components/ui/label";
 import {Achievement} from "@/components/admin/home/achievement/achievement-table";
 import mongoose from "mongoose";
 import {deleteNews, fetchAllNews} from "@/lib/actions/admin/news.action";
-import AddEditNews from "@/components/admin/home/news/edit-news";
+import AddEditNews from "@/components/admin/media/news/edit-news";
 import {formatDateString} from "@/lib/utils";
 import {Category} from "@/components/admin/media/category/category-table";
 
@@ -38,7 +38,22 @@ export type News = {
     content: string,
     image: string,
     category: Category,
-    createdAt: string
+    createdAt: string,
+    tags: [
+        {
+            id: string,
+            tag: string
+        }
+    ],
+    relatedNews: [
+        {
+            _id: string,
+            id: string,
+            title: string,
+            content: string,
+            image: string
+        }
+    ]
 }
 
 function NewsTable() {
@@ -125,10 +140,12 @@ function NewsTable() {
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                <TableHead>News ID</TableHead>
                                 <TableHead>Title</TableHead>
                                 <TableHead>Created at</TableHead>
                                 <TableHead>Content</TableHead>
                                 <TableHead>Category</TableHead>
+                                <TableHead>Tags</TableHead>
                                 <TableHead className="text-center">Image</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
@@ -136,10 +153,14 @@ function NewsTable() {
                         <TableBody>
                             {news?.map((experience) => (
                                 <TableRow key={experience.id}>
+                                    <TableCell>{experience._id}</TableCell>
                                     <TableCell>{experience.title}</TableCell>
                                     <TableCell>{formatDateString(experience.createdAt)}</TableCell>
-                                    <TableCell dangerouslySetInnerHTML={{__html: experience.content}}></TableCell>
+                                    <TableCell >
+                                        <p className="max-h-24 flex overflow-y-scroll" dangerouslySetInnerHTML={{__html: experience.content}} />
+                                    </TableCell>
                                     <TableCell>{experience.category.name}</TableCell>
+                                    <TableCell>{experience?.tags?.map(t => t.tag).join(",")}</TableCell>
                                     <TableCell>
                                         <Image className="mx-auto" width={60} height={60}
                                                       src={experience.image} alt=""/>

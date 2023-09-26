@@ -131,6 +131,7 @@ function AddEditAchievement({ achievement, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setEditorDescState(state);
                         }}
+                        isFull={false}
                     />
                 </div>
 

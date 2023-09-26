@@ -30,7 +30,7 @@ const routes = [
     },
     {
         label : "WHO WE ARE",
-        href : "/conversation"
+        href : "/who-we-are"
     },
     {
         label : "OUR BUSINESS",

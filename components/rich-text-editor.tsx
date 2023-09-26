@@ -16,22 +16,27 @@ const Editor = dynamic(() => import("react-draft-wysiwyg")
 
 interface EditorChange {
     onEditorChange : ((state : EditorState) => void),
-    editorState: EditorState
+    editorState: EditorState,
+    isFull: boolean
 }
 
 const RichTextEditor = (
-    {onEditorChange, editorState} : EditorChange
+    {onEditorChange, editorState, isFull = false} : EditorChange
 ) => {
     return (
         <div className="border border-[#9fa6b2]/18 rounded-lg">
-            <Editor
+            {isFull ?  <Editor
+                editorClassName="px-2 font-normal"
+                onEditorStateChange={onEditorChange}
+                editorState={editorState}
+            /> :  <Editor
                 toolbar={{
                     options: ['inline'],
                 }}
                 editorClassName="px-2 font-normal"
                 onEditorStateChange={onEditorChange}
                 editorState={editorState}
-            />
+            />}
         </div>
     )
 }

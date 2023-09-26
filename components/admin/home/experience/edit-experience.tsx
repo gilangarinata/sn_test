@@ -167,6 +167,7 @@ function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setEditorTitleState(state);
                         }}
+                        isFull={false}
                     />
                 </div> : <></>}
                 <div className="flex flex-col gap-2">
@@ -176,6 +177,7 @@ function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setEditorDescState(state);
                         }}
+                        isFull={false}
                     />
                 </div>
 
