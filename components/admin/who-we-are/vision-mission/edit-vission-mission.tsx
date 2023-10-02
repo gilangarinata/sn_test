@@ -64,8 +64,7 @@ function AddEditVisionMission({banner, onNeedRefresh}: Props) {
     const form = useForm<z.infer<typeof WhoWeAreValidation>>({
         resolver: zodResolver(WhoWeAreValidation),
         defaultValues: {
-            image: banner?.vision ? banner.vision : "",
-            title: banner?.mission ? banner.mission : "",
+            image: banner?.vision ? banner.vision : ""
         },
     });
 
