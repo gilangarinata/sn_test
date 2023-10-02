@@ -28,7 +28,7 @@ export async function fetchAchievement() {
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }

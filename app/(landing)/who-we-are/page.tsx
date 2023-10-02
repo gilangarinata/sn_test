@@ -1,22 +1,20 @@
-"use client"
-import React, {useRef} from "react";
 import {fetchHome} from "@/lib/actions/landing/home.action";
 import {Banner} from "@/components/landing/who-we-are/banner";
 import {Earth} from "@/components/earth";
 import {Subsidiaries} from "@/components/landing/who-we-are/subsidiaries";
 import {VisionMission} from "@/components/landing/who-we-are/vision";
+import {fetchWhoWeAre} from "@/lib/actions/landing/who-we-are.action";
 
-function WhoWeArePage() {
-    const ref = useRef(null);
-
+async function WhoWeArePage() {
+    const whoWeAre = await fetchWhoWeAre()
     return (
-       <div ref={ref} className="relative">
-           <div className="right-0 fixed py-20 mr-[-300px]">
+       <div className="relative">
+           <div className="right-0 fixed mr-[-300px] top-0 mt-[-50px]">
                <Earth />
            </div>
-           <Banner/>
-           <Subsidiaries />
-           <VisionMission />
+           <Banner banner={whoWeAre.whoWeAre}/>
+           <Subsidiaries subsidiaries={whoWeAre.subsidiaries}/>
+           <VisionMission ourDna={whoWeAre.ourDna} visionMission={whoWeAre.whoWeAre} director={whoWeAre.whoWeAre} />
        </div>
     )
 }

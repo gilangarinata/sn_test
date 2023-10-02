@@ -46,7 +46,7 @@ export async function fetchMainBanners() {
         const bannersQuery = Banner.findOne({id:"main-banner"})
         return await bannersQuery.exec();
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }

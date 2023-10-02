@@ -3,42 +3,43 @@
 import Image from "next/image";
 import {motion} from "framer-motion";
 import React from "react";
+import {Subsidiaries} from "@/components/admin/who-we-are/subsidiaries/subsidiaries-table";
 
-const subsidiaries = {
-    title: "SUBSIDIARIES",
-    contents: [
-        {
-            image: "/images/subsidiaries_1.png",
-            description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
-        },
-        {
-            image: "/images/subsidiaries_2.png",
-            description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
-        },
-        {
-            image: "/images/subsidiaries_3.png",
-            description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
-        },
-        {
-            image: "/images/subsidiaries_4.png",
-            description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
-        },
-        {
-            image: "/images/subsidiaries_5.png",
-            description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
-        },
-        {
-            image: "/images/subsidiaries_6.png",
-            description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
-        },
-        {
-            image: "/images/subsidiaries_7.png",
-            description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
-        },
-    ]
-}
+// const subsidiaries = {
+//     title: "SUBSIDIARIES",
+//     contents: [
+//         {
+//             image: "/images/subsidiaries_1.png",
+//             description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
+//         },
+//         {
+//             image: "/images/subsidiaries_2.png",
+//             description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
+//         },
+//         {
+//             image: "/images/subsidiaries_3.png",
+//             description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
+//         },
+//         {
+//             image: "/images/subsidiaries_4.png",
+//             description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
+//         },
+//         {
+//             image: "/images/subsidiaries_5.png",
+//             description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
+//         },
+//         {
+//             image: "/images/subsidiaries_6.png",
+//             description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
+//         },
+//         {
+//             image: "/images/subsidiaries_7.png",
+//             description: "SESNA Group (PT Sumber Energi Surya Nusantara) is an Indonesian renewable energy company focused on solar power plantdevelopment and Engineering, Procurement & Construction serviceprovider. Established with Independent Power Producer corebusiness, SESNA Group was awarded by the Indonesian Governmentas the first local private company that could build Solar IPP Projectin East Nusa Tenggara for 3 MWp of total capacity."
+//         },
+//     ]
+// }
 
-export function Subsidiaries() {
+export function Subsidiaries({subsidiaries} : {subsidiaries : Subsidiaries[]}) {
     return (
             <section className="w-full pt-8">
                 <div className="w-full lg:max-w-7xl flex mx-auto flex-col px-6 md:px-20 my-10">
@@ -52,10 +53,12 @@ export function Subsidiaries() {
                                 transition={{ duration: 1 }}
                                 className="text-4xl font-bold"
                             >
-                                <h1 className="text-[#15537A] text-3xl font-bold" dangerouslySetInnerHTML={{__html : subsidiaries?.title ?? ""}}/>
+                                <h1 className="text-[#15537A] text-3xl font-bold">
+                                    SUBSIDIARIES
+                                </h1>
                             </motion.div>
                             <div className="flex flex-col gap-4">
-                                {subsidiaries.contents.map((subsidiary => {
+                                {subsidiaries.map((subsidiary => {
                                     return (
                                         <div key={subsidiary.image} className="bg-[#15537A] rounded-3xl flex flex-col lg:flex-row justify-center items-center p-6 gap-4">
                                             <div className="bg-white py-2 w-fit h-fit rounded-3xl p-2">

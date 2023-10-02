@@ -25,6 +25,18 @@ export function convertToValidHtmlStyle(html: string) {
         .replaceAll('</strong>', "</b>")
 }
 
+export function convertToValidHtmlStyleYellow(html: string) {
+    return html.replaceAll('<p>','')
+        .replaceAll('</p>','')
+        .replaceAll('<strong>', "<b class='text-[#eab30a]'>")
+        .replaceAll('</strong>', "</b>")
+}
+
+export function convertFromValidHtmlStyleYellow(html: string) {
+    return html.replaceAll('<b class=\'text-[#eab30a]\'>', "<strong>")
+        .replaceAll('</b>', "</strong>")
+}
+
 export function convertHTMLToEditorState(html?: string) {
     const blocksFromHTML = convertFromHTML(html!);
     console.log(`blocksFromHTML ${blocksFromHTML}`)

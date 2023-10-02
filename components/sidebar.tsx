@@ -51,24 +51,29 @@ const routes = [
     {
         label : "Who We Are",
         icon : PersonStandingIcon,
-        href : "/conversation",
+        href : "/admin-panel/who-we-are",
         children: [
             {
-                label : "Banner12",
-                href: "/"
+                label : "Banner",
+                href: "/admin-panel/who-we-are"
             },
             {
-                label : "Banner312",
-                href: "/"
+                label : "Subsidiaries",
+                href: "/admin-panel/who-we-are/subsidiaries"
             },
             {
-                label : "Banner1212",
-                href: "/"
+                label : "Vision & Mission",
+                href: "/admin-panel/who-we-are/vision-mission"
             },
             {
-                label : "Banner12112",
-                href: "/"
+                label : "Our DNA",
+                href: "/admin-panel/who-we-are/our-dna"
             },
+            {
+                label : "Message From Director",
+                href: "/admin-panel/who-we-are/message-from-director"
+            },
+
         ]
     },
     {
@@ -129,7 +134,7 @@ const routes = [
 
 const selectedRoute = {
     label: "Home",
-    isExpanded: true
+    isExpanded: false
 }
 
 const Sidebar = ( {isMobile = false} ) => {
@@ -148,6 +153,8 @@ const Sidebar = ( {isMobile = false} ) => {
                     </Link>
                     <div className="space-y-1">
                         {routes.map(function(route, index, elements) {
+                            const children = route.children.map(e=> e.href);
+
                             return (
                                 <div className="flex flex-col space-y-1" key={route.href}>
                                     <Link onClick={ (e) => {
@@ -158,7 +165,7 @@ const Sidebar = ( {isMobile = false} ) => {
                                                 isExpanded: !selectedManu.isExpanded
                                             })
                                         }
-                                    } } href={route.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition", selectedManu.label === route.label ? "text-white bg-primary/60" : "text-zinc-600 hover:bg-primary/10")} >
+                                    } } href={route.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition",  children.includes(pathName) ? "text-white bg-primary/60" : "text-zinc-600 hover:bg-primary/10")} >
                                         <div className="flex items-center flex-1">
                                             <route.icon className="h-5 w5 mr-5"/>
                                             <p className="w-full">

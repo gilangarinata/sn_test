@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-        <main className="overflow-auto overflow-y-scroll">
+        <main className="overflow-auto overflow-y-scroll w-screen">
           <div className="mx-auto h-full">
               <LandingNavBar />
               <div className="flex flex-col">

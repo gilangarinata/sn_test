@@ -22,7 +22,7 @@ export async function fetchCategories() {
             categories
         }
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }
@@ -36,7 +36,7 @@ export async function fetchCategory(_id : string) {
             categories
         }
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }

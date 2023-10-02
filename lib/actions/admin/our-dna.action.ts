@@ -1,26 +1,27 @@
 "use server";
 
 import {connectToDb} from "@/lib/mongoose";
-import Customer from "@/lib/models/customer.model";
+import OurDna from "@/lib/models/our-dna.model";
+
 interface Params {
     id: string,
-    title: string,
-    icon: string,
-    url: string
+    image: string,
+    description: string,
+    title: string
 }
 
-export async function fetchCustomers() {
+export async function fetchOurDna() {
     await connectToDb();
     try {
         const pageNumber = 1;
         const pageSize = 20;
         const skipAmount = (pageNumber - 1) * pageSize;
 
-        const bannersQuery = Customer.find()
+        const bannersQuery = OurDna.find()
             .skip(skipAmount)
             .limit(pageSize)
 
-        const totalBannersCount = await Customer.countDocuments();
+        const totalBannersCount = await OurDna.countDocuments();
 
         const banners = await bannersQuery.exec();
         const isNext = totalBannersCount > skipAmount + banners.length;
@@ -29,42 +30,41 @@ export async function fetchCustomers() {
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
 
 
-export async function updateCustomer({
+export async function updateOurDna({
        id,
-       title,
-       icon,
-       url,
+       image, title,
+       description
    } : Params): Promise<void> {
     await connectToDb();
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
         console.log(currentId);
-        await Customer.findOneAndUpdate(
+        await OurDna.findOneAndUpdate(
             {id: currentId},
             {
-                title: title,
-                icon: icon,
-                url: url,
+                image: image,
+                description: description,
+                title: title
             }, { upsert: true }
         )
     }catch (error) {
-        throw new Error(`Failed to update experience : ${error}`)
+        throw new Error(`Failed to update banner : ${error}`)
     }
 }
 
 
-export async function deleteCustomer({id} : {id:string}): Promise<void> {
+export async function deleteOurDna({id} : {id:string}): Promise<void> {
     await connectToDb();
 
     try {
-        await Customer.findOneAndDelete(
+        await OurDna.findOneAndDelete(
             {id: id }
         )
     }catch (error) {

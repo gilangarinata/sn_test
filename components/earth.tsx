@@ -38,7 +38,7 @@ export function Earth() {
 
     return (
         <motion.div
-            className="w-[550px] h-[550px] relative opacity-30 md:opacity-100"
+            className="w-[720px] h-[720px] relative opacity-30 md:opacity-100"
             initial={{ rotate: 0 }}
             animate={controls}
         >

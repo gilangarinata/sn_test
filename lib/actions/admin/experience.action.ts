@@ -32,7 +32,7 @@ export async function fetchExperiences() {
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }
@@ -43,7 +43,7 @@ export async function fetchMainExperience() {
         const bannersQuery = Experience.findOne({id:"main-experience"})
         return await bannersQuery.exec();
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }

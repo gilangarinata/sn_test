@@ -41,7 +41,7 @@ export async function fetchNewsByCategory(_categoryId: string, pageNumber: numbe
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }
@@ -69,14 +69,14 @@ export async function fetchAllNews(pageNumber: number, pageSize: number) {
 
         // const totalBannersCount = await News.countDocuments();
         const banners = await bannersQuery.exec();
-        // const isNext = totalBannersCount > skipAmount + banners.length;
+        // const isNext = totalBannersCount > skipAmount + banner.length;
         console.log("BN:")
         console.log(banners)
         return {
             banners
         };
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }
@@ -90,13 +90,13 @@ export async function fetchNewsById(id: string) {
             .lean()
         // const totalBannersCount = await News.countDocuments();
         const news = await bannersQuery.exec();
-        // const isNext = totalBannersCount > skipAmount + banners.length;
+        // const isNext = totalBannersCount > skipAmount + banner.length;
 
         return {
             news
         };
     }catch (error) {
-        console.log("Failed to get banners")
+        console.log("Failed to get banner")
         return null;
     }
 }
