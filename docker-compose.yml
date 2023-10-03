@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
     ports:
       - 80:80
-      - 443:443
+      - 445:445
     volumes:
       - ./config:/etc/nginx/conf.d
       - /etc/letsencrypt:/etc/letsencrypt:ro
