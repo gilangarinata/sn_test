@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  nextjs:
+    container_name: sesna
+    build:
+      context: ./
+    image: sesna
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
+    networks:
+      - nextjs-network
+
+networks:
+  nextjs-network:
+    driver: bridge
