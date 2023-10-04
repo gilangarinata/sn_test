@@ -2,10 +2,10 @@ version: '3'
 
 services:
   nextjs:
-    container_name: sesna
+    container_name: nextjs
     build:
       context: ./
-    image: sesna
+    image: nextjs
     ports:
       - '3000:3000'
     restart: unless-stopped
@@ -17,8 +17,8 @@ services:
     image: nginx:1.15.12-alpine
     restart: unless-stopped
     ports:
-      - 8081:8081
-      - 445:445
+      - 80:80
+      - 443:443
     volumes:
       - ./config:/etc/nginx/conf.d
       - /etc/letsencrypt:/etc/letsencrypt:ro
