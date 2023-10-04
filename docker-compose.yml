@@ -12,17 +12,17 @@ services:
     networks:
       - nextjs-network
 
-  webserver:
-    container_name: webserver
-    image: nginx:1.15.12-alpine
-    restart: unless-stopped
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./config:/etc/nginx/conf.d
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /tmp/acme_challenge:/tmp/acme_challenge
+#  webserver:
+#    container_name: webserver
+#    image: nginx:1.15.12-alpine
+#    restart: unless-stopped
+#    ports:
+#      - 80:80
+#      - 443:443
+#    volumes:
+#      - ./config:/etc/nginx/conf.d
+#      - /etc/letsencrypt:/etc/letsencrypt:ro
+#      - /tmp/acme_challenge:/tmp/acme_challenge
 
 networks:
   nextjs-network:
