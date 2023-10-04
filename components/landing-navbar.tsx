@@ -105,8 +105,8 @@ export default function NavContent() {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent>
-                        <DropdownMenuItem>English</DropdownMenuItem>
-                        <DropdownMenuItem>Indonesia</DropdownMenuItem>
+                        <DropdownMenuItem>Engliasdsh</DropdownMenuItem>
+                        <DropdownMenuItem>Indoasdasdnesia</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             ) : route.isDropDown == true ?
