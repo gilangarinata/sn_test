@@ -11,7 +11,6 @@ export function Earth() {
 
     useEffect(() => {
         const scrollListener = () => {
-            console.log(`scroll : ${window.scrollY}`)
             setScrollY(window.scrollY);
         };
 
@@ -38,7 +37,7 @@ export function Earth() {
 
     return (
         <motion.div
-            className="w-[720px] h-[720px] relative opacity-30 md:opacity-100"
+            className="w-[920px] h-screen opacity-10 md:opacity-100 right-0 fixed top-0 mr-[-34%]"
             initial={{ rotate: 0 }}
             animate={controls}
         >

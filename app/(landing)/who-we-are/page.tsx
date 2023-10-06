@@ -9,9 +9,7 @@ async function WhoWeArePage() {
     const whoWeAre = await fetchWhoWeAre()
     return (
        <div className="relative">
-           <div className="right-0 fixed mr-[-300px] top-0 mt-[-50px]">
-               <Earth />
-           </div>
+           <Earth />
            <Banner banner={whoWeAre.whoWeAre}/>
            <Subsidiaries subsidiaries={whoWeAre.subsidiaries}/>
            <VisionMission ourDna={whoWeAre.ourDna} visionMission={whoWeAre.whoWeAre} director={whoWeAre.whoWeAre} />

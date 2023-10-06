@@ -26,7 +26,7 @@ const montserrat = Montserrat({ weight : "600", subsets : ["latin"]});
 
 const routes = [
     {
-        label : "Homeaaaa",
+        label : "Home",
         icon : HomeIcon,
         href : "/",
         children : [

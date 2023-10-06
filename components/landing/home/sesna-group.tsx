@@ -17,7 +17,7 @@ export default function SesnaGroup({experience} : {experience: Experience[]}) {
                 <div className="w-full flex flex-col md:flex-row">
                     <div className="flex w-full flex-col gap-6">
                         <h1 className="text-[#15537A] text-2xl font-semibold" dangerouslySetInnerHTML={{__html : mainExp?.title ?? ""}}/>
-                        <p className="text-[#15537A]" dangerouslySetInnerHTML={{__html : mainExp?.description ?? ""}} />
+                        <p className="text-[#15537A] text-justify" dangerouslySetInnerHTML={{__html : mainExp?.description ?? ""}} />
                     </div>
                     <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="w-full relative">
                         <div className="relative w-[280px] h-[480px] m-auto mt-4 md:mt-0">

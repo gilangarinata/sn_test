@@ -34,12 +34,13 @@ export default function FooterLanding() {
                             <FacebookIcon className="hover:cursor-pointer" />
                         </div>
                     </div>
+
                     <div className="w-full flex flex-col gap-2">
                         <h1 className="font-bold text-xl">KANTOR PUSAT</h1>
-                        <p>Menara Dea Tower I, Lt.15 Suite 1501</p>
+                        <p>World Trade Center, WTC 1, 5th Floor</p>
                         <div className="flex gap-2">
                             <MapPin width={30} color="white"/>
-                            <p> Jl. Mega Kuningan Barat No.1, RT.5/RW.2, Kuningan, Kuningan Tim., Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12950</p>
+                            <p> Jl. Jend. Sudirman Kav 29, RT.8/RW.3, Kuningan, Karet, Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12920</p>
                         </div>
                         <div className="flex gap-2">
                             <LucideMail width={14} color="white"/>

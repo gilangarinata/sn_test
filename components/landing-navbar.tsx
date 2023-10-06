@@ -64,9 +64,10 @@ export const LandingNavBar = () => {
     return (
         <nav className="bg-white flex items-center justify-between sticky top-0 z-50 px-6 py-4">
             <Link href="/" className="flex items-center">
-                <div className="relative h-[calc(25px*1.3)] w-[calc(128px*1.3)] mr-6">
-                    <Image fill src="/images/logo_sesna.png" alt="logo" />
-                </div>
+                <Image sizes="100vw"
+                       width={0}
+                       height={0}
+                       style={{ width: '50%', height: 'auto' }} src="/images/logo_sesna.png" alt="logo" />
             </Link>
             <div className="block lg:hidden mr-4">
                 <Sheet>

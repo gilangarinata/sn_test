@@ -34,16 +34,27 @@ const achievementAnimation = [
 
 export default function OurAchievement({achievements} : {achievements: Achievement[]}) {
     const [currentIndex, setCurrentIndex] = useState(0);
-
+    const ref = React.useRef<StackedCarousel>();
     useEffect(() => {
         setTimeout(()=>{
             if(currentIndex < achievementAnimation.length - 1) {
                 setCurrentIndex(currentIndex + 1)
             }
         }, 400)
+
+        const interval = setInterval(() => {
+            if (ref.current) {
+                // Trigger the next slide action here
+                ref.current?.goNext();
+            }
+        }, 3000); // Auto-slide every 3 seconds
+
+        return () => {
+            clearInterval(interval); // Clear the interval when the component unmounts
+        };
     }, [currentIndex]);
 
-    const ref = React.useRef();
+
 
     function onViewPortEnter() {
         setCurrentIndex(0);
@@ -97,7 +108,7 @@ export const AchievementCard = React.memo(function (props) {
             <div className="rounded-full bg-white w-[150px] h-[150px] relative">
                 <Image className="rounded-full" fill src={icon} alt={description} draggable={false}/>
             </div>
-            <p className={cn("text-center text-sm mt-4 max-w-[220px]", isCenterSlide ? "text-white" : "text-white/80")} dangerouslySetInnerHTML={{__html : description}} />
+            <p className={cn("text-center text-sm mt-4 max-w-[220px] min-h-[140px]", isCenterSlide ? "text-white" : "text-white/80")} dangerouslySetInnerHTML={{__html : description}} />
         </motion.div>
     );
 });
