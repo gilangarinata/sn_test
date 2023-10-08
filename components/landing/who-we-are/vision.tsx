@@ -114,7 +114,7 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                     </div>
                 </div>
 
-                <div className="w-full bg-[#15537A] pt-8 h-[800px]">
+                <div className="w-full bg-[#15537A] pt-8 h-screen">
                     <div className="w-full lg:max-w-5xl flex mx-auto flex-col px-6 md:px-20">
                         <div className="w-full flex items-center justify-center">
                             <div className="flex w-full flex-col gap-6">
@@ -128,10 +128,10 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                                 >
                                     <h1 className="text-white text-2xl  font-semibold" dangerouslySetInnerHTML={{__html : director?.messageDirectorTitle ?? ""}}/>
                                 </motion.div>
-                                <p className="text-white" dangerouslySetInnerHTML={{__html : director?.messageDirectorDescription ?? ""}} />
+                                <p className="text-white text-justify" dangerouslySetInnerHTML={{__html : director?.messageDirectorDescription ?? ""}} />
                             </div>
                             <div className="hidden w-0 md:w-80 md:block ">
-                                <div className="w-[430px] h-[650px] relative">
+                                <div className="w-[530px] h-[750px] relative">
                                     <Image src="/images/manager2.png" alt="" fill style={{objectFit: "cover"}} />
                                 </div>
                             </div>
@@ -139,11 +139,12 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                     </div>
                 </div>
 
-                <div className="w-full bg-[#FABD24] z-40 relative mt-[-120px] flex p-6 items-center justify-center">
+                <div className="w-full bg-[#FABD24] z-40 relative flex p-6 items-center justify-center">
                     <Link href={director.companyProfileUrl} ><Button><DownloadIcon/> Download Company Profile</Button></Link>
                 </div>
-
             </section>
+
+
 
     )
 }
