@@ -12,7 +12,7 @@ async function WhoWeArePage() {
            <Earth />
            <Banner banner={whoWeAre.whoWeAre}/>
            <Subsidiaries subsidiaries={whoWeAre.subsidiaries}/>
-           {/*<VisionMission ourDna={whoWeAre.ourDna} visionMission={whoWeAre.whoWeAre} director={whoWeAre.whoWeAre} />*/}
+           <VisionMission ourDna={whoWeAre.ourDna} visionMission={whoWeAre.whoWeAre} director={whoWeAre.whoWeAre} />
        </div>
     )
 }
