@@ -107,18 +107,16 @@ export function Subsidiaries({subsidiaries} : {subsidiaries : Subsidiaries[]}) {
         const mappedValue3 = ((scrollY - minValue) / (maxValue - minValue)) * (maxMappedValue3 - minMappedValue3) + minMappedValue3;
 
         let final3 = mappedValue3;
-        if(mappedValue3 <= minMappedValue3) {
+        if(mappedValue3 >= minMappedValue3) {
             final3 = minMappedValue3;
         }
-        if(mappedValue3 >= maxMappedValue3) {
+        if(mappedValue3 <= maxMappedValue3) {
             final3 = maxMappedValue3;
         }
-        if(mappedValue3 >= 54) final3 = 54;
-        setFinal3(final3);
 
         // console.log("mappedFinal",final)
         // console.log("mappedFinal2",final2)
-        console.log("mappedFinal3",final3)
+        console.log("mappedFinal3 gil",final3)
         // Apply the rotation animation based on scroll position
         controls.start({
             rotate: normalizedScroll * maxRotation,

@@ -3,7 +3,26 @@
 import Image from "next/image";
 import {motion, useAnimation, useScroll} from "framer-motion";
 import {WhoWeAreBannerContent} from "@/components/admin/who-we-are/banner/who-we-are-banner";
-import {useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
+import {Slide} from "react-slideshow-image";
+import {ChevronLeftCircle, ChevronRightCircle} from "lucide-react";
+import OurBusinessBanner from "@/components/landing/our-business/banner";
+import WhoWeAreBanner from "@/components/landing/who-we-are/who-we-are-banner";
+
+const properties = {
+    prevArrow: <ChevronLeftCircle color="white" className="mx-4"/>,
+    nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
+    autoplay: false,
+}
+
+const slideImages = [
+    {
+        url: '/',
+        description: "A to Z Solutions,<br>End-to-End Service",
+        image: "/images/banner_1.jpg",
+        logo: "/images/banner-our-business.png"
+    }
+];
 
 // const banner = {
 //     title: "<b class='text-yellow-500'>SESNA Group</b> at A Glance",
@@ -101,15 +120,24 @@ export function Banner({banner} : {banner : WhoWeAreBannerContent}) {
 
     return (
         <div className="flex flex-col">
-            <div className="w-full h-screen relative z-20">
-                <Image style={{objectFit:'cover'}} fill src={banner?.image} alt="" />
-                <div className="absolute">
-                    <div className="flex p-12 gap-4">
-                        <div className="bg-white w-[10px]"></div>
-                        <p className="text-4xl text-white font-bold" dangerouslySetInnerHTML={{__html:banner?.bannerHeadingTitle}}></p>
-                    </div>
-                </div>
-            </div>
+            <WhoWeAreBanner banner={banner} />
+            {/*<div className="w-full h-screen">*/}
+            {/*    <Slide {...properties}>*/}
+            {/*        {slideImages.map((slideImage, index) =>*/}
+            {/*            <div key={slideImage.url} className="w-screen h-[200px] relative z-20">*/}
+            {/*                <Image style={{objectFit:'cover'}} fill src={banner?.image} alt="" />*/}
+            {/*                <div className="absolute">*/}
+            {/*                    <div className="flex p-12 gap-4">*/}
+            {/*                        <div className="bg-white w-[10px]"></div>*/}
+            {/*                        <p className="text-4xl text-white font-bold" dangerouslySetInnerHTML={{__html:banner?.bannerHeadingTitle}}></p>*/}
+            {/*                    </div>*/}
+            {/*                </div>*/}
+            {/*            </div>*/}
+            {/*        )}*/}
+            {/*    </Slide>*/}
+
+            {/*</div>*/}
+
             <section className="w-full bg-[#15537A] pt-8 lg:h-screen">
                 <div className="w-full lg:max-w-7xl flex mx-auto flex-col px-6 md:px-20 h-full">
                     <div className="w-full flex h-full">
