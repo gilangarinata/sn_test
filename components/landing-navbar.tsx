@@ -62,12 +62,12 @@ const routes = [
 export const LandingNavBar = () => {
 
     return (
-        <nav className="bg-white flex items-center justify-between sticky top-0 z-50 px-6 py-4">
+        <nav className="bg-white flex items-center sticky top-0 z-50 px-6 py-4">
             <Link href="/" className="flex items-center">
                 <Image sizes="100vw"
                        width={0}
                        height={0}
-                       style={{ width: '50%', height: 'auto' }} src="/images/logo_sesna.png" alt="logo" />
+                       style={{ width: '200px', height: 'auto' }} src="/images/logo_sesna.png" alt="logo" />
             </Link>
             <div className="block lg:hidden mr-4">
                 <Sheet>
@@ -81,7 +81,7 @@ export const LandingNavBar = () => {
                     </SheetContent>
                 </Sheet>
             </div>
-            <div className="hidden lg:flex items-center gap-x-8 ">
+            <div className="hidden lg:flex items-center justify-end gap-x-8 w-full">
                 <NavContent />
             </div>
         </nav>
