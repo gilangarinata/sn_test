@@ -6,6 +6,20 @@ import {motion} from "framer-motion";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
 
+const solarWorks = [
+    {
+        title: "SOLAR POWER WORKS",
+        description: "On Grid Solar Panel System",
+        image: "/images/solar-works-1.png",
+        points: "<li>Must integrated to PLN grid</li>\n" +
+            "                                    <li>The energy generated from the solar<br/>\n" +
+            "                                        module is directly streamed to an<br/>\n" +
+            "                                        existing electrical grid.</li>\n" +
+            "                                    <li>Does not require a battery as energy<br/>\n" +
+            "                                        storage.</li>"
+    }
+]
+
 export default function SolarPowerWorks() {
     return (
         <div className="w-full bg-[#FABD24] pt-8 h-screen">
@@ -24,7 +38,6 @@ export default function SolarPowerWorks() {
                                         existing electrical grid.</li>
                                     <li>Does not require a battery as energy<br/>
                                         storage.</li>
-                                    {/* Add more list items as needed */}
                                 </ul>
                             </div>
                             <div className="flex space-x-6 mt-12">

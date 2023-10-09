@@ -119,7 +119,7 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                         <div className="w-full flex items-center justify-center">
                             <div className="flex w-full flex-col gap-6">
                                 <motion.div
-                                    initial={{ opacity: 0.8, y: '-50%', x:'54%', rotate: -90 }}
+                                    initial={{ opacity: 0.8, y: '-50%', x:'0%', rotate: -90 }}
                                     whileInView={{ opacity: 1, y: 0, x: 0, rotate: 0 }}
                                     // animate={{ opacity: 1, y: 0, rotate: 0 }}
                                     // exit={{ opacity: 0, y: '-50%', rotate: -180 }}

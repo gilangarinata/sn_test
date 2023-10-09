@@ -81,9 +81,9 @@ export function Banner({banner} : {banner : WhoWeAreBannerContent}) {
         const mappedValue3 = ((scrollY - minValue) / (maxValue - minValue)) * (maxMappedValue3 - minMappedValue3) + minMappedValue3;
 
         let final3 = mappedValue3;
-        // if(mappedValue3 > minMappedValue3) {
-        //     final3 = minMappedValue3;
-        // }
+        if(mappedValue3 > minMappedValue3) {
+            final3 = minMappedValue3;
+        }
         if(mappedValue3 <= maxMappedValue3) {
             final3 = maxMappedValue3;
         }
@@ -102,11 +102,10 @@ export function Banner({banner} : {banner : WhoWeAreBannerContent}) {
     return (
         <div className="flex flex-col">
             <div className="w-full h-screen relative z-20">
-                <Image fill src={banner?.image} alt="" />
+                <Image style={{objectFit:'cover'}} fill src={banner?.image} alt="" />
                 <div className="absolute">
                     <div className="flex p-12 gap-4">
                         <div className="bg-white w-[10px]"></div>
-
                         <p className="text-4xl text-white font-bold" dangerouslySetInnerHTML={{__html:banner?.bannerHeadingTitle}}></p>
                     </div>
                 </div>
