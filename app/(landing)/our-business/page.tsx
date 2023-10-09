@@ -10,6 +10,7 @@ import {fetchHome} from "@/lib/actions/landing/home.action";
 import OurBusinessBanner from "@/components/landing/our-business/banner";
 import WhySolar from "@/components/landing/our-business/why-solar";
 import SolarPowerWorks from "@/components/landing/our-business/solar-power-works";
+import ScopeOfWork from "@/components/landing/our-business/scope-of-work";
 
 async function LandingPage() {
     return (
@@ -17,6 +18,7 @@ async function LandingPage() {
            <OurBusinessBanner />
            <WhySolar />
            <SolarPowerWorks />
+           <ScopeOfWork />
        </div>
     )
 }
