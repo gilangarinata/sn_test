@@ -34,11 +34,11 @@ const routes = [
     },
     {
         label : "OUR BUSINESS",
-        href : "/images"
+        href : "/our-business"
     },
     {
         label : "ZERO CAPEX",
-        href : "/video"
+        href : "/zero-capex"
     },
     {
         label : "MEDIA",
@@ -47,11 +47,11 @@ const routes = [
     },
     {
         label : "CAREER",
-        href : "/code"
+        href : "/career"
     },
     {
         label : "GET IN TOUCH",
-        href : "/setting"
+        href : "/get-in-touch"
     },
     {
         label : "Language",
