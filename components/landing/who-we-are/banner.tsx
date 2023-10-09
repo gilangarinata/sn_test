@@ -102,7 +102,7 @@ export function Banner({banner} : {banner : WhoWeAreBannerContent}) {
     return (
         <div className="flex flex-col">
             <div className="w-full h-screen relative z-20">
-                <Image style={{objectFit:"cover"}} fill src={banner?.image} alt="" />
+                <Image fill src={banner?.image} alt="" />
                 <div className="absolute">
                     <div className="flex p-12 gap-4">
                         <div className="bg-white w-[10px]"></div>
