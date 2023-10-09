@@ -17,9 +17,9 @@ const divStyle = {
 const slideImages = [
     {
         url: '/',
-        description: "IPP WEWARIA <br/> INSTALLED CAPACITY 1 MWp",
+        description: "A to Z Solutions,<br>End-to-End Service",
         image: "/images/banner_1.jpg",
-        logo: "/images/logo_pln.png"
+        logo: "/images/banner-our-business.png"
     }
 ];
 
