@@ -3,7 +3,7 @@ import HomeBanner from "@/components/landing/home/home-banner";
 import SesnaGroup from "@/components/landing/home/sesna-group";
 import OurAchievement from "@/components/landing/home/our-achievement";
 import SatisfiedCustomer from "@/components/landing/home/satisfied-customer";
-import React from "react";
+import React, {useMemo} from "react";
 import Calculator from "@/components/landing/home/calculator";
 import FooterLanding from "@/components/footer-landing";
 import {fetchHome} from "@/lib/actions/landing/home.action";
@@ -13,15 +13,24 @@ import SolarPowerWorks from "@/components/landing/our-business/solar-power-works
 import ScopeOfWork from "@/components/landing/our-business/scope-of-work";
 import OurExperience from "@/components/landing/our-business/our-experience";
 import GetInTouch from "@/components/landing/get-in-touch/get-in-touch";
+import dynamic from "next/dynamic";
+import LeafletMap from "@/components/landing/get-in-touch/map";
+import MyMap from "@/components/landing/get-in-touch/map";
+const Map = dynamic(() => import('@/components/landing/get-in-touch/map'), {
+    ssr: false,
+})
+
 
 async function LandingPage() {
+    const position = [-6.215140,106.820515]
+
     return (
         <div>
             <GetInTouch />
+            <MyMap position={position} zoom={13} />
+
         </div>
-       // <div className="h-screen">
-       //     {/*<GetInTouch />*/}
-       // </div>
+
     )
 }
 

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
 import '@fontsource/poppins';
+import Head from "next/head";
 
 const poppins = Poppins({ subsets: ['latin'], weight: "400" })
 
@@ -19,6 +20,12 @@ export default function RootLayout({
   return (
       <ClerkProvider>
         <html lang="en">
+            <Head>
+                <link
+                    rel="stylesheet"
+                    href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+                />
+            </Head>
           <body className={poppins.className}>{children}</body>
         </html>
       </ClerkProvider>
