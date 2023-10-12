@@ -77,10 +77,31 @@ const routes = [
         ]
     },
     {
-        label : "Business",
+        label : "Our Business",
         icon : BriefcaseIcon,
         href : "/images",
-        children: []
+        children: [
+            {
+                label : "Banner",
+                href: "/admin-panel/our-business/banners"
+            },
+            {
+                label : "Why Solar",
+                href: "/admin-panel/our-business/why-solar"
+            },
+            {
+                label : "Solar Power Works",
+                href: "/admin-panel/our-business/solar-power-works"
+            },
+            {
+                label : "Scope of Work",
+                href: "/admin-panel/our-business/scope-of-work"
+            },
+            {
+                label : "Our Experience",
+                href: "/admin-panel/our-business/our-experience"
+            },
+        ]
     },
     {
         label : "Zero Capex",
@@ -116,7 +137,7 @@ const routes = [
     {
         label : "Get In Touch",
         icon : ContactIcon,
-        href : "/get_in_touch",
+        href : "/admin-panel/get-in-touch",
         children: []
     },
     {

@@ -17,6 +17,7 @@ import {updateBanner} from "@/lib/actions/admin/banner.action";
 import React, {useEffect, useState} from "react";
 import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
+import {WhySolar} from "@/components/admin/our-business/why-solar/why-solar-table";
 
 
 
@@ -64,22 +65,9 @@ const properties = {
     autoplay: true,
 }
 
-export default function WhySolar() {
-    const pentagonImages = [
-        '/images/why-solar-1.png',
-        '/images/why-solar-2.png',
-        '/images/why-solar-3.png',
-        '/images/why-solar-4.png',
-        '/images/why-solar-5.png',
-    ];
-
-    const pentagonImages2 = [
-        '/images/why-solar-1-2.png',
-        '/images/why-solar-2-2.png',
-        '/images/why-solar-3-2.png',
-        '/images/why-solar-4-2.png',
-        '/images/why-solar-5-2.png',
-    ];
+export default function WhySolar({whySolar} : {whySolar: WhySolar[]}) {
+    const pentagonImages = whySolar.map((solar) => solar.icon);
+    const pentagonImages2 = whySolar.map((solar) => solar.icon);
 
     const handleChange = (ci: number,to:number) => {
         console.log("CI",ci)
@@ -104,7 +92,7 @@ export default function WhySolar() {
 
             <div className="max-w-2xl w-full mt-12">
                 <Slide {...properties} onStartChange={handleChange} transitionDuration={500} duration={3000}>
-                    {slideImages2.map((slideImage, index) =>
+                    {whySolar.map((slideImage, index) =>
                        <div key={index} className="flex flex-col items-center h-24 justify-center">
                            <p className="text-xl text-[#15537A]">{slideImage.title}</p>
                            <p className="mx-16 text-[#15537A] text-sm text-center">{slideImage.description}</p>

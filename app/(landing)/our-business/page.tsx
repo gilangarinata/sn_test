@@ -12,15 +12,18 @@ import WhySolar from "@/components/landing/our-business/why-solar";
 import SolarPowerWorks from "@/components/landing/our-business/solar-power-works";
 import ScopeOfWork from "@/components/landing/our-business/scope-of-work";
 import OurExperience from "@/components/landing/our-business/our-experience";
+import {fetchWhoWeAre} from "@/lib/actions/landing/who-we-are.action";
+import {fetchOurBusiness} from "@/lib/actions/landing/our-business.action";
 
 async function LandingPage() {
+    const ourBusiness = await fetchOurBusiness()
     return (
        <div className="h-full">
-           <OurBusinessBanner />
-           <WhySolar />
-           <SolarPowerWorks />
-           <ScopeOfWork />
-           <OurExperience />
+           <OurBusinessBanner banner={ourBusiness.banner} />
+           <WhySolar whySolar={ourBusiness.whySolar} />
+           <SolarPowerWorks solarPowerWorks={ourBusiness.solarPowerWorks} />
+           <ScopeOfWork scopeOfWork={ourBusiness.scopeOfWork} />
+           <OurExperience ourExperience={ourBusiness.ourExperience} />
        </div>
     )
 }

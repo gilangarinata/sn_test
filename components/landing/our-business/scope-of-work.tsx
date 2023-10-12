@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import {ScopeOfWOrk} from "@/components/admin/our-business/scope-of-works/scope-of-work-table";
 
 
 const scopes = [
@@ -35,7 +36,7 @@ const scopes = [
     },
 ]
 
-export default function ScopeOfWork() {
+export default function ScopeOfWork({scopeOfWork} : {scopeOfWork: ScopeOfWOrk[]}) {
     return (
         <div className="w-full flex flex-col items-center py-10 min-h-screen justify-center">
             <div className="flex flex-col items-center max-w-6xl mx-auto gap-8">
@@ -43,10 +44,10 @@ export default function ScopeOfWork() {
                     SCOPE OF WORK
                 </h1>
                 <div className="grid grid-cols-2 gap-4">
-                    {scopes.map(scope => (
+                    {scopeOfWork.map(scope => (
                         <div key={scope.title} className="flex gap-4">
                             <div className="relative w-[120px] h-[120px]">
-                                <Image fill style={{objectFit:"cover"}} src={scope?.icon} alt="" />
+                                <Image fill style={{objectFit:"cover"}} src={scope?.image} alt="" />
                             </div>
                             <div className="flex flex-col w-full">
                                 <h1 className="text-[#15537A] text-2xl font-bold">{scope.title}</h1>

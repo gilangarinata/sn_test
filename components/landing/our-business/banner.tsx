@@ -9,6 +9,7 @@ import {updateBanner} from "@/lib/actions/admin/banner.action";
 import React, {useEffect} from "react";
 import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
+import {OurBusinessBanner} from "@/components/admin/our-business/banners/banners-table";
 
 
 const divStyle = {
@@ -34,11 +35,11 @@ const properties = {
     nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
     autoplay: false,
 }
-export default function OurBusinessBanner() {
+export default function OurBusinessBanner({banner} : {banner: OurBusinessBanner[]}) {
     return (
         <div className="">
             <Slide {...properties}>
-                {slideImages.map((slideImage, index) =>
+                {banner.map((slideImage, index) =>
                     <a key={index} href={slideImage.url} target="_blank">
                         <div>
                             <div className="flex items-center justify-center h-[500px] lg:h-[calc(100vh-60px)]" style={{ ...divStyle, 'backgroundImage': `url(${slideImage.image})`}}>
