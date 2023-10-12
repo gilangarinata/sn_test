@@ -89,7 +89,7 @@ export default function GetInTouch() {
                             <Input type="checkbox" className="w-5 h-5"/>
                             <p className="text-[#15537A]">I accept the terms of service</p>
                         </div>
-                        <p className={cn("text-red-500", error !== '' ? "block" : "hidden")}></p>
+                        <p className={cn("text-red-500", error !== '' ? "block" : "hidden")}>{error}</p>
                         <Button onClick={handleSubmit} className="bg-[#15537A] w-fit">Submit</Button>
                     </motion.div>
 
