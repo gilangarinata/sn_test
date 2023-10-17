@@ -1,11 +1,8 @@
 import '@/app/globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import {LandingNavBar} from "@/components/landing-navbar";
 import FooterLanding from "@/components/footer-landing";
-import {useMotionValueEvent, useScroll} from "framer-motion";
 
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Sesna',
