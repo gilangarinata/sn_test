@@ -99,8 +99,8 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                 }
             }
 
-            const tags = values.tags.split(",")
-            const related = values.relatedNews.split(",")
+            const tags = values.tags === "" ? [] : values.tags.split(",")
+            const related = values.relatedNews === "" ? [] : values.relatedNews.split(",")
 
 
             let descTitle = draftToHtml(convertToRaw(editorDescState?.getCurrentContent()));
