@@ -1,5 +1,7 @@
 "use client"
 
+import * as XLSX from 'xlsx';
+
 import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {
     Dialog,
@@ -48,6 +50,19 @@ export type GetInTouch = {
     message: string,
 }
 
+function generateAndDownloadExcel({data, filename} : {data: GetInTouch[], filename: string}) {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(data);
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    // Create a blob from the workbook
+    const blob = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    XLSX.writeFile(wb, filename);
+}
+
+
 function GetInTouchTable() {
 
     const [achievements, setAchievements] = useState<GetInTouch[]>()
@@ -64,6 +79,9 @@ function GetInTouchTable() {
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [createBannerOpen, setCreateBannerOpen] = useState<{banner : GetInTouch | null, isOpen : boolean}>({banner: null, isOpen: false})
 
+    const handleExport = () => {
+        generateAndDownloadExcel({data: achievements ?? [], filename: "get-in-touch.xlsx"})
+    };
     const handleDelete = async (id: string) => {
         try {
             setDeleteLoading(true);
@@ -81,6 +99,7 @@ function GetInTouchTable() {
 
     return (
             <div className="flex flex-col">
+                <Button className="w-fit mx-10" onClick={handleExport}>Export to Excel</Button>
                 <Dialog open={open.isOpen} onOpenChange={(isOpen) => setOpen({banner: null, isOpen})}>
                     <DialogContent className="sm:max-w-[425px]">
                         <DialogHeader>

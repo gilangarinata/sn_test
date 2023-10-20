@@ -124,7 +124,9 @@ function NewsTable() {
                         bt.preventDefault();
                         setCreateBannerOpen({banner: null, isOpen:true})
                     }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add News</Button>
-                    <DialogContent className="w-8">
+                    <DialogContent onInteractOutside={(e) => {
+                        e.preventDefault();
+                    }} className="w-8">
                         <DialogHeader>
                             <DialogTitle>Add news</DialogTitle>
                         </DialogHeader>

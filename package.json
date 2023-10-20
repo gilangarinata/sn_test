@@ -63,6 +63,7 @@
     "tw-elements-react": "^1.0.0-alpha1",
     "typescript": "5.1.6",
     "uploadthing": "^5.6.1",
+    "xlsx": "^0.18.5",
     "zod": "^3.21.4"
   },
   "devDependencies": {

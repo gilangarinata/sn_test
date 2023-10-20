@@ -5,6 +5,8 @@ import Image from "next/image";
 import {ScopeOfWOrk} from "@/components/admin/our-business/scope-of-works/scope-of-work-table";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
+import Link from "next/link";
+import {redirect, useRouter} from "next/navigation";
 
 
 const scopes = [
@@ -44,13 +46,15 @@ const divStyle = {
     backgroundSize: 'cover',
 }
 export default function HistungInvestasi() {
+    const router = useRouter();
+
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
                 <div className="bg-white/70 w-full">
                     <div className="max-w-7xl mx-auto h-screen flex">
                         <div className="w-[600px] h-full">
                             <div className="flex flex-col items-center px-4 py-6 gap-4">
-                                <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-yellow-500 flex flex-col items-center gap-4">
+                                <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4">
                                     <h1>Mohon input data dibawah ini</h1>
                                     <Input type="text" placeholder="Jenis Property" onChange={(e) => {
 
@@ -79,10 +83,14 @@ export default function HistungInvestasi() {
                                         </div>
                                     </div>
                                 </div>
-                                <Button className="bg-yellow-500 text-blue-950 font-bold w-full">Selanjutnya</Button>
+
+                                <Button onClick={(bt) => {
+                                    bt.preventDefault()
+                                    router.push('/zero-capex-result');
+                                }} className="bg-[#f9c329] text-blue-950 font-bold w-full">Selanjutnya</Button>
                             </div>
                         </div>
-                        <h1 className="w-full text-end p-[60px] text-6xl font-bold text-yellow-500 text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
+                        <h1 className="w-full text-end p-[60px] text-6xl font-bold text-[#f9c329] text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
                     </div>
                 </div>
             </div>

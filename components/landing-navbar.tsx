@@ -91,6 +91,7 @@ export const LandingNavBar = () => {
 
 export default function NavContent() {
     const pathName = usePathname();
+
     return routes.map(route =>
         route.label === "Language" ?
             (
@@ -106,8 +107,8 @@ export default function NavContent() {
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent>
-                        <DropdownMenuItem>Engliasdsh</DropdownMenuItem>
-                        <DropdownMenuItem>Indoasdasdnesia</DropdownMenuItem>
+                        <DropdownMenuItem>English</DropdownMenuItem>
+                        <DropdownMenuItem>Indonesia</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             ) : route.isDropDown == true ?
