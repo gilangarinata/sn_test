@@ -66,17 +66,68 @@ export default function ResultPlan() {
             <div className="w-full flex flex-col bg-[#15537A] items-center justify-center">
                 <h1 className="mt-10 text-3xl text-white font-bold text-center">Tentukan Rencana dan Solusi Sesuai<br/> dengan Kebutuhan Anda!</h1>
 
-                <div className="max-w-3xl mx-auto flex py-6">
-                    <div className="flex flex-col gap-2">
+                <div className="max-w-5xl mx-auto flex py-6 gap-2">
+                    <div className="flex flex-col">
                         <div className="bg-[#f9c329] rounded-sm border-white border-2">
-                            <p className="mx-10 my-2 text-[#15537A] font-bold text-center">Benefits</p>
+                            <p className="mx-10 my-2 text-[#15537A] font-extrabold text-center text-xl">Benefits</p>
                         </div>
                         <div className="bg-gray-300">
                             <p className="mx-10 my-2 text-[#15537A] text-center">Advance Experience</p>
                         </div>
-                        <div className="bg-[#15537A]">
-                            <p className="mx-10 my-2 text-[#15537A] text-center">Advance Experience</p>
+                        <div className="bg-[#15537A] h-10">
+                            <p className="mx-10 my-2 text-[#15537A] text-center"></p>
                         </div>
+                        <div className="bg-gray-300">
+                            <p className="mx-10 my-2 text-[#15537A] text-center">Energy Monitoring Apps</p>
+                        </div>
+                        <div className="bg-[#15537A] h-10">
+                            <p className="mx-10 my-2 text-[#15537A] text-center"></p>
+                        </div>
+                        <div className="bg-gray-300">
+                            <p className="mx-10 my-2 text-[#15537A] text-center">Price</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="bg-[#f9c329] rounded-sm border-white border-2">
+                            <p className="mx-10 my-2 text-[#15537A] font-extrabold text-center text-xl">Turnkey EPC</p>
+                        </div>
+                        <div className="bg-gray-300 flex justify-center">
+                            <Image className="py-2" src="/images/check.png" alt="" width={25} height={25} />
+                        </div>
+                        <div className="bg-[#15537A] h-10 flex justify-center">
+                            <Image className="py-2" src="/images/uncheck.png" alt="" width={25} height={25} />
+                        </div>
+                        <div className="bg-gray-300 flex justify-center">
+                            <Image className="py-2" src="/images/check.png" alt="" width={25} height={25} />
+                        </div>
+                        <div className="bg-[#15537A] h-10">
+                            <p className="mx-10 my-2 text-[#15537A] text-center"></p>
+                        </div>
+                        <div className="bg-gray-300">
+                            <p className="mx-10 my-2 text-[#15537A] text-center">Rp. 2.000.000.000</p>
+                        </div>
+                        <Button className="bg-white text-[#15537A] text-lg font-bold">Choose Plan</Button>
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="bg-[#f9c329] rounded-sm border-white border-2">
+                            <p className="mx-10 my-2 text-[#15537A] font-extrabold text-center text-xl">Solar Rental & Transfer</p>
+                        </div>
+                        <div className="bg-gray-300 flex justify-center">
+                            <Image className="py-2" src="/images/uncheck.png" alt="" width={25} height={25} />
+                        </div>
+                        <div className="bg-[#15537A] h-10 flex justify-center">
+                            <Image className="py-2" src="/images/check.png" alt="" width={25} height={25} />
+                        </div>
+                        <div className="bg-gray-300 flex justify-center">
+                            <Image className="py-2" src="/images/check.png" alt="" width={25} height={25} />
+                        </div>
+                        <div className="bg-[#15537A] h-10">
+                            <p className="mx-10 my-2 text-[#15537A] text-center"></p>
+                        </div>
+                        <div className="bg-gray-300">
+                            <p className="mx-10 my-2 text-[#15537A] text-center">Rp. 0</p>
+                        </div>
+                        <Button className="bg-white text-[#15537A] text-lg font-bold">Choose Plan</Button>
                     </div>
                 </div>
             </div>

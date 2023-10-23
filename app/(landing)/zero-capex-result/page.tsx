@@ -8,12 +8,14 @@ import ZeroCapexBanner from "@/components/landing/zero-capex/zero-capex-banner";
 import HistungInvestasi from "@/components/landing/zero-capex/hitung-investasi";
 import ZeroCapexResult from "@/components/landing/zero-capex/result";
 import ResultPlan from "@/components/landing/zero-capex/result-plan";
+import ResultChart from "@/components/landing/zero-capex/result-chart";
 
 async function WhoWeArePage() {
     return (
        <div className="relative">
            <ZeroCapexResult />
            <ResultPlan />
+           <ResultChart />
        </div>
     )
 }
