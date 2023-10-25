@@ -21,29 +21,43 @@ import {OurBusinessBanner} from "@/components/admin/our-business/banners/banners
 import {Input} from "@/components/ui/input";
 
 
-const divStyle = {
-    backgroundSize: 'cover',
-}
-const slideImages = [
+const departenments = [
     {
         url: '/',
-        description: "A to Z Solutions,<br>End-to-End Service",
-        image: "/images/banner_1.jpg",
-        logo: "/images/banner-our-business.png"
-    }
+        title: "EPC",
+        checked: false,
+    },
+    {
+        url: '/',
+        title: "Deal Maker",
+        checked: false,
+    },
+    {
+        url: '/',
+        title: "Coorporate Management",
+        checked: false,
+    },
 ];
 
-const buttonStyle = {
-    width: "30px",
-    background: 'none',
-    border: '0px'
-};
+const positions = [
+    {
+        url: '/career/1',
+        title: "Supply Chain Specialist",
+        departement: "EPC",
+        type: "Full Time",
+        location: "Jakarta",
+        id: "1"
+    },
+    {
+        url: '/career/2',
+        title: "PV Engineer",
+        departement: "EPC",
+        type: "Full Time",
+        location: "Jakarta",
+        id: "2"
+    },
+];
 
-const properties = {
-    prevArrow: <ChevronLeftCircle color="white" className="mx-4"/>,
-    nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
-    autoplay: false,
-}
 export default function CareerContent() {
     return (
         <div className="w-full flex flex-col bg-[#15537A] items-center min-h-screen justify-center">
@@ -55,99 +69,45 @@ export default function CareerContent() {
             <div className="w-full flex divide-x divide-white">
                 <div className="w-[500px] h-[500px] flex flex-col px-10 gap-2">
                     <h1 className="mt-10 text-xl text-white font-bold mb-6">Departemen</h1>
-                    <div className="flex gap-4">
-                        <Input type="checkbox" className="w-5 h-5"/>
-                        <p className="text-white">EPC</p>
-                    </div>
-                    <div className="flex gap-4">
-                        <Input type="checkbox" className="w-5 h-5"/>
-                        <p className="text-white">Deal Maker</p>
-                    </div>
-                    <div className="flex gap-4">
-                        <Input type="checkbox" className="w-5 h-5"/>
-                        <p className="text-white">Coorporate Management</p>
-                    </div>
+                    {departenments.map((departement, index) => (
+                        <div key={departement.title} className="flex gap-4">
+                            <Input type="checkbox" className="w-5 h-5"/>
+                            <p className="text-white">{departement.title}</p>
+                        </div>
+                        ))}
                 </div>
                 <div className="flex flex-col py-6 gap-8 h-[500px] w-full px-10 divide-y divide-white">
                     <h1 className="mt-10 text-2xl text-white font-bold">Posisi yang tersedia</h1>
-                    <div className="flex gap-6">
-                        <div className="w-3 h-full bg-yellow-500 mt-2">
-                        </div>
-                        <div className="flex flex-col w-full gap-4 divide-y divide-white">
-                            <div className="flex flex-col pt-4 gap-4">
-                                <div className="flex justify-between">
-                                    <h1 className="text-2xl text-white font-bold">Supply Chain</h1>
-                                    <Share2Icon color="white" />
+                    {positions.map((position, index) => (
+                        <Link href={position.url} key={position.id}>
+                            <div className="flex gap-6 hover:cursor-pointer">
+                                <div className="w-3 h-full bg-yellow-500 mt-2">
                                 </div>
-                                <div className="flex">
-                                    <div className="flex gap-2 w-80">
-                                        <BriefcaseIcon color="white" />
-                                        <p className="text-white">EPC</p>
-                                    </div>
-                                    <div className="flex gap-2 w-40">
-                                        <SignalIcon color="white" />
-                                        <p className="text-white">Full Time</p>
-                                    </div>
-                                    <div className="flex gap-2 w-40">
-                                        <PinIcon color="white" />
-                                        <p className="text-white">Jakarta</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex gap-6">
-                        <div className="w-3 h-full bg-yellow-500 mt-2">
-                        </div>
-                        <div className="flex flex-col w-full gap-4 divide-y divide-white">
-                            <div className="flex flex-col pt-4 gap-4">
-                                <div className="flex justify-between">
-                                    <h1 className="text-2xl text-white font-bold">Supply Chain</h1>
-                                    <Share2Icon color="white" />
-                                </div>
-                                <div className="flex">
-                                    <div className="flex gap-2 w-80">
-                                        <BriefcaseIcon color="white" />
-                                        <p className="text-white">EPC</p>
-                                    </div>
-                                    <div className="flex gap-2 w-40">
-                                        <SignalIcon color="white" />
-                                        <p className="text-white">Full Time</p>
-                                    </div>
-                                    <div className="flex gap-2 w-40">
-                                        <PinIcon color="white" />
-                                        <p className="text-white">Jakarta</p>
+                                <div className="flex flex-col w-full gap-4 divide-y divide-white">
+                                    <div className="flex flex-col pt-4 gap-4">
+                                        <div className="flex justify-between">
+                                            <h1 className="text-2xl text-white font-bold">{position.title}</h1>
+                                            <Share2Icon color="white" />
+                                        </div>
+                                        <div className="flex">
+                                            <div className="flex gap-2 w-80">
+                                                <BriefcaseIcon color="white" />
+                                                <p className="text-white">{position.departement}</p>
+                                            </div>
+                                            <div className="flex gap-2 w-40">
+                                                <SignalIcon color="white" />
+                                                <p className="text-white">{position.type}</p>
+                                            </div>
+                                            <div className="flex gap-2 w-40">
+                                                <PinIcon color="white" />
+                                                <p className="text-white">{position.location}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="flex gap-6">
-                        <div className="w-3 h-full bg-yellow-500 mt-2">
-                        </div>
-                        <div className="flex flex-col w-full gap-4 divide-y divide-white">
-                            <div className="flex flex-col pt-4 gap-4">
-                                <div className="flex justify-between">
-                                    <h1 className="text-2xl text-white font-bold">Supply Chain</h1>
-                                    <Share2Icon color="white" />
-                                </div>
-                                <div className="flex">
-                                    <div className="flex gap-2 w-80">
-                                        <BriefcaseIcon color="white" />
-                                        <p className="text-white">EPC</p>
-                                    </div>
-                                    <div className="flex gap-2 w-40">
-                                        <SignalIcon color="white" />
-                                        <p className="text-white">Full Time</p>
-                                    </div>
-                                    <div className="flex gap-2 w-40">
-                                        <PinIcon color="white" />
-                                        <p className="text-white">Jakarta</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        </Link>
+                    ))}
                 </div>
             </div>
         </div>
