@@ -162,7 +162,7 @@ export default function CareerRegister() {
                 </div>
                 <div  className="w-full h-fit border-t-white rounded-lg gap-2 gap-y-6">
                     <div className="flex flex-col text-[#15537A] gap-2">
-                        <p className="text-white">How did you know about SESNA's Career opportunities?</p>
+                        <p className="text-white">How did you know about SESNAs Career opportunities?</p>
                         <Input type="text" onChange={(e) => {
                         }} />
                     </div>
