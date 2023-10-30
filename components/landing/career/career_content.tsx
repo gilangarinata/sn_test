@@ -168,7 +168,7 @@ export default function CareerContent() {
                             </div>
                         </Link>
                     ))}
-                    <HorizontalPagination currentPage={currentActivePage ?? 1} totalPages={totalBannersCount ?? 1} onPageChange={(page) => {
+                    <HorizontalPagination textColor="text-white" currentPage={currentActivePage ?? 1} totalPages={totalBannersCount ?? 1} onPageChange={(page) => {
                         setCurrentActivePage(page);
                     }} />
                 </div>

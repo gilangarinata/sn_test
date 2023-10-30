@@ -14,14 +14,13 @@ import {fetchCategories, fetchCategory} from "@/lib/actions/admin/news-category.
 import {Category} from "@/components/admin/media/category/category-table";
 
 async function MediaPage({ params }: { params: { categoryId: string } }) {
-    const news = await fetchNewsByCategory(params.categoryId,1,100)
     const categories = await fetchCategories()
 
     const category = (await fetchCategory(params.categoryId))?.categories as Category
     return (
        <div className="h-full">
            <NewsBanner image={category?.banner ?? ""} title={category?.description ?? ""} />
-           <NewsContent news={news?.banners as News[]} categories={categories?.categories as Category[]} />
+           <NewsContent categoryId={params.categoryId} categories={categories?.categories as Category[]} />
        </div>
     )
 }

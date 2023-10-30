@@ -1,13 +1,15 @@
 // components/HorizontalPagination.tsx
 import React from 'react';
+import {cn} from "@/lib/utils";
 
 interface HorizontalPaginationProps {
     currentPage: number;
     totalPages: number;
     onPageChange: (page: number) => void;
+    textColor: string;
 }
 
-const HorizontalPagination: React.FC<HorizontalPaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
+const HorizontalPagination: React.FC<HorizontalPaginationProps> = ({ currentPage, totalPages, onPageChange, textColor }) => {
     const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
     // Determine the number of pages to show before and after the current page
@@ -20,7 +22,7 @@ const HorizontalPagination: React.FC<HorizontalPaginationProps> = ({ currentPage
                 <a
                     onClick={() => onPageChange(currentPage - 1)}
                     href="#"
-                    className="mr-2 text-white"
+                    className={cn("mr-2", textColor)}
                 >
                     &lt; Previous
                 </a>
@@ -37,14 +39,14 @@ const HorizontalPagination: React.FC<HorizontalPaginationProps> = ({ currentPage
                             key={pageNumber}
                             onClick={() => onPageChange(pageNumber)}
                             href="#"
-                            className={`mx-1 ${pageNumber === currentPage ? 'text-blue-500' : 'text-white'}`}
+                            className={`mx-1 ${pageNumber === currentPage ? 'text-blue-500' : textColor}`}
                         >
                             {pageNumber}
                         </a>
                     );
                 } else if (pageNumber === currentPage + showPagesBeforeAndAfter + 1) {
                     // Display ellipsis
-                    return <span key="ellipsis" className="text-white">...</span>;
+                    return <span key="ellipsis" className={textColor}>...</span>;
                 }
                 return null;
             })}
@@ -52,7 +54,7 @@ const HorizontalPagination: React.FC<HorizontalPaginationProps> = ({ currentPage
                 <a
                     onClick={() => onPageChange(currentPage + 1)}
                     href="#"
-                    className="ml-2 text-white"
+                    className={cn("ml-2", textColor)}
                 >
                     Next &gt;
                 </a>

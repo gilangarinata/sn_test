@@ -46,12 +46,24 @@ export async function fetchNewsByCategory(_categoryId: string, pageNumber: numbe
     }
 }
 
-export async function fetchAllNews(pageNumber: number, pageSize: number) {
+export async function fetchAllNews(pageNumber: number, pageSize: number,
+                                   categoryId?: string,
+                                   year?: number) {
     await connectToDb();
     try {
+        const filters: any = {};
+
+        if (categoryId) {
+            filters.category = categoryId;
+        }
+
+        if (year) {
+            // Assuming you have a 'date' field in your news documents
+            filters.createdAt = { $gte: new Date(`${year}-01-01`), $lte: new Date(`${year}-12-31`) };
+        }
         const skipAmount = (pageNumber - 1) * pageSize;
 
-        const bannersQuery = News.find()
+        const bannersQuery = News.find(filters)
             .skip(skipAmount)
             .limit(pageSize)
             .populate("relatedNews")
@@ -67,13 +79,16 @@ export async function fetchAllNews(pageNumber: number, pageSize: number) {
             ])
             .lean()
 
-        // const totalBannersCount = await News.countDocuments();
+        const totalBannersCount = await News.countDocuments();
         const banners = await bannersQuery.exec();
         // const isNext = totalBannersCount > skipAmount + banner.length;
         console.log("BN:")
         console.log(banners)
+        const totalPages = Math.ceil(totalBannersCount / pageSize);
+
         return {
-            banners
+            banners,
+            totalPages
         };
     }catch (error) {
         console.log("Failed to get banner")

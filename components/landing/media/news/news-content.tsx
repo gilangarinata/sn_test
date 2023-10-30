@@ -9,78 +9,30 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {News} from "@/components/admin/media/news/news-table";
 import {Category} from "@/components/admin/media/category/category-table";
+import HorizontalPagination from "@/components/pagination";
+import {fetchCareerByDepIds} from "@/lib/actions/admin/career.action";
+import {CareerMdl} from "@/components/admin/career/add_career/career-table";
+import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
 
-// const categories = [
-//     {
-//         href : "/media/news",
-//         label: "All News"
-//     },
-//     {
-//         href : "/media/news/business",
-//         label: "Business"
-//     },
-//     {
-//         href : "/media/news/corporate",
-//         label: "Corporate"
-//     },
-//     {
-//         href : "/media/news/event",
-//         label: "Events"
-//     },
-//     {
-//         href : "/media/news/corporate",
-//         label: "Corporate"
-//     },
-//     {
-//         href : "/media/news/event",
-//         label: "Events"
-//     }
-// ]
-
-// const newsContents = [
-//     {
-//         href: '/media/news/detail/12',
-//         title: "FKS Group Shares Love With Children At The Wikrama Putra And YPAB Orphanages, Surakarta",
-//         images: "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-//         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare varius nulla, quis aliquam augue varius nec. Morbi malesuada consequat nibh. Aliquam non arcu id lorem consectetur auctor."
-//     },
-//     {
-//         href: '/media/news/detail/12',
-//         title: "FKS Group Shares Love With Children At",
-//         images: "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-//         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare varius nulla, quis aliquam augue varius nec. Morbi malesuada consequat nibh. Aliquam non arcu id lorem consectetur auctor."
-//     },
-//     {
-//         href: '/media/news/detail/12',
-//         title: "FKS Group Shares Love With Children At The Wikrama Putra And YPAB Orphanages, Surakarta sdsa ",
-//         images: "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-//         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare varius nulla, quis aliquam augue varius nec. Morbi malesuada consequat nibh. Aliquam non arcu id lorem consectetur auctor."
-//     },
-//     {
-//         href: '/media/news/detail/12',
-//         title: "FKS Group Shares Love With Children At The ",
-//         images: "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-//         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare varius nulla, quis aliquam augue varius nec. Morbi malesuada consequat nibh. Aliquam non arcu id lorem consectetur auctor."
-//     },
-//     {
-//         href: '/media/news/detail/12',
-//         title: "News Title 1",
-//         images: "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-//         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare varius nulla, quis aliquam augue varius nec. Morbi malesuada consequat nibh. Aliquam non arcu id lorem consectetur auctor."
-//     },
-//     {
-//         href: '/media/news/detail/12',
-//         title: "FKS Group Shares Love With Children At The Wikrama Putra And YPAB Orphanages, Surakarta FKS Group Shares Love With Children At The Wikrama Putra And YPAB Orphanages, Surakarta",
-//         images: "https://images.unsplash.com/photo-1509721434272-b79147e0e708?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1500&q=80",
-//         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare varius nulla, quis aliquam augue varius nec. Morbi malesuada consequat nibh. Aliquam non arcu id lorem consectetur auctor."
-//     },
-// ]
-
-export default function NewsContent({news, categories} : {news: News[], categories: Category[]}) {
+export default function NewsContent({ categoryId, categories} : { categoryId?: string, categories: Category[]}) {
     const pathName = usePathname();
+    const [news, setNews] = useState<News[]>()
+    const [totalBannersCount, setTotalBannersCount] = useState<number>()
+    const [year, setYear] = useState<number>()
+
+    async function getAchievements(currentPage: number, year: number) {
+        const news = await fetchAllNews(currentPage, 16, categoryId, year)
+        setNews(news?.banners as News[])
+        setTotalBannersCount(news?.totalPages as number)
+    }
+
+    const [currentActivePage, setCurrentActivePage] = useState<number>(1)
+    useEffect(() => {
+        getAchievements(currentActivePage ?? 1, year ?? new Date().getFullYear())
+    }, [currentActivePage, year])
 
     return (
         <div className="w-full flex flex-col mb-8">
@@ -105,8 +57,8 @@ export default function NewsContent({news, categories} : {news: News[], categori
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent>
-                        <DropdownMenuItem>2023</DropdownMenuItem>
-                        <DropdownMenuItem>2022</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setYear(2023)}>2023</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setYear(2022)}>2022</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
@@ -125,6 +77,9 @@ export default function NewsContent({news, categories} : {news: News[], categori
                         <p className="max-h-[165px] overflow-hidden text-justify" dangerouslySetInnerHTML={{__html: content.content}} />
                     </div>
                 ))}
+            </div>
+            <div className="w-full flex justify-end px-20">
+                <HorizontalPagination currentPage={currentActivePage} totalPages={totalBannersCount ?? 1} onPageChange={()=> {}} textColor="text-slate-500"/>
             </div>
         </div>
     )
