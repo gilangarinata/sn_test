@@ -36,6 +36,7 @@ import {
 import AddEditOurBusinessBanner from "@/components/admin/our-business/banners/edit-banner";
 import {deleteWhySolar, fetchWhySolar} from "@/lib/actions/admin/our-business/why-solar.action";
 import AddEditWhySolar from "@/components/admin/our-business/why-solar/edit-why-solar";
+import axiosInstance from "@/lib/axios_config";
 
 export type WhySolar = {
     id: string,
@@ -64,7 +65,17 @@ function WhySolarTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteWhySolar({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})

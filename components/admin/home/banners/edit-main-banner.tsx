@@ -80,7 +80,6 @@ function AddEditMainBanner({banner, onNeedRefresh}: Props) {
     const subheadingInitState = convertHTMLToEditorState(`<p>${subheadingContent}</p>`)
     const [subheadingEditorState, setSubHeadingEditorState] = useState(subheadingInitState !== undefined ? subheadingInitState : EditorState?.createEmpty() )
 
-    const {startUpload} = useUploadThing("media");
     const [saveLoading, setSaveLoading] = useState(false);
 
     const [files, setFiles] = useState<File[]>([]);

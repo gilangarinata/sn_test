@@ -25,6 +25,7 @@ import {deleteExperience, fetchExperiences, fetchMainExperience} from "@/lib/act
 import AddEditExperience from "@/components/admin/home/experience/edit-experience";
 import {Label} from "@/components/ui/label";
 import {Achievement} from "@/components/admin/home/achievement/achievement-table";
+import axiosInstance from "@/lib/axios_config";
 
 export type Experience = {
     id: string,
@@ -61,7 +62,19 @@ function ExperienceTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            const url = new URL(logo);
+            const filename = url.pathname.split("/").pop();
+            try {
+                await axiosInstance.delete(`/api/delete/${filename}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteExperience({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: true})

@@ -17,11 +17,15 @@ import {fetchOurBusiness} from "@/lib/actions/landing/our-business.action";
 import CareerBanner from "@/components/landing/career/career_banner";
 import CareerContent from "@/components/landing/career/career_content";
 import CareerDetail from "@/components/landing/career/career_detail";
+import {fetchNewsById} from "@/lib/actions/admin/news.action";
+import {fetchCareerById} from "@/lib/actions/admin/career.action";
+import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 
-async function LandingPage() {
+async function LandingPage({ params }: { params: { careerId: string } }) {
+    var career = await fetchCareerById(params.careerId)
     return (
        <div className="h-full">
-           <CareerDetail />
+           <CareerDetail career={career?.news as CareerMdl} />
        </div>
     )
 }

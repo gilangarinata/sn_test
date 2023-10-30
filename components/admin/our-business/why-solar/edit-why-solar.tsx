@@ -37,6 +37,7 @@ import {OurBusinessBannerValidation} from "@/lib/validations/our-business-banner
 import {WhySolar} from "@/components/admin/our-business/why-solar/why-solar-table";
 import {WhySolarValidation} from "@/lib/validations/why-solar";
 import {updateWhySolar} from "@/lib/actions/admin/our-business/why-solar.action";
+import axiosInstance from "@/lib/axios_config";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -54,8 +55,31 @@ function AddEditWhySolar({ achievement, onNeedRefresh}: Props) {
     const descInitState = convertHTMLToEditorState(`<p>${descContent}</p>`)
 
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
+    const startUpload = async (logo: File[]) : Promise<{
+        message: string;
+        fileUrl: string;
+    }[]> => {
+        var file = logo[0];
+        const formData = new FormData();
+        formData.append('file', file);
 
-    const {startUpload} = useUploadThing("media");
+        try {
+            const response = await axiosInstance.post<{
+                message: string;
+                fileUrl: string;
+            }[]>('/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            // Handle any upload error
+            console.error('File upload error:', error);
+            return [{ message: 'File upload failed', fileUrl: '' }];
+        }
+    }
     const [saveLoading, setSaveLoading] = useState(false);
 
     const [logo, setLogo] = useState<File[]>([]);

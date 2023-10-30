@@ -26,6 +26,7 @@ import AddEditExperience from "@/components/admin/home/experience/edit-experienc
 import {Label} from "@/components/ui/label";
 import {deleteCustomer, fetchCustomers} from "@/lib/actions/admin/customer.action";
 import AddEditCustomer from "@/components/admin/home/customers/edit-customer";
+import axiosInstance from "@/lib/axios_config";
 
 export type Customer = {
     id: string,
@@ -55,7 +56,17 @@ function CustomerTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteCustomer({id: id});
             setDeleteLoading(false);
             setOpen({banner : null, isOpen: false})

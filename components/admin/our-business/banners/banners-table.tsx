@@ -34,6 +34,7 @@ import {
     fetchOurBusinessBanners
 } from "@/lib/actions/admin/our-business/our-business-banner.action";
 import AddEditOurBusinessBanner from "@/components/admin/our-business/banners/edit-banner";
+import axiosInstance from "@/lib/axios_config";
 
 export type OurBusinessBanner = {
     id: string,
@@ -62,7 +63,17 @@ function BannerTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteOurBusinessBanner({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})

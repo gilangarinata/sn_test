@@ -15,7 +15,7 @@ export async function fetchGetInTouch() {
     await connectToDb();
     try {
         const pageNumber = 1;
-        const pageSize = 20;
+        const pageSize = 200;
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = GetInTouchModel.find()

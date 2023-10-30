@@ -22,6 +22,7 @@ import AddEditBanner from "@/components/admin/home/banners/edit-banner";
 import {deleteBanner, fetchBanners} from "@/lib/actions/admin/banner.action";
 import Spinner from "@/components/spinner";
 import {Achievement} from "@/components/admin/home/achievement/achievement-table";
+import axiosInstance from "@/lib/axios_config";
 
 export type Banner = {
     id: string,
@@ -65,8 +66,22 @@ function UniversalBanners() {
             const fileImage = image.substring(image.lastIndexOf('/') + 1)
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
             console.log(fileLogo + "   " + fileImage);
-            await fetch(`/api/uploadthing/delete/${fileImage}`, { method: 'DELETE',})
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                await axiosInstance.delete(`/api/delete/${fileImage}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteBanner({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})

@@ -31,6 +31,7 @@ import {AchievementValidation} from "@/lib/validations/achievement";
 import {updateAchievement} from "@/lib/actions/admin/achievement.action";
 import {CustomerValidation} from "@/lib/validations/customer";
 import {updateCustomer} from "@/lib/actions/admin/customer.action";
+import axiosInstance from "@/lib/axios_config";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -52,7 +53,31 @@ interface Props {
 
 function AddEditCustomer({ customer, onNeedRefresh}: Props) {
 
-    const {startUpload} = useUploadThing("media");
+    const startUpload = async (logo: File[]) : Promise<{
+        message: string;
+        fileUrl: string;
+    }[]> => {
+        var file = logo[0];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await axiosInstance.post<{
+                message: string;
+                fileUrl: string;
+            }[]>('/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            // Handle any upload error
+            console.error('File upload error:', error);
+            return [{ message: 'File upload failed', fileUrl: '' }];
+        }
+    }
     const [saveLoading, setSaveLoading] = useState(false);
 
     const [logo, setLogo] = useState<File[]>([]);

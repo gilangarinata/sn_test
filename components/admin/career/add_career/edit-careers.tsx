@@ -42,7 +42,9 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
 import {fetchCategories} from "@/lib/actions/admin/news-category.action";
 import {Category} from "@/components/admin/media/category/category-table";
-import axiosInstance from "@/lib/axios_config";
+import {CareerMdl} from "@/components/admin/career/add_career/career-table";
+import {fetchDepartements} from "@/lib/actions/admin/departement.action";
+import {updateCareer} from "@/lib/actions/admin/career.action";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -51,80 +53,64 @@ const Editor = dynamic(() => import("react-draft-wysiwyg")
 );
 
 interface Props {
-    achievement?: News;
+    achievement?: CareerMdl;
     onNeedRefresh : () => void
 }
 
-function AddEditNews({ achievement, onNeedRefresh}: Props) {
-    const descContent = convertFromValidHtmlStyle(achievement?.content ?? "")
+const CareerValidation = z.object({
+    title: z
+        .string(),
+    location: z
+        .string(),
+    type: z
+        .string(),
+});
+
+function AddEditCareer({ achievement, onNeedRefresh}: Props) {
+    const descContent = convertFromValidHtmlStyle(achievement?.description ?? "")
     const descInitState = convertHTMLToEditorState(`<p>${descContent}</p>`)
 
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
     const [open, setOpen] = React.useState(false)
-    const [value, setValue] = React.useState(achievement?.category?.name ?? "")
+    const [value, setValue] = React.useState(achievement?.departement?.name ?? "")
     const [categories, setCategories] = React.useState<Category[]>()
     const [saveLoading, setSaveLoading] = useState(false);
-    const startUpload = async (logo: File[]) : Promise<{
-        message: string;
-        fileUrl: string;
-    }[]> => {
-        var file = logo[0];
-        const formData = new FormData();
-        formData.append('file', file);
 
-        try {
-            const response = await axiosInstance.post<{
-                message: string;
-                fileUrl: string;
-            }[]>('/api/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            return response.data;
-        } catch (error) {
-            // Handle any upload error
-            console.error('File upload error:', error);
-            return [{ message: 'File upload failed', fileUrl: '' }];
-        }
-    }
     const [logo, setLogo] = useState<File[]>([]);
 
-    const form = useForm<z.infer<typeof NewsValidation>>({
-        resolver: zodResolver(NewsValidation),
+    const form = useForm<z.infer<typeof CareerValidation>>({
+        resolver: zodResolver(CareerValidation),
         defaultValues: {
             title: achievement?.title ?? "",
-            image: achievement?.image ?? "",
-            tags: achievement?.tags?.map(t => t.tag).join(",") ?? "",
-            relatedNews: achievement?.relatedNews?.map(t => t._id).join(",") ?? "",
+            location: achievement?.location ?? "",
+            type: achievement?.type ?? "",
         },
     });
 
     async function getCategories() {
-       const cat = await fetchCategories()
-        setCategories(cat?.categories)
+       const cat = await fetchDepartements()
+        setCategories(cat?.banners)
     }
 
     useEffect(() => {
         getCategories()
     },[])
 
-    const onSubmit = async (values: z.infer<typeof NewsValidation>) => {
+    const onSubmit = async (values: z.infer<typeof CareerValidation>) => {
         try {
             setSaveLoading(true)
 
-            const logoBlob = values.image;
-            const hasLogoChanged = isBase64Image(logoBlob);
-            if(hasLogoChanged) {
-                const logoRes = await startUpload(logo);
-                if (logoRes && logoRes[0].fileUrl) {
-                    values.image = logoRes[0].fileUrl;
-                }
-            }
+            // const logoBlob = values.image;
+            // const hasLogoChanged = isBase64Image(logoBlob);
+            // if(hasLogoChanged) {
+            //     const logoRes = await startUpload(logo);
+            //     if (logoRes && logoRes[0].fileUrl) {
+            //         values.image = logoRes[0].fileUrl;
+            //     }
+            // }
 
-            const tags = values.tags === "" ? [] : values.tags.split(",")
-            const related = values.relatedNews === "" ? [] : values.relatedNews.split(",")
+            // const tags = values.tags === "" ? [] : values.tags.split(",")
+            // const related = values.relatedNews === "" ? [] : values.relatedNews.split(",")
 
 
             let descTitle = draftToHtml(convertToRaw(editorDescState?.getCurrentContent()));
@@ -135,14 +121,13 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
 
             // console.log(`selected category id : ${value} ${selectedCategoryId} ${categories?.length}`)
 
-            await updateNews({
+            await updateCareer({
                 id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
                 title: values.title,
-                content: descTitle,
-                category: value ?? "",
-                image:values.image,
-                tags: tags,
-                relatedNews: related
+                description: descTitle,
+                location: values.location,
+                type: values.type,
+                departement: value,
             })
 
             setSaveLoading(false)
@@ -203,7 +188,7 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                 />
                 <Popover open={open} onOpenChange={setOpen}>
                     <FormLabel className='text-base-semibold text-light-2'>
-                        Category
+                        Departement
                     </FormLabel>
                     <PopoverTrigger asChild>
                         <Button
@@ -214,7 +199,7 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                         >
                             {value
                                 ? value
-                                : "Select category..."}
+                                : "Select departement..."}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                     </PopoverTrigger>
@@ -256,11 +241,11 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                 </div>
                 <FormField
                     control={form.control}
-                    name='relatedNews'
+                    name='type'
                     render={({ field }) => (
                         <FormItem className='flex w-full flex-col'>
                             <FormLabel className='text-base-semibold text-light-2'>
-                                Related News ID (Seperated by comma ,)
+                                Type
                             </FormLabel>
                             <FormControl>
                                 <Input
@@ -275,11 +260,11 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                 />
                 <FormField
                     control={form.control}
-                    name='tags'
+                    name='location'
                     render={({ field }) => (
                         <FormItem className='flex w-full flex-col'>
                             <FormLabel className='text-base-semibold text-light-2'>
-                                Tags (Seperated by comma ,)
+                                Location
                             </FormLabel>
                             <FormControl>
                                 <Input
@@ -293,42 +278,6 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
                     )}
                 />
 
-                <FormField
-                    control={form.control}
-                    name='image'
-                    render={({field}) => (
-                        <FormItem className='flex flex-col'>
-                            <FormLabel className='text-base-semibold text-light-2'>
-                                Image
-                            </FormLabel>
-                            <div className="flex items-center">
-                                <FormLabel className='account-form_image-label'>
-                                    {field.value ? (
-                                        <Image
-                                            src={field.value}
-                                            alt='profile_icon'
-                                            width={96}
-                                            height={96}
-                                            priority
-                                            className='object-contain mr-4'
-                                        />
-                                    ) : (
-                                        <></>
-                                    )}
-                                </FormLabel>
-                                <FormControl className='flex-1 text-base-semibold text-gray-200'>
-                                    <Input
-                                        type='file'
-                                        accept='image/*'
-                                        placeholder='Add logo image'
-                                        className='account-form_image-input'
-                                        onChange={(e) => handleLogo(e, field.onChange)}
-                                    />
-                                </FormControl>
-                            </div>
-                        </FormItem>
-                    )}
-                />
                 <Button disabled={saveLoading} type='submit' className='bg-primary-500'>
                     {saveLoading ? <Spinner /> : "Save"}
                 </Button>
@@ -338,4 +287,4 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
 
 }
 
-export default AddEditNews;
+export default AddEditCareer;

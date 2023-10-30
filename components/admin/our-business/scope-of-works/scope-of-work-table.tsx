@@ -38,6 +38,7 @@ import {deleteWhySolar, fetchWhySolar} from "@/lib/actions/admin/our-business/wh
 import AddEditWhySolar from "@/components/admin/our-business/why-solar/edit-why-solar";
 import {deleteScopeWork, fetchScopeWork} from "@/lib/actions/admin/our-business/scope-work.action";
 import AddEditScopeOfWork from "@/components/admin/our-business/scope-of-works/edit-scope-of-work";
+import axiosInstance from "@/lib/axios_config";
 
 export type ScopeOfWOrk = {
     id: string,
@@ -66,7 +67,17 @@ function ScopeOfWorkTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteScopeWork({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})

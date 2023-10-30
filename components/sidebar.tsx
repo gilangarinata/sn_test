@@ -131,8 +131,17 @@ const routes = [
     {
         label : "Career",
         icon : BuildingIcon,
-        href : "/code",
-        children: []
+        href : "/career",
+        children: [
+            {
+                label : "Departement",
+                href: "/admin-panel/career/departement"
+            },
+            {
+                label : "Add Career",
+                href: "/admin-panel/career/add_career"
+            }
+        ]
     },
     {
         label : "Get In Touch",

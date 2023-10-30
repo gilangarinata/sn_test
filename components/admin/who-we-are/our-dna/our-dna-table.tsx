@@ -31,6 +31,7 @@ import {deleteSubsidiary, fetchSubsidiaries} from "@/lib/actions/admin/subsidiar
 import AddEditSubsidiary from "@/components/admin/who-we-are/subsidiaries/edit-subsidiary";
 import {deleteOurDna, fetchOurDna} from "@/lib/actions/admin/our-dna.action";
 import AddEditOurDna from "@/components/admin/who-we-are/our-dna/edit-our-dna";
+import axiosInstance from "@/lib/axios_config";
 
 export type OurDna = {
     id: string,
@@ -59,7 +60,17 @@ function OurDnaTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteOurDna({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})

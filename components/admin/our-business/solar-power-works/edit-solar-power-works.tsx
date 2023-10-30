@@ -40,6 +40,7 @@ import {updateWhySolar} from "@/lib/actions/admin/our-business/why-solar.action"
 import {SolarPowerWorks} from "@/components/admin/our-business/solar-power-works/solar-power-works-table";
 import {SolarPowerWorksValidation} from "@/lib/validations/solar-power-works";
 import {updateSolarPowerWork} from "@/lib/actions/admin/our-business/solar-power-works";
+import axiosInstance from "@/lib/axios_config";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -57,8 +58,31 @@ function AddEditSolarPowerWorks({ achievement, onNeedRefresh}: Props) {
     const descInitState = convertHTMLToEditorState(`<p>${descContent}</p>`)
 
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
+    const startUpload = async (logo: File[]) : Promise<{
+        message: string;
+        fileUrl: string;
+    }[]> => {
+        var file = logo[0];
+        const formData = new FormData();
+        formData.append('file', file);
 
-    const {startUpload} = useUploadThing("media");
+        try {
+            const response = await axiosInstance.post<{
+                message: string;
+                fileUrl: string;
+            }[]>('/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            // Handle any upload error
+            console.error('File upload error:', error);
+            return [{ message: 'File upload failed', fileUrl: '' }];
+        }
+    }
     const [saveLoading, setSaveLoading] = useState(false);
 
     const [logo, setLogo] = useState<File[]>([]);

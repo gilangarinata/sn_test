@@ -85,8 +85,6 @@ function GetInTouchTable() {
     const handleDelete = async (id: string) => {
         try {
             setDeleteLoading(true);
-            // const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            // await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
             await deleteScopeWork({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})

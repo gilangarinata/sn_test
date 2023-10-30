@@ -25,6 +25,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {convertHTMLToEditorState, isBase64Image} from "@/lib/utils";
 import {updateBanner} from "@/lib/actions/admin/banner.action";
 import Spinner from "@/components/spinner";
+import axiosInstance from "@/lib/axios_config";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -71,10 +72,33 @@ function AddEditBanner({banner, onNeedRefresh}: Props) {
     const [editorState, setEditorState] = useState(initState !== undefined ? initState : EditorState?.createEmpty() )
     const router = useRouter();
     const pathname = usePathname();
-    const {startUpload} = useUploadThing("media");
     const [saveLoading, setSaveLoading] = useState(false);
     const [selectedId, setSelectedId] = useState(-1)
+    const startUpload = async (logo: File[]) : Promise<{
+        message: string;
+        fileUrl: string;
+    }[]> => {
+        var file = logo[0];
+        const formData = new FormData();
+        formData.append('file', file);
 
+        try {
+            const response = await axiosInstance.post<{
+                message: string;
+                fileUrl: string;
+            }[]>('/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            // Handle any upload error
+            console.error('File upload error:', error);
+            return [{ message: 'File upload failed', fileUrl: '' }];
+        }
+    }
     const [files, setFiles] = useState<File[]>([]);
     const [logo, setLogo] = useState<File[]>([]);
 

@@ -32,7 +32,8 @@ import {updateAchievement} from "@/lib/actions/admin/achievement.action";
 import {Category} from "@/components/admin/media/category/category-table";
 import {CategoryValidation} from "@/lib/validations/category";
 import {updateNewsCategory} from "@/lib/actions/admin/news-category.action";
-import axiosInstance from "@/lib/axios_config";
+import {Departement} from "@/components/admin/career/departement/departement-table";
+import {updateDepartement} from "@/lib/actions/admin/departement.action";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -42,68 +43,44 @@ const Editor = dynamic(() => import("react-draft-wysiwyg")
 
 
 interface Props {
-    achievement?: Category;
+    achievement?: Departement;
     onNeedRefresh : () => void
 }
 
-interface UploadResult {
-    message: string;
-    fileUrl: string;
-}
+const DepartementValidation = z.object({
+    name: z
+        .string(),
+});
 
-function AddEditCategory({ achievement, onNeedRefresh}: Props) {
-    const startUpload = async (logo: File[]) : Promise<UploadResult[]> => {
-        var file = logo[0];
-        const formData = new FormData();
-        formData.append('file', file);
-
-        try {
-            const response = await axiosInstance.post<UploadResult[]>('/api/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            return response.data;
-        } catch (error) {
-            // Handle any upload error
-            console.error('File upload error:', error);
-            return [{ message: 'File upload failed', fileUrl: '' }];
-        }
-    }
-
+function AddEditDepartement({ achievement, onNeedRefresh}: Props) {
     const [saveLoading, setSaveLoading] = useState(false);
 
     const [logo, setLogo] = useState<File[]>([]);
 
-    const form = useForm<z.infer<typeof CategoryValidation>>({
-        resolver: zodResolver(CategoryValidation),
+    const form = useForm<z.infer<typeof DepartementValidation>>({
+        resolver: zodResolver(DepartementValidation),
         defaultValues: {
             name: achievement?.name ?? "",
-            banner: achievement?.banner ?? "",
-            description: achievement?.description ?? "",
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof CategoryValidation>) => {
+    const onSubmit = async (values: z.infer<typeof DepartementValidation>) => {
         try {
             setSaveLoading(true)
 
-            const logoBlob = values.banner;
-            const hasLogoChanged = isBase64Image(logoBlob);
-            if(hasLogoChanged) {
-                const logoRes = await startUpload(logo);
-                if (logoRes && logoRes[0].fileUrl) {
-                    values.banner = logoRes[0].fileUrl;
-                }
-            }
+            // const logoBlob = values.banner;
+            // const hasLogoChanged = isBase64Image(logoBlob);
+            // if(hasLogoChanged) {
+            //     const logoRes = await startUpload(logo);
+            //     if (logoRes && logoRes[0].fileUrl) {
+            //         values.banner = logoRes[0].fileUrl;
+            //     }
+            // }
 
 
-            await updateNewsCategory({
+            await updateDepartement({
                 id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
                 name: values.name,
-                description: values.description,
-                banner: values.banner
             })
 
             setSaveLoading(false)
@@ -162,61 +139,6 @@ function AddEditCategory({ achievement, onNeedRefresh}: Props) {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name='description'
-                    render={({ field }) => (
-                        <FormItem className='flex w-full flex-col'>
-                            <FormLabel className='text-base-semibold text-light-2'>
-                                Description
-                            </FormLabel>
-                            <FormControl>
-                                <Input
-                                    type='text'
-                                    className='account-form_input no-focus'
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='banner'
-                    render={({field}) => (
-                        <FormItem className='flex flex-col'>
-                            <FormLabel className='text-base-semibold text-light-2'>
-                                Banner
-                            </FormLabel>
-                            <div className="flex items-center">
-                                <FormLabel className='account-form_image-label'>
-                                    {field.value ? (
-                                        <Image
-                                            src={field.value}
-                                            alt='profile_icon'
-                                            width={96}
-                                            height={96}
-                                            priority
-                                            className='object-contain mr-4'
-                                        />
-                                    ) : (
-                                        <></>
-                                    )}
-                                </FormLabel>
-                                <FormControl className='flex-1 text-base-semibold text-gray-200'>
-                                    <Input
-                                        type='file'
-                                        accept='image/*'
-                                        placeholder='Add logo image'
-                                        className='account-form_image-input'
-                                        onChange={(e) => handleLogo(e, field.onChange)}
-                                    />
-                                </FormControl>
-                            </div>
-                        </FormItem>
-                    )}
-                />
                 <Button disabled={saveLoading} type='submit' className='bg-primary-500'>
                     {saveLoading ? <Spinner /> : "Save"}
                 </Button>
@@ -226,4 +148,4 @@ function AddEditCategory({ achievement, onNeedRefresh}: Props) {
 
 }
 
-export default AddEditCategory;
+export default AddEditDepartement;

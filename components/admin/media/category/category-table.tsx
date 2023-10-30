@@ -29,6 +29,7 @@ import AddEditAchievement from "@/components/admin/home/achievement/edit-achieve
 import {Customer} from "@/components/admin/home/customers/customer-table";
 import {deleteNewsCategory, fetchCategories} from "@/lib/actions/admin/news-category.action";
 import AddEditCategory from "@/components/admin/media/category/edit-category";
+import axiosInstance from "@/lib/axios_config";
 
 export type Category = {
     _id: string,
@@ -58,7 +59,17 @@ function CategoryTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteNewsCategory({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})

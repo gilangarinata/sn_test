@@ -27,21 +27,22 @@ import {Label} from "@/components/ui/label";
 import {deleteAchievement, fetchAchievement} from "@/lib/actions/admin/achievement.action";
 import AddEditAchievement from "@/components/admin/home/achievement/edit-achievement";
 import {Customer} from "@/components/admin/home/customers/customer-table";
-import {deleteSubsidiary, fetchSubsidiaries} from "@/lib/actions/admin/subsidiaries.action";
-import AddEditSubsidiary from "@/components/admin/who-we-are/subsidiaries/edit-subsidiary";
-import axiosInstance from "@/lib/axios_config";
+import {deleteNewsCategory, fetchCategories} from "@/lib/actions/admin/news-category.action";
+import AddEditCategory from "@/components/admin/media/category/edit-category";
+import {deleteDepartement, fetchDepartements} from "@/lib/actions/admin/departement.action";
+import AddEditDepartement from "@/components/admin/career/departement/edit-departement";
 
-export type Subsidiaries = {
+export type Departement = {
+    _id: string,
     id: string,
-    description: string,
-    image: string
+    name: string,
 }
 
-function AchievementTable() {
+function DepartementTable() {
 
-    const [achievements, setAchievements] = useState<Subsidiaries[]>()
+    const [achievements, setAchievements] = useState<Departement[]>()
     async function getAchievements() {
-        const achievements = await fetchSubsidiaries()
+        const achievements = await fetchDepartements()
         setAchievements(achievements?.banners);
     }
 
@@ -49,26 +50,14 @@ function AchievementTable() {
         getAchievements()
     }, [])
 
-    const [open, setOpen] = useState<{banner : Subsidiaries | null, isOpen : boolean}>({banner: null, isOpen:false});
+    const [open, setOpen] = useState<{banner : Departement | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Subsidiaries | null, isOpen : boolean}>({banner: null, isOpen: false})
+    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Departement | null, isOpen : boolean}>({banner: null, isOpen: false})
 
-    const handleDelete = async (id: string,logo: string) => {
+    const handleDelete = async (id: string) => {
         try {
             setDeleteLoading(true);
-            const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            try {
-                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-
-            } catch (error) {
-                // Handle any upload error
-                console.error('File upload error:', error);
-            }
-            await deleteSubsidiary({id: id});
+            await deleteDepartement({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})
             await getAchievements()
@@ -96,8 +85,8 @@ function AchievementTable() {
                                 }}>Cancel</Button>
                                 <Button variant="destructive" onClick={(bt) => {
                                     bt.preventDefault();
-                                    handleDelete(open?.banner?.id ?? "", open?.banner?.image ?? "");
-                                }}>{deleteLoading ? <Spinner /> : `Delete ${open?.banner?.description}`}</Button>
+                                    handleDelete(open?.banner?.id ?? "");
+                                }}>{deleteLoading ? <Spinner /> : `Delete ${open?.banner?.name}`}</Button>
                             </div>
                         </DialogFooter>
                     </DialogContent>
@@ -108,13 +97,13 @@ function AchievementTable() {
                     <Button onClick={(bt) => {
                         bt.preventDefault();
                         setCreateBannerOpen({banner: null, isOpen:true,})
-                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Subsidiaries</Button>
+                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Departement</Button>
                     <DialogContent className="w-8">
                         <DialogHeader>
-                            <DialogTitle>{"Add new achievement"}</DialogTitle>
+                            <DialogTitle>{"Add Departement"}</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto max-h-[420px]">
-                            <AddEditSubsidiary achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
+                            <AddEditDepartement achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
                                 setCreateBannerOpen({banner: null, isOpen:false})
                                 getAchievements();
                             }} />
@@ -125,19 +114,14 @@ function AchievementTable() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Description</TableHead>
-                                <TableHead className="text-center">Image</TableHead>
+                                <TableHead>Name</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {achievements?.map((achievement) => (
                                 <TableRow key={achievement.id}>
-                                    <TableCell>{achievement.description}</TableCell>
-                                    <TableCell>
-                                        <Image className="mx-auto" width={60} height={60}
-                                                      src={achievement.image} alt=""/>
-                                    </TableCell>
+                                    <TableCell>{achievement.name}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
                                             <Trash2Icon onClick={() => setOpen({banner: achievement, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
@@ -156,4 +140,4 @@ function AchievementTable() {
     )
 }
 
-export default AchievementTable;
+export default DepartementTable;

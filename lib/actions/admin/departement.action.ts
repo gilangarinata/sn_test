@@ -1,27 +1,26 @@
 "use server";
 
 import {connectToDb} from "@/lib/mongoose";
-import OurExperience from "@/lib/models/our-experience";
+import Banner from "@/lib/models/banner.model";
+import Departement from "@/lib/models/departement.model";
 
 interface Params {
     id: string,
-    image: string,
-    title: string,
-    link: string
+    name: string,
 }
 
-export async function fetchOurExperience() {
+export async function fetchDepartements() {
     await connectToDb();
     try {
         const pageNumber = 1;
         const pageSize = 200;
         const skipAmount = (pageNumber - 1) * pageSize;
 
-        const bannersQuery = OurExperience.find()
+        const bannersQuery = Departement.find()
             .skip(skipAmount)
             .limit(pageSize)
 
-        const totalBannersCount = await OurExperience.countDocuments();
+        const totalBannersCount = await Departement.countDocuments();
 
         const banners = await bannersQuery.exec();
         const isNext = totalBannersCount > skipAmount + banners.length;
@@ -35,23 +34,20 @@ export async function fetchOurExperience() {
     }
 }
 
-export async function updateOurExperience({
+
+export async function updateDepartement({
        id,
-       image,
-       title,
-       link
+       name,
    } : Params): Promise<void> {
     await connectToDb();
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
         console.log(currentId);
-        await OurExperience.findOneAndUpdate(
+        await Departement.findOneAndUpdate(
             {id: currentId},
             {
-                image: image,
-                title: title,
-                link: link,
+                name: name,
             }, { upsert: true }
         )
     }catch (error) {
@@ -60,11 +56,11 @@ export async function updateOurExperience({
 }
 
 
-export async function deleteOurExperience({id} : {id:string}): Promise<void> {
+export async function deleteDepartement({id} : {id:string}): Promise<void> {
     await connectToDb();
 
     try {
-        await OurExperience.findOneAndDelete(
+        await Departement.findOneAndDelete(
             {id: id }
         )
     }catch (error) {

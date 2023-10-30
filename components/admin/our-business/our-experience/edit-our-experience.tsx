@@ -40,6 +40,7 @@ import {updateWhySolar} from "@/lib/actions/admin/our-business/why-solar.action"
 import {OurExperience} from "@/components/admin/our-business/our-experience/our-experience-table";
 import {OurExperienceValidation} from "@/lib/validations/our-experience";
 import {updateOurExperience} from "@/lib/actions/admin/our-business/our-experience";
+import axiosInstance from "@/lib/axios_config";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -58,9 +59,32 @@ function AddEditOurExperience({ achievement, onNeedRefresh}: Props) {
 
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
 
-    const {startUpload} = useUploadThing("media");
     const [saveLoading, setSaveLoading] = useState(false);
+    const startUpload = async (logo: File[]) : Promise<{
+        message: string;
+        fileUrl: string;
+    }[]> => {
+        var file = logo[0];
+        const formData = new FormData();
+        formData.append('file', file);
 
+        try {
+            const response = await axiosInstance.post<{
+                message: string;
+                fileUrl: string;
+            }[]>('/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            // Handle any upload error
+            console.error('File upload error:', error);
+            return [{ message: 'File upload failed', fileUrl: '' }];
+        }
+    }
     const [logo, setLogo] = useState<File[]>([]);
 
     const form = useForm<z.infer<typeof OurExperienceValidation>>({

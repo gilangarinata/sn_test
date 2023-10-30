@@ -30,6 +30,7 @@ import {deleteNews, fetchAllNews} from "@/lib/actions/admin/news.action";
 import AddEditNews from "@/components/admin/media/news/edit-news";
 import {formatDateString} from "@/lib/utils";
 import {Category} from "@/components/admin/media/category/category-table";
+import axiosInstance from "@/lib/axios_config";
 
 export type News = {
     _id: any,
@@ -79,7 +80,17 @@ function NewsTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteNews({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: true})

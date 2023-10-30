@@ -14,56 +14,102 @@ import { Slide } from 'react-slideshow-image';
 import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import {updateBanner} from "@/lib/actions/admin/banner.action";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
 import {OurBusinessBanner} from "@/components/admin/our-business/banners/banners-table";
 import {Input} from "@/components/ui/input";
-import {cn} from "@/lib/utils";
+import {cn, convertToValidHtmlStyle} from "@/lib/utils";
+import {CareerMdl} from "@/components/admin/career/add_career/career-table";
+import * as z from "zod";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {fetchDepartements} from "@/lib/actions/admin/departement.action";
+import draftToHtml from "draftjs-to-html";
+import {convertToRaw} from "draft-js";
+import {updateCareer} from "@/lib/actions/admin/career.action";
 
+const CareerRegisterValidation = z.object({
+    firstName: z
+        .string(),
+    lastName: z
+        .string(),
+    email: z
+        .string()
+        .email(),
+    contactNumber: z.string(),
+    address: z.string(),
+    lastEducation: z.string(),
+    campus: z.string(),
+    studyMajor: z.string(),
+    schoolStartYear1: z.string(),
+    schoolStartYear2: z.string(),
+    schoolEndYear1: z.string(),
+    schoolEndYear2: z.string(),
+    previousCompany: z.string(),
+    previousDesignation: z.string(),
+    availabilityPeriod: z.string(),
+    urlSites: z.string().optional(),
+    howDidYouKnow: z.string().optional(),
+    resume: z.string(),
+    portfolio: z.string(),
+    ijazah: z.string(),
+    transkrip: z.string(),
+});
 
-const departenments = [
-    {
-        url: '/',
-        title: "EPC",
-        checked: false,
-    },
-    {
-        url: '/',
-        title: "Deal Maker",
-        checked: false,
-    },
-    {
-        url: '/',
-        title: "Coorporate Management",
-        checked: false,
-    },
-];
+export default function CareerRegister({career} : {career: CareerMdl}) {
+    const [saveLoading, setSaveLoading] = useState(false);
+    const form = useForm<z.infer<typeof CareerRegisterValidation>>({
+        resolver: zodResolver(CareerRegisterValidation),
+        defaultValues: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            contactNumber: "",
+            address: "",
+            lastEducation: "",
+            campus: "",
+            studyMajor: "",
+            schoolStartYear1: "",
+            schoolStartYear2: "",
+            schoolEndYear1: "",
+            schoolEndYear2: "",
+            previousCompany: "",
+            previousDesignation: "",
+            availabilityPeriod: "",
+            urlSites: "",
+            howDidYouKnow: "",
+            resume: "",
+            portfolio: "",
+            ijazah: "",
+            transkrip: "",
+        },
+    });
 
-const positions = [
-    {
-        url: '/career/1',
-        title: "Supply Chain Specialist",
-        departement: "EPC",
-        type: "Full Time",
-        location: "Jakarta",
-        id: "1"
-    },
-    {
-        url: '/career/2',
-        title: "PV Engineer",
-        departement: "EPC",
-        type: "Full Time",
-        location: "Jakarta",
-        id: "2"
-    },
-];
+    // const onSubmit = async (values: z.infer<typeof CareerRegisterValidation>) => {
+    //     try {
+    //         setSaveLoading(true)
+    //
+    //         await updateCareer({
+    //             id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
+    //             title: values.title,
+    //             description: descTitle,
+    //             location: values.location,
+    //             type: values.type,
+    //             departement: value,
+    //         })
+    //
+    //         setSaveLoading(false)
+    //     } catch (e) {
+    //         setSaveLoading(false)
+    //         console.log(`Failed Update Banner : ${e}`)
+    //     }
+    // };
 
-export default function CareerRegister() {
     return (
         <div className="w-full flex flex-col gap-4 bg-[#15537A] items-center min-h-screen justify-center">
-            <h1 className="mt-10 text-3xl text-white font-bold">Supply Chain Specialist</h1>
-            <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="flex flex-col gap-4 w-3/4">
+            <h1 className="mt-10 text-3xl text-white font-bold">{career.title}</h1>
+            <div className="flex flex-col gap-4 w-3/4">
                 <div  className="w-full h-fit border-t-white rounded-lg grid gap-2 gap-y-6 grid-cols-1 lg:grid-cols-2">
                     <div className="flex flex-col text-[#15537A] gap-2">
                         <p className="text-white">Nama Depan</p>
@@ -208,7 +254,7 @@ export default function CareerRegister() {
                     <p className="text-white">Dengan melanjutkan, saya mengonfirmasi bahwa saya telah membaca secara seksama dan menyetujui Persyaratan Layanan dan Kebijakan Privasi.</p>
                 </div>
                 <Button className="bg-[#FAC225] text-[#15537A] w-fit mb-20">Selanjutnya</Button>
-            </motion.div>
+            </div>
         </div>
     )
 }

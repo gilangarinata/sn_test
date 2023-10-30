@@ -27,6 +27,7 @@ import {Label} from "@/components/ui/label";
 import {deleteAchievement, fetchAchievement} from "@/lib/actions/admin/achievement.action";
 import AddEditAchievement from "@/components/admin/home/achievement/edit-achievement";
 import {Customer} from "@/components/admin/home/customers/customer-table";
+import axiosInstance from "@/lib/axios_config";
 
 export type Achievement = {
     id: string,
@@ -54,7 +55,19 @@ function AchievementTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            const url = new URL(logo);
+            const filename = url.pathname.split("/").pop();
+            try {
+                await axiosInstance.delete(`/api/delete/${filename}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteAchievement({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})

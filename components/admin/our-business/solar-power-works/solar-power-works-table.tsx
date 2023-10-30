@@ -38,6 +38,7 @@ import {deleteWhySolar, fetchWhySolar} from "@/lib/actions/admin/our-business/wh
 import AddEditWhySolar from "@/components/admin/our-business/why-solar/edit-why-solar";
 import {deleteSolarPowerWork, fetchSolarPowerWorks} from "@/lib/actions/admin/our-business/solar-power-works";
 import AddEditSolarPowerWorks from "@/components/admin/our-business/solar-power-works/edit-solar-power-works";
+import axiosInstance from "@/lib/axios_config";
 
 export type SolarPowerWorks = {
     id: string,
@@ -67,7 +68,17 @@ function SolarPowerWorksTable() {
         try {
             setDeleteLoading(true);
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            await fetch(`/api/uploadthing/delete/${fileLogo}`, { method: 'DELETE',})
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteSolarPowerWork({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})
