@@ -60,6 +60,23 @@ export async function fetchAllCareerRegister() {
     }
 }
 
+export async function fetchCareerRegisterById(id: string) {
+    await connectToDb();
+    try {
+        const bannersQuery = CareerRegister.findOne({_id: id})
+        // const totalBannersCount = await News.countDocuments();
+        const career = await bannersQuery.exec();
+        // const isNext = totalBannersCount > skipAmount + banner.length;
+
+        return {
+            career
+        };
+    }catch (error) {
+        console.log("Failed to get banner")
+        return null;
+    }
+}
+
 export async function updateCareerRegister({
        id,
           firstName,
