@@ -52,6 +52,7 @@
     "react-leaflet": "^4.2.1",
     "react-slideshow-image": "^4.2.1",
     "react-stacked-center-carousel": "^1.0.12",
+    "react-youtube": "^10.1.0",
     "slate": "^0.94.1",
     "slate-history": "^0.93.0",
     "slate-react": "^0.98.3",
