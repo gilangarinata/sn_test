@@ -7,6 +7,9 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
 import {redirect, useRouter} from "next/navigation";
+import {cn} from "@/lib/utils";
+import cookie from 'js-cookie';
+
 
 
 const scopes = [
@@ -47,6 +50,14 @@ const divStyle = {
 }
 export default function HistungInvestasi() {
     const router = useRouter();
+    const [jenisProperty, setJenisProperty] = React.useState('');
+    const [dayaListrik, setDayaListrik] = React.useState('');
+    const [tarifListrik, setTarifListrik] = React.useState('');
+    const [tagihanListrik, setTagihanListrik] = React.useState('');
+    const [luasArea, setLuasArea] = React.useState('');
+    const [lokasiPemasangan, setLokasiPemasangan] = React.useState('');
+
+    const [error, setError] = React.useState('');
 
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
@@ -57,35 +68,75 @@ export default function HistungInvestasi() {
                                 <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4">
                                     <h1>Mohon input data dibawah ini</h1>
                                     <Input type="text" placeholder="Jenis Property" onChange={(e) => {
-
+                                        setJenisProperty(e.target.value);
                                     }} />
-                                    <Input type="text" placeholder="Daya Listrik (kVa)" onChange={(e) => {
-
+                                    <Input type="number" placeholder="Daya Listrik (kVa)" onChange={(e) => {
+                                        setDayaListrik(e.target.value)
                                     }} />
-                                    <Input type="text" placeholder="Tarif Listrik (per kWh)" onChange={(e) => {
-
+                                    <Input type="number" placeholder="Tarif Listrik (per kWh)" onChange={(e) => {
+                                        setTarifListrik(e.target.value)
                                     }} />
-                                    <Input type="text" placeholder="Tagihan Listrik per bulan (Rupiah)" onChange={(e) => {
-
+                                    <Input type="number" placeholder="Tagihan Listrik per bulan (Rupiah)" onChange={(e) => {
+                                        setTagihanListrik(e.target.value)
                                     }} />
-                                    <Input type="text" placeholder="Luas Area Property (m2)" onChange={(e) => {
-
+                                    <Input type="number" placeholder="Luas Area Property (m2)" onChange={(e) => {
+                                        setLuasArea(e.target.value)
                                     }} />
                                     <p>Lokasi Pemasangan</p>
                                     <div className="flex gap-4">
-                                        <div className="flex flex-col items-center">
+                                        <div className={cn("flex flex-col items-center hover:cursor-pointer", lokasiPemasangan === "rooftop" ? "bg-yellow-500" : "")} onClick={()=> setLokasiPemasangan("rooftop")}>
                                             <Image width={50} height={50} src="/images/scope-work-1.png" alt="" />
                                             <p>Rooftop</p>
                                         </div>
-                                        <div className="flex flex-col items-center">
+                                        <div className={cn("flex flex-col items-center", lokasiPemasangan === "ground_mounted" ? "bg-yellow-500" : "")} onClick={() => setLokasiPemasangan("ground_mounted")}>
                                             <Image width={50} height={50} src="/images/scope-work-1.png" alt="" />
                                             <p>Ground Mounted</p>
                                         </div>
                                     </div>
+                                    <p className="text-red-500">{error}</p>
                                 </div>
 
                                 <Button onClick={(bt) => {
                                     bt.preventDefault()
+
+                                    if (jenisProperty === "") {
+                                        setError("Mohon isi jenis property")
+                                        return;
+                                    }
+
+                                    if (dayaListrik === "") {
+                                        setError("Mohon isi daya listrik")
+                                        return;
+                                    }
+
+                                    if (tarifListrik === "") {
+                                        setError("Mohon isi tarif listrik")
+                                        return;
+                                    }
+
+                                    if (tagihanListrik === "") {
+                                        setError("Mohon isi tagihan listrik")
+                                        return;
+                                    }
+
+                                    if (luasArea === "") {
+                                        setError("Mohon isi luas area")
+                                        return;
+                                    }
+
+                                    if (lokasiPemasangan === "") {
+                                        setError("Mohon pilih lokasi pemasangan")
+                                        return;
+                                    }
+
+                                    cookie.set("jenisProperty",jenisProperty);
+                                    cookie.set("dayaListrik",dayaListrik);
+                                    cookie.set("tarifListrik",tarifListrik);
+                                    cookie.set("tagihanListrik",tagihanListrik);
+                                    cookie.set("luasArea",luasArea);
+                                    cookie.set("lokasiPemasangan",lokasiPemasangan);
+
+
                                     router.push('/zero-capex-result');
                                 }} className="bg-[#f9c329] text-blue-950 font-bold w-full">Selanjutnya</Button>
                             </div>
