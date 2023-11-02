@@ -22,7 +22,13 @@ import {UploadButton, UploadDropzone} from "@/utils/uploadthing";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {BannerValidation} from "@/lib/validations/banner";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {convertFromValidHtmlStyle, convertHTMLToEditorState, convertToValidHtmlStyle, isBase64Image} from "@/lib/utils";
+import {
+    convertFromValidHtmlStyle,
+    convertHTMLToEditorState,
+    convertToValidHtmlStyle,
+    isBase64Image,
+    isBase64Video
+} from "@/lib/utils";
 import {updateBanner} from "@/lib/actions/admin/banner.action";
 import Spinner from "@/components/spinner";
 import {ExperienceValidation} from "@/lib/validations/experience";
@@ -101,7 +107,8 @@ function AddEditSolarPowerWorks({ achievement, onNeedRefresh}: Props) {
             setSaveLoading(true)
 
             const logoBlob = values.image;
-            const hasLogoChanged = isBase64Image(logoBlob);
+            const hasLogoChanged = isBase64Image(logoBlob) || isBase64Video(logoBlob);
+            console.log("hasLogoChanged", logoBlob)
             if(hasLogoChanged) {
                 const logoRes = await startUpload(logo);
                 if (logoRes && logoRes[0].fileUrl) {
@@ -141,14 +148,17 @@ function AddEditSolarPowerWorks({ achievement, onNeedRefresh}: Props) {
             const file = e.target.files[0];
             setLogo(Array.from(e.target.files));
 
-            if (!file.type.includes("image")) return;
+            console.log("fileType", file.type)
+            if (file.type.includes("image") || file.type.includes("video")) {
+                fileReader.onload = async (event) => {
+                    const imageDataUrl = event.target?.result?.toString() || "";
+                    fieldChange(imageDataUrl);
+                };
 
-            fileReader.onload = async (event) => {
-                const imageDataUrl = event.target?.result?.toString() || "";
-                fieldChange(imageDataUrl);
-            };
+                fileReader.readAsDataURL(file);
+            }
 
-            fileReader.readAsDataURL(file);
+
         }
     };
 
@@ -211,7 +221,7 @@ function AddEditSolarPowerWorks({ achievement, onNeedRefresh}: Props) {
                     render={({field}) => (
                         <FormItem className='flex flex-col'>
                             <FormLabel className='text-base-semibold text-light-2'>
-                                Icon
+                                Image / GIF / Video
                             </FormLabel>
                             <div className="flex items-center">
                                 <FormLabel className='account-form_image-label'>
@@ -231,7 +241,7 @@ function AddEditSolarPowerWorks({ achievement, onNeedRefresh}: Props) {
                                 <FormControl className='flex-1 text-base-semibold text-gray-200'>
                                     <Input
                                         type='file'
-                                        accept='image/*'
+                                        accept='image/*,video/*'
                                         placeholder='Add logo image'
                                         className='account-form_image-input'
                                         onChange={(e) => handleLogo(e, field.onChange)}

@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import React from "react";
+import React, {RefObject, useRef} from "react";
 import {motion} from "framer-motion";
 import Link from "next/link";
 import {Button} from "@/components/ui/button";
@@ -15,6 +15,7 @@ const properties = {
     prevArrow: <div></div>,
     nextArrow: <div></div>,
     autoplay: false,
+    transitionDuration: 10,
 }
 
 const solarWorks = [
@@ -32,10 +33,10 @@ const solarWorks = [
 ]
 
 export default function SolarPowerWorks({solarPowerWorks} : {solarPowerWorks: SolarPowerWorks[]}) {
-    const ref = React.useRef<SlideshowRef>();
+    const slideshowRef: RefObject<SlideshowRef> | null = useRef<SlideshowRef | null>(null);
     const [currentSlide, setCurrentSlide] = React.useState(0);
     return (
-        <Slide onChange={(fr,to) => {
+        <Slide ref={slideshowRef} onChange={(fr,to) => {
             setCurrentSlide(to)
         }} {...properties}>
             {solarPowerWorks.map((slideImage, index) => (
@@ -44,7 +45,7 @@ export default function SolarPowerWorks({solarPowerWorks} : {solarPowerWorks: So
                         <div className="w-full h-[500px] lg:lg:h-[calc(100vh-60px)] flex flex-col">
                             <div className="flex flex-col md:flex-row items-center h-full justify-center">
 
-                                <div className="flex w-full flex-col gap-6 text-[#15537A]">
+                                <motion.div whileInView={{scale : 1}} initial={{scale:0}} className="flex w-full flex-col gap-6 text-[#15537A]">
                                     <h1 className="text-3xl font-bold">{slideImage.title}</h1>
                                     <p className="text-xl mt-6">{slideImage.subtitle}</p>
                                     <div className="container mx-auto p-4">
@@ -53,20 +54,29 @@ export default function SolarPowerWorks({solarPowerWorks} : {solarPowerWorks: So
                                     </div>
                                     <div className="flex space-x-6 mt-12">
                                         {solarPowerWorks.map((slideImage, index) => (
-                                            <div key={slideImage.id} className={cn("w-3 h-3 rounded-full",currentSlide === index ? "bg-[#15537A]" : "border border-[#15537A]")}></div>
+                                            <div key={slideImage.id} onClick={() => {
+                                                setCurrentSlide(index);
+                                                slideshowRef?.current?.goTo(index);
+                                            } } className={cn("w-3 h-3 rounded-full hover:cursor-pointer", currentSlide === index ? "bg-[#15537A]" : "border border-[#15537A]")}></div>
                                         ))}
                                         {/*<div className="w-3 h-3 bg-[#15537A] rounded-full"></div> /!* Active dot *!/*/}
                                         {/*<div className="w-3 h-3 border border-[#15537A] rounded-full"></div> /!* Inactive dot *!/*/}
                                         {/*<div className="w-3 h-3 border border-[#15537A] rounded-full"></div> /!* Inactive dot *!/*/}
                                     </div>
-                                </div>
+                                </motion.div>
 
                                 <motion.div whileInView={{scale : 1}} initial={{scale:0}} className="hidden md:flex items-center justify-center w-full">
+                                    {slideImage.image.includes("mp4") ? (
+                                        <video autoPlay loop style={{ width: '500px', height: '500px' }}>
+                                            <source src={slideImage.image} />
+                                        </video>
+                                    ) : (
+                                        <Image sizes="100vw"
+                                               width={0}
+                                               height={0}
+                                               style={{ width: '100%', height: 'auto' }} src={slideImage.image} alt="logo" />
+                                    )}
 
-                                    <Image sizes="100vw"
-                                           width={0}
-                                           height={0}
-                                           style={{ width: '100%', height: 'auto' }} src="/images/solar-works-1.png" alt="logo" />
                                     {/*<div className="w-[120px] h-[120px] md:w-[500px] md:h-[500px] relative">*/}
                                     {/*    <Image fill src="/images/zero_capex.png" alt="banner animation" />*/}
                                     {/*</div>*/}

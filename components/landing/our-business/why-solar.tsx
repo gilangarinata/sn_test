@@ -22,43 +22,6 @@ import {WhySolar} from "@/components/admin/our-business/why-solar/why-solar-tabl
 
 
 
-const divStyle = {
-    backgroundSize: 'cover',
-}
-const slideImages2 = [
-    {
-        url: '/',
-        description: "Switching to solar energy significantly reduce green house gas emissions associated with fossil fuels and nuclear power.",
-        title: "Abundant & Renewable",
-    },
-    {
-        url: '/',
-        description: "Switching to solar energy significantly reduce green house gas emissions associated with fossil fuels and nuclear power.",
-        title: "Clean Green & Energy",
-    },
-    {
-        url: '/',
-        description: "Switching to solar energy significantly reduce green house gas emissions associated with fossil fuels and nuclear power.",
-        title: "Reduced Carbon Emissions",
-    },
-    {
-        url: '/',
-        description: "Switching to solar energy significantly reduce green house gas emissions associated with fossil fuels and nuclear power.",
-        title: "Low Operating Costs",
-    },
-    {
-        url: '/',
-        description: "Switching to solar energy significantly reduce green house gas emissions associated with fossil fuels and nuclear power.",
-        title: "Reduced Electricity Bills",
-    }
-];
-
-const buttonStyle = {
-    width: "30px",
-    background: 'none',
-    border: '0px'
-};
-
 const properties = {
     prevArrow: <ChevronLeft color="#15537a" className="mx-4"/>,
     nextArrow: <ChevronRight color="#15537a" className="mx-4"/>,

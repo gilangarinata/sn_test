@@ -18,6 +18,10 @@ export function isBase64Image(imageData: string) {
   return base64Regex.test(imageData);
 }
 
+export function isBase64Video(videoData: string) {
+    const base64VideoRegex = /^data:video\/(mp4|webm|ogg);base64,/;
+    return base64VideoRegex.test(videoData);
+}
 export function convertFromValidHtmlStyle(html: string) {
     return html.replaceAll('<b class=\'text-[#199FD6]\'>', "<strong>")
         .replaceAll('</b>', "</strong>")

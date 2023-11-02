@@ -68,7 +68,13 @@ export default function ZeroCapexResult() {
     const [jumlahModulSurya, setJumlahModulSurya] = React.useState('');
     const [produksiEnergiPerTahun, setProduksiEnergiPerTahun] = React.useState('');
     const [periodeInstallasi, setPeriodeInstallasi] = React.useState('');
-    const [recom, setRecom] = React.useState<{title: string, value: string}[]>(recommendations);
+
+    const [co2Avoided, setCo2Avoided] = React.useState('');
+    const [coalBurned, setCoalBurned] = React.useState('');
+    const [vehicleDriven, setVehicleDriven] = React.useState('');
+    const [gasolineBurned, setGasolineBurned] = React.useState('');
+    const [treesNeeded, setTreesNeeded] = React.useState('');
+
 
     useEffect(() => {
         // Data dari klien
@@ -78,24 +84,37 @@ export default function ZeroCapexResult() {
         const luasAreaProperty = Number(cookie.get("luasArea")); // Luas area property dalam m2
 
         // Rekomendasi Installasi (kWp)
-        const rekomendasiInstallasi = dayaListrikPLN; // Kapasitas PLTS tidak boleh melebihi PLN
-
+        const rekomendasiInstallasi = dayaListrikPLN; // Kapasitas PLTS tidak boleh melebihi PLN dalam kWp
+        const rekomendasiInstallasiWp = rekomendasiInstallasi * 1000; // Konversi kWp ke Wp
         // Area Potensial (m2) & Jumlah Modul Surya (Pcs)
-        const kapasitasSatuModulSurya = 0.65; // Kapasitas satu modul surya dalam kWp
-        const jumlahModulSurya = rekomendasiInstallasi / kapasitasSatuModulSurya;
+        const kapasitasSatuModulSurya = 650; // Kapasitas satu modul surya dalam Wp
+        const jumlahModulSurya = rekomendasiInstallasiWp / kapasitasSatuModulSurya;
         const areaPotensial = jumlahModulSurya * 3; // Satu modul surya memiliki dimensi 3 m
 
         // Produksi Energi per Tahun (kWh)
         const specificEnergyProduction = 1346; // Contoh nilai SEP, sesuaikan dengan lokasi
         const produksiEnergiPerTahun = rekomendasiInstallasi * specificEnergyProduction;
 
-// Periode Installasi
+        // Periode Installasi
         let periodeInstallasi;
         if (rekomendasiInstallasi < 1000) {
             periodeInstallasi = '3 - 5 Bulan';
         } else {
             periodeInstallasi = '6 Bulan atau Lebih';
         }
+
+        const co2Avoided = produksiEnergiPerTahun * 0.76;
+        const coalBurned = produksiEnergiPerTahun * 2.002;
+        const vehicleDriven = produksiEnergiPerTahun * 26.4;
+        const gasolineBurned = produksiEnergiPerTahun * 0.279;
+        const treesNeeded = produksiEnergiPerTahun * 0.023;
+
+        setCo2Avoided(co2Avoided.toFixed(2).toString())
+        setCoalBurned(coalBurned.toFixed(2).toString())
+        setVehicleDriven(vehicleDriven.toFixed(2).toString())
+        setGasolineBurned(gasolineBurned.toFixed(2).toString())
+        setTreesNeeded(treesNeeded.toFixed(2).toString())
+
 
 // Output hasil perhitungan
         console.log('Rekomendasi Installasi (kWp):', rekomendasiInstallasi);
@@ -169,15 +188,41 @@ export default function ZeroCapexResult() {
                             </div>
                         </div>
                         <div className="flex flex-col py-6 gap-8">
-                            {results.map((result, index) => (
-                                <div key={result.title} className="flex gap-4">
-                                    <Image src={result.icon} alt="" width={50} height={30} />
-                                    <div className="flex flex-col">
-                                        <p className="text-white text-sm">{result.title}</p>
-                                        <h4 className="text-white text-2xl font-bold">{result.description}</h4>
-                                    </div>
+                            <div className="flex gap-4">
+                                <Image src="/images/icon_zero_capex_1.png" alt="" width={50} height={30} />
+                                <div className="flex flex-col">
+                                    <p className="text-white text-sm">Co2 Avoided (kg Co2/kWh)</p>
+                                    <h4 className="text-white text-2xl font-bold">{`${co2Avoided}`}</h4>
                                 </div>
-                            )) }
+                            </div>
+                            <div className="flex gap-4">
+                                <Image src="/images/icon_zero_capex_2.png" alt="" width={50} height={30} />
+                                <div className="flex flex-col">
+                                    <p className="text-white text-sm">Coal Burned (kg Co2/kWh)</p>
+                                    <h4 className="text-white text-2xl font-bold">{`${coalBurned}`}</h4>
+                                </div>
+                            </div>
+                            <div className="flex gap-4">
+                                <Image src="/images/icon_zero_capex_2.png" alt="" width={50} height={30} />
+                                <div className="flex flex-col">
+                                    <p className="text-white text-sm">Vehicle Driven (km Co2/kWh)</p>
+                                    <h4 className="text-white text-2xl font-bold">{`${vehicleDriven}`}</h4>
+                                </div>
+                            </div>
+                            <div className="flex gap-4">
+                                <Image src="/images/icon_zero_capex_2.png" alt="" width={50} height={30} />
+                                <div className="flex flex-col">
+                                    <p className="text-white text-sm">Gasoline Burned (liter Co2/kWh)</p>
+                                    <h4 className="text-white text-2xl font-bold">{`${gasolineBurned}`}</h4>
+                                </div>
+                            </div>
+                            <div className="flex gap-4">
+                                <Image src="/images/icon_zero_capex_2.png" alt="" width={50} height={30} />
+                                <div className="flex flex-col">
+                                    <p className="text-white text-sm">Tree Needed (trees Co2/kWh)</p>
+                                    <h4 className="text-white text-2xl font-bold">{`${treesNeeded}`}</h4>
+                                </div>
+                            </div>
                         </div>
                         <Image className="h-fit" src="/images/zero-capex-banner-2.png" alt="" width={500} height={500} />
                     </div>
