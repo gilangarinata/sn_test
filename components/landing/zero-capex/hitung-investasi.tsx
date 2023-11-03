@@ -61,9 +61,12 @@ export default function HistungInvestasi() {
 
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
+                <div className="bg-white/70 lg:hidden w-full h-full">
+                    <h1 className="w-full text-end p-[60px] text-6xl font-bold text-[#f9c329] text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
+                </div>
                 <div className="bg-white/70 w-full">
                     <div className="max-w-7xl mx-auto h-screen flex">
-                        <div className="w-[600px] h-full">
+                        <div className="w-full lg:w-[600px] h-full">
                             <div className="flex flex-col items-center px-4 py-6 gap-4">
                                 <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4">
                                     <h1>Mohon input data dibawah ini</h1>
@@ -141,7 +144,7 @@ export default function HistungInvestasi() {
                                 }} className="bg-[#f9c329] text-blue-950 font-bold w-full">Selanjutnya</Button>
                             </div>
                         </div>
-                        <h1 className="w-full text-end p-[60px] text-6xl font-bold text-[#f9c329] text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
+                        <h1 className="w-full hidden lg:block text-end p-[60px] text-7xl font-bold text-[#f9c329] text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
                     </div>
                 </div>
             </div>

@@ -1,7 +1,9 @@
+"use client"
 import React from "react";
 import Image from "next/image";
 import {OurExperience} from "@/components/admin/our-business/our-experience/our-experience-table";
-
+import Link from "next/link";
+import { motion } from "framer-motion"
 
 const experiences = [
     {
@@ -31,13 +33,15 @@ export default function OurExperience({ourExperience} : {ourExperience: OurExper
                         OUR EXPERIENCE
                     </h1>
                 </div>
-                <div className="grid grid-cols-3 w-full h-screen mt-[-10px]">
+                <div className="flex flex-col lg:grid lg:grid-cols-3 w-full lg:h-screen mt-[-10px]">
                     {ourExperience.map(scope => (
-                        <div key={scope.title}  className="flex w-full flex-col h-full" style={{ ...divStyle, 'backgroundImage': `url(${scope.image})`}}>
-                            <div className="flex text-white justify-end flex-col w-full h-full">
-                                <h1 className="mb-[200px] mx-20 text-3xl font-bold">{scope.title}</h1>
-                            </div>
-                        </div>
+                        <Link key={scope.title} href={scope.link} >
+                            <motion.div initial={{ scale: 1 }} whileHover={{scale: 1.1}} className="flex w-full flex-col h-[300px] lg:h-full" style={{ ...divStyle, 'backgroundImage': `url(${scope.image})`}}>
+                                <div className="flex hover:cursor-pointer text-white justify-end flex-col w-full h-full">
+                                    <h1 className="mb-20 lg:mb-[200px] mx-20 text-3xl font-bold hover:cursor-pointer">{scope.title}</h1>
+                                </div>
+                            </motion.div>
+                        </Link>
                     ))}
                 </div>
             </div>

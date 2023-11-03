@@ -109,11 +109,11 @@ export default function ZeroCapexResult() {
         const gasolineBurned = produksiEnergiPerTahun * 0.279;
         const treesNeeded = produksiEnergiPerTahun * 0.023;
 
-        setCo2Avoided(co2Avoided.toFixed(2).toString())
-        setCoalBurned(coalBurned.toFixed(2).toString())
-        setVehicleDriven(vehicleDriven.toFixed(2).toString())
-        setGasolineBurned(gasolineBurned.toFixed(2).toString())
-        setTreesNeeded(treesNeeded.toFixed(2).toString())
+        setCo2Avoided(Math.floor(co2Avoided).toLocaleString('en-US').replace(/,/g, '.').toString())
+        setCoalBurned(Math.floor(coalBurned).toLocaleString('en-US').replace(/,/g, '.').toString())
+        setVehicleDriven(Math.floor(vehicleDriven).toLocaleString('en-US').replace(/,/g, '.').toString())
+        setGasolineBurned(Math.floor(gasolineBurned).toLocaleString('en-US').replace(/,/g, '.').toString())
+        setTreesNeeded(Math.floor(treesNeeded).toLocaleString('en-US').replace(/,/g, '.').toString())
 
 
 // Output hasil perhitungan
@@ -136,8 +136,8 @@ export default function ZeroCapexResult() {
             <div className="w-full flex flex-col bg-[#15537A] items-center min-h-screen justify-center">
                 <h1 className="mt-10 text-3xl text-white font-bold">HASIL</h1>
                 <div className="w-full">
-                    <div className="mx-auto h-screen flex gap-4 justify-between px-20">
-                        <div className="w-[400px] h-full">
+                    <div className="mx-auto mt-[800px] lg:mt-0 h-screen flex flex-col lg:flex-row gap-4 justify-center lg:justify-between lg:px-20">
+                        <div className="lg:w-[400px]">
                             <div className="flex flex-col items-center px-4 py-6 gap-4">
                                 <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4">
                                     <h1>Rekomendasi Installasi</h1>
@@ -187,7 +187,7 @@ export default function ZeroCapexResult() {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col py-6 gap-8">
+                        <div className="flex flex-col py-6 gap-8 mx-10">
                             <div className="flex gap-4">
                                 <Image src="/images/icon_zero_capex_1.png" alt="" width={50} height={30} />
                                 <div className="flex flex-col">
@@ -224,7 +224,7 @@ export default function ZeroCapexResult() {
                                 </div>
                             </div>
                         </div>
-                        <Image className="h-fit" src="/images/zero-capex-banner-2.png" alt="" width={500} height={500} />
+                        <Image className="h-fit pb-[600px]" src="/images/zero-capex-banner-2.png" alt="" width={500} height={500} />
                     </div>
                 </div>
             </div>

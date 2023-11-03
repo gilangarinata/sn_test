@@ -23,7 +23,7 @@ import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 
 export default function CareerDetail({career} : {career: CareerMdl}) {
     return (
-        <div className="w-full flex flex-col bg-[#15537A] items-center min-h-screen pt-10">
+        <div className="w-full px-10 flex flex-col bg-[#15537A] items-center min-h-screen pt-10">
             <div className="flex flex-col w-full gap-4 max-w-7xl">
                 <div className="flex flex-col pt-4 gap-4 divide-y">
                     <div className="flex justify-between">

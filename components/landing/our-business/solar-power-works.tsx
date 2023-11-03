@@ -40,7 +40,7 @@ export default function SolarPowerWorks({solarPowerWorks} : {solarPowerWorks: So
             setCurrentSlide(to)
         }} {...properties}>
             {solarPowerWorks.map((slideImage, index) => (
-                <div key={slideImage.id} className="w-full bg-[#FABD24] pt-8 h-screen">
+                <div key={slideImage.id} className="w-full bg-[#FABD24] pt-8 h-screen px-6">
                     <div className="w-full max-w-5xl mx-auto">
                         <div className="w-full h-[500px] lg:lg:h-[calc(100vh-60px)] flex flex-col">
                             <div className="flex flex-col md:flex-row items-center h-full justify-center">

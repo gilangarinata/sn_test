@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion"
 import {
     ArrowLeft,
     ArrowRight,
@@ -11,6 +10,7 @@ import {
 } from "lucide-react";
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image';
+import { motion } from "framer-motion"
 import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import {updateBanner} from "@/lib/actions/admin/banner.action";
@@ -49,9 +49,11 @@ export default function WhySolar({whySolar} : {whySolar: WhySolar[]}) {
 
     return (
         <div className="w-full flex flex-col items-center py-10 h-screen justify-center">
-            <h1 className="text-[#15537A] text-3xl font-bold">
-                WHY SOLAR ?
-            </h1>
+            <motion.div initial={{ scale: 0 }} whileInView={{scale: 1}}>
+                <h1 className="text-[#15537A] text-3xl font-bold">
+                    WHY SOLAR ?
+                </h1>
+            </motion.div>
 
             <div className="max-w-2xl w-full mt-12">
                 <Slide {...properties} onStartChange={handleChange} transitionDuration={500} duration={3000}>

@@ -1,5 +1,4 @@
 "use client";
-import { motion } from "framer-motion"
 import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image';
@@ -10,6 +9,7 @@ import React, {useEffect} from "react";
 import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
 import {OurBusinessBanner} from "@/components/admin/our-business/banners/banners-table";
+import { motion } from "framer-motion"
 
 
 const divStyle = {
@@ -47,7 +47,9 @@ export default function OurBusinessBanner({banner} : {banner: OurBusinessBanner[
                                     <div className="flex text-[#154B6F] font-bold text-shadow-lg gap-2 items-center divide-x-8 divide-[#154B6F]">
                                         {/*<Image width={100} height={100} src={slideImage.logo} alt=""/>*/}
                                         <div></div>
-                                        <h2 className="px-4 text-2xl" dangerouslySetInnerHTML={{__html : slideImage.description}}/>
+                                        <motion.div initial={{ scale: 0 }} whileInView={{scale: 1}}>
+                                            <h2 className="px-4 text-2xl" dangerouslySetInnerHTML={{__html : slideImage.description}}/>
+                                        </motion.div>
                                     </div>
                                 </div>
                             </div>

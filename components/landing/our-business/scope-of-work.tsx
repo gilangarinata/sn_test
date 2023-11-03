@@ -1,5 +1,7 @@
+"use client"
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion"
 import {ScopeOfWOrk} from "@/components/admin/our-business/scope-of-works/scope-of-work-table";
 
 
@@ -40,12 +42,14 @@ export default function ScopeOfWork({scopeOfWork} : {scopeOfWork: ScopeOfWOrk[]}
     return (
         <div className="w-full flex flex-col items-center py-10 min-h-screen justify-center">
             <div className="flex flex-col items-center max-w-6xl mx-auto gap-8">
-                <h1 className="text-[#15537A] text-3xl font-bold">
-                    SCOPE OF WORK
-                </h1>
-                <div className="grid grid-cols-2 gap-4">
+                <motion.div initial={{ scale: 0 }} whileInView={{scale: 1}}>
+                    <h1 className="text-[#15537A] text-3xl font-bold">
+                        SCOPE OF WORK
+                    </h1>
+                </motion.div>
+                <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 px-6">
                     {scopeOfWork.map(scope => (
-                        <div key={scope.title} className="flex gap-4">
+                        <motion.div initial={{ scale: 0 }} whileInView={{scale: 1}} key={scope.title} className="flex gap-4">
                             <div className="relative w-[120px] h-[120px]">
                                 <Image fill style={{objectFit:"cover"}} src={scope?.image} alt="" />
                             </div>
@@ -53,7 +57,7 @@ export default function ScopeOfWork({scopeOfWork} : {scopeOfWork: ScopeOfWOrk[]}
                                 <h1 className="text-[#15537A] text-2xl font-bold">{scope.title}</h1>
                                 <p className="text-[#15537A] text-justify text-sm">{scope.description}</p>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>

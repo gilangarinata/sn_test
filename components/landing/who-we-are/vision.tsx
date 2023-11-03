@@ -130,7 +130,7 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                                 </motion.div>
                                 <p className="text-white text-justify" dangerouslySetInnerHTML={{__html : director?.messageDirectorDescription ?? ""}} />
                             </div>
-                            <div className="hidden w-0 md:w-80 md:block ">
+                            <div className="hidden w-0 md:w-80 md:block mb-[-300px]">
                                 <div className="w-[530px] h-[750px] relative">
                                     <Image src="/images/manager2.png" alt="" fill style={{objectFit: "cover"}} />
                                 </div>
