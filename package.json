@@ -49,6 +49,7 @@
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-dropzone": "^14.2.3",
+    "react-fancy-circular-carousel": "^1.0.8",
     "react-hook-form": "^7.45.4",
     "react-leaflet": "^4.2.1",
     "react-slideshow-image": "^4.2.1",

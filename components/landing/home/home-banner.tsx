@@ -69,7 +69,7 @@ export default function HomeBanner({banners} : {banners: Banner[]}) {
                     slideImage.id === "main-banner" ?
                     (
                         <div key={slideImage.url} className="w-full bg-gradient-to-b from-white to-[#FAC225]">
-                            <div className="w-full h-[500px] lg:lg:h-[calc(100vh-60px)] flex flex-col">
+                            <div className="w-full h-[300px] lg:lg:h-[calc(100vh-60px)] flex flex-col">
                                 <div className="flex flex-col md:flex-row items-center h-full justify-center">
                                     <motion.div whileInView={{scale : 1}} initial={{scale:0}} className="hidden md:flex items-center justify-center w-full">
 
@@ -82,13 +82,13 @@ export default function HomeBanner({banners} : {banners: Banner[]}) {
                                         {/*</div>*/}
                                     </motion.div>
                                     <motion.div initial={{scale : 0}} whileInView={{scale: 1}} className="flex flex-col items-start text-[#154B6F] px-16 pt-2 w-full gap-1">
-                                        <h1 className="text-4xl font-bold" dangerouslySetInnerHTML={{
+                                        <h1 className="text-xl lg:text-5xl font-bold" dangerouslySetInnerHTML={{
                                             __html: slideImage.headingTitle,
                                         }}/>
-                                        <h2 className="text-xl font-semibold" dangerouslySetInnerHTML={{
+                                        <h2 className="text-sm lg:text-xl font-semibold" dangerouslySetInnerHTML={{
                                             __html: slideImage.subHeading,
                                         }}/>
-                                        <p dangerouslySetInnerHTML={{
+                                        <p className="text-xs lg:text-lg" dangerouslySetInnerHTML={{
                                             __html: slideImage.description,
                                         }}/>
                                         <Link href={slideImage.url} className="mt-4">
@@ -102,11 +102,13 @@ export default function HomeBanner({banners} : {banners: Banner[]}) {
                     (
                         <a key={index} href={slideImage.url} target="_blank">
                             <div>
-                                <div className="flex items-center justify-center h-[500px] lg:h-[calc(100vh-60px)]" style={{ ...divStyle, 'backgroundImage': `url(${slideImage.image})`}}>
-                                    <div className="w-full h-full px-20 pt-10 bg-gradient-to-b from-white to-transparent">
+                                <div className="flex items-center justify-center h-[300px] lg:h-[calc(100vh-60px)]" style={{ ...divStyle, 'backgroundImage': `url(${slideImage.image})`}}>
+                                    <div className="w-full h-full lg:px-20 pt-10 bg-gradient-to-b from-white to-transparent">
                                         <div className="flex text-[#154B6F] font-bold text-shadow-lg gap-2 items-center divide-x divide-[#154B6F]">
-                                            <Image width={100} height={100} src={slideImage.logo} alt=""/>
-                                            <h2 className="px-4 text-2xl" dangerouslySetInnerHTML={{__html : slideImage.description}}/>
+                                            <div className="relative w-20 h-20">
+                                                <Image fill className="object-fill" src={slideImage.logo} alt="" />
+                                            </div>
+                                            <h2 className="px-4 text-sm lg:text-2xl" dangerouslySetInnerHTML={{__html : slideImage.description}}/>
                                         </div>
                                     </div>
                                 </div>

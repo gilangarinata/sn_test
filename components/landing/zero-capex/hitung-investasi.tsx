@@ -88,11 +88,11 @@ export default function HistungInvestasi() {
                                     <p>Lokasi Pemasangan</p>
                                     <div className="flex gap-4">
                                         <div className={cn("flex flex-col items-center hover:cursor-pointer", lokasiPemasangan === "rooftop" ? "bg-yellow-500" : "")} onClick={()=> setLokasiPemasangan("rooftop")}>
-                                            <Image width={50} height={50} src="/images/scope-work-1.png" alt="" />
+                                            <Image width={50} height={50} src="/images/ic_zero_capex_1.png" alt="" />
                                             <p>Rooftop</p>
                                         </div>
                                         <div className={cn("flex flex-col items-center", lokasiPemasangan === "ground_mounted" ? "bg-yellow-500" : "")} onClick={() => setLokasiPemasangan("ground_mounted")}>
-                                            <Image width={50} height={50} src="/images/scope-work-1.png" alt="" />
+                                            <Image width={50} height={50} src="/images/ic_zero_capex_2.png" alt="" />
                                             <p>Ground Mounted</p>
                                         </div>
                                     </div>
@@ -144,7 +144,7 @@ export default function HistungInvestasi() {
                                 }} className="bg-[#f9c329] text-blue-950 font-bold w-full">Selanjutnya</Button>
                             </div>
                         </div>
-                        <h1 className="w-full hidden lg:block text-end p-[60px] text-7xl font-bold text-[#f9c329] text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
+                        <h1 className="w-full hidden lg:block text-center lg:text-end p-[60px] text-7xl font-bold text-[#f9c329] text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
                     </div>
                 </div>
             </div>

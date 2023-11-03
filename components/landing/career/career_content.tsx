@@ -105,8 +105,8 @@ export default function CareerContent() {
 
     return (
         <div className="w-full flex flex-col bg-[#15537A] h-[1200px] pt-10">
-            <div className="flex w-full max-w-7xl justify-center lg:justify-end gap-4">
-                <Input className="w-60" type="text" placeholder="Cari pekerjaan" ref={inputRef} />
+            <div className="flex flex-col px-10 lg:flex-row w-full max-w-7xl justify-center lg:justify-end gap-4">
+                <Input className="w-full lg:w-60" type="text" placeholder="Cari pekerjaan" ref={inputRef} />
                 <Button className="bg-[#FAC225] text-[#15537A]" onClick={(ev) => {
                     ev.preventDefault();
                     if (inputRef.current) {
@@ -116,7 +116,7 @@ export default function CareerContent() {
                 }}><SearchIcon className="mr-2" /> Cari Lowongan</Button>
             </div>
             <div className="w-full flex flex-col lg:flex-row lg:divide-x lg:divide-white">
-                <div className="w-[500px] h-fit lg:h-[500px] flex flex-col px-10 gap-2">
+                <div className="w-full lg:w-[500px] h-fit lg:h-[500px] flex flex-col px-10 gap-2">
                     <h1 className="mt-10 text-xl text-white font-bold mb-6">Departemen</h1>
                     {departements?.map((departement, index) => (
                         <div key={departement._id} className="flex gap-4">

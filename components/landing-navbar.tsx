@@ -62,7 +62,7 @@ const routes = [
 export const LandingNavBar = () => {
 
     return (
-        <nav className="bg-white flex items-center sticky top-0 z-50 px-6 py-4">
+        <nav className="bg-white flex items-center justify-between sticky top-0 z-50 px-6 py-4">
             <Link href="/" className="flex items-center">
                 <Image sizes="100vw"
                        width={0}

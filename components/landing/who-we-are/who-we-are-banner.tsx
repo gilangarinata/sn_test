@@ -42,12 +42,12 @@ export default function WhoWeAreBanner({banner} : {banner : WhoWeAreBannerConten
                 {slideImages.map((slideImage, index) =>
                     <a key={index} href={slideImage.url} target="_blank">
                         <div>
-                            <div className="flex items-center justify-center h-[500px] lg:h-[calc(100vh-60px)]" style={{ ...divStyle, 'backgroundImage': `url(${banner.image})`}}>
-                                <div className="w-full h-full px-20 pt-10 bg-gradient-to-b from-transparent to-transparent">
+                            <div className="flex items-center justify-center h-[200px] lg:h-[calc(100vh-60px)]" style={{ ...divStyle, 'backgroundImage': `url(${banner.image})`}}>
+                                <div className="w-full h-full bg-white/40 px-20 pt-10 bg-gradient-to-b from-transparent to-transparent">
                                     <div className="flex text-[#154B6F] font-bold gap-2 items-center divide-x-8 divide-white">
                                         {/*<Image width={100} height={100} src={slideImage.logo} alt=""/>*/}
                                         <div></div>
-                                        <h2 className="px-4 text-4xl font-bold mt-12" dangerouslySetInnerHTML={{__html : banner.bannerHeadingTitle}}/>
+                                        <h2 className="px-4 text-lg lg:text-4xl text-shadow-lg font-bold mt-12" dangerouslySetInnerHTML={{__html : banner.bannerHeadingTitle}}/>
                                     </div>
                                 </div>
                             </div>
