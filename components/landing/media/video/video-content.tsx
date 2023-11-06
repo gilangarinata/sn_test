@@ -20,8 +20,8 @@ import {Video} from "@/components/admin/media/video/video-table";
 
 export default function VideoContent({ videos } : { videos: Video[]}) {
     return (
-        <div className="w-full flex flex-col mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-4 max-w-5xl gap-4 mb-8">
+        <div className="w-full flex flex-col mb-8 items-center justify-center">
+            <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 w-full px-2 lg:min-w-[810px] max-w-5xl gap-4 mb-8">
                 {videos?.map(content => {
                     const match = content.videoUrl.match(/[?&]v=([^&]+)/);
                     const videoId = match ? match[1] : 'not found';

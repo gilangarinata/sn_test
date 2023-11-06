@@ -46,7 +46,7 @@ export default function ZeroCapexBanner() {
                         <div key={slideImage.url} className="w-full bg-gradient-to-b from-white to-[#FAC225]">
                             <div className="w-full h-[500px] lg:lg:h-[calc(100vh-60px)] flex flex-col">
                                 <div className="flex flex-col md:flex-row items-center h-full justify-center">
-                                    <motion.div initial={{scale : 0}} whileInView={{scale: 1}} className="flex flex-col items-start text-[#154B6F] px-16 pt-2 w-full gap-1">
+                                    <motion.div initial={{scale : 0}} whileInView={{scale: 1, transition: { duration: 1 }}} className="flex flex-col items-start text-[#154B6F] px-16 pt-2 w-full gap-1">
                                         <h1 className="text-4xl font-bold" dangerouslySetInnerHTML={{
                                             __html: slideImage.title,
                                         }}/>

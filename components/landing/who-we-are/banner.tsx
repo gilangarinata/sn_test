@@ -37,18 +37,18 @@ export function Banner({banner} : {banner : WhoWeAreBannerContent}) {
     return (
         <div className="flex flex-col">
             <WhoWeAreBanner banner={banner} />
-            <section className="w-full bg-[#15537A] pt-8 lg:h-screen">
+            <section className="w-full bg-[#15537A] py-10 lg:pt-8 lg:h-screen">
                 <div className="w-full lg:max-w-7xl flex mx-auto flex-col px-6 md:px-20 h-full">
                     <div className="w-full flex h-full">
                         <div className="flex w-full flex-col gap-6 justify-center">
                             <motion.div
                                 initial={{ scale: 0 }}
-                                whileInView={{scale: 1}}
+                                whileInView={{scale: 1, transition: { duration: 1 }}}
                                 className="text-4xl font-bold">
                                     <h1 className="text-white text-2xl font-semibold" dangerouslySetInnerHTML={{__html : banner?.headingTitle ?? ""}}/>
                             </motion.div>
                             <motion.p initial={{ opacity: 0, scale: 0.5 }}
-                                      whileInView={{ opacity: 1, scale: 1 }}
+                                      whileInView={{scale: 1,opacity: 1, transition: { duration: 1 }}}
                                       transition={{ duration: 1 }} className="text-white" dangerouslySetInnerHTML={{__html : banner?.description ?? ""}} />
                         </div>
                         <div className="hidden w-0 md:w-80 md:block "></div>

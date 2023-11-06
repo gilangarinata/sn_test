@@ -47,7 +47,7 @@ export default function WhoWeAreBanner({banner} : {banner : WhoWeAreBannerConten
                                     <div className="flex text-[#154B6F] font-bold gap-2 items-center divide-x-8 divide-white">
                                         {/*<Image width={100} height={100} src={slideImage.logo} alt=""/>*/}
                                         <div></div>
-                                        <h2 className="px-4 text-lg lg:text-4xl text-shadow-lg font-bold mt-12" dangerouslySetInnerHTML={{__html : banner.bannerHeadingTitle}}/>
+                                        <h2 className="px-4 text-lg lg:text-4xl text-shadow-lg font-bold lg:mt-12" dangerouslySetInnerHTML={{__html : banner.bannerHeadingTitle}}/>
                                     </div>
                                 </div>
                             </div>

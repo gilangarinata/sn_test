@@ -19,7 +19,7 @@ export default function SesnaGroup({experience} : {experience: Experience[]}) {
                         <h1 className="text-[#15537A] text-2xl font-semibold" dangerouslySetInnerHTML={{__html : mainExp?.title ?? ""}}/>
                         <p className="text-[#15537A] text-justify" dangerouslySetInnerHTML={{__html : mainExp?.description ?? ""}} />
                     </div>
-                    <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="w-full relative">
+                    <motion.div whileInView={{scale: 1, transition: { duration: 1 }}} initial={{scale: 0}} className="w-full relative">
                         <div className="relative w-[280px] h-[480px] m-auto mt-4 md:mt-0">
                             <Image fill src="/images/captain_surya.webp" alt="Captain Surya" />
                         </div>

@@ -46,12 +46,12 @@ export default function GetInTouch() {
     return (
         <div className="">
             <div className="w-screen flex flex-col bg-[#FABD24] h-fit lg:h-screen">
-                <motion.div className="flex flex-col py-10" whileInView={{scale: 1}} initial={{scale: 0}}>
+                <motion.div className="flex flex-col py-10" whileInView={{scale: 1, transition: { duration: 1 }}} initial={{scale: 0}}>
                     <h1 className="w-full text-[#15537A]/20 text-center text-7xl lg:text-[10rem] font-bold">GET IN TOUCH</h1>
                     <h1 className="w-full text-[#15537A] text-center text-4xl font-bold mb-8 mt-[-50px] lg:mt-[-130px]">GET IN TOUCH</h1>
                 </motion.div>
                 <div className="flex flex-col md:flex-row items-center gap-4 lg:mt-20">
-                    <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="px-4 lg:w-1/2 lg:px-10 flex flex-col items-center lg:items-start">
+                    <motion.div whileInView={{scale: 1, transition: { duration: 1 }}} initial={{scale: 0}} className="px-4 lg:w-1/2 lg:px-10 flex flex-col items-center lg:items-start">
                         <p className="text-justify text-[#15537A]">
                             Are you passionate about shaping a
                             sustainable future? Whether you
@@ -62,7 +62,7 @@ export default function GetInTouch() {
                         <h1 className="text-2xl text-[#15537A] text-justify mt-10 lg:mt-20 font-bold">“Just Like The Sun,<br/>
                             We are Here For You”</h1>
                     </motion.div>
-                    <motion.div whileInView={{scale: 1}} initial={{scale: 0}} className="flex flex-col gap-4 w-3/4 lg:mr-20">
+                    <motion.div whileInView={{scale: 1, transition: { duration: 1 }}} initial={{scale: 0}} className="flex flex-col gap-4 w-3/4 lg:mr-20">
                         <div  className="w-full h-fit border-t-white rounded-lg grid gap-2 gap-y-6 grid-cols-1 lg:grid-cols-2">
                             <div className="flex flex-col text-[#15537A] gap-2">
                                 <Input type="text" placeholder="Enter Your Name" onChange={(e) => {

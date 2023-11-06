@@ -48,7 +48,7 @@ export function Subsidiaries({subsidiaries} : {subsidiaries : Subsidiaries[]}) {
                         <div className="flex w-full flex-col gap-6">
                             <motion.div
                                 initial={{ scale: 0 }}
-                                whileInView={{scale: 1}}
+                                whileInView={{scale: 1, transition: { duration: 1 }}}
                                 className="text-4xl font-bold"
                             >
                                 <h1 className="text-[#15537A] text-3xl font-bold">
@@ -58,14 +58,14 @@ export function Subsidiaries({subsidiaries} : {subsidiaries : Subsidiaries[]}) {
                             <div className="flex flex-col gap-4">
                                 {subsidiaries.map((subsidiary => {
                                     return (
-                                        <div key={subsidiary.image} className="bg-[#15537A] rounded-3xl flex flex-col lg:flex-row justify-center items-center p-6 gap-4">
+                                        <motion.div initial={{scale : 0}} whileInView={{scale: 1, transition: { duration: 1 }}} key={subsidiary.image} className="bg-[#15537A] rounded-3xl flex flex-col lg:flex-row justify-center items-center p-6 gap-4">
                                             <div className="bg-white py-2 w-fit h-fit rounded-3xl p-2">
                                                 <div className="w-[220px] h-[150px] relative ">
                                                     <Image className="rounded-full" style={{objectFit: "contain"}} fill src={subsidiary.image} alt={subsidiary.description} draggable={false}/>
                                                 </div>
                                             </div>
                                             <p className="text-white" dangerouslySetInnerHTML={{__html: subsidiary.description}} />
-                                        </div>
+                                        </motion.div>
                                     )
                                 }))}
                             </div>

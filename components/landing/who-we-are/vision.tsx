@@ -114,24 +114,18 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                     </div>
                 </div>
 
-                <div className="w-full bg-[#15537A] pt-8 h-screen">
-                    <div className="w-full lg:max-w-5xl flex mx-auto flex-col px-6 md:px-20">
+                <div className="w-full bg-[#15537A] py-10 lg:pt-8 lg:h-screen">
+                    <div className="w-full flex mx-auto flex-col">
                         <div className="w-full flex items-center justify-center">
-                            <div className="flex w-full flex-col gap-6">
-                                <motion.div
-                                    initial={{ opacity: 0.8, y: '-50%', x:'0%', rotate: -90 }}
-                                    whileInView={{ opacity: 1, y: 0, x: 0, rotate: 0 }}
-                                    // animate={{ opacity: 1, y: 0, rotate: 0 }}
-                                    // exit={{ opacity: 0, y: '-50%', rotate: -180 }}
-                                    transition={{ duration: 1 }}
-                                    className="text-4xl font-bold "
-                                >
+                            <div className="flex w-full flex-col gap-6 px-10">
+                                <motion.div initial={{scale : 0}} whileInView={{scale: 1, transition: { duration: 1 }}}
+                                    className="text-4xl font-bold">
                                     <h1 className="text-white text-2xl  font-semibold" dangerouslySetInnerHTML={{__html : director?.messageDirectorTitle ?? ""}}/>
                                 </motion.div>
                                 <p className="text-white text-justify" dangerouslySetInnerHTML={{__html : director?.messageDirectorDescription ?? ""}} />
                             </div>
-                            <div className="hidden w-0 md:w-80 md:block mb-[-300px]">
-                                <div className="w-[530px] h-[750px] relative">
+                            <div className="hidden w-0 md:w-full md:block mb-[-300px]">
+                                <div className="w-full h-[750px] relative">
                                     <Image src="/images/manager2.png" alt="" fill style={{objectFit: "cover"}} />
                                 </div>
                             </div>

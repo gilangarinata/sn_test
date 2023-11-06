@@ -31,7 +31,7 @@ export default function SatisfiedCustomer({customers} : {customers : Customer[]}
                     <div onClick={onPrevClick} className="hover:cursor-pointer">
                         <ChevronLeftCircle />
                     </div>
-                    <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} className="w-full">
+                    <motion.div initial={{ scale: 0 }} whileInView={{scale: 1, transition: { duration: 1 }}} className="w-full">
                         <ResponsiveContainer
                             carouselRef={ref}
                             render={(parentWidth, carouselRef) => {
