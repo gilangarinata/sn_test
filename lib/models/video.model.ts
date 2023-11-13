@@ -9,6 +9,10 @@ const newsSchema = new  mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "NewsCategory"
+    },
 });
 
 const Video = mongoose.models.Video || mongoose.model('Video', newsSchema);

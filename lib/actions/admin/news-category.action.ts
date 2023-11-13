@@ -10,13 +10,15 @@ interface Params {
     id: string,
     name: string,
     banner: string,
-    description: string
+    description: string,
+    type: string
 }
 
-export async function fetchCategories() {
+export async function fetchCategories(type: string) {
     await connectToDb();
+    console.log("type::", type)
     try {
-        const bannersQuery = NewsCategory.find()
+        const bannersQuery = NewsCategory.find({type : type})
         const categories = await bannersQuery.exec();
         return {
             categories
@@ -46,6 +48,7 @@ export async function updateNewsCategory({
        name,
        banner,
        description,
+        type
    } : Params): Promise<void> {
     await connectToDb();
     try {
@@ -57,12 +60,15 @@ export async function updateNewsCategory({
                 name: name,
                 banner: banner,
                 description: description,
+                type: type
             }, { upsert: true }
         )
     }catch (error) {
         throw new Error(`Failed to update news category : ${error}`)
     }
 }
+
+
 
 
 export async function deleteNewsCategory({id} : {id:string}): Promise<void> {

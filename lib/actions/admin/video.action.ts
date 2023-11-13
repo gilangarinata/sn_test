@@ -12,13 +12,42 @@ interface Params {
     title: string,
     description: string,
     videoUrl: string,
+    category: string,
 }
 
-export async function fetchAllVideos(pageNumber: number, pageSize: number,
+export async function fetchVideosByCategory(_categoryId: string, pageNumber: number, pageSize: number) {
+    await connectToDb();
+    try {
+        const skipAmount = (pageNumber - 1) * pageSize;
+
+        const bannersQuery = Video.find({category : _categoryId})
+            .skip(skipAmount)
+            .limit(pageSize)
+
+
+        const totalBannersCount = await News.countDocuments();
+
+        const banners = await bannersQuery.exec();
+        const isNext = totalBannersCount > skipAmount + banners.length;
+        return {
+            banners,
+            isNext
+        };
+    }catch (error) {
+        console.log("Failed to get banner")
+        return null;
+    }
+}
+
+export async function fetchAllVideos(pageNumber: number, pageSize: number, categoryId?: string,
                                    year?: number) {
     await connectToDb();
     try {
         const filters: any = {};
+
+        if (categoryId) {
+            filters.category = categoryId;
+        }
 
         if (year) {
             // Assuming you have a 'date' field in your news documents
@@ -29,6 +58,13 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number,
         const bannersQuery = Video.find(filters)
             .skip(skipAmount)
             .limit(pageSize)
+            .populate([
+                {
+                    path: "category",
+                    model: NewsCategory,
+                }
+            ])
+            .lean()
 
 
         const totalBannersCount = await Video.countDocuments();
@@ -65,12 +101,15 @@ export async function fetchVideoById(id: string) {
 
 export async function updateVideo({
        id,
-       title, description, videoUrl,
+       title, description, videoUrl, category
    } : Params): Promise<void> {
     await connectToDb();
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
+
+        const cat = await NewsCategory.findOne({ name: category });
+
         console.log(currentId);
         await Video.findOneAndUpdate(
             {id: currentId},
@@ -78,6 +117,7 @@ export async function updateVideo({
                 title: title,
                 description: description,
                 videoUrl: videoUrl,
+                category: cat._id,
             }, { upsert: true }
         )
     }catch (error) {

@@ -47,7 +47,7 @@ export default function CareerBanner() {
                                     <div className="flex text-[#154B6F] font-bold text-shadow-lg gap-2 items-center divide-x-8 divide-[#154B6F]">
                                         {/*<Image width={100} height={100} src={slideImage.logo} alt=""/>*/}
                                         <div></div>
-                                        {/*<h2 className="px-4 text-2xl" dangerouslySetInnerHTML={{__html : slideImage.description}}/>*/}
+                                        <h2 className="px-4 text-2xl" >Page Under Construction - Coming Soon!</h2>
                                     </div>
                                 </div>
                             </div>

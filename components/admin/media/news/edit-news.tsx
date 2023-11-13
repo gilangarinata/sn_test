@@ -102,7 +102,7 @@ function AddEditNews({ achievement, onNeedRefresh}: Props) {
     });
 
     async function getCategories() {
-       const cat = await fetchCategories()
+       const cat = await fetchCategories("news")
         setCategories(cat?.categories)
     }
 

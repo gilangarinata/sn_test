@@ -39,11 +39,11 @@ export type Category = {
     description: string
 }
 
-function CategoryTable() {
+function CategoryTable({type} : {type: string}) {
 
     const [achievements, setAchievements] = useState<Category[]>()
     async function getAchievements() {
-        const achievements = await fetchCategories()
+        const achievements = await fetchCategories(type)
         setAchievements(achievements?.categories);
     }
 
@@ -116,7 +116,7 @@ function CategoryTable() {
                             <DialogTitle>{"Add new Category"}</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto max-h-[420px]">
-                            <AddEditCategory achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
+                            <AddEditCategory type={type} achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
                                 setCreateBannerOpen({banner: null, isOpen:false})
                                 getAchievements();
                             }} />

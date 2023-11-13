@@ -10,7 +10,7 @@ async function CategoryPage() {
 
     return (
         <div className="flex flex-col">
-            <CategoryTable type="news" />
+            <CategoryTable type="video" />
         </div>
     )
 

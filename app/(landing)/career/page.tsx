@@ -21,7 +21,7 @@ async function LandingPage() {
     return (
        <div className="h-full">
            <CareerBanner />
-           <CareerContent />
+           {/*<CareerContent />*/}
        </div>
     )
 }

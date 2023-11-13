@@ -36,7 +36,7 @@ export default function NewsContent({ categoryId, categories} : { categoryId?: s
 
     return (
         <div className="w-full flex flex-col mb-8">
-            <div className="w-full flex justify-between p-6 max-w-5xl mx-auto items-center">
+            <div className="w-full flex flex-col lg:flex-row justify-between p-6 max-w-5xl mx-auto items-center">
                 <div className="w-full flex gap-4 overflow-scroll">
                     {categories.map(category => (
                         <Link key={category.id} href={"/media/news/"+category._id}>
@@ -48,7 +48,7 @@ export default function NewsContent({ categoryId, categories} : { categoryId?: s
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
-                        <div className="rounded-sm border border-slate-500">
+                        <div className="rounded-sm border border-slate-500 mt-4 lg:mt-0">
                             <div className="flex items-center px-2 py-1 gap-1">
                                 <p className="text-sm">Archive</p>
                                 <ChevronDown width={15} />

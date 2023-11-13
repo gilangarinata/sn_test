@@ -14,7 +14,7 @@ import {fetchCategories} from "@/lib/actions/admin/news-category.action";
 import {Category} from "@/components/admin/media/category/category-table";
 
 async function MediaPage() {
-    const categories = await fetchCategories()
+    const categories = await fetchCategories("news")
 
     return (
        <div className="h-full">

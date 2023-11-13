@@ -9,7 +9,15 @@ import Link from "next/link";
 import {redirect, useRouter} from "next/navigation";
 import {cn} from "@/lib/utils";
 import cookie from 'js-cookie';
-
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 
 const scopes = [
@@ -70,9 +78,24 @@ export default function HistungInvestasi() {
                             <div className="flex flex-col items-center px-4 py-6 gap-4">
                                 <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4">
                                     <h1>Mohon input data dibawah ini</h1>
-                                    <Input type="text" placeholder="Jenis Property" onChange={(e) => {
-                                        setJenisProperty(e.target.value);
-                                    }} />
+                                    {/*<Input type="text" placeholder="Jenis Property" onChange={(e) => {*/}
+                                    {/*    setJenisProperty(e.target.value);*/}
+                                    {/*}} />*/}
+                                    <Select onValueChange={(val) => {
+                                        setJenisProperty(val)
+                                    }}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Jenis Property" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectItem  value="rumah">Rumah</SelectItem>
+                                                <SelectItem value="tambang">Tambang</SelectItem>
+                                                <SelectItem value="industri">Industri</SelectItem>
+                                                <SelectItem value="bangunan_publik">Bangunan publik</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
                                     <Input type="number" placeholder="Daya Listrik (kVa)" onChange={(e) => {
                                         setDayaListrik(e.target.value)
                                     }} />
@@ -140,7 +163,7 @@ export default function HistungInvestasi() {
                                     cookie.set("lokasiPemasangan",lokasiPemasangan);
 
 
-                                    router.push('/zero-capex-result');
+                                    // router.push('/zero-capex-result');
                                 }} className="bg-[#f9c329] text-blue-950 font-bold w-full">Selanjutnya</Button>
                             </div>
                         </div>

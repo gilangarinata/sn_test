@@ -5,11 +5,18 @@ const newsCategorySchema = new  mongoose.Schema({
     name: String,
     banner: String,
     description: String,
+    type: String,
     news: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "News",
         },
+    ],
+    videos: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Video",
+        }
     ]
 });
 

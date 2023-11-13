@@ -67,6 +67,9 @@ export const VideoValidation = z.object({
 function AddEditVideo({ achievement, onNeedRefresh}: Props) {
     const descContent = convertFromValidHtmlStyle(achievement?.description ?? "")
     const descInitState = convertHTMLToEditorState(`<p>${descContent}</p>`)
+    const [categories, setCategories] = React.useState<Category[]>()
+    const [open, setOpen] = React.useState(false)
+    const [value, setValue] = React.useState(achievement?.category?.name ?? "")
 
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
     const [saveLoading, setSaveLoading] = useState(false);
@@ -78,6 +81,15 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
             videoUrl: achievement?.videoUrl ?? "",
         },
     });
+
+    async function getCategories() {
+        const cat = await fetchCategories("video")
+        setCategories(cat?.categories)
+    }
+
+    useEffect(() => {
+        getCategories()
+    },[])
 
 
     const onSubmit = async (values: z.infer<typeof VideoValidation>) => {
@@ -97,6 +109,7 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
                 title: values.title,
                 description: descTitle,
                 videoUrl: values.videoUrl,
+                category: value ?? "",
             })
 
             setSaveLoading(false)
@@ -133,6 +146,49 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
                         </FormItem>
                     )}
                 />
+                <Popover open={open} onOpenChange={setOpen}>
+                    <FormLabel className='text-base-semibold text-light-2'>
+                        Category
+                    </FormLabel>
+                    <PopoverTrigger asChild>
+                        <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={open}
+                            className="w-full justify-between"
+                        >
+                            {value
+                                ? value
+                                : "Select category..."}
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                        <Command>
+                            <CommandInput placeholder="Search framework..." />
+                            <CommandEmpty>No category found.</CommandEmpty>
+                            <CommandGroup>
+                                {categories?.map((framework) => (
+                                    <CommandItem
+                                        key={framework.name}
+                                        onSelect={(currentValue) => {
+                                            setValue(framework.name)
+                                            setOpen(false)
+                                        }}
+                                    >
+                                        <Check
+                                            className={cn(
+                                                "mr-2 h-4 w-4",
+                                                value === framework.name ? "opacity-100" : "opacity-0"
+                                            )}
+                                        />
+                                        {framework.name}
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </Command>
+                    </PopoverContent>
+                </Popover>
                 <div className="flex flex-col gap-2">
                     <p>Description</p>
                     <RichTextEditor

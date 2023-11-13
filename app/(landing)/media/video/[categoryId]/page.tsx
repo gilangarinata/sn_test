@@ -8,21 +8,24 @@ import Calculator from "@/components/landing/home/calculator";
 import FooterLanding from "@/components/footer-landing";
 import NewsBanner from "@/components/landing/media/news/news-banner";
 import NewsContent from "@/components/landing/media/news/news-content";
-import {fetchAllNews} from "@/lib/actions/admin/news.action";
+import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
 import {News} from "@/components/admin/media/news/news-table";
-import {fetchCategories} from "@/lib/actions/admin/news-category.action";
+import {fetchCategories, fetchCategory} from "@/lib/actions/admin/news-category.action";
 import {Category} from "@/components/admin/media/category/category-table";
-import VideoContent from "@/components/landing/media/video/video-content";
 import {fetchAllVideos} from "@/lib/actions/admin/video.action";
+import VideoContent from "@/components/landing/media/video/video-content";
 import {Video} from "@/components/admin/media/video/video-table";
 
-async function MediaPage() {
-    const video = await fetchAllVideos(1,2000)
+async function MediaPage({ params }: { params: { categoryId: string } }) {
+    const video = await fetchAllVideos(1,2000, params.categoryId)
+    const videos = video?.banners as Video[]
+    //filter by category
+
     const categories = await fetchCategories("video")
     return (
-       <div className="h-full">
-           <VideoContent categories={categories?.categories ?? []} videos={video?.banners as Video[]}  />
-       </div>
+        <div className="h-full">
+            <VideoContent categories={categories?.categories ?? []} videos={videos}  />
+        </div>
     )
 }
 

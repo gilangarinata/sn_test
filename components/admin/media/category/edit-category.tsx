@@ -44,6 +44,7 @@ const Editor = dynamic(() => import("react-draft-wysiwyg")
 interface Props {
     achievement?: Category;
     onNeedRefresh : () => void
+    type: string
 }
 
 interface UploadResult {
@@ -51,7 +52,7 @@ interface UploadResult {
     fileUrl: string;
 }
 
-function AddEditCategory({ achievement, onNeedRefresh}: Props) {
+function AddEditCategory({ achievement, onNeedRefresh, type}: Props) {
     const startUpload = async (logo: File[]) : Promise<UploadResult[]> => {
         var file = logo[0];
         const formData = new FormData();
@@ -103,7 +104,8 @@ function AddEditCategory({ achievement, onNeedRefresh}: Props) {
                 id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
                 name: values.name,
                 description: values.description,
-                banner: values.banner
+                banner: values.banner,
+                type: type
             })
 
             setSaveLoading(false)

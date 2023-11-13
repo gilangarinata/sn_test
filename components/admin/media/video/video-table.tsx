@@ -40,7 +40,8 @@ export type Video = {
     title: string,
     description: string,
     videoUrl: string,
-    createdAt: Date
+    createdAt: Date,
+    category: Category
 }
 
 function VideoTable() {
@@ -131,6 +132,7 @@ function VideoTable() {
                                 <TableHead>Title</TableHead>
                                 <TableHead>Description</TableHead>
                                 <TableHead>VideoUrl</TableHead>
+                                <TableHead>Category</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
@@ -142,6 +144,7 @@ function VideoTable() {
                                         <p className="max-h-24 flex overflow-y-scroll" dangerouslySetInnerHTML={{__html: experience.description}} />
                                     </TableCell>
                                     <TableCell>{experience.videoUrl}</TableCell>
+                                    <TableCell>{experience.category?.name}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
                                             <Trash2Icon onClick={() => setOpen({banner: experience, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />

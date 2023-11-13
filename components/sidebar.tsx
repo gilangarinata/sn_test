@@ -103,12 +103,12 @@ const routes = [
             },
         ]
     },
-    {
-        label : "Zero Capex",
-        icon : CircleIcon,
-        href : "/video",
-        children: []
-    },
+    // {
+    //     label : "Zero Capex",
+    //     icon : CircleIcon,
+    //     href : "/video",
+    //     children: []
+    // },
     {
         label : "Media",
         icon : NewspaperIcon,
@@ -117,6 +117,10 @@ const routes = [
             {
                 label : "Category",
                 href: "/admin-panel/media/category"
+            },
+            {
+                label : "Video Category",
+                href: "/admin-panel/media/video-category"
             },
             {
                 label : "News",

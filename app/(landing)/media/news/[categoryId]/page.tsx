@@ -14,7 +14,7 @@ import {fetchCategories, fetchCategory} from "@/lib/actions/admin/news-category.
 import {Category} from "@/components/admin/media/category/category-table";
 
 async function MediaPage({ params }: { params: { categoryId: string } }) {
-    const categories = await fetchCategories()
+    const categories = await fetchCategories("news")
 
     const category = (await fetchCategory(params.categoryId))?.categories as Category
     return (
