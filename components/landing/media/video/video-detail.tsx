@@ -21,6 +21,7 @@ export default function VideoDetail({news} : {news : Video}) {
         width: "640",
         playerVars: {
             autoplay: 1,
+            origin: "https://sesna.id"
         },
     };
 
@@ -32,7 +33,9 @@ export default function VideoDetail({news} : {news : Video}) {
                 <div className="w-full flex flex-col gap-6">
 
                     <YouTube videoId={videoId}
-                             opts={opts} />
+                             opts={opts}
+
+                    />
 
                     <h1 className="text-3xl font-semibold">{news?.title}</h1>
                     <p className="text-gray-400">{news?.createdAt?.toLocaleTimeString()}</p>
