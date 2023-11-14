@@ -15,11 +15,11 @@ import {Category} from "@/components/admin/media/category/category-table";
 
 async function MediaPage() {
     const categories = await fetchCategories("news")
-
+    const news = await fetchAllNews(1, 200)
     return (
        <div className="h-full">
            <NewsBanner image="" title="" />
-           <NewsContent categories={categories?.categories as Category[]} />
+           <NewsContent newsA={news?.banners as News[]} categories={categories?.categories as Category[]} />
        </div>
     )
 }
