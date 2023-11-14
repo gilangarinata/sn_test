@@ -8,9 +8,6 @@ const nextConfig = {
     },
     optimizeFonts: false,
     compress: false,
-    optimization: {
-        minimize: false,
-    },
     compiler: {
         removeConsole: false,
     },
