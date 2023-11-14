@@ -17,10 +17,12 @@ async function MediaPage({ params }: { params: { categoryId: string } }) {
     const categories = await fetchCategories("news")
 
     const category = (await fetchCategory(params.categoryId))?.categories as Category
+
+    const news = await fetchAllNews(1, 200, params.categoryId)
     return (
        <div className="h-full">
            <NewsBanner image={category?.banner ?? ""} title={category?.description ?? ""} />
-           <NewsContent categoryId={params.categoryId} categories={categories?.categories as Category[]} />
+           <NewsContent newsA={news?.banners as News[]} categoryId={params.categoryId} categories={categories?.categories as Category[]} />
        </div>
     )
 }

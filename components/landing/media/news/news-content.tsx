@@ -17,9 +17,9 @@ import {fetchCareerByDepIds} from "@/lib/actions/admin/career.action";
 import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
 
-export default function NewsContent({ categoryId, categories} : { categoryId?: string, categories: Category[]}) {
+export default function NewsContent({ categoryId, categories, newsA} : { categoryId?: string, categories: Category[], newsA?: News[]}) {
     const pathName = usePathname();
-    const [news, setNews] = useState<News[]>()
+    const [news, setNews] = useState<News[]>(newsA ?? [])
     const [totalBannersCount, setTotalBannersCount] = useState<number>()
     const [year, setYear] = useState<number>()
 
