@@ -10,7 +10,10 @@ const nextConfig = {
     compress: false,
     optimization: {
         minimize: false,
-    }
+    },
+    compiler: {
+        removeConsole: false,
+    },
 }
 
 module.exports = nextConfig
