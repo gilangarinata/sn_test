@@ -7,6 +7,10 @@ const nextConfig = {
         serverActions: true,
     },
     optimizeFonts: false,
+    compress: false,
+    optimization: {
+        minimize: false,
+    }
 }
 
 module.exports = nextConfig
