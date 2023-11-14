@@ -38,6 +38,7 @@ export default function NewsContent({ categoryId, categories} : { categoryId?: s
         <div className="w-full flex flex-col mb-8">
             <div className="w-full flex flex-col lg:flex-row justify-between p-6 max-w-5xl mx-auto items-center">
                 <div className="w-full flex gap-4 ">
+                    {news?.length}
                     {categories.map(category => (
                         <Link key={category.id} href={"/media/news/"+category._id}>
                             <p className={cn("font-bold", pathName == "/media/news/"+category._id ? "text-yellow-400 underline underline-offset-8" : "")}>
