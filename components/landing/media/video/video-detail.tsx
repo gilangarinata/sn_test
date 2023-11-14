@@ -21,7 +21,7 @@ export default function VideoDetail({news} : {news : Video}) {
         width: "640",
         playerVars: {
             autoplay: 1,
-            origin: "https://sesna.id"
+            // origin: "https://sesna.id"
         },
     };
 
@@ -32,10 +32,21 @@ export default function VideoDetail({news} : {news : Video}) {
             <div className="flex flex-col gap-16 md:flex-row md:gap-8">
                 <div className="w-full flex flex-col gap-6">
 
-                    <YouTube videoId={videoId}
-                             opts={opts}
+                    <div className="video-responsive">
+                        <iframe
+                            width="853"
+                            height="480"
+                            src={`https://www.youtube.com/embed/${videoId}`}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title="Embedded youtube"
+                        />
+                    </div>
+                    {/*<YouTube videoId={videoId}*/}
+                    {/*         opts={opts}*/}
 
-                    />
+                    {/*/>*/}
 
                     <h1 className="text-3xl font-semibold">{news?.title}</h1>
                     <p className="text-gray-400">{news?.createdAt?.toLocaleTimeString()}</p>

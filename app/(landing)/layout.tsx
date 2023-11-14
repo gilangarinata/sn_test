@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-        <main className="w-screen">
+        <main className="w-full">
           <div className="mx-auto h-full">
               <LandingNavBar />
               <div className="flex flex-col">
