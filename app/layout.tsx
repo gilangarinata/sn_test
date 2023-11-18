@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-      <ClerkProvider afterSignInUrl="https://sesna.id/admin-panel">
+      <ClerkProvider>
         <html lang="en">
             <Head>
                 <link
