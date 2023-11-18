@@ -1,9 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import { ClerkProvider } from '@clerk/nextjs'
 import '@fontsource/poppins';
 import Head from "next/head";
+import {ClerkProvider} from "@clerk/nextjs";
 
 const poppins = Poppins({ subsets: ['latin'], weight: "400" })
 
@@ -28,6 +28,6 @@ export default function RootLayout({
             </Head>
           <body className={poppins.className}>{children}</body>
         </html>
-      </ClerkProvider>
+       </ClerkProvider>
   )
 }

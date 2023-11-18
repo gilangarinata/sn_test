@@ -1,13 +1,23 @@
-import { authMiddleware } from "@clerk/nextjs";
+// import { authMiddleware } from "@clerk/nextjs";
+//
+// export default authMiddleware({
+//     debug: true,
+//     publicRoutes: ["/","/media/(.*)","/media/(.*)", "/who-we-are","/our-business","/get-in-touch","/zero-capex","/career/(.*)","/career","/zero-capex-result","/admin-panel/(.*)"]
+// });
 
-// This example protects all routes including api/trpc routes
-// Please edit this to allow other routes to be public as needed.
-// See https://clerk.com/docs/nextjs/middleware for more information about configuring your middleware
-export default authMiddleware({
-    debug: true,
-    publicRoutes: ["/","/media/(.*)","/media/(.*)", "/who-we-are","/our-business","/get-in-touch","/zero-capex","/career/(.*)","/career","/zero-capex-result","/admin-panel/(.*)"]
-});
+// export const config = {
+//     matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+// };
 
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+// This function can be marked `async` if using `await` inside
+export function middleware(request: NextRequest) {
+    return NextResponse.redirect(new URL('/home', request.url))
+}
+
+// See "Matching Paths" below to learn more
 export const config = {
-    matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
-};
+    matcher: '/about/:path*',
+}

@@ -1,4 +1,4 @@
-import {SignOutButton, UserButton} from "@clerk/nextjs";
+// import {SignOutButton, UserButton} from "@clerk/nextjs";
 import MobileSidebar from "@/components/mobile-sidebar";
 import {Bell, ChevronDown, MoonStar, Search} from "lucide-react";
 import {
@@ -18,16 +18,16 @@ const Navbar = () => {
                 <DropdownMenu>
                     <DropdownMenuTrigger>
                         <div className="flex rounded-3xl p-1 shadow-black/30 shadow-sm justify-center items-center">
-                            <UserButton afterSignOutUrl="/sign-in" />
+                            {/*<UserButton afterSignOutUrl="/sign-in" />*/}
                             <p className="text-xs px-4">John Doe</p>
                             <ChevronDown className="h-4 w-4" />
                         </div>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                        <SignOutButton >
-                            <DropdownMenuItem>Logout</DropdownMenuItem>
-                        </SignOutButton>
+                        {/*<SignOutButton >*/}
+                        {/*    <DropdownMenuItem>Logout</DropdownMenuItem>*/}
+                        {/*</SignOutButton>*/}
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
