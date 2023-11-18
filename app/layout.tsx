@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-      <ClerkProvider>
+      // <ClerkProvider>
         <html lang="en">
             <Head>
                 <link
@@ -28,6 +28,6 @@ export default function RootLayout({
             </Head>
           <body className={poppins.className}>{children}</body>
         </html>
-      </ClerkProvider>
+      // </ClerkProvider>
   )
 }
