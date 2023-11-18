@@ -11,7 +11,7 @@ interface Params {
 }
 
 export async function fetchOurBusinessBanners() {
-    console.log("featch banner 1");
+    //console.log("featch banner 1");
     await connectToDb();
     try {
         const pageNumber = 1;
@@ -31,7 +31,7 @@ export async function fetchOurBusinessBanners() {
             isNext
         };
     }catch (error) {
-        console.log(`Failed to get banners ${error}`)
+        //console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
@@ -46,7 +46,7 @@ export async function updateOurBusinessBanner({
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
         await OurBusinessBanner.findOneAndUpdate(
             {id: currentId},
             {

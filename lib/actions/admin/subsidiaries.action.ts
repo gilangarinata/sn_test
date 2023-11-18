@@ -10,7 +10,7 @@ interface Params {
 }
 
 export async function fetchSubsidiaries() {
-    console.log("featch banner 1");
+    //console.log("featch banner 1");
     await connectToDb();
     try {
         const pageNumber = 1;
@@ -30,7 +30,7 @@ export async function fetchSubsidiaries() {
             isNext
         };
     }catch (error) {
-        console.log(`Failed to get banners ${error}`)
+        //console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
@@ -45,7 +45,7 @@ export async function updateSubsidiary({
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
         await Subsidiaries.findOneAndUpdate(
             {id: currentId},
             {

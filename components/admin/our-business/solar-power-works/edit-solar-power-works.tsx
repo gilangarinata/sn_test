@@ -108,7 +108,7 @@ function AddEditSolarPowerWorks({ achievement, onNeedRefresh}: Props) {
 
             const logoBlob = values.image;
             const hasLogoChanged = isBase64Image(logoBlob) || isBase64Video(logoBlob);
-            console.log("hasLogoChanged", logoBlob)
+            //console.log("hasLogoChanged", logoBlob)
             if(hasLogoChanged) {
                 const logoRes = await startUpload(logo);
                 if (logoRes && logoRes[0].fileUrl) {
@@ -131,7 +131,7 @@ function AddEditSolarPowerWorks({ achievement, onNeedRefresh}: Props) {
             onNeedRefresh()
         } catch (e) {
             setSaveLoading(false)
-            console.log(`Failed Update Banner : ${e}`)
+            //console.log(`Failed Update Banner : ${e}`)
         }
     };
 
@@ -148,7 +148,7 @@ function AddEditSolarPowerWorks({ achievement, onNeedRefresh}: Props) {
             const file = e.target.files[0];
             setLogo(Array.from(e.target.files));
 
-            console.log("fileType", file.type)
+            //console.log("fileType", file.type)
             if (file.type.includes("image") || file.type.includes("video")) {
                 fileReader.onload = async (event) => {
                     const imageDataUrl = event.target?.result?.toString() || "";

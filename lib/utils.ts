@@ -48,20 +48,20 @@ export function convertFromValidHtmlStyleYellow(html: string) {
 
 export function convertHTMLToEditorState(html?: string) {
     const blocksFromHTML = convertFromHTML(html!);
-    console.log(`blocksFromHTML ${blocksFromHTML}`)
+    //console.log(`blocksFromHTML ${blocksFromHTML}`)
 
     const contentState = ContentState?.createFromBlockArray(
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
     );
 
-    console.log(`contentBlocks ${blocksFromHTML.contentBlocks}`)
-    console.log(`entityMap ${blocksFromHTML.entityMap}`)
-    console.log(`contentState ${contentState}`)
-    console.log(`ContentState ${ContentState?.name}`)
+    //console.log(`contentBlocks ${blocksFromHTML.contentBlocks}`)
+    //console.log(`entityMap ${blocksFromHTML.entityMap}`)
+    //console.log(`contentState ${contentState}`)
+    //console.log(`ContentState ${ContentState?.name}`)
 
     const state = EditorState?.createWithContent(contentState);
-    console.log(`rsult state ${state}`)
+    //console.log(`rsult state ${state}`)
     return state;
 }
 // created by chatgpt

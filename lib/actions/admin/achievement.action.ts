@@ -28,7 +28,7 @@ export async function fetchAchievement() {
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -43,7 +43,7 @@ export async function updateAchievement({
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
         await Achievement.findOneAndUpdate(
             {id: currentId},
             {

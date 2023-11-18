@@ -9,7 +9,7 @@ import VideoTable from "@/components/admin/media/video/video-table";
 
 
 async function NewsPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <VideoTable />

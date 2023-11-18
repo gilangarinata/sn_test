@@ -12,7 +12,7 @@ import DirectorTable from "@/components/admin/who-we-are/director/director-table
 
 
 async function VisionMissionPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <DirectorTable />

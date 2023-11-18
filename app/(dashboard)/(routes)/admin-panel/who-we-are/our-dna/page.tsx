@@ -11,7 +11,7 @@ import OurDnaTable from "@/components/admin/who-we-are/our-dna/our-dna-table";
 
 
 async function SubsidiariesPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <OurDnaTable />

@@ -9,7 +9,7 @@ import ScopeOfWorkTable from "@/components/admin/our-business/scope-of-works/sco
 
 
 async function AchievementPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <ScopeOfWorkTable />

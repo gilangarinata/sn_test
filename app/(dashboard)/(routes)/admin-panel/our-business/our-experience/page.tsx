@@ -10,7 +10,7 @@ import OurExperienceTable from "@/components/admin/our-business/our-experience/o
 
 
 async function AchievementPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <OurExperienceTable />

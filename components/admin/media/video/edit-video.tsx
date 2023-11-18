@@ -102,7 +102,7 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
             // const selectedCategoryId = categories?.filter((el) => el.name === value)[0].id;
 
 
-            // console.log(`selected category id : ${value} ${selectedCategoryId} ${categories?.length}`)
+            // //console.log(`selected category id : ${value} ${selectedCategoryId} ${categories?.length}`)
 
             await updateVideo({
                 id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
@@ -116,7 +116,7 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
             onNeedRefresh()
         } catch (e) {
             setSaveLoading(false)
-            console.log(`Failed Update Banner : ${e}`)
+            //console.log(`Failed Update Banner : ${e}`)
         }
     };
 

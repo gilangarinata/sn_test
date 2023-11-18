@@ -64,7 +64,7 @@ export async function fetchCareerByDepIds(
             totalPages,
         };
     } catch (error) {
-        console.log(`Failed to get banners ${error}`);
+        //console.log(`Failed to get banners ${error}`);
         return null;
     }
 }
@@ -92,7 +92,7 @@ export async function fetchAllCareer() {
             totalBannersCount
         };
     }catch (error) {
-        console.log(`Failed to get banners ${error}`)
+        //console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
@@ -111,7 +111,7 @@ export async function fetchCareerById(id: string) {
             news
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -129,7 +129,7 @@ export async function updateCareer({
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
 
         var dep = await Departement.findOne({name: departement});
 

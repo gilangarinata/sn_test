@@ -10,7 +10,7 @@ import SubsidiariesTable from "@/components/admin/who-we-are/subsidiaries/subsid
 
 
 async function SubsidiariesPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <SubsidiariesTable />

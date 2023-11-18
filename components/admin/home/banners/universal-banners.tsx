@@ -61,11 +61,11 @@ function UniversalBanners() {
 
     const handleDelete = async (id: string, image:string, logo: string) => {
         try {
-            console.log("submitting")
+            //console.log("submitting")
             setDeleteLoading(true);
             const fileImage = image.substring(image.lastIndexOf('/') + 1)
             const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
-            console.log(fileLogo + "   " + fileImage);
+            //console.log(fileLogo + "   " + fileImage);
             try {
                 await axiosInstance.delete(`/api/delete/${fileLogo}`, {
                     headers: {
@@ -88,7 +88,7 @@ function UniversalBanners() {
             await getBanners()
         } catch (e) {
             setDeleteLoading(false);
-            console.log("eror delete " + e);
+            //console.log("eror delete " + e);
         }
     }
 

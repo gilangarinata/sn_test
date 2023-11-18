@@ -29,7 +29,7 @@ export async function fetchDepartements() {
             isNext
         };
     }catch (error) {
-        console.log(`Failed to get banners ${error}`)
+        //console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
@@ -43,7 +43,7 @@ export async function updateDepartement({
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
         await Departement.findOneAndUpdate(
             {id: currentId},
             {

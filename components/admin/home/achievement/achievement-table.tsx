@@ -74,7 +74,7 @@ function AchievementTable() {
             await getAchievements()
         } catch (e) {
             setDeleteLoading(false);
-            console.log("eror delete " + e);
+            //console.log("eror delete " + e);
         }
     }
 

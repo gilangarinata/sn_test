@@ -8,7 +8,7 @@ import SolarPowerWorksTable from "@/components/admin/our-business/solar-power-wo
 
 
 async function AchievementPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <SolarPowerWorksTable />

@@ -4,7 +4,7 @@ import MainBanner from "@/components/admin/home/banners/main-banner";
 
 
 async function DashboardPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <MainBanner />

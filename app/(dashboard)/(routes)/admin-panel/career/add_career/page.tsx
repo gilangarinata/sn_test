@@ -7,12 +7,15 @@ import CareerTable from "@/components/admin/career/add_career/career-table";
 
 
 async function AchievementPage() {
-
-    return (
-        <div className="flex flex-col">
-            <CareerTable />
-        </div>
-    )
+    if (typeof window !== 'undefined') {
+        return (
+            <div className="flex flex-col">
+                <CareerTable/>
+            </div>
+        )
+    }else {
+        return <></>
+    }
 
 }
 

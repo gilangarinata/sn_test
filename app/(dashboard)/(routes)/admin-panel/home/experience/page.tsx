@@ -5,6 +5,7 @@ import ExperienceTable from "@/components/admin/home/experience/experience-table
 
 
 async function ExperiencePage() {
+    if (typeof window === 'undefined') return <></>
     const banners = await fetchBanners();
     if (!banners) return null;
 

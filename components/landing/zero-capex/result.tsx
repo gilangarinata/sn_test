@@ -117,11 +117,11 @@ export default function ZeroCapexResult() {
 
 
 // Output hasil perhitungan
-        console.log('Rekomendasi Installasi (kWp):', rekomendasiInstallasi);
-        console.log('Area Potensial (m2):', areaPotensial);
-        console.log('Jumlah Modul Surya (Pcs):', jumlahModulSurya);
-        console.log('Produksi Energi per Tahun (kWh):', produksiEnergiPerTahun);
-        console.log('Periode Installasi:', periodeInstallasi);
+        //console.log('Rekomendasi Installasi (kWp):', rekomendasiInstallasi);
+        //console.log('Area Potensial (m2):', areaPotensial);
+        //console.log('Jumlah Modul Surya (Pcs):', jumlahModulSurya);
+        //console.log('Produksi Energi per Tahun (kWh):', produksiEnergiPerTahun);
+        //console.log('Periode Installasi:', periodeInstallasi);
 
         setRekomendasiInstallasi(rekomendasiInstallasi.toString())
         setAreaPotensial(areaPotensial.toFixed(2).toString())

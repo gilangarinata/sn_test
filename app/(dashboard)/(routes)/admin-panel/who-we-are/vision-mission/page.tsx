@@ -11,7 +11,7 @@ import VisionMissionTable from "@/components/admin/who-we-are/vision-mission/vis
 
 
 async function VisionMissionPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <VisionMissionTable />

@@ -34,7 +34,7 @@ export async function fetchVideosByCategory(_categoryId: string, pageNumber: num
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -77,7 +77,7 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number, categ
             totalPages
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -93,7 +93,7 @@ export async function fetchVideoById(id: string) {
             news
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -110,7 +110,7 @@ export async function updateVideo({
 
         const cat = await NewsCategory.findOne({ name: category });
 
-        console.log(currentId);
+        //console.log(currentId);
         await Video.findOneAndUpdate(
             {id: currentId},
             {

@@ -8,7 +8,7 @@ import NewsTable from "@/components/admin/media/news/news-table";
 
 
 async function NewsPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <NewsTable />

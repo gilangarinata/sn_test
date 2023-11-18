@@ -87,8 +87,8 @@ function AddEditDirector({banner, onNeedRefresh}: Props) {
             onNeedRefresh()
         } catch (e) {
             setSaveLoading(false)
-            console.log("FAIL EDIT")
-            console.log(`Failed Update Banner : ${e}`)
+            //console.log("FAIL EDIT")
+            //console.log(`Failed Update Banner : ${e}`)
         }
     };
 

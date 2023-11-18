@@ -50,8 +50,8 @@ function VideoTable() {
 
     async function getExperiences() {
         const banners = await fetchAllVideos(1,200);
-        console.log("banner:-")
-        // console.log(banner)
+        //console.log("banner:-")
+        // //console.log(banner)
         setNews(banners?.banners as SetStateAction<Video[] | undefined>);
     }
 
@@ -73,7 +73,7 @@ function VideoTable() {
             await getExperiences()
         } catch (e) {
             setDeleteLoading(false);
-            console.log("eror delete " + e);
+            //console.log("eror delete " + e);
         }
     }
 

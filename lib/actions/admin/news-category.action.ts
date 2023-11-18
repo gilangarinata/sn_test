@@ -16,7 +16,7 @@ interface Params {
 
 export async function fetchCategories(type: string) {
     await connectToDb();
-    console.log("type::", type)
+    //console.log("type::", type)
     try {
         const bannersQuery = NewsCategory.find({type : type})
         const categories = await bannersQuery.exec();
@@ -24,7 +24,7 @@ export async function fetchCategories(type: string) {
             categories
         }
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -38,7 +38,7 @@ export async function fetchCategory(_id : string) {
             categories
         }
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }

@@ -82,9 +82,9 @@ export const FancyCarousel: FC<CarouselInfo>
 
     // useEffect(() => {
     //     var diff = currentIndex - carousel.focusElement;
-    //     console.log("diff", diff)
-    //     console.log("currentIndex", currentIndex)
-    //     console.log("carousel.focusElement", carousel.focusElement)
+    //     //console.log("diff", diff)
+    //     //console.log("currentIndex", currentIndex)
+    //     //console.log("carousel.focusElement", carousel.focusElement)
     //     if(diff < 0) {
     //         for (let i = 0; i < Math.abs(diff); i++) {
     //             rotateLeft()
@@ -150,7 +150,7 @@ export const FancyCarousel: FC<CarouselInfo>
                                 key={index}
                                 onClick={() => {
                                     // var diff = currentIndex - index;
-                                    // console.log("diff", diff)
+                                    // //console.log("diff", diff)
                                     // if(diff < 0) {
                                     //     for (let i = 0; i < Math.abs(diff) - 1; i++) {
                                     //         rotateLeft();

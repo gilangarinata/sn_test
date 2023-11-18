@@ -96,12 +96,12 @@ function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
         },
     });
 
-    console.log(`isMainContent : ${isMainContent}`)
+    //console.log(`isMainContent : ${isMainContent}`)
 
     const onSubmit = async (values: z.infer<typeof ExperienceValidation>) => {
         try {
             setSaveLoading(true)
-            console.log(`submitting`)
+            //console.log(`submitting`)
 
             if(!isMainContent) {
                 const logoBlob = values.icon;
@@ -133,7 +133,7 @@ function AddEditExperience({isMainContent, experience, onNeedRefresh}: Props) {
             onNeedRefresh()
         } catch (e) {
             setSaveLoading(false)
-            console.log(`Failed Update Banner : ${e}`)
+            //console.log(`Failed Update Banner : ${e}`)
         }
     };
 

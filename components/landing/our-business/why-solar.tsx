@@ -30,7 +30,7 @@ export default function WhySolar({whySolar} : {whySolar: WhySolar[]}) {
     const pentagonImages2 = whySolar.map((solar) => solar.icon);
 
     const handleChange = (ci: number,to:number) => {
-        console.log("CI",to)
+        //console.log("CI",to)
         setCurrentIndex(to);
     };
 

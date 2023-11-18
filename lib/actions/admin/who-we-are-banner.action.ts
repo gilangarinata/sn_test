@@ -21,7 +21,7 @@ export async function fetchWhoWeAreBanner() {
             banners
         };
     } catch (error) {
-        console.log(`Failed to get banners ${error}`)
+        //console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
@@ -85,7 +85,7 @@ export async function updateDirector(
     await connectToDb();
     try {
         const id = "WhoWeAre"
-        console.log("START EDIT")
+        //console.log("START EDIT")
         await WhoWeAre.findOneAndUpdate(
             {id: id},
             {
@@ -95,9 +95,9 @@ export async function updateDirector(
             }, {upsert: true}
         )
 
-        console.log("DONE EDIT")
+        //console.log("DONE EDIT")
     } catch (error) {
-        console.log("ERROR EDIT")
+        //console.log("ERROR EDIT")
         throw new Error(`Failed to update banner : ${error}`)
     }
 }

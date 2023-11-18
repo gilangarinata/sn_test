@@ -15,7 +15,7 @@ interface Params {
 }
 
 export async function fetchBanners() {
-    console.log("featch banner 1");
+    //console.log("featch banner 1");
     await connectToDb();
     try {
         const pageNumber = 1;
@@ -35,7 +35,7 @@ export async function fetchBanners() {
             isNext
         };
     }catch (error) {
-        console.log(`Failed to get banners ${error}`)
+        //console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
@@ -46,7 +46,7 @@ export async function fetchMainBanners() {
         const bannersQuery = Banner.findOne({id:"main-banner"})
         return await bannersQuery.exec();
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -62,11 +62,11 @@ export async function updateBanner({
        description
    } : Params): Promise<void> {
     await connectToDb();
-    console.log(`${id} ${image} ${url} ${headingTitle} ${subHeading} ${isCustomBanner} ${logo}`);
+    //console.log(`${id} ${image} ${url} ${headingTitle} ${subHeading} ${isCustomBanner} ${logo}`);
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
         await Banner.findOneAndUpdate(
             {id: currentId},
             {

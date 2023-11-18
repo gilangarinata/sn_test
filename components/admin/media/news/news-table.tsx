@@ -63,8 +63,8 @@ function NewsTable() {
 
     async function getExperiences() {
         const banners = await fetchAllNews(1,20);
-        console.log("banner:-")
-        // console.log(banner)
+        //console.log("banner:-")
+        // //console.log(banner)
         setNews(banners?.banners as SetStateAction<News[] | undefined>);
     }
 
@@ -97,7 +97,7 @@ function NewsTable() {
             await getExperiences()
         } catch (e) {
             setDeleteLoading(false);
-            console.log("eror delete " + e);
+            //console.log("eror delete " + e);
         }
     }
 

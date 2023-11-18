@@ -19,7 +19,7 @@ export default function GetInTouch() {
     const handleSubmit = async () => {
         setIsLoading(true)
         setError("")
-        console.log(name, email, mobilePhone, message)
+        //console.log(name, email, mobilePhone, message)
         if(name === '' || email === '' || mobilePhone === '' || message === '') {
             setError("Please fill all the fields")
             return

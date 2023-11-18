@@ -31,7 +31,7 @@ export async function fetchSolarPowerWorks() {
             isNext
         };
     }catch (error) {
-        console.log(`Failed to get banners ${error}`)
+        //console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
@@ -47,7 +47,7 @@ export async function updateSolarPowerWork({
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
         await SolarPowerWorksModel.findOneAndUpdate(
             {id: currentId},
             {

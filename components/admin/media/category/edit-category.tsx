@@ -112,7 +112,7 @@ function AddEditCategory({ achievement, onNeedRefresh, type}: Props) {
             onNeedRefresh()
         } catch (e) {
             setSaveLoading(false)
-            console.log(`Failed Update Banner : ${e}`)
+            //console.log(`Failed Update Banner : ${e}`)
         }
     };
 

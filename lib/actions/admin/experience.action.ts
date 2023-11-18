@@ -12,7 +12,7 @@ interface Params {
 }
 
 export async function fetchExperiences() {
-    console.log("featch banner 1");
+    //console.log("featch banner 1");
     await connectToDb();
     try {
         const pageNumber = 1;
@@ -32,7 +32,7 @@ export async function fetchExperiences() {
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -43,7 +43,7 @@ export async function fetchMainExperience() {
         const bannersQuery = Experience.findOne({id:"main-experience"})
         return await bannersQuery.exec();
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -59,7 +59,7 @@ export async function updateExperience({
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
         await Experience.findOneAndUpdate(
             {id: currentId},
             {

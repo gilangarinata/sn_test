@@ -164,7 +164,7 @@ function AddEditWhoWeAreBanner({banner, onNeedRefresh}: Props) {
             onNeedRefresh()
         } catch (e) {
             setSaveLoading(false)
-            console.log(`Failed Update Banner : ${e}`)
+            //console.log(`Failed Update Banner : ${e}`)
         }
     };
 

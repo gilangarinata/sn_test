@@ -6,7 +6,7 @@ import AchievementTable from "@/components/admin/home/achievement/achievement-ta
 
 
 async function AchievementPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <AchievementTable />

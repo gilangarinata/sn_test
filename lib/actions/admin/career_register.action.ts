@@ -55,7 +55,7 @@ export async function fetchAllCareerRegister() {
             totalBannersCount
         };
     }catch (error) {
-        console.log(`Failed to get banners ${error}`)
+        //console.log(`Failed to get banners ${error}`)
         return null;
     }
 }
@@ -72,7 +72,7 @@ export async function fetchCareerRegisterById(id: string) {
             career
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -107,7 +107,7 @@ export async function updateCareerRegister({
     try {
         const now = Date.now();
         const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        //console.log(currentId);
 
         await CareerRegister.findOneAndUpdate(
             {id: currentId},

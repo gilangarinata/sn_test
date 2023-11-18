@@ -8,7 +8,7 @@ import WhySolarTable from "@/components/admin/our-business/why-solar/why-solar-t
 
 
 async function AchievementPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <WhySolarTable />

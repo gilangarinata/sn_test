@@ -9,7 +9,7 @@ import WhoWeAreBanner from "@/components/admin/who-we-are/banner/who-we-are-bann
 
 
 async function WhoWeArePage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <WhoWeAreBanner />

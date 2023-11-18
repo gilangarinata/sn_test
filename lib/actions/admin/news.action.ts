@@ -41,7 +41,7 @@ export async function fetchNewsByCategory(_categoryId: string, pageNumber: numbe
             isNext
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -82,8 +82,8 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
         const totalBannersCount = await News.countDocuments();
         const banners = await bannersQuery.exec();
         // const isNext = totalBannersCount > skipAmount + banner.length;
-        console.log("BN:")
-        console.log(banners)
+        //console.log("BN:")
+        //console.log(banners)
         const totalPages = Math.ceil(totalBannersCount / pageSize);
 
         return {
@@ -91,7 +91,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
             totalPages
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -111,7 +111,7 @@ export async function fetchNewsById(id: string) {
             news
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        //console.log("Failed to get banner")
         return null;
     }
 }
@@ -132,8 +132,8 @@ export async function updateNews({
 
         const cat = await NewsCategory.findOne({ name: category });
 
-        console.log(`cat : ${category} `)
-        console.log(cat)
+        //console.log(`cat : ${category} `)
+        //console.log(cat)
 
         await News.findOneAndUpdate(
             {id: currentId},

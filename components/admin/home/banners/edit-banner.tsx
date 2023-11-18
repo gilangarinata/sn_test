@@ -63,7 +63,7 @@ const content = {
 };
 
 function AddEditBanner({banner, onNeedRefresh}: Props) {
-    console.log(`state change gilang ${banner}`)
+    //console.log(`state change gilang ${banner}`)
     const descContent = banner?.description
         ?.replaceAll('<b class=\'text-[#199FD6]\'>', "<strong>")
         .replaceAll('</b>', "</strong>")
@@ -114,7 +114,7 @@ function AddEditBanner({banner, onNeedRefresh}: Props) {
     const onSubmit = async (values: z.infer<typeof BannerValidation>) => {
         try {
             setSaveLoading(true)
-            console.log(`submitting`)
+            //console.log(`submitting`)
             const bannerBlob = values.image;
             const logoBlob = values.logo;
 
@@ -159,7 +159,7 @@ function AddEditBanner({banner, onNeedRefresh}: Props) {
             onNeedRefresh()
         } catch (e) {
             setSaveLoading(false)
-            console.log(`Failed Update Banner : ${e}`)
+            //console.log(`Failed Update Banner : ${e}`)
         }
     };
 

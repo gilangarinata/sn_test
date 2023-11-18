@@ -7,7 +7,7 @@ import BannerTable from "@/components/admin/our-business/banners/banners-table";
 
 
 async function AchievementPage() {
-
+    if (typeof window === 'undefined') return <></>
     return (
         <div className="flex flex-col">
             <BannerTable />
