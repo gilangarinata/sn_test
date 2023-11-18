@@ -1,5 +1,4 @@
 "use client"
-// src/components/Map.tsx
 import {MapContainer, Marker, Popup, TileLayer, Tooltip} from "react-leaflet"
 import "leaflet/dist/leaflet.css"
 import "leaflet-defaulticon-compatibility"
