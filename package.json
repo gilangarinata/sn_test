@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.27.1",
     "@fontsource/poppins": "^5.0.8",
     "@hookform/resolvers": "^3.2.0",
     "@radix-ui/react-avatar": "^1.0.3",

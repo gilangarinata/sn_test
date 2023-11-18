@@ -13,7 +13,6 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import {SignOutButton} from "@clerk/nextjs";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import Sidebar from "@/components/sidebar";
 import React from "react";
