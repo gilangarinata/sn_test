@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-      <ClerkProvider>
+      <ClerkProvider isSatellite={true} domain={"sesna.id"}>
         <html lang="en">
             <Head>
                 <link
