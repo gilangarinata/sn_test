@@ -6,7 +6,7 @@ module.exports = {
     production : {
       user : 'root',
       host : '193.203.163.79',
-      ref  : 'origin/main',
+      ref  : 'origin/new_update',
       repo : 'https://github.com/gilangarinata/sn_test.git',
       path : '/home/ubuntu',
       'pre-deploy-local': '',
