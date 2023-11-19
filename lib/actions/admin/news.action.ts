@@ -48,7 +48,8 @@ export async function fetchNewsByCategory(_categoryId: string, pageNumber: numbe
 
 export async function fetchAllNews(pageNumber: number, pageSize: number,
                                    categoryId?: string,
-                                   year?: number) {
+                                   year?: number,
+                                   ) {
     await connectToDb();
     try {
         const filters: any = {};
@@ -63,7 +64,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
         }
         const skipAmount = (pageNumber - 1) * pageSize;
 
-        const bannersQuery = News.find({filters})
+        const bannersQuery = News.find(filters)
             .skip(skipAmount)
             .limit(pageSize)
             .populate("relatedNews")
@@ -83,7 +84,8 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
         const banners = await bannersQuery.exec();
         // const isNext = totalBannersCount > skipAmount + banner.length;
         console.log("BN:")
-        console.log(banners)
+        console.log(banners.length)
+        console.log(categoryId)
         const totalPages = Math.ceil(totalBannersCount / pageSize);
 
         return {
@@ -102,6 +104,7 @@ export async function fetchNewsById(id: string) {
         const bannersQuery = News.findOne({id: id})
             .populate("tags")
             .populate("relatedNews")
+            .populate("category")
             .lean()
         // const totalBannersCount = await News.countDocuments();
         const news = await bannersQuery.exec();

@@ -16,6 +16,7 @@ import HorizontalPagination from "@/components/pagination";
 import {fetchCareerByDepIds} from "@/lib/actions/admin/career.action";
 import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
+import {NewEditor} from "@/components/admin/media/news/new_editor";
 
 export default function NewsContent({ categoryId, categories, newsA} : { categoryId?: string, categories: Category[], newsA?: News[]}) {
     const pathName = usePathname();
@@ -24,7 +25,7 @@ export default function NewsContent({ categoryId, categories, newsA} : { categor
     const [year, setYear] = useState<number>()
 
     async function getAchievements(currentPage: number, year: number) {
-        const news = await fetchAllNews(currentPage, 16, categoryId, year)
+        const news = await fetchAllNews(currentPage, 6, categoryId, year)
         setNews(news?.banners as News[])
         setTotalBannersCount(news?.totalPages as number)
     }
@@ -38,6 +39,11 @@ export default function NewsContent({ categoryId, categories, newsA} : { categor
         <div className="w-full flex flex-col mb-8">
             <div className="w-full flex flex-col lg:flex-row justify-between p-6 max-w-5xl mx-auto items-center">
                 <div className="w-full flex gap-4 ">
+                    <Link href={"/media/news"}>
+                        <p className={cn("font-bold", pathName == "/media/news" ? "text-yellow-400 underline underline-offset-8" : "")}>
+                            All
+                        </p>
+                    </Link>
                     {categories.map(category => (
                         <Link key={category.id} href={"/media/news/"+category._id}>
                             <p className={cn("font-bold", pathName == "/media/news/"+category._id ? "text-yellow-400 underline underline-offset-8" : "")}>
@@ -74,12 +80,17 @@ export default function NewsContent({ categoryId, categories, newsA} : { categor
                         <Link href={"/media/news/detail/"+content.id} >
                             <h1 className="text-xl font-bold hover:text-yellow-400">{content.title}</h1>
                         </Link>
-                        <p className="max-h-[165px] overflow-hidden text-justify" dangerouslySetInnerHTML={{__html: content.content}} />
+                        <div className="max-h-[165px] overflow-hidden">
+                            <NewEditor editable={false} onChange={(v) => {}} initialContent={content.content} />
+                        </div>
+                        {/*<p className="max-h-[165px] overflow-hidden text-justify" dangerouslySetInnerHTML={{__html: content.content}} />*/}
                     </div>
                 ))}
             </div>
             <div className="w-full flex justify-end px-20">
-                <HorizontalPagination currentPage={currentActivePage} totalPages={totalBannersCount ?? 1} onPageChange={()=> {}} textColor="text-slate-500"/>
+                <HorizontalPagination currentPage={currentActivePage} totalPages={totalBannersCount ?? 1} onPageChange={(page)=> {
+                    setCurrentActivePage(page);
+                }} textColor="text-slate-500"/>
             </div>
         </div>
     )

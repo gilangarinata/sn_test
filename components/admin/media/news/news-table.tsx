@@ -31,6 +31,9 @@ import AddEditNews from "@/components/admin/media/news/edit-news";
 import {formatDateString} from "@/lib/utils";
 import {Category} from "@/components/admin/media/category/category-table";
 import axiosInstance from "@/lib/axios_config";
+import Link from "next/link";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 export type News = {
     _id: any,
@@ -65,7 +68,7 @@ function NewsTable({newsA}: {newsA: News[]}) {
             setMessage((prevState) => {
                 return [...(prevState ?? []), "banners1"]
             })
-            const banners = await fetchAllNews(1,20);
+            const banners = await fetchAllNews(1,400);
             console.log("banner:-")
             setMessage((prevState) => {
                 const st = "banners2";
@@ -89,7 +92,7 @@ function NewsTable({newsA}: {newsA: News[]}) {
     const [open, setOpen] = useState<{banner : News | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
     const [createBannerOpen, setCreateBannerOpen] = useState<{banner : News | null, isOpen : boolean}>({banner: null, isOpen: false})
-
+    const router = useRouter()
     const handleDelete = async (id: string,logo: string) => {
         try {
             setDeleteLoading(true);
@@ -147,7 +150,8 @@ function NewsTable({newsA}: {newsA: News[]}) {
                 })}>
                     <Button onClick={(bt) => {
                         bt.preventDefault();
-                        setCreateBannerOpen({banner: null, isOpen:true})
+                        router.push("/admin-panel/media/news/add")
+                        // setCreateBannerOpen({banner: null, isOpen:true})
                     }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add News</Button>
                     <DialogContent onInteractOutside={(e) => {
                         e.preventDefault();
@@ -156,10 +160,10 @@ function NewsTable({newsA}: {newsA: News[]}) {
                             <DialogTitle>Add news</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto max-h-[420px]">
-                            <AddEditNews achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
-                                setCreateBannerOpen({banner: null, isOpen:false})
-                                getExperiences();
-                            }} />
+                            {/*<AddEditNews achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {*/}
+                            {/*    setCreateBannerOpen({banner: null, isOpen:false})*/}
+                            {/*    getExperiences();*/}
+                            {/*}} />*/}
                         </DialogBody>
                     </DialogContent>
                 </Dialog>
@@ -173,7 +177,6 @@ function NewsTable({newsA}: {newsA: News[]}) {
                                 <TableHead>News ID</TableHead>
                                 <TableHead>Title</TableHead>
                                 <TableHead>Created at</TableHead>
-                                <TableHead>Content</TableHead>
                                 <TableHead>Category</TableHead>
                                 <TableHead>Tags</TableHead>
                                 <TableHead className="text-center">Image</TableHead>
@@ -186,9 +189,6 @@ function NewsTable({newsA}: {newsA: News[]}) {
                                     <TableCell>{experience._id}</TableCell>
                                     <TableCell>{experience.title}</TableCell>
                                     <TableCell>{formatDateString(experience.createdAt)}</TableCell>
-                                    <TableCell >
-                                        <p className="max-h-24 flex overflow-y-scroll" dangerouslySetInnerHTML={{__html: experience.content}} />
-                                    </TableCell>
                                     <TableCell>{experience.category.name}</TableCell>
                                     <TableCell>{experience?.tags?.map(t => t.tag).join(",")}</TableCell>
                                     <TableCell>
@@ -198,10 +198,13 @@ function NewsTable({newsA}: {newsA: News[]}) {
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
                                             <Trash2Icon onClick={() => setOpen({banner: experience, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
-                                            <EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {
-                                                bt.preventDefault();
-                                                setCreateBannerOpen({banner: experience, isOpen: true})
-                                            }} />
+                                            {/*<EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {*/}
+                                            {/*    // bt.preventDefault();*/}
+                                            {/*    // setCreateBannerOpen({banner: experience, isOpen: true})*/}
+                                            {/*}} />*/}
+                                            <Link href={`/admin-panel/media/news/${experience.id}`}>
+                                                <EditIcon width={18} className="hover:cursor-pointer" />
+                                            </Link>
                                         </div>
                                     </TableCell>
                                 </TableRow>

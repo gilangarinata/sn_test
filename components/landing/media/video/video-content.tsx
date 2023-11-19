@@ -32,21 +32,21 @@ export default function VideoContent({ videos, categories  } : { videos: Video[]
                         </Link>
                     ))}
                 </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger>
-                        <div className="rounded-sm border border-slate-500 mt-4 lg:mt-0">
-                            <div className="flex items-center px-2 py-1 gap-1">
-                                <p className="text-sm">Archive</p>
-                                <ChevronDown width={15} />
-                            </div>
-                        </div>
-                    </DropdownMenuTrigger>
+                {/*<DropdownMenu>*/}
+                {/*    <DropdownMenuTrigger>*/}
+                {/*        <div className="rounded-sm border border-slate-500 mt-4 lg:mt-0">*/}
+                {/*            <div className="flex items-center px-2 py-1 gap-1">*/}
+                {/*                <p className="text-sm">Archive</p>*/}
+                {/*                <ChevronDown width={15} />*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*    </DropdownMenuTrigger>*/}
 
-                    <DropdownMenuContent>
-                        <DropdownMenuItem>2023</DropdownMenuItem>
-                        <DropdownMenuItem>2022</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                {/*    <DropdownMenuContent>*/}
+                {/*        <DropdownMenuItem>2023</DropdownMenuItem>*/}
+                {/*        <DropdownMenuItem>2022</DropdownMenuItem>*/}
+                {/*    </DropdownMenuContent>*/}
+                {/*</DropdownMenu>*/}
             </div>
 
             <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 w-full px-2 lg:min-w-[810px] max-w-5xl gap-4 mb-8">
