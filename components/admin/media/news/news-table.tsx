@@ -1,33 +1,7 @@
-// "use client"
-
-import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription, DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog";
-import {Button} from "@/components/ui/button";
-import {EditIcon, PlusIcon, Trash2Icon, TrashIcon} from "lucide-react";
-import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
-import {Input} from "@/components/ui/input";
-import RichTextEditor from "@/components/rich-text-editor";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import Image from "next/image";
-import React, {ChangeEvent, SetStateAction, useEffect, useState} from "react";
 
-
-import AddEditBanner from "@/components/admin/home/banners/edit-banner";
-import {deleteBanner, fetchBanners} from "@/lib/actions/admin/banner.action";
-import Spinner from "@/components/spinner";
-import {deleteExperience, fetchExperiences, fetchMainExperience} from "@/lib/actions/admin/experience.action";
-import AddEditExperience from "@/components/admin/home/experience/edit-experience";
-import {Label} from "@/components/ui/label";
-import {Achievement} from "@/components/admin/home/achievement/achievement-table";
-import mongoose from "mongoose";
 import {deleteNews, fetchAllNews} from "@/lib/actions/admin/news.action";
-import AddEditNews from "@/components/admin/media/news/edit-news";
 import {formatDateString} from "@/lib/utils";
 import {Category} from "@/components/admin/media/category/category-table";
 import axiosInstance from "@/lib/axios_config";
