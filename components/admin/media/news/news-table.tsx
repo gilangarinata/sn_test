@@ -58,13 +58,27 @@ export type News = {
 }
 
 function NewsTable({newsA}: {newsA: News[]}) {
-
+    const [message, setMessage] = useState<string[]>()
     const [news, setNews] = useState<News[]>()
     const getExperiences = async () => {
-        const banners = await fetchAllNews(1,20);
-        console.log("banner:-")
-        // console.log(banner)
-        setNews(banners?.banners as News[]);
+        try {
+            setMessage((prevState) => {
+                return [...(prevState ?? []), "banners1"]
+            })
+            const banners = await fetchAllNews(1,20);
+            console.log("banner:-")
+            setMessage((prevState) => {
+                const st = "banners2";
+                return [...(prevState ?? []), st]
+            })
+            // console.log(banner)
+            setNews(banners?.banners as News[]);
+        }catch (e) {
+            setMessage((prevState) => {
+                return [...(prevState ?? []), `banners3 ${e}`]
+            })
+        }
+
     }
 
     useEffect(() => {
@@ -150,6 +164,9 @@ function NewsTable({newsA}: {newsA: News[]}) {
                     </DialogContent>
                 </Dialog>
                 <div className="rounded-md border mt-2 mx-8 mb-10">
+                    <div className="flex flex-col">
+                        {message?.map(m => <p key={m}>{m}</p>)}
+                    </div>
                     <Table>
                         <TableHeader>
                             <TableRow>
