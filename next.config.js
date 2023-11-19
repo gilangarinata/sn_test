@@ -8,6 +8,7 @@ const nextConfig = {
     compiler: {
         removeConsole: false,
     },
+
 }
 
 module.exports = nextConfig
