@@ -59,7 +59,7 @@ export type News = {
 
 function NewsTable({newsA}: {newsA: News[]}) {
 
-    const [news, setNews] = useState<News[]>()
+    const [news, setNews] = useState<News[]>(newsA)
 
     async function getExperiences() {
         const banners = await fetchAllNews(1,20);
