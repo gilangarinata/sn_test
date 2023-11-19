@@ -24,7 +24,7 @@ async function MediaPage({ params }: { params: { categoryId: string } }) {
     const categories = await fetchCategories("video")
     return (
         <div className="h-full">
-            <VideoContent categories={categories?.categories ?? []} videos={videos}  />
+            <VideoContent categoryId={params.categoryId} categories={categories?.categories ?? []} videos={videos}  />
         </div>
     )
 }

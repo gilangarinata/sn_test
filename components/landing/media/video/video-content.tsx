@@ -17,13 +17,35 @@ import {fetchCareerByDepIds} from "@/lib/actions/admin/career.action";
 import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
 import {Video} from "@/components/admin/media/video/video-table";
+import {fetchAllVideos} from "@/lib/actions/admin/video.action";
 
-export default function VideoContent({ videos, categories  } : { videos: Video[] , categories: Category[]}) {
+export default function VideoContent({ categoryId, videos, categories  } : { categoryId?: string, videos: Video[] , categories: Category[]}) {
     const pathName = usePathname();
+
+    const [videosA, setVideosA] = useState<Video[]>()
+
+    const [currentActivePage, setCurrentActivePage] = useState<number>(1)
+    const [totalBannersCount, setTotalBannersCount] = useState<number>()
+
+    async function getAchievements(currentPage: number) {
+        const news = await fetchAllVideos(currentPage, 6, categoryId)
+        setVideosA(news?.banners as Video[])
+        setTotalBannersCount(news?.totalPages as number)
+    }
+
+    useEffect(() => {
+        getAchievements(currentActivePage ?? 1 )
+    }, [currentActivePage])
+
     return (
         <div className="w-full flex flex-col mb-8 items-center justify-center">
             <div className="w-full flex flex-col lg:flex-row justify-between p-6 max-w-5xl mx-auto items-center">
                 <div className="w-full flex gap-4 overflow-scroll">
+                    <Link href={"/media/video"}>
+                        <p className={cn("font-bold", pathName == "/media/video" ? "text-yellow-400 underline underline-offset-8" : "")}>
+                            All
+                        </p>
+                    </Link>
                     {categories.map(category => (
                         <Link key={category.id} href={"/media/video/"+category._id}>
                             <p className={cn("font-bold", pathName == "/media/video/"+category._id ? "text-yellow-400 underline underline-offset-8" : "")}>
@@ -32,25 +54,10 @@ export default function VideoContent({ videos, categories  } : { videos: Video[]
                         </Link>
                     ))}
                 </div>
-                {/*<DropdownMenu>*/}
-                {/*    <DropdownMenuTrigger>*/}
-                {/*        <div className="rounded-sm border border-slate-500 mt-4 lg:mt-0">*/}
-                {/*            <div className="flex items-center px-2 py-1 gap-1">*/}
-                {/*                <p className="text-sm">Archive</p>*/}
-                {/*                <ChevronDown width={15} />*/}
-                {/*            </div>*/}
-                {/*        </div>*/}
-                {/*    </DropdownMenuTrigger>*/}
-
-                {/*    <DropdownMenuContent>*/}
-                {/*        <DropdownMenuItem>2023</DropdownMenuItem>*/}
-                {/*        <DropdownMenuItem>2022</DropdownMenuItem>*/}
-                {/*    </DropdownMenuContent>*/}
-                {/*</DropdownMenu>*/}
             </div>
 
             <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 w-full px-2 lg:min-w-[810px] max-w-5xl gap-4 mb-8">
-                {videos?.map(content => {
+                {videosA?.map(content => {
                     const match = content.videoUrl.match(/[?&]v=([^&]+)/);
                     const videoId = match ? match[1] : 'not found';
                     return (
@@ -67,6 +74,11 @@ export default function VideoContent({ videos, categories  } : { videos: Video[]
                         </div>
                     )
                 })}
+            </div>
+            <div className="w-full flex justify-end px-20">
+                <HorizontalPagination currentPage={currentActivePage} totalPages={totalBannersCount ?? 1} onPageChange={(page)=> {
+                    setCurrentActivePage(page);
+                }} textColor="text-slate-500"/>
             </div>
         </div>
     )
