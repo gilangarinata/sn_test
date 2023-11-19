@@ -165,7 +165,7 @@ function NewsTable({newsA}: {newsA: News[]}) {
                 </Dialog>
                 <div className="rounded-md border mt-2 mx-8 mb-10">
                     <div className="flex flex-col">
-                        {message?.map(m => <p key={m}>{m}</p>)}
+                        {/*{message?.map(m => <p key={m}>{m}</p>)}*/}
                     </div>
                     <Table>
                         <TableHeader>
