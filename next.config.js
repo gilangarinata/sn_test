@@ -5,7 +5,7 @@ const nextConfig = {
     },
     experimental: {
         serverActions: {
-            allowedOrigins: ['https://sesna.id', 'https://www.sesna.id', 'https://utfs.io', 'https://www.utfs.io','http://localhost:3010','127.0.0.1:3010', 'http://127.0.0.1:3010'],
+            allowedOrigins: ['https://sesna.id', 'https://www.sesna.id', 'https://utfs.io', 'https://www.utfs.io','http://localhost:3010','127.0.0.1:3010', 'http://127.0.0.1:3010', 'sesna.id'],
         },
     },
     optimizeFonts: false,
