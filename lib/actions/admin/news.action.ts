@@ -63,7 +63,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
         }
         const skipAmount = (pageNumber - 1) * pageSize;
 
-        const bannersQuery = News.find()
+        const bannersQuery = News.find({filters})
             .skip(skipAmount)
             .limit(pageSize)
             .populate("relatedNews")
