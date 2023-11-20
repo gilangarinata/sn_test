@@ -40,7 +40,7 @@ export default function VideoContent({ categoryId, videos, categories  } : { cat
     return (
         <div className="w-full flex flex-col mb-8 items-center justify-center">
             <div className="w-full flex flex-col lg:flex-row justify-between p-6 max-w-5xl mx-auto items-center">
-                <div className="w-full flex gap-4 overflow-scroll">
+                <div className="w-full flex gap-4">
                     <Link href={"/media/video"}>
                         <p className={cn("font-bold", pathName == "/media/video" ? "text-yellow-400 underline underline-offset-8" : "")}>
                             All

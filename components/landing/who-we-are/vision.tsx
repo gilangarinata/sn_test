@@ -117,7 +117,7 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                 <div className="w-full bg-[#15537A] py-10 lg:pt-8 lg:h-screen">
                     <div className="w-full flex mx-auto flex-col">
                         <div className="w-full flex items-center justify-center">
-                            <div className="flex w-full flex-col gap-6 px-10">
+                            <div className="flex w-full flex-col gap-6 px-10 lg:pl-[120px]">
                                 <motion.div initial={{scale : 0}} whileInView={{scale: 1, transition: { duration: 1 }}}
                                     className="text-4xl font-bold">
                                     <h1 className="text-white text-2xl  font-semibold" dangerouslySetInnerHTML={{__html : director?.messageDirectorTitle ?? ""}}/>
