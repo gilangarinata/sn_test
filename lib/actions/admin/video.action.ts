@@ -21,6 +21,7 @@ export async function fetchVideosByCategory(_categoryId: string, pageNumber: num
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = Video.find({category : _categoryId})
+            .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
 
@@ -56,6 +57,7 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number, categ
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = Video.find(filters)
+            .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
             .populate([

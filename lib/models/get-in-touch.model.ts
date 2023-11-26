@@ -6,6 +6,9 @@ const bannerSchema = new  mongoose.Schema({
     email: String,
     phone: String,
     message: String,
+    createdAt: {
+        type: Date,
+    },
 });
 
 const GetInTouch = mongoose.models.GetInTouch || mongoose.model('GetInTouch', bannerSchema);

@@ -48,6 +48,7 @@ export type GetInTouch = {
     email: string,
     phone: string,
     message: string,
+    createdAt: Date,
 }
 
 function generateAndDownloadExcel({data, filename} : {data: GetInTouch[], filename: string}) {
@@ -147,6 +148,7 @@ function GetInTouchTable() {
                                 <TableHead>Email</TableHead>
                                 <TableHead className="text-center">Phone</TableHead>
                                 <TableHead className="text-center">Message</TableHead>
+                                <TableHead className="text-center">Date</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
@@ -157,6 +159,7 @@ function GetInTouchTable() {
                                     <TableCell>{achievement.email}</TableCell>
                                     <TableCell>{achievement.phone}</TableCell>
                                     <TableCell>{achievement.message}</TableCell>
+                                    <TableCell>{achievement.createdAt?.toLocaleTimeString()}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
                                             <Trash2Icon onClick={() => setOpen({banner: achievement, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />

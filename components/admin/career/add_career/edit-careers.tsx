@@ -24,9 +24,9 @@ import {BannerValidation} from "@/lib/validations/banner";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {
     cn,
-    convertFromValidHtmlStyle,
+    convertFromValidHtmlStyle, convertFromValidHtmlStyleWhite,
     convertHTMLToEditorState,
-    convertToValidHtmlStyle,
+    convertToValidHtmlStyle, convertToValidHtmlStyleWhite,
     isBase64Image
 } from "@/lib/utils";
 import {updateBanner} from "@/lib/actions/admin/banner.action";
@@ -67,7 +67,7 @@ const CareerValidation = z.object({
 });
 
 function AddEditCareer({ achievement, onNeedRefresh}: Props) {
-    const descContent = convertFromValidHtmlStyle(achievement?.description ?? "")
+    const descContent = convertFromValidHtmlStyleWhite(achievement?.description ?? "")
     const descInitState = convertHTMLToEditorState(`<p>${descContent}</p>`)
 
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
@@ -114,7 +114,7 @@ function AddEditCareer({ achievement, onNeedRefresh}: Props) {
 
 
             let descTitle = draftToHtml(convertToRaw(editorDescState?.getCurrentContent()));
-            descTitle = convertToValidHtmlStyle(descTitle)
+            descTitle = convertToValidHtmlStyleWhite(descTitle)
 
             // const selectedCategoryId = categories?.filter((el) => el.name === value)[0].id;
 

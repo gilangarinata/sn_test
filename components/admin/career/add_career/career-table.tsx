@@ -43,7 +43,8 @@ export type CareerMdl = {
     description: string,
     location: string,
     type: string,
-    departement: Departement
+    departement: Departement,
+    createdAt: Date,
 }
 
 function CareerTable() {

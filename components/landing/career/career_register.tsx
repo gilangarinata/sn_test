@@ -28,10 +28,22 @@ import {fetchDepartements} from "@/lib/actions/admin/departement.action";
 import draftToHtml from "draftjs-to-html";
 import {convertToRaw} from "draft-js";
 import {updateCareer} from "@/lib/actions/admin/career.action";
-import {updateCareerRegister} from "@/lib/actions/admin/career_register.action";
+import {updateCareerRegister, updateCareerRegisterMessage} from "@/lib/actions/admin/career_register.action";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import Spinner from "@/components/spinner";
 import axiosInstance from "@/lib/axios_config";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
+import {Textarea} from "@mantine/core";
+import { useRouter } from "next/navigation";
+import {Category} from "@/components/admin/media/category/category-table";
+import {router} from "next/client";
+
 
 const CareerRegisterValidation = z.object({
     firstName: z
@@ -42,7 +54,6 @@ const CareerRegisterValidation = z.object({
         .nonempty(),
     email: z
         .string()
-        .email()
         .nonempty(),
     contactNumber: z.string().nonempty(),
     address: z.string().nonempty(),
@@ -58,13 +69,14 @@ const CareerRegisterValidation = z.object({
     availabilityPeriod: z.string().nonempty(),
     urlSites: z.string().optional(),
     howDidYouKnow: z.string().optional(),
-    resume: z.string().nonempty(),
-    portfolio: z.string().nonempty(),
-    ijazah: z.string().nonempty(),
-    transkrip: z.string().nonempty(),
+    resume: z.string(),
+    portfolio: z.string(),
+    ijazah: z.string(),
+    transkrip: z.string(),
 });
 
 export default function CareerRegister({career} : {career: CareerMdl}) {
+    const [isi, setIsi] = useState(false);
     const [saveLoading, setSaveLoading] = useState(false);
     const form = useForm<z.infer<typeof CareerRegisterValidation>>({
         resolver: zodResolver(CareerRegisterValidation),
@@ -90,6 +102,28 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
             portfolio: "",
             ijazah: "",
             transkrip: "",
+            //]]]]]]]
+            // firstName: "Gilamng",
+            // lastName: "sadasd",
+            // email: "gilangarina@hmas.com",
+            // contactNumber: "asdasd",
+            // address: "asdasd",
+            // lastEducation: "asdasd",
+            // campus: "asd",
+            // studyMajor: "asd",
+            // schoolStartYear1: "asdasd",
+            // schoolStartYear2: "asdas",
+            // schoolEndYear1: "asdsd",
+            // schoolEndYear2: "asdsad",
+            // previousCompany: "asdasd",
+            // previousDesignation: "asdsad",
+            // availabilityPeriod: "asddas",
+            // urlSites: "asd",
+            // howDidYouKnow: "dssd",
+            // resume: "",
+            // portfolio: "",
+            // ijazah: "",
+            // transkrip: "",
         },
     });
 
@@ -118,6 +152,10 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
             return [{ message: 'File upload failed', fileUrl: '' }];
         }
     }
+
+    const [open, setOpen] = useState<{banner : Category | null, isOpen : boolean}>({banner: null, isOpen:false});
+    const [email, setEmail] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
 
     const [logo, setLogo] = useState<File[]>([]);
     const handleLogo = (
@@ -207,8 +245,24 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
             fileReader.readAsDataURL(file);
         }
     };
+
+
+    const onEditTest = async () => {
+        await updateCareerRegisterMessage({
+            email: email,
+            message: message
+        })
+
+        setOpen({banner: null, isOpen: false})
+
+        setIsSubmitting(true);
+    }
+
+
+
     const onSubmit = async (values: z.infer<typeof CareerRegisterValidation>) => {
         try {
+            console.log("start upload")
             setSaveLoading(true)
 
             const logoBlob = values.resume;
@@ -247,6 +301,8 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                 }
             }
 
+            setEmail(values.email);
+
             await updateCareerRegister({
                 id: "",
                 firstName: values.firstName,
@@ -271,15 +327,63 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                 ijazah: values.ijazah,
                 transkrip: values.transkrip
             })
-
             setSaveLoading(false)
         } catch (e) {
             setSaveLoading(false)
             console.log(`Failed Update Banner : ${e}`)
         }
+
+        setOpen({banner: null, isOpen: true})
+
     };
 
+    const initialDuration = 120; // Initial duration in seconds (2 minutes)
+    const [duration, setDuration] = useState(initialDuration);
+
+    const formatTime = (time: number): string => {
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
+
+        const formattedHours = String(hours).padStart(2, '0');
+        const formattedMinutes = String(minutes).padStart(2, '0');
+        const formattedSeconds = String(seconds).padStart(2, '0');
+
+        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    };
+
+    const updateTimer = () => {
+        setDuration((prevDuration) => Math.max(prevDuration - 1, 0));
+    };
+
+    useEffect(() => {
+        const intervalId = setInterval(updateTimer, 1000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
     return (
+        <AlertDialog open={open.isOpen}>
+
+            <AlertDialog open={isSubmitting}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogDescription>
+                            Data anda berhasil terkirim!
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogAction onClick={(a)=> {
+                            setIsSubmitting(false);
+                            router?.reload();
+                        }}>Ok</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="w-full flex flex-col gap-4 bg-[#15537A] items-center min-h-screen justify-center">
@@ -788,10 +892,48 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                             <Input type="checkbox" className="w-5 h-5"/>
                             <p className="text-white">Dengan melanjutkan, saya mengonfirmasi bahwa saya telah membaca secara seksama dan menyetujui Persyaratan Layanan dan Kebijakan Privasi.</p>
                         </div>
-                        <Button disabled={saveLoading} type='submit' className="bg-[#FAC225] text-[#15537A] w-fit mb-20">{saveLoading ? <Spinner /> : "Selanjutnya"}</Button>
+                            <Button
+                            //     onClick={(v) => {
+                            //     v.preventDefault();
+                            //     // setOpen({banner: null, isOpen: true})
+                            //     // form.handleSubmit(onSubmit);
+                            // }}
+                                disabled={saveLoading} type="submit" className="bg-[#FAC225] text-[#15537A] w-fit mb-20">{saveLoading ? <Spinner /> : "Selanjutnya"}</Button>
+
+                        <AlertDialogContent className={cn("bg-[#fac324]", isi ? "bg-[#15537a]" : "bg-[#fac324]")}>
+                            {!isi ? <AlertDialogHeader>
+                                {/*<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>*/}
+                                <AlertDialogDescription>
+                                    Sebelum anda submit lamaran anda, apakah anda bersedia untuk melakukan test singkat selama 2 menit?
+                                </AlertDialogDescription>
+                            </AlertDialogHeader> : <></>}
+                            {isi ? <div className="flex flex-col justify-center items-center gap-4">
+                                <p className="text-[#fac324]">Timer</p>
+                                <Button className="bg-[#fac324] text-[#15537a]">{formatTime(duration)}</Button>
+                                <p className="text-white text-center">Apa saja yang anda ketahui mengenai PT Sumber Energy Surya Nusantara? Jelaskan!</p>
+                                <Textarea onChange={(v) => {
+                                    setMessage(v.target.value);
+                                }} rows={4} className=" block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Jawaban anda..."></Textarea>
+
+                                <Button disabled={saveLoading} onClick={(v)=>{
+                                    v.preventDefault();
+                                    onEditTest();
+                                }} className="mt-10 bg-[#fac324] text-[#15537a]">{saveLoading ? <Spinner /> : "Selesai"}</Button>
+                            </div> : <></>}
+                            {!isi ? (<AlertDialogFooter>
+                                <AlertDialogCancel onClick={(v)=> {
+                                    setOpen({banner: null, isOpen: false})
+                                }}>Tidak</AlertDialogCancel>
+                                <AlertDialogAction onClick={(v) => {
+                                    v.preventDefault();
+                                    setIsi(true)
+                                }}>Ya</AlertDialogAction>
+                            </AlertDialogFooter>) : <></>}
+                        </AlertDialogContent>
                     </div>
                 </div>
             </form>
         </Form>
+        </AlertDialog>
     )
 }

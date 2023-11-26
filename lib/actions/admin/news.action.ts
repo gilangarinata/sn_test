@@ -29,6 +29,7 @@ export async function fetchNewsByCategory(_categoryId: string, pageNumber: numbe
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = News.find({category : _categoryId})
+            .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
 
@@ -65,6 +66,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = News.find(filters)
+            .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
             .populate("relatedNews")

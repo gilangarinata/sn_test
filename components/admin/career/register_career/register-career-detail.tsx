@@ -134,6 +134,11 @@ function RegisterCareerDetail({id} : {id: string}) {
                                 <TableCell><Link className="text-blue-900" href={achievements?.transkrip ?? ""} >Download</Link></TableCell>
                             </TableRow>
 
+                            <TableRow>
+                                <TableCell>Hasil Test</TableCell>
+                                <TableCell>{achievements?.testResult}</TableCell>
+                            </TableRow>
+
                         </TableBody>
                     </Table>
                 </div>

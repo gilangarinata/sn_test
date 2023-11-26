@@ -27,10 +27,22 @@ export function convertFromValidHtmlStyle(html: string) {
         .replaceAll('</b>', "</strong>")
 }
 
+export function convertFromValidHtmlStyleWhite(html: string) {
+    return html.replaceAll('<b class=\'text-[#FFFFFF]\'>', "<strong>")
+        .replaceAll('</b>', "</strong>")
+}
+
 export function convertToValidHtmlStyle(html: string) {
     return html.replaceAll('<p>','')
         .replaceAll('</p>','')
         .replaceAll('<strong>', "<b class='text-[#199FD6]'>")
+        .replaceAll('</strong>', "</b>")
+}
+
+export function convertToValidHtmlStyleWhite(html: string) {
+    return html.replaceAll('<p>','')
+        .replaceAll('</p>','')
+        .replaceAll('<strong>', "<b class='text-[#FFFFFF]'>")
         .replaceAll('</strong>', "</b>")
 }
 

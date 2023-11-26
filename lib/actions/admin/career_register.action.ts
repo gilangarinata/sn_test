@@ -140,6 +140,28 @@ export async function updateCareerRegister({
     }
 }
 
+
+export async function updateCareerRegisterMessage({
+                                               email,
+                                                message,
+                                           } : {email: string, message:string}): Promise<void> {
+    await connectToDb();
+    try {
+
+        console.log(email + " MM " + message);
+        const data = await CareerRegister.findOne({email: email}).exec()
+        console.log(data.id + " MM2 " + message);
+        await CareerRegister.findOneAndUpdate(
+            {id: data.id},
+            {
+                testResult: message,
+            }, { upsert: true }
+        )
+    }catch (error) {
+        throw new Error(`Failed to update banner : ${error}`)
+    }
+}
+
 export async function deleteCareerRegister({id} : {id:string}): Promise<void> {
     await connectToDb();
 

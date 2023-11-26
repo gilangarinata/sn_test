@@ -44,6 +44,7 @@ export async function fetchCareerByDepIds(
         }
 
         const bannersQuery = Career.find(query)
+            .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
             .populate('departement')
@@ -77,6 +78,7 @@ export async function fetchAllCareer() {
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = Career.find()
+            .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
             .populate("departement")

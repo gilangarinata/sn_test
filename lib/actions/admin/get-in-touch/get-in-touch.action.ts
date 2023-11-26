@@ -19,6 +19,7 @@ export async function fetchGetInTouch() {
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = GetInTouchModel.find()
+            .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
 
@@ -41,7 +42,7 @@ export async function updateGetInTouch({
        name,
        email,
        phone,
-         message
+         message,
    } : Params): Promise<void> {
     await connectToDb();
     try {
@@ -54,7 +55,8 @@ export async function updateGetInTouch({
                 name: name,
                 email: email,
                 phone: phone,
-                message: message
+                message: message,
+                createdAt: Date.now()
             }, { upsert: true }
         )
     }catch (error) {

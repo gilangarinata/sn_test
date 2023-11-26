@@ -26,7 +26,8 @@ const newsSchema = new  mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-    }
+    },
+    testResult: String,
 });
 
 const CareerRegister = mongoose.models.CareerRegister || mongoose.model('CareerRegister', newsSchema);

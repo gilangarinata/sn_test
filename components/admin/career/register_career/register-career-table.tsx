@@ -58,6 +58,7 @@ export type RegisterCareer = {
     portfolio: string,
     ijazah: string,
     transkrip: string,
+    testResult: string,
     createdAt: Date,
 }
 
