@@ -163,7 +163,7 @@ export default function HistungInvestasi() {
                                     cookie.set("lokasiPemasangan",lokasiPemasangan);
 
 
-                                    // router.push('/zero-capex-result');
+                                    router.push('/zero-capex-result');
                                 }} className="bg-[#f9c329] text-blue-950 font-bold w-full">Selanjutnya</Button>
                             </div>
                         </div>
