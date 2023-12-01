@@ -63,7 +63,7 @@ const CareerValidation = z.object({
     location: z
         .string(),
     type: z
-        .string(),
+        .string()
 });
 
 function AddEditCareer({ achievement, onNeedRefresh}: Props) {
@@ -190,45 +190,52 @@ function AddEditCareer({ achievement, onNeedRefresh}: Props) {
                     <FormLabel className='text-base-semibold text-light-2'>
                         Departement
                     </FormLabel>
-                    <PopoverTrigger asChild>
-                        <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={open}
-                            className="w-full justify-between"
-                        >
-                            {value
-                                ? value
-                                : "Select departement..."}
-                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                        <Command>
-                            <CommandInput placeholder="Search framework..." />
-                            <CommandEmpty>No category found.</CommandEmpty>
-                            <CommandGroup>
-                                {categories?.map((framework) => (
-                                    <CommandItem
-                                        key={framework.name}
-                                        onSelect={(currentValue) => {
-                                            setValue(framework.name)
-                                            setOpen(false)
-                                        }}
-                                    >
-                                        <Check
-                                            className={cn(
-                                                "mr-2 h-4 w-4",
-                                                value === framework.name ? "opacity-100" : "opacity-0"
-                                            )}
-                                        />
-                                        {framework.name}
-                                    </CommandItem>
-                                ))}
-                            </CommandGroup>
-                        </Command>
-                    </PopoverContent>
+                    {categories?.map((framework) => (
+                        <Button variant={value == framework.name ? "default" : "outline"} onClick={(b) => {
+                            b.preventDefault()
+                            setValue(framework.name)
+                        }} key={framework.id}>{framework.name}</Button>
+                    ))}
+                    {/*<PopoverTrigger asChild>*/}
+                    {/*    <Button*/}
+                    {/*        variant="outline"*/}
+                    {/*        role="combobox"*/}
+                    {/*        aria-expanded={open}*/}
+                    {/*        className="w-full justify-between"*/}
+                    {/*    >*/}
+                    {/*        {value*/}
+                    {/*            ? value*/}
+                    {/*            : "Select departement..."}*/}
+                    {/*        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />*/}
+                    {/*    </Button>*/}
+                    {/*</PopoverTrigger>*/}
+                    {/*<PopoverContent className="w-full p-0">*/}
+                    {/*    <Command>*/}
+                    {/*        <CommandInput placeholder="Search framework..." />*/}
+                    {/*        <CommandEmpty>No category found.</CommandEmpty>*/}
+                    {/*        <CommandGroup>*/}
+                    {/*            {categories?.map((framework) => (*/}
+                    {/*                <CommandItem*/}
+                    {/*                    key={framework.name}*/}
+                    {/*                    onSelect={(currentValue) => {*/}
+                    {/*                        setValue(framework.name)*/}
+                    {/*                        setOpen(false)*/}
+                    {/*                    }}*/}
+                    {/*                >*/}
+                    {/*                    <Check*/}
+                    {/*                        className={cn(*/}
+                    {/*                            "mr-2 h-4 w-4",*/}
+                    {/*                            value === framework.name ? "opacity-100" : "opacity-0"*/}
+                    {/*                        )}*/}
+                    {/*                    />*/}
+                    {/*                    {framework.name}*/}
+                    {/*                </CommandItem>*/}
+                    {/*            ))}*/}
+                    {/*        </CommandGroup>*/}
+                    {/*    </Command>*/}
+                    {/*</PopoverContent>*/}
                 </Popover>
+
                 <div className="flex flex-col gap-2">
                     <p>Description</p>
                     <RichTextEditor

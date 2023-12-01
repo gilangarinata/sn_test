@@ -99,6 +99,10 @@ function AddEditCategory({ achievement, onNeedRefresh, type}: Props) {
                 }
             }
 
+            if(!values.banner.includes("http")) {
+                values.banner = "";
+            }
+
 
             await updateNewsCategory({
                 id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,

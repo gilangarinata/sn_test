@@ -189,7 +189,7 @@ function NewsTable({newsA}: {newsA: News[]}) {
                                     <TableCell>{experience._id}</TableCell>
                                     <TableCell>{experience.title}</TableCell>
                                     <TableCell>{formatDateString(experience.createdAt)}</TableCell>
-                                    <TableCell>{experience.category.name}</TableCell>
+                                    <TableCell>{experience.category?.name}</TableCell>
                                     <TableCell>{experience?.tags?.map(t => t.tag).join(",")}</TableCell>
                                     <TableCell>
                                         <Image className="mx-auto" width={60} height={60}
