@@ -28,10 +28,18 @@ export default function FooterLanding() {
                         <Image width={200} height={200} src="/images/logo_putih.png" alt="Logo sesna" />
                         <h1 className="font-bold text-lg">FOLLOW US</h1>
                         <div className="flex flex-row gap-4">
-                            <InstagramIcon className="hover:cursor-pointer" />
-                            <YoutubeIcon className="hover:cursor-pointer" />
-                            <LinkedinIcon className="hover:cursor-pointer" />
-                            <FacebookIcon className="hover:cursor-pointer" />
+                            <Link href="https://www.instagram.com/sesnagroup/">
+                                <InstagramIcon className="hover:cursor-pointer" />
+                            </Link>
+                            <Link href="https://www.youtube.com/@solarwarriorindonesia1483">
+                                <YoutubeIcon className="hover:cursor-pointer" />
+                            </Link>
+                            <Link href="https://www.linkedin.com/company/14474669/admin/feed/posts/">
+                                <LinkedinIcon className="hover:cursor-pointer" />
+                            </Link>
+                            <Link href="">
+                                <FacebookIcon className="hover:cursor-pointer" />
+                            </Link>
                         </div>
                     </div>
 
