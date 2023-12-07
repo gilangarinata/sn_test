@@ -18,6 +18,7 @@ export default function RootLayout({
 }) {
   return (
         <main className="w-full">
+            <meta name="google-site-verification" content="6y-KyjbdApsSaEAFXmZa2mYLgzhyV1rAOq4dpUfhfu8" />
             <div className="container">
                 <Script src="https://www.googletagmanager.com/gtag/js?id=G-EM5J07JC7L" />
                 <Script id="google-analytics">
