@@ -20,6 +20,7 @@ import {Banner} from "@/components/admin/home/banners/edit-banner";
 import {OurBusinessBanner} from "@/components/admin/our-business/banners/banners-table";
 import {Input} from "@/components/ui/input";
 import {CareerMdl} from "@/components/admin/career/add_career/career-table";
+import {NewEditor} from "@/components/admin/media/news/new_editor";
 
 export default function CareerDetail({career} : {career: CareerMdl}) {
     return (
@@ -47,7 +48,8 @@ export default function CareerDetail({career} : {career: CareerMdl}) {
                         </div>
                     </div>
                 </div>
-                <p className="text-white" dangerouslySetInnerHTML={{__html: career.description}} />
+                <NewEditor bgColor="#15537A" onChange={(val) => {}} initialContent={career?.description} editable={false} />
+                {/*<p className="text-white" dangerouslySetInnerHTML={{__html: career.description}} />*/}
                 {/*<h1 className="text-2xl font-bold text-white pt-20">Requirements</h1>*/}
                 {/*<ul className="text-white">*/}
                 {/*    <div className="flex gap-2 items-center">*/}

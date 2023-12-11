@@ -45,6 +45,7 @@ import {Category} from "@/components/admin/media/category/category-table";
 import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 import {fetchDepartements} from "@/lib/actions/admin/departement.action";
 import {updateCareer} from "@/lib/actions/admin/career.action";
+import {NewEditor} from "@/components/admin/media/news/new_editor";
 const Editor = dynamic(() => import("react-draft-wysiwyg")
         .then((module) => module.Editor),
     {
@@ -69,7 +70,7 @@ const CareerValidation = z.object({
 function AddEditCareer({ achievement, onNeedRefresh}: Props) {
     const descContent = convertFromValidHtmlStyleWhite(achievement?.description ?? "")
     const descInitState = convertHTMLToEditorState(`<p>${descContent}</p>`)
-
+    const [content, setContent] = useState<string>(achievement?.description ?? "");
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState(achievement?.departement?.name ?? "")
@@ -124,7 +125,7 @@ function AddEditCareer({ achievement, onNeedRefresh}: Props) {
             await updateCareer({
                 id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
                 title: values.title,
-                description: descTitle,
+                description: content,
                 location: values.location,
                 type: values.type,
                 departement: value,
@@ -237,15 +238,28 @@ function AddEditCareer({ achievement, onNeedRefresh}: Props) {
                 </Popover>
 
                 <div className="flex flex-col gap-2">
-                    <p>Description</p>
-                    <RichTextEditor
-                        editorState={editorDescState}
-                        onEditorChange={(state) => {
-                            setEditorDescState(state);
-                        }}
-                        isFull={true}
-                    />
+                    <p>Content</p>
+                    <NewEditor initialContent={content} onChange={(val) => {
+                        setContent(val)
+                    }} />
+                    {/*<RichTextEditor*/}
+                    {/*    editorState={editorDescState}*/}
+                    {/*    onEditorChange={(state) => {*/}
+                    {/*        setEditorDescState(state);*/}
+                    {/*    }}*/}
+                    {/*    isFull={true}*/}
+                    {/*/>*/}
                 </div>
+                {/*<div className="flex flex-col gap-2">*/}
+                {/*    <p>Description</p>*/}
+                {/*    <RichTextEditor*/}
+                {/*        editorState={editorDescState}*/}
+                {/*        onEditorChange={(state) => {*/}
+                {/*            setEditorDescState(state);*/}
+                {/*        }}*/}
+                {/*        isFull={true}*/}
+                {/*    />*/}
+                {/*</div>*/}
                 <FormField
                     control={form.control}
                     name='type'

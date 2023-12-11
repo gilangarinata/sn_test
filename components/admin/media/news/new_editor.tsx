@@ -6,7 +6,7 @@ import {
 } from "@blocknote/core";
 
 import {
-    BlockNoteView, lightDefaultTheme, Theme,
+    BlockNoteView, darkDefaultTheme, lightDefaultTheme, Theme,
     useBlockNote
 } from "@blocknote/react";
 
@@ -68,12 +68,14 @@ interface Props {
     onChange : (value : string) => void;
     initialContent?: string;
     editable?: boolean;
+    bgColor?: string;
 }
 
 export const NewEditor = ({
     onChange,
     initialContent,
-    editable = true
+    editable = true,
+    bgColor = ""
 }:Props) => {
 
     function isJsonString(str: string) {
@@ -96,12 +98,70 @@ export const NewEditor = ({
             blockContainer: {
                 class: "block-container",
             },
+
         },
     });
 
+
+// Custom red light theme
+    const lightRedTheme = {
+        colors: {
+            editor: {
+                text: "#222222",
+                background: bgColor,
+            },
+            menu: {
+                text: "#ffffff",
+                background: "#9b0000",
+            },
+            tooltip: {
+                text: "#ffffff",
+                background: "#b00000",
+            },
+            hovered: {
+                text: "#ffffff",
+                background: "#b00000",
+            },
+            selected: {
+                text: "#ffffff",
+                background: "#c50000",
+            },
+            disabled: {
+                text: "#9b0000",
+                background: "#7d0000",
+            },
+            shadow: "#640000",
+            border: "#870000",
+            sideMenu: "#bababa",
+            highlightColors: lightDefaultTheme.colors.highlightColors,
+        },
+        borderRadius: 4,
+        fontFamily: "Helvetica Neue, sans-serif",
+    } satisfies Theme;
+
+// Custom red dark theme
+    const darkRedTheme = {
+        ...lightRedTheme,
+        colors: {
+            ...lightRedTheme.colors,
+            editor: {
+                text: "#ffffff",
+                background: bgColor,
+            },
+            sideMenu: "#ffffff",
+            // TODO: Update
+            highlightColors: darkDefaultTheme.colors.highlightColors,
+        },
+    } satisfies Theme;
+
+    const redTheme = {
+        dark: darkRedTheme,
+        light: lightDefaultTheme
+    };
+
     return (
         <div>
-            <BlockNoteView className={cn("text-justify", editable ? "mx-0" : "mx-[-50px]")} editor={editor} theme="light"/>
+            <BlockNoteView className={cn(`text-justify ${bgColor}`, editable ? "mx-0" : "mx-[-50px]")} editor={editor} theme={bgColor === "" ? "light" : redTheme}/>
         </div>
     )
 }
