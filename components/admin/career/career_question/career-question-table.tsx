@@ -10,7 +10,7 @@ import {
     DialogTrigger
 } from "@/components/ui/dialog";
 import {Button} from "@/components/ui/button";
-import {EditIcon, PlusIcon, Trash2Icon, TrashIcon, ViewIcon} from "lucide-react";
+import {EditIcon, PlusIcon, Trash2Icon, TrashIcon} from "lucide-react";
 import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 import {Input} from "@/components/ui/input";
 import RichTextEditor from "@/components/rich-text-editor";
@@ -31,44 +31,19 @@ import {deleteNewsCategory, fetchCategories} from "@/lib/actions/admin/news-cate
 import AddEditCategory from "@/components/admin/media/category/edit-category";
 import {deleteDepartement, fetchDepartements} from "@/lib/actions/admin/departement.action";
 import AddEditDepartement from "@/components/admin/career/departement/edit-departement";
-import {deleteCareerRegister, fetchAllCareerRegister} from "@/lib/actions/admin/career_register.action";
-import Link from "next/link";
+import {deleteCareerQuestion, fetchCareerQuestions} from "@/lib/actions/admin/career_question.action";
+import AddEditCareerQuestion from "@/components/admin/career/career_question/edit-career-question";
 
-export type RegisterCareer = {
-    _id: string,
+export type Departement = {
     id: string,
-    lastName: string,
-    firstName: string,
-    email: string,
-    contactNumber: string,
-    address: string,
-    lastEducation: string,
-    campus: string,
-    studyMajor: string,
-    schoolStartYear1: string,
-    schoolStartYear2: string,
-    schoolEndYear1: string,
-    schoolEndYear2: string,
-    previousCompany: string,
-    previousDesignation: string,
-    availabilityPeriod: string,
-    urlSites: string,
-    howDidYouKnow: string,
-    resume: string,
-    portfolio: string,
-    ijazah: string,
-    transkrip: string,
-    testResult: string,
-    createdAt: Date,
-    type: string,
-    division: string,
+    question: string,
 }
 
-function RegisterCareerTable() {
+function CareerQuestionTable() {
 
-    const [achievements, setAchievements] = useState<RegisterCareer[]>()
+    const [achievements, setAchievements] = useState<Departement[]>()
     async function getAchievements() {
-        const achievements = await fetchAllCareerRegister()
+        const achievements = await fetchCareerQuestions()
         setAchievements(achievements?.banners);
     }
 
@@ -76,14 +51,14 @@ function RegisterCareerTable() {
         getAchievements()
     }, [])
 
-    const [open, setOpen] = useState<{banner : RegisterCareer | null, isOpen : boolean}>({banner: null, isOpen:false});
+    const [open, setOpen] = useState<{banner : Departement | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
-    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : RegisterCareer | null, isOpen : boolean}>({banner: null, isOpen: false})
+    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : Departement | null, isOpen : boolean}>({banner: null, isOpen: false})
 
     const handleDelete = async (id: string) => {
         try {
             setDeleteLoading(true);
-            await deleteCareerRegister({id: id});
+            await deleteCareerQuestion({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})
             await getAchievements()
@@ -112,7 +87,7 @@ function RegisterCareerTable() {
                                 <Button variant="destructive" onClick={(bt) => {
                                     bt.preventDefault();
                                     handleDelete(open?.banner?.id ?? "");
-                                }}>{deleteLoading ? <Spinner /> : `Delete ${open?.banner?.firstName}`}</Button>
+                                }}>{deleteLoading ? <Spinner /> : `Delete`}</Button>
                             </div>
                         </DialogFooter>
                     </DialogContent>
@@ -120,15 +95,19 @@ function RegisterCareerTable() {
                 <Dialog open={createBannerOpen.isOpen} onOpenChange={(isOpen) => setCreateBannerOpen(prevState => {
                     return  {isOpen: isOpen, banner: null}
                 })}>
+                    <Button onClick={(bt) => {
+                        bt.preventDefault();
+                        setCreateBannerOpen({banner: null, isOpen:true,})
+                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add Question</Button>
                     <DialogContent className="w-8">
                         <DialogHeader>
-                            <DialogTitle>{"Add Departement"}</DialogTitle>
+                            <DialogTitle>{"Add Question"}</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto max-h-[420px]">
-                            {/*<AddEditDepartement achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {*/}
-                            {/*    setCreateBannerOpen({banner: null, isOpen:false})*/}
-                            {/*    getAchievements();*/}
-                            {/*}} />*/}
+                            <AddEditCareerQuestion achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
+                                setCreateBannerOpen({banner: null, isOpen:false})
+                                getAchievements();
+                            }} />
                         </DialogBody>
                     </DialogContent>
                 </Dialog>
@@ -136,28 +115,21 @@ function RegisterCareerTable() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Email</TableHead>
-                                <TableHead>Number</TableHead>
-                                <TableHead>Date</TableHead>
-                                <TableHead>Division</TableHead>
+                                <TableHead>Question</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {achievements?.map((achievement) => (
                                 <TableRow key={achievement.id}>
-                                    <TableCell>{achievement.firstName}</TableCell>
-                                    <TableCell>{achievement.email}</TableCell>
-                                    <TableCell>{achievement.contactNumber}</TableCell>
-                                    <TableCell>{`${achievement.createdAt.toLocaleDateString()}  ${achievement.createdAt.toLocaleTimeString()}`}</TableCell>
-                                    <TableCell>{achievement.division === "" ? achievement.type : achievement.division}</TableCell>
+                                    <TableCell>{achievement.question}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
                                             <Trash2Icon onClick={() => setOpen({banner: achievement, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
-                                            <Link href={`/admin-panel/career/register_career/${achievement._id}`}>
-                                                <ViewIcon />
-                                            </Link>
+                                            {/*<EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {*/}
+                                            {/*    bt.preventDefault();*/}
+                                            {/*    setCreateBannerOpen({banner: achievement, isOpen: true})*/}
+                                            {/*}} />*/}
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -169,4 +141,4 @@ function RegisterCareerTable() {
     )
 }
 
-export default RegisterCareerTable;
+export default CareerQuestionTable;

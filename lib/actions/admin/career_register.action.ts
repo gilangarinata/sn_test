@@ -31,6 +31,8 @@ interface Params {
     portfolio: string,
     ijazah: string,
     transkrip: string,
+    type: string,
+    division: string
 }
 
 
@@ -100,6 +102,8 @@ export async function updateCareerRegister({
             portfolio,
             ijazah,
             transkrip,
+            type,
+            division
 
 
                                    } : Params): Promise<void> {
@@ -133,6 +137,8 @@ export async function updateCareerRegister({
                 portfolio: portfolio,
                 ijazah: ijazah,
                 transkrip: transkrip,
+                type: type,
+                division: division,
             }, { upsert: true }
         )
     }catch (error) {

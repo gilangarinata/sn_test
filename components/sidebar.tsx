@@ -148,6 +148,10 @@ const routes = [
             {
                 label : "Career Register",
                 href: "/admin-panel/career/career_register"
+            },
+            {
+                label : "Questions",
+                href: "/admin-panel/career/career_question"
             }
         ]
     },

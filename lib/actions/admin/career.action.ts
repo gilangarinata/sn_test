@@ -74,7 +74,7 @@ export async function fetchAllCareer() {
     await connectToDb();
     try {
         const pageNumber = 1;
-        const pageSize = 200;
+        const pageSize = 1000;
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = Career.find()

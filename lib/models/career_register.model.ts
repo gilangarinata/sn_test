@@ -23,6 +23,8 @@ const newsSchema = new  mongoose.Schema({
     portfolio: String,
     ijazah: String,
     transkrip: String,
+    type: String,
+    division: String,
     createdAt: {
         type: Date,
         default: Date.now,

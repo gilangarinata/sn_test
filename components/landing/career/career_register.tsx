@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion"
 import {
-    BriefcaseIcon,
+    BriefcaseIcon, ChevronDown,
     ChevronLeftCircle,
     ChevronRightCircle, FileIcon, LocateIcon, PinIcon,
     SearchIcon,
@@ -43,6 +43,9 @@ import {Textarea} from "@mantine/core";
 import { useRouter } from "next/navigation";
 import {Category} from "@/components/admin/media/category/category-table";
 import {router} from "next/client";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {Departement} from "@/components/admin/career/career_question/career-question-table";
+import {fetchCareerQuestions} from "@/lib/actions/admin/career_question.action";
 
 
 const CareerRegisterValidation = z.object({
@@ -76,54 +79,67 @@ const CareerRegisterValidation = z.object({
 });
 
 export default function CareerRegister({career} : {career: CareerMdl}) {
+    const [questions, setAchievements] = useState<Departement[]>()
+    async function getAchievements() {
+        const achievements = await fetchCareerQuestions()
+        setAchievements(achievements?.banners);
+    }
+
+    useEffect(() => {
+        getAchievements()
+    }, [])
+
+
+    const [type, setType] = useState<string>("")
+    const [division, setDivision] = useState<string>("")
     const [isi, setIsi] = useState(false);
     const [saveLoading, setSaveLoading] = useState(false);
     const form = useForm<z.infer<typeof CareerRegisterValidation>>({
         resolver: zodResolver(CareerRegisterValidation),
         defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
-            contactNumber: "",
-            address: "",
-            lastEducation: "",
-            campus: "",
-            studyMajor: "",
-            schoolStartYear1: "",
-            schoolStartYear2: "",
-            schoolEndYear1: "",
-            schoolEndYear2: "",
-            previousCompany: "",
-            previousDesignation: "",
-            availabilityPeriod: "",
-            urlSites: "",
-            howDidYouKnow: "",
-            resume: "",
-            portfolio: "",
-            ijazah: "",
-            transkrip: "",
-            //]]]]]]]
-            // firstName: "Gilamng",
-            // lastName: "sadasd",
-            // email: "gilangarina@hmas.com",
-            // contactNumber: "asdasd",
-            // address: "asdasd",
-            // lastEducation: "asdasd",
-            // campus: "asd",
-            // studyMajor: "asd",
-            // schoolStartYear1: "asdasd",
-            // schoolStartYear2: "asdas",
-            // schoolEndYear1: "asdsd",
-            // schoolEndYear2: "asdsad",
-            // previousCompany: "asdasd",
-            // previousDesignation: "asdsad",
-            // availabilityPeriod: "asddas",
-            // urlSites: "asd",
-            // howDidYouKnow: "dssd",
+            // firstName: "",
+            // lastName: "",
+            // email: "",
+            // contactNumber: "",
+            // address: "",
+            // lastEducation: "",
+            // campus: "",
+            // studyMajor: "",
+            // schoolStartYear1: "",
+            // schoolStartYear2: "-",
+            // schoolEndYear1: "",
+            // schoolEndYear2: "-",
+            // previousCompany: "",
+            // previousDesignation: "",
+            // availabilityPeriod: "",
+            // urlSites: "",
+            // howDidYouKnow: "",
             // resume: "",
             // portfolio: "",
             // ijazah: "",
             // transkrip: "",
+            //]]]]]]]
+            firstName: "Gilamng",
+            lastName: "sadasd",
+            email: "gilangarina@hmas.com",
+            contactNumber: "asdasd",
+            address: "asdasd",
+            lastEducation: "asdasd",
+            campus: "asd",
+            studyMajor: "asd",
+            schoolStartYear1: "asdasd",
+            schoolStartYear2: "asdas",
+            schoolEndYear1: "asdsd",
+            schoolEndYear2: "asdsad",
+            previousCompany: "asdasd",
+            previousDesignation: "asdsad",
+            availabilityPeriod: "asddas",
+            urlSites: "asd",
+            howDidYouKnow: "dssd",
+            resume: "",
+            portfolio: "",
+            ijazah: "",
+            transkrip: "",
         },
     });
 
@@ -155,7 +171,7 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
 
     const [open, setOpen] = useState<{banner : Category | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [email, setEmail] = useState<string>("");
-    const [message, setMessage] = useState<string>("");
+    const [message, setMessage] = useState<string[]>([]);
 
     const [logo, setLogo] = useState<File[]>([]);
     const handleLogo = (
@@ -250,7 +266,7 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
     const onEditTest = async () => {
         await updateCareerRegisterMessage({
             email: email,
-            message: message
+            message: message.join("<br/> <br/>")
         })
 
         setOpen({banner: null, isOpen: false})
@@ -262,6 +278,18 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
 
     const onSubmit = async (values: z.infer<typeof CareerRegisterValidation>) => {
         try {
+
+            if(type === "") {
+                alert("Please select type")
+                return
+            }
+
+            if(type === "fulltime" && division === "") {
+                alert("Please select division")
+                return
+            }
+
+            setDuration(initialDuration)
             console.log("start upload")
             setSaveLoading(true)
 
@@ -325,7 +353,9 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                 resume: values.resume,
                 portfolio: values.portfolio,
                 ijazah: values.ijazah,
-                transkrip: values.transkrip
+                transkrip: values.transkrip,
+                type: type,
+                division: division,
             })
             setSaveLoading(false)
         } catch (e) {
@@ -357,6 +387,7 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
     };
 
     useEffect(() => {
+
         const intervalId = setInterval(updateTimer, 1000);
 
         return () => clearInterval(intervalId);
@@ -585,23 +616,6 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                                             </FormItem>
                                         )}
                                     />
-                                    <p className="text-white mx-6">-</p>
-                                    <FormField
-                                        control={form.control}
-                                        name='schoolStartYear2'
-                                        render={({ field }) => (
-                                            <FormItem className='flex w-full flex-col'>
-                                                <FormControl>
-                                                    <Input
-                                                        type='text'
-                                                        className='account-form_input no-focus'
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
                                 </div>
                             </div>
                             <div className="flex flex-col text-[#15537A] gap-2">
@@ -610,23 +624,6 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                                     <FormField
                                         control={form.control}
                                         name='schoolEndYear1'
-                                        render={({ field }) => (
-                                            <FormItem className='flex w-full flex-col'>
-                                                <FormControl>
-                                                    <Input
-                                                        type='text'
-                                                        className='account-form_input no-focus'
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <p className="text-white mx-6">-</p>
-                                    <FormField
-                                        control={form.control}
-                                        name='schoolEndYear2'
                                         render={({ field }) => (
                                             <FormItem className='flex w-full flex-col'>
                                                 <FormControl>
@@ -687,29 +684,7 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                                 />
                             </div>
                         </div>
-                        <div  className="w-full h-fit border-t-white rounded-lg gap-2 gap-y-6">
-                            <div className="flex flex-col text-[#15537A] gap-2">
-                                <FormField
-                                    control={form.control}
-                                    name='availabilityPeriod'
-                                    render={({ field }) => (
-                                        <FormItem className='flex w-full flex-col'>
-                                            <FormLabel className='text-base-semibold text-white'>
-                                                Periode Ketersediaan (Hanya untuk program magang)
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    type='text'
-                                                    className='account-form_input no-focus'
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                        </div>
+
                         <div  className="w-full h-fit border-t-white rounded-lg gap-2 gap-y-6">
                             <div className="flex flex-col text-[#15537A] gap-2">
                                 <FormField
@@ -735,13 +710,66 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                         </div>
                         <div  className="w-full h-fit border-t-white rounded-lg gap-2 gap-y-6">
                             <div className="flex flex-col text-[#15537A] gap-2">
+                                <FormItem className='flex w-full flex-col'>
+                                    <FormLabel className='text-base-semibold text-white'>
+                                        Type
+                                    </FormLabel>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger>
+                                            <div className="rounded-sm border border-slate-500 mt-4 lg:mt-0 bg-white">
+                                                <div className="flex items-center px-2 py-1 gap-1">
+                                                    <p className="text-sm">{type}</p>
+                                                    <ChevronDown width={15} />
+                                                </div>
+                                            </div>
+                                        </DropdownMenuTrigger>
+
+                                        <DropdownMenuContent>
+                                            <DropdownMenuItem onClick={() => setType("fulltime")}>Fulltime</DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => setType("intern")}>Intern</DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                    <FormMessage />
+                                </FormItem>
+                            </div>
+                        </div>
+
+                        <div className={cn("w-full h-fit border-t-white rounded-lg gap-2 gap-y-6", type === "fulltime" ? "block" : "hidden")}>
+                            <div className="flex flex-col text-[#15537A] gap-2">
+                                <FormItem className='flex w-full flex-col'>
+                                    <FormLabel className='text-base-semibold text-white'>
+                                        Division
+                                    </FormLabel>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger>
+                                            <div className="rounded-sm border border-slate-500 mt-4 lg:mt-0 bg-white">
+                                                <div className="flex items-center px-2 py-1 gap-1">
+                                                    <p className="text-sm">{division}</p>
+                                                    <ChevronDown width={15} />
+                                                </div>
+                                            </div>
+                                        </DropdownMenuTrigger>
+
+                                        <DropdownMenuContent>
+                                            <DropdownMenuItem onClick={() => setDivision("DM")}>DM</DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => setDivision("EPC")}>EPC</DropdownMenuItem>
+                                            <DropdownMenuItem onClick={() => setDivision("CM")}>CM</DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                    <FormMessage />
+                                </FormItem>
+                            </div>
+                        </div>
+
+                        <div className={cn("w-full h-fit border-t-white rounded-lg gap-2 gap-y-6", type === "intern" ? "block" : "hidden")}>
+                            <div className="flex flex-col text-[#15537A] gap-2">
                                 <FormField
                                     control={form.control}
-                                    name='howDidYouKnow'
+                                    name='availabilityPeriod'
                                     render={({ field }) => (
                                         <FormItem className='flex w-full flex-col'>
                                             <FormLabel className='text-base-semibold text-white'>
-                                                How did you know about SESNAs Career opportunities? (Optional)
+                                                Periode Ketersediaan (Hanya untuk program magang)
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
@@ -756,6 +784,30 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                                 />
                             </div>
                         </div>
+
+                        {/*<div  className="w-full h-fit border-t-white rounded-lg gap-2 gap-y-6">*/}
+                        {/*    <div className="flex flex-col text-[#15537A] gap-2">*/}
+                        {/*        <FormField*/}
+                        {/*            control={form.control}*/}
+                        {/*            name='howDidYouKnow'*/}
+                        {/*            render={({ field }) => (*/}
+                        {/*                <FormItem className='flex w-full flex-col'>*/}
+                        {/*                    <FormLabel className='text-base-semibold text-white'>*/}
+                        {/*                        How did you know about SESNAs Career opportunities? (Optional)*/}
+                        {/*                    </FormLabel>*/}
+                        {/*                    <FormControl>*/}
+                        {/*                        <Input*/}
+                        {/*                            type='text'*/}
+                        {/*                            className='account-form_input no-focus'*/}
+                        {/*                            {...field}*/}
+                        {/*                        />*/}
+                        {/*                    </FormControl>*/}
+                        {/*                    <FormMessage />*/}
+                        {/*                </FormItem>*/}
+                        {/*            )}*/}
+                        {/*        />*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                         <FormField
                             control={form.control}
                             name='resume'
@@ -910,11 +962,17 @@ export default function CareerRegister({career} : {career: CareerMdl}) {
                             {isi ? <div className="flex flex-col justify-center items-center gap-4">
                                 <p className="text-[#fac324]">Timer</p>
                                 <Button className="bg-[#fac324] text-[#15537a]">{formatTime(duration)}</Button>
-                                <p className="text-white text-center">Apa saja yang anda ketahui mengenai PT Sumber Energy Surya Nusantara? Jelaskan!</p>
-                                <Textarea onChange={(v) => {
-                                    setMessage(v.target.value);
-                                }} rows={4} className=" block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Jawaban anda..."></Textarea>
 
+                                    {questions?.map((q,i) => (
+                                        <div key={q.id} className="flex flex-col w-full">
+                                            <p className="text-white text-center">{q.question}</p>
+                                            <Textarea onChange={(v) => {
+                                                const newMessages = [...message];
+                                                newMessages[i] = `${q.question}  :  ${v.target.value}`;
+                                                setMessage(newMessages)
+                                            }} rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Jawaban anda..."></Textarea>
+                                        </div>
+                                    ))}
                                 <Button disabled={saveLoading} onClick={(v)=>{
                                     v.preventDefault();
                                     onEditTest();

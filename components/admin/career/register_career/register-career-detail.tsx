@@ -118,6 +118,14 @@ function RegisterCareerDetail({id} : {id: string}) {
                                 <TableCell>{achievements?.howDidYouKnow}</TableCell>
                             </TableRow>
                             <TableRow>
+                                <TableCell>Type</TableCell>
+                                <TableCell>{achievements?.type}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Division</TableCell>
+                                <TableCell>{achievements?.division}</TableCell>
+                            </TableRow>
+                            <TableRow>
                                 <TableCell>Resume</TableCell>
                                 <TableCell><Link className="text-blue-900" href={achievements?.resume ?? ""} >Download</Link></TableCell>
                             </TableRow>
@@ -136,7 +144,7 @@ function RegisterCareerDetail({id} : {id: string}) {
 
                             <TableRow>
                                 <TableCell>Hasil Test</TableCell>
-                                <TableCell>{achievements?.testResult}</TableCell>
+                                <TableCell><div dangerouslySetInnerHTML={{__html: achievements?.testResult ?? ""}}></div></TableCell>
                             </TableRow>
 
                         </TableBody>
