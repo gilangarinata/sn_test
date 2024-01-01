@@ -16,52 +16,24 @@ import {
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import Sidebar from "@/components/sidebar";
 import React from "react";
+import LocaleSwitcher from "@/components/locale-switcher";
 
 const font = Montserrat({
     weight: "600",
     subsets: ["latin"]
 })
 
-const routes = [
-    {
-        label : "HOME",
-        href : "/"
-    },
-    {
-        label : "WHO WE ARE",
-        href : "/who-we-are"
-    },
-    {
-        label : "OUR BUSINESS",
-        href : "/our-business"
-    },
-    {
-        label : "ZERO CAPEX",
-        href : "/zero-capex"
-    },
-    {
-        label : "MEDIA",
-        isDropDown: true,
-        href : "/media"
-    },
-    {
-        label : "CAREER",
-        href : "/career"
-    },
-    {
-        label : "GET IN TOUCH",
-        href : "/get-in-touch"
-    },
-    {
-        label : "Language",
-        href : "/"
-    },
-]
 
-export const LandingNavBar = () => {
+
+export const LandingNavBar = (
+    {dictionary} : {dictionary: any}
+) => {
+
+
+
 
     return (
-        <nav className="bg-white flex items-center justify-between sticky top-0 z-50 px-6 py-4">
+        <nav className="bg-white z-[100] flex items-center justify-between sticky top-0 px-6 py-4">
             <Link href="/" className="flex items-center">
                 <Image sizes="100vw"
                        width={0}
@@ -75,41 +47,80 @@ export const LandingNavBar = () => {
                   </SheetTrigger>
                     <SheetContent side="right" className="p-0">
                         <div className="flex flex-col px-4 gap-4 py-20">
-                            <NavContent />
+                            <NavContent dictionary={dictionary} />
                         </div>
                     </SheetContent>
                 </Sheet>
             </div>
             <div className="hidden lg:flex items-center justify-end gap-x-8 w-full">
-                <NavContent />
+                <NavContent dictionary={dictionary} />
             </div>
         </nav>
     )
 }
 
 
-export default function NavContent() {
+export default function NavContent(
+    {dictionary} : {dictionary: any}
+) {
+    const routes = [
+        {
+            label : dictionary.home,
+            href : "/"
+        },
+        {
+            label : dictionary.who_we_are,
+            href : "/who-we-are"
+        },
+        {
+            label : dictionary.our_business,
+            href : "/our-business"
+        },
+        {
+            label : dictionary.zero_capex,
+            href : "/zero-capex"
+        },
+        {
+            label : dictionary.media,
+            isDropDown: true,
+            href : "/media"
+        },
+        {
+            label : dictionary.career,
+            href : "/career"
+        },
+        {
+            label : dictionary.get_in_touch,
+            href : "/get-in-touch"
+        },
+        {
+            label : dictionary.language,
+            href : "/lang"
+        },
+    ]
     const pathName = usePathname();
 
     return routes.map(route =>
-        route.label === "Language" ?
+        route.href === "/lang" ?
             (
-                <DropdownMenu key={route.label}>
-                    <DropdownMenuTrigger>
-                        <div className="rounded-sm border border-slate-500">
-                            <div className="flex items-center px-2 py-1 gap-1">
-                                <Globe width={15} />
-                                <p className="text-sm">English</p>
-                                <ChevronDown width={15} />
-                            </div>
-                        </div>
-                    </DropdownMenuTrigger>
-
-                    <DropdownMenuContent>
-                        <DropdownMenuItem>English</DropdownMenuItem>
-                        <DropdownMenuItem>Indonesia</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <LocaleSwitcher key={route.label} />
+                // <DropdownMenu key={route.label}>
+                //     <DropdownMenuTrigger>
+                //         <div className="rounded-sm border border-slate-500">
+                //             <div className="flex items-center px-2 py-1 gap-1">
+                //                 <Globe width={15} />
+                //                 <p className="text-sm">English</p>
+                //                 <ChevronDown width={15} />
+                //             </div>
+                //         </div>
+                //     </DropdownMenuTrigger>
+                //
+                //
+                //     <DropdownMenuContent>
+                //         <DropdownMenuItem>English</DropdownMenuItem>
+                //         <DropdownMenuItem>Indonesia</DropdownMenuItem>
+                //     </DropdownMenuContent>
+                // </DropdownMenu>
             ) : route.isDropDown == true ?
                 (
                     <DropdownMenu key={route.label}>

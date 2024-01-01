@@ -9,6 +9,8 @@ import {updateBanner} from "@/lib/actions/admin/banner.action";
 import React, {useEffect} from "react";
 import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
+import {Locale} from "@/i18n.config";
+import {translateText} from "@/lib/utils";
 
 
 const divStyle = {
@@ -61,7 +63,7 @@ const properties = {
     nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
     autoplay: true,
 }
-export default function HomeBanner({banners} : {banners: Banner[]}) {
+export default function HomeBanner({banners, lang, dictionary} : {banners: Banner[], lang: Locale, dictionary: any}) {
     return (
         <div className="">
             <Slide {...properties}>
@@ -83,16 +85,16 @@ export default function HomeBanner({banners} : {banners: Banner[]}) {
                                     </motion.div>
                                     <motion.div initial={{scale : 0}} whileInView={{scale: 1, transition: { duration: 1 }}} className="flex flex-col items-start text-[#154B6F] px-16 pt-2 w-full gap-1">
                                         <h1 className="text-xl lg:text-5xl font-bold" dangerouslySetInnerHTML={{
-                                            __html: slideImage.headingTitle,
+                                            __html: translateText(slideImage.headingTitle, lang),
                                         }}/>
                                         <h2 className="text-sm lg:text-xl font-semibold" dangerouslySetInnerHTML={{
-                                            __html: slideImage.subHeading,
+                                            __html: translateText(slideImage.subHeading, lang),
                                         }}/>
                                         <p className="text-xs lg:text-lg" dangerouslySetInnerHTML={{
-                                            __html: slideImage.description,
+                                            __html: translateText(slideImage.description, lang),
                                         }}/>
                                         <Link href={slideImage.url} className="mt-4">
-                                            <Button>Discover More</Button>
+                                            <Button>{dictionary.discover_more}</Button>
                                         </Link>
                                     </motion.div>
                                 </div>
@@ -108,7 +110,7 @@ export default function HomeBanner({banners} : {banners: Banner[]}) {
                                             <div className="relative w-20 h-20">
                                                 <Image fill className="object-fill" src={slideImage.logo} alt="" />
                                             </div>
-                                            <h2 className="px-4 text-sm lg:text-2xl" dangerouslySetInnerHTML={{__html : slideImage.description}}/>
+                                            <h2 className="px-4 text-sm lg:text-2xl" dangerouslySetInnerHTML={{__html : translateText(slideImage.description, lang)}}/>
                                         </div>
                                     </div>
                                 </div>

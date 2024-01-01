@@ -1,8 +1,8 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
-import {convertFromHTML} from "draft-js";
-import {ContentState, EditorState} from "draft-js";
- 
+import {type ClassValue, clsx} from "clsx"
+import {twMerge} from "tailwind-merge"
+import {ContentState, convertFromHTML, EditorState} from "draft-js";
+import {Locale} from "@/i18n.config";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -113,4 +113,29 @@ export function formatDateString2(dateString: string) {
     return `${formattedDate}`;
 }
 
+export function translateText(inputString: string, lang: Locale) {
+    const idTagStart = '[[';
+    const idTagEnd = ']]';
 
+    const startIndex = inputString.indexOf(idTagStart);
+    const endIndex = inputString.indexOf(idTagEnd);
+
+    let translationResult: string;
+    if(startIndex > -1) {
+        translationResult = inputString.substring(0, startIndex).trim();
+    } else {
+        translationResult = inputString.trim();
+    }
+
+
+    console.log(`inputString ${inputString}`)
+    console.log(`translationResult ${translationResult}`)
+
+    if (startIndex > -1 && endIndex !== -1) {
+        if(lang === 'id') {
+            translationResult = inputString.substring(startIndex + idTagStart.length, endIndex).trim();
+        }
+    }
+
+    return translationResult;
+}

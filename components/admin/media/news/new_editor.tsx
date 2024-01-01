@@ -13,7 +13,7 @@ import {
 import "@blocknote/core/style.css";
 import {useTheme} from "@emotion/react";
 import {cn} from "@/lib/utils";
-import "@/app/custom.css";
+import "@/app/[lang]/custom.css";
 
 
 const lightRedTheme = {

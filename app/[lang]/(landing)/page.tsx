@@ -7,13 +7,16 @@ import React from "react";
 import Calculator from "@/components/landing/home/calculator";
 import FooterLanding from "@/components/footer-landing";
 import {fetchHome} from "@/lib/actions/landing/home.action";
+import {Locale} from "@/i18n.config";
+import {getDictionary} from "@/lib/dictionary";
 
-async function LandingPage() {
+async function LandingPage({params} : {params: { lang: Locale }}) {
     const data = await fetchHome()
+    const dictionary = await getDictionary(params.lang)
     return (
        <div className="h-full">
-           <HomeBanner banners={data.banners}/>
-           <SesnaGroup experience={data.experiences} />
+           <HomeBanner banners={data.banners} lang={params.lang} dictionary={dictionary}/>
+           <SesnaGroup experience={data.experiences} lang={params.lang} dictionary={dictionary} />
            <OurAchievement achievements={data.achievements} />
            <SatisfiedCustomer customers={data.customers} />
            <Calculator />
