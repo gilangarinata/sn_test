@@ -130,7 +130,7 @@ export default function NavContent(
                                 <ChevronDown className={cn("hidden",route.isDropDown == true ? "block" : "hidden")} />
                             </div>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="hover:cursor-pointer">
+                        <DropdownMenuContent className="hover:cursor-pointer z-[100]">
                             <DropdownMenuItem><Link className="w-full" href="/media/news">News</Link></DropdownMenuItem>
                             <DropdownMenuItem><Link className="w-full" href="/media/video">Video</Link></DropdownMenuItem>
                         </DropdownMenuContent>

@@ -59,7 +59,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
             filters.category = categoryId;
         }
 
-        if (year) {
+        if (year && year > 0) {
             // Assuming you have a 'date' field in your news documents
             filters.createdAt = { $gte: new Date(`${year}-01-01`), $lte: new Date(`${year}-12-31`) };
         }

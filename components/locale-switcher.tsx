@@ -45,7 +45,7 @@ export default function LocaleSwitcher() {
                     <span className="sr-only">Toggle theme</span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="z-[100]">
                 {i18n.locales.map((locale, index) => (
                     <DropdownMenuItem className="hover:cursor-pointer" key={locale}>
                         <Link href={redirectedPathName(locale)}>

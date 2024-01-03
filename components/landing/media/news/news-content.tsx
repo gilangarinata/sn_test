@@ -17,6 +17,7 @@ import {fetchCareerByDepIds} from "@/lib/actions/admin/career.action";
 import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
 import {NewEditor} from "@/components/admin/media/news/new_editor";
+import {underline} from "kleur/colors";
 
 export default function NewsContent({ categoryId, categories, newsA} : { categoryId?: string, categories: Category[], newsA?: News[]}) {
     const pathName = usePathname();
@@ -32,7 +33,7 @@ export default function NewsContent({ categoryId, categories, newsA} : { categor
 
     const [currentActivePage, setCurrentActivePage] = useState<number>(1)
     useEffect(() => {
-        getAchievements(currentActivePage ?? 1, year ?? new Date().getFullYear())
+        getAchievements(currentActivePage ?? 1, year ?? -1)
     }, [currentActivePage, year])
 
     return (
@@ -63,6 +64,7 @@ export default function NewsContent({ categoryId, categories, newsA} : { categor
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent>
+                        <DropdownMenuItem onClick={() => setYear(2024)}>2024</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setYear(2023)}>2023</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => setYear(2022)}>2022</DropdownMenuItem>
                     </DropdownMenuContent>
