@@ -10,9 +10,10 @@ import {cn} from "@/lib/utils";
 import {ChevronLeftCircle, ChevronRightCircle} from "lucide-react";
 import {Customer} from "@/components/admin/home/customers/edit-customer";
 import Link from "next/link";
+import {Locale} from "@/i18n.config";
 
 
-export default function SatisfiedCustomer({customers} : {customers : Customer[]}) {
+export default function SatisfiedCustomer({customers, lang, dictionary} : {customers : Customer[], lang: Locale, dictionary: any}) {
     const ref = React.useRef<StackedCarousel>();
 
     function onPrevClick() {
@@ -26,7 +27,7 @@ export default function SatisfiedCustomer({customers} : {customers : Customer[]}
     return (
         <section className="lg:max-w-7xl mx-auto">
             <div className="w-full flex flex-col px-6 md:px-20 my-10">
-                <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">OUR SATISFIED CUSTOMER</h1>
+                <h1 className="w-full text-[#15537A] text-center text-2xl font-bold mb-8">{dictionary.our_satisfied_customer}</h1>
                 <div className="w-full flex justify-center items-center">
                     <div onClick={onPrevClick} className="hover:cursor-pointer">
                         <ChevronLeftCircle />

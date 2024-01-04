@@ -10,6 +10,8 @@ import React, {useEffect} from "react";
 import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
 import {WhoWeAreBannerContent} from "@/components/admin/who-we-are/banner/who-we-are-banner";
+import {Locale} from "@/i18n.config";
+import {translateText} from "@/lib/utils";
 
 
 const divStyle = {
@@ -35,7 +37,7 @@ const properties = {
     nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
     autoplay: false,
 }
-export default function WhoWeAreBanner({banner} : {banner : WhoWeAreBannerContent}) {
+export default function WhoWeAreBanner({banner, lang, dictionary} : {banner : WhoWeAreBannerContent, lang: Locale, dictionary: any}) {
     return (
         <div className="">
             <Slide {...properties}>
@@ -47,7 +49,7 @@ export default function WhoWeAreBanner({banner} : {banner : WhoWeAreBannerConten
                                     <div className="flex text-[#154B6F] font-bold gap-2 items-center divide-x-8 divide-white">
                                         {/*<Image width={100} height={100} src={slideImage.logo} alt=""/>*/}
                                         <div></div>
-                                        <h2 className="px-4 text-lg lg:text-4xl text-shadow-lg font-bold lg:mt-12" dangerouslySetInnerHTML={{__html : banner.bannerHeadingTitle}}/>
+                                        <h2 className="px-4 text-lg lg:text-4xl text-shadow-lg font-bold lg:mt-12" dangerouslySetInnerHTML={{__html : translateText(banner.bannerHeadingTitle, lang)}}/>
                                     </div>
                                 </div>
                             </div>

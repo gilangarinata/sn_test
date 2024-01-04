@@ -17,34 +17,36 @@ import {
     Youtube, YoutubeIcon
 } from "lucide-react";
 import Link from "next/link";
+import {Locale} from "@/i18n.config";
+import CustomLink from "@/components/custom-link";
 
 
-export default function FooterLanding() {
+export default function FooterLanding({dictionary, lang}: {dictionary: any, lang: Locale}) {
     return (
         <section className="z-[1000px] relative">
             <div className="w-full flex flex-col px-6 md:px-20 bg-[#15537A] my-0 divide-y divide-blue-100/20">
                 <div className="py-16 flex w-full text-white">
                     <div className="flex flex-col gap-4 w-full">
                         <Image width={200} height={200} src="/images/logo_putih.png" alt="Logo sesna" />
-                        <h1 className="font-bold text-lg">FOLLOW US</h1>
+                        <h1 className="font-bold text-lg">{dictionary.follow_us}</h1>
                         <div className="flex flex-row gap-4">
-                            <Link href="https://www.instagram.com/sesnagroup/">
+                            <CustomLink lang={lang} href="https://www.instagram.com/sesnagroup/">
                                 <InstagramIcon className="hover:cursor-pointer" />
-                            </Link>
-                            <Link href="https://www.youtube.com/@solarwarriorindonesia1483">
+                            </CustomLink>
+                            <CustomLink lang={lang} href="https://www.youtube.com/@solarwarriorindonesia1483">
                                 <YoutubeIcon className="hover:cursor-pointer" />
-                            </Link>
-                            <Link href="https://www.linkedin.com/company/14474669/admin/feed/posts/">
+                            </CustomLink>
+                            <CustomLink lang={lang} href="https://www.linkedin.com/company/14474669/admin/feed/posts/">
                                 <LinkedinIcon className="hover:cursor-pointer" />
-                            </Link>
-                            <Link href="">
+                            </CustomLink>
+                            <CustomLink lang={lang} href="">
                                 <FacebookIcon className="hover:cursor-pointer" />
-                            </Link>
+                            </CustomLink>
                         </div>
                     </div>
 
                     <div className="w-full flex flex-col gap-2">
-                        <h1 className="font-bold text-xl">KANTOR PUSAT</h1>
+                        <h1 className="font-bold text-xl">{dictionary.center_office}</h1>
                         <p>World Trade Center, WTC 1, 5th Floor</p>
                         <div className="flex gap-2">
                             <MapPin width={30} color="white"/>
@@ -64,11 +66,11 @@ export default function FooterLanding() {
                     <p>Copyright 2023 © <span className="text-yellow-400 font-bold">Solar Warrior</span> | Owned by PT Sumber Energi Surya Nusantara.</p>
                     <div className=" gap-2 font-semibold hidden md:flex">
                         {/*<Link href="/">*/}
-                            <p className="hover:text-yellow-400">Syarat Ketentuan</p>
+                            <p className="hover:text-yellow-400">{dictionary.term_and_condition}</p>
                         {/*</Link>*/}
                          <p>|</p>
                         {/*<Link href="/">*/}
-                            <p className="hover:text-yellow-400">Kebijakan Privasi</p>
+                            <p className="hover:text-yellow-400">{dictionary.privacy_policy}</p>
                         {/*</Link>*/}
                         <p>|</p>
                         {/*<Link href="/">*/}

@@ -17,9 +17,9 @@ async function LandingPage({params} : {params: { lang: Locale }}) {
        <div className="h-full">
            <HomeBanner banners={data.banners} lang={params.lang} dictionary={dictionary}/>
            <SesnaGroup experience={data.experiences} lang={params.lang} dictionary={dictionary} />
-           <OurAchievement achievements={data.achievements} />
-           <SatisfiedCustomer customers={data.customers} />
-           <Calculator />
+           <OurAchievement achievements={data.achievements} lang={params.lang} dictionary={dictionary}/>
+           <SatisfiedCustomer customers={data.customers} lang={params.lang} dictionary={dictionary} />
+           <Calculator dictionary={dictionary}/>
        </div>
     )
 }

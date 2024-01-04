@@ -17,6 +17,8 @@ import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import Sidebar from "@/components/sidebar";
 import React from "react";
 import LocaleSwitcher from "@/components/locale-switcher";
+import CustomLink from "@/components/custom-link";
+import {Locale} from "@/i18n.config";
 
 const font = Montserrat({
     weight: "600",
@@ -26,7 +28,7 @@ const font = Montserrat({
 
 
 export const LandingNavBar = (
-    {dictionary} : {dictionary: any}
+    {dictionary, lang} : {dictionary: any, lang: Locale}
 ) => {
 
 
@@ -47,13 +49,13 @@ export const LandingNavBar = (
                   </SheetTrigger>
                     <SheetContent side="right" className="p-0">
                         <div className="flex flex-col px-4 gap-4 py-20">
-                            <NavContent dictionary={dictionary} />
+                            <NavContent dictionary={dictionary} lang={lang} />
                         </div>
                     </SheetContent>
                 </Sheet>
             </div>
             <div className="hidden lg:flex items-center justify-end gap-x-8 w-full">
-                <NavContent dictionary={dictionary} />
+                <NavContent dictionary={dictionary} lang={lang} />
             </div>
         </nav>
     )
@@ -61,7 +63,7 @@ export const LandingNavBar = (
 
 
 export default function NavContent(
-    {dictionary} : {dictionary: any}
+    {dictionary, lang} : {dictionary: any, lang: Locale}
 ) {
     const routes = [
         {
@@ -131,15 +133,15 @@ export default function NavContent(
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="hover:cursor-pointer z-[100]">
-                            <DropdownMenuItem><Link className="w-full" href="/media/news">News</Link></DropdownMenuItem>
-                            <DropdownMenuItem><Link className="w-full" href="/media/video">Video</Link></DropdownMenuItem>
+                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/news">News</CustomLink></DropdownMenuItem>
+                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/video">Video</CustomLink></DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
 
                 ) : (
-                    <Link href={route.href} key={route.label} >
+                    <CustomLink lang={lang} href={route.href} key={route.label} >
                         <p className={cn("font-semibold", pathName == route.href ? "text-[#FAC225]" : "text-[#15527B]/80")}>{route.label}</p>
-                    </Link>
+                    </CustomLink>
                 )
     )
 }

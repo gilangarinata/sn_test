@@ -4,6 +4,8 @@ import Image from "next/image";
 import {motion, useAnimation} from "framer-motion";
 import React, {useEffect, useState} from "react";
 import {Subsidiaries} from "@/components/admin/who-we-are/subsidiaries/subsidiaries-table";
+import {Locale} from "@/i18n.config";
+import {translateText} from "@/lib/utils";
 
 // const subsidiaries = {
 //     title: "SUBSIDIARIES",
@@ -39,7 +41,7 @@ import {Subsidiaries} from "@/components/admin/who-we-are/subsidiaries/subsidiar
 //     ]
 // }
 
-export function Subsidiaries({subsidiaries} : {subsidiaries : Subsidiaries[]}) {
+export function Subsidiaries({subsidiaries, lang, dictionary} : {subsidiaries : Subsidiaries[], lang: Locale, dictionary: any}) {
 
     return (
             <section className="w-full pt-8">
@@ -52,7 +54,7 @@ export function Subsidiaries({subsidiaries} : {subsidiaries : Subsidiaries[]}) {
                                 className="text-4xl font-bold"
                             >
                                 <h1 className="text-[#15537A] text-3xl font-bold">
-                                    SUBSIDIARIES
+                                    {dictionary.subsidiaries}
                                 </h1>
                             </motion.div>
                             <div className="flex flex-col gap-4">
@@ -64,7 +66,7 @@ export function Subsidiaries({subsidiaries} : {subsidiaries : Subsidiaries[]}) {
                                                     <Image className="rounded-full" style={{objectFit: "contain"}} fill src={subsidiary.image} alt={subsidiary.description} draggable={false}/>
                                                 </div>
                                             </div>
-                                            <p className="text-white" dangerouslySetInnerHTML={{__html: subsidiary.description}} />
+                                            <p className="text-white" dangerouslySetInnerHTML={{__html: translateText(subsidiary.description, lang)}} />
                                         </motion.div>
                                     )
                                 }))}

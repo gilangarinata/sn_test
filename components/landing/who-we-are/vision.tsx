@@ -9,6 +9,8 @@ import {OurDna} from "@/components/admin/who-we-are/our-dna/our-dna-table";
 import {Director} from "@/components/admin/who-we-are/director/director-table";
 import {VisionMission} from "@/components/admin/who-we-are/vision-mission/vision-mission-table";
 import Link from "next/link";
+import {Locale} from "@/i18n.config";
+import {translateText} from "@/lib/utils";
 
 // const banner = {
 //     title: "<b class='text-yellow-500'>SESNA Group</b> at A Glance",
@@ -71,25 +73,25 @@ import Link from "next/link";
 //     },
 // ]
 
-export function VisionMission({ourDna, director, visionMission} : {ourDna : OurDna[], director: Director, visionMission: VisionMission}) {
+export function VisionMission({ourDna, director, visionMission, lang, dictionary} : {ourDna : OurDna[], director: Director, visionMission: VisionMission, lang: Locale, dictionary: any}) {
     return (
             <section className="w-full pt-8">
                 <div className="bg-[#15537A] z-50 relative rounded-3xl max-w-5xl mx-auto flex flex-col justify-center items-center p-6 gap-4">
                     <div className="flex items-center gap-4">
                         <Image src="/images/vision.png" alt="" width={80} height={80} />
                         <div className="flex flex-col text-[#FABD24]">
-                            <h1 className="font-bold text-3xl">VISION</h1>
+                            <h1 className="font-bold text-3xl">{dictionary.vision}</h1>
                             <p>
-                                {visionMission.vision}
+                                {translateText(visionMission.vision, lang)}
                             </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
                         <Image src="/images/mission.png" alt="" width={80} height={80} />
                         <div className="flex flex-col text-[#FABD24]">
-                            <h1 className="font-bold text-3xl">MISSION</h1>
+                            <h1 className="font-bold text-3xl">{dictionary.mission}</h1>
                             <p>
-                                {visionMission.mission}
+                                {translateText(visionMission.mission, lang)}
                             </p>
                         </div>
                     </div>
@@ -97,15 +99,15 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
 
                 <div className="w-full bg-[#FABD24] z-40 relative mt-[-120px]">
                     <div className="flex flex-col items-center p-6 gap-4 pt-[180px]">
-                        <h1 className="font-bold text-[#15537A] text-3xl">Our DNA</h1>
+                        <h1 className="font-bold text-[#15537A] text-3xl">{dictionary.our_dna}</h1>
                         <div className="flex flex-col lg:flex-row text-[#15537A] px-8 gap-8 lg:divide-x">
                             {
                                 ourDna.map((dna) => {
                                     return (
                                         <div key={dna.image} className="flex flex-col items-center w-full gap-4">
                                             <Image src={dna.image} alt={dna.title} width={150} height={150} />
-                                            <h1 className="font-bold text-2xl">{dna.title}</h1>
-                                            <p className="text-center w-full justify-center px-4">{dna.description}</p>
+                                            <h1 className="font-bold text-2xl">{translateText(dna.title, lang)}</h1>
+                                            <p className="text-center w-full justify-center px-4">{translateText(dna.description, lang)}</p>
                                         </div>
                                     )
                                 })
@@ -120,9 +122,9 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                             <div className="flex w-full flex-col gap-6 px-10 lg:pl-[120px]">
                                 <motion.div initial={{scale : 0}} whileInView={{scale: 1, transition: { duration: 1 }}}
                                     className="text-4xl font-bold">
-                                    <h1 className="text-white text-2xl  font-semibold" dangerouslySetInnerHTML={{__html : director?.messageDirectorTitle ?? ""}}/>
+                                    <h1 className="text-white text-2xl  font-semibold" dangerouslySetInnerHTML={{__html : translateText(director?.messageDirectorTitle ?? "", lang)}}/>
                                 </motion.div>
-                                <p className="text-white text-justify" dangerouslySetInnerHTML={{__html : director?.messageDirectorDescription ?? ""}} />
+                                <p className="text-white text-justify" dangerouslySetInnerHTML={{__html : translateText(director?.messageDirectorDescription ?? "", lang)}} />
                             </div>
                             <div className="hidden w-0 md:w-full md:block mb-[-300px]">
                                 <div className="w-full h-[750px] relative">
@@ -134,7 +136,7 @@ export function VisionMission({ourDna, director, visionMission} : {ourDna : OurD
                 </div>
 
                 <div className="w-full bg-[#FABD24] z-40 relative flex p-6 items-center justify-center">
-                    <Link href={director.companyProfileUrl} ><Button><DownloadIcon/> Download Company Profile</Button></Link>
+                    <Link href={director.companyProfileUrl} ><Button><DownloadIcon/>{dictionary.download_company_profile}</Button></Link>
                 </div>
             </section>
 

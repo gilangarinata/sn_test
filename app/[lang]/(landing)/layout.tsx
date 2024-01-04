@@ -47,24 +47,13 @@ export default async function RootLayout({
                 </Script>
             </div>
             <div className="mx-auto h-full">
-                <LandingNavBar dictionary={dictionary}/>
+                <LandingNavBar dictionary={dictionary} lang={params.lang}/>
 
                 <div className="flex flex-col">
                     {children}
-                    <FooterLanding/>
+                    <FooterLanding dictionary={dictionary} lang={params.lang}/>
                 </div>
             </div>
         </main>
     )
 }
-
-
-// <!-- Google tag (gtag.js) -->
-// <script async src="https://www.googletagmanager.com/gtag/js?id=G-EM5J07JC7L"></script>
-// <script>
-//     window.dataLayer = window.dataLayer || [];
-//     function gtag(){dataLayer.push(arguments);}
-//     gtag('js', new Date());
-//
-//     gtag('config', 'G-EM5J07JC7L');
-// </script>
