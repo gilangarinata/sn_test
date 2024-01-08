@@ -63,8 +63,8 @@ const CareerValidation = z.object({
         .string(),
     location: z
         .string(),
-    type: z
-        .string()
+    // type: z
+    //     .string()
 });
 
 function AddEditCareer({ achievement, onNeedRefresh}: Props) {
@@ -76,6 +76,7 @@ function AddEditCareer({ achievement, onNeedRefresh}: Props) {
     const [value, setValue] = React.useState(achievement?.departement?.name ?? "")
     const [categories, setCategories] = React.useState<Category[]>()
     const [saveLoading, setSaveLoading] = useState(false);
+    const [type, setType] = React.useState(achievement?.departement?.name ?? "")
 
     const [logo, setLogo] = useState<File[]>([]);
 
@@ -84,7 +85,6 @@ function AddEditCareer({ achievement, onNeedRefresh}: Props) {
         defaultValues: {
             title: achievement?.title ?? "",
             location: achievement?.location ?? "",
-            type: achievement?.type ?? "",
         },
     });
 
@@ -127,7 +127,7 @@ function AddEditCareer({ achievement, onNeedRefresh}: Props) {
                 title: values.title,
                 description: content,
                 location: values.location,
-                type: values.type,
+                type: type,
                 departement: value,
             })
 
@@ -260,25 +260,36 @@ function AddEditCareer({ achievement, onNeedRefresh}: Props) {
                 {/*        isFull={true}*/}
                 {/*    />*/}
                 {/*</div>*/}
-                <FormField
-                    control={form.control}
-                    name='type'
-                    render={({ field }) => (
-                        <FormItem className='flex w-full flex-col'>
-                            <FormLabel className='text-base-semibold text-light-2'>
-                                Type
-                            </FormLabel>
-                            <FormControl>
-                                <Input
-                                    type='text'
-                                    className='account-form_input no-focus'
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                <FormLabel className='text-base-semibold text-light-2'>
+                    Job Type
+                </FormLabel>
+                <Button variant={type == "Full-time" ? "default" : "outline"} onClick={(b) => {
+                    b.preventDefault()
+                    setType("Full-time")
+                }} >Full-time</Button>
+                <Button variant={type == "Internship" ? "default" : "outline"} onClick={(b) => {
+                    b.preventDefault()
+                    setType("Internship")
+                }} >Internship</Button>
+                {/*<FormField*/}
+                {/*    control={form.control}*/}
+                {/*    name='type'*/}
+                {/*    render={({ field }) => (*/}
+                {/*        <FormItem className='flex w-full flex-col'>*/}
+                {/*            <FormLabel className='text-base-semibold text-light-2'>*/}
+                {/*                Type*/}
+                {/*            </FormLabel>*/}
+                {/*            <FormControl>*/}
+                {/*                <Input*/}
+                {/*                    type='text'*/}
+                {/*                    className='account-form_input no-focus'*/}
+                {/*                    {...field}*/}
+                {/*                />*/}
+                {/*            </FormControl>*/}
+                {/*            <FormMessage />*/}
+                {/*        </FormItem>*/}
+                {/*    )}*/}
+                {/*/>*/}
                 <FormField
                     control={form.control}
                     name='location'

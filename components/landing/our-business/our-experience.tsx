@@ -4,6 +4,8 @@ import Image from "next/image";
 import {OurExperience} from "@/components/admin/our-business/our-experience/our-experience-table";
 import Link from "next/link";
 import { motion } from "framer-motion"
+import {Locale} from "@/i18n.config";
+import {translateText} from "@/lib/utils";
 
 const experiences = [
     {
@@ -24,13 +26,13 @@ const divStyle = {
     backgroundSize: 'cover',
 }
 
-export default function OurExperience({ourExperience} : {ourExperience: OurExperience[]}) {
+export default function OurExperience({ourExperience, lang, dictionary} : {ourExperience: OurExperience[],lang: Locale, dictionary: any}) {
     return (
         <div className="w-full flex flex-col min-h-screen">
             <div className="flex flex-col items-center">
                 <div className="flex w-full py-10 bg-gradient-to-b from-[#285479] to-[#4C7391] items-center justify-center">
                     <h1 className="text-white text-3xl font-bold">
-                        OUR EXPERIENCE
+                        {dictionary.our_experience}
                     </h1>
                 </div>
                 <div className="flex flex-col lg:grid lg:grid-cols-3 w-full lg:h-screen mt-[-10px]">
@@ -38,7 +40,7 @@ export default function OurExperience({ourExperience} : {ourExperience: OurExper
                         <Link key={scope.title} href={scope.link} >
                             <motion.div initial={{ scale: 1 }} whileHover={{scale: 1.1}} className="flex w-full flex-col h-[300px] lg:h-full" style={{ ...divStyle, 'backgroundImage': `url(${scope.image})`}}>
                                 <div className="flex hover:cursor-pointer text-white justify-end flex-col w-full h-full">
-                                    <h1 className="mb-20 lg:mb-[200px] mx-20 text-3xl font-bold hover:cursor-pointer">{scope.title}</h1>
+                                    <h1 className="mb-20 lg:mb-[200px] mx-20 text-3xl font-bold hover:cursor-pointer">{translateText(scope.title, lang)}</h1>
                                 </div>
                             </motion.div>
                         </Link>

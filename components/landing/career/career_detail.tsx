@@ -24,16 +24,16 @@ import {NewEditor} from "@/components/admin/media/news/new_editor";
 
 export default function CareerDetail({career} : {career: CareerMdl}) {
     return (
-        <div className="w-full px-10 flex flex-col bg-[#15537A] items-center min-h-screen pt-10">
-            <div className="flex flex-col w-full gap-4 max-w-7xl">
-                <div className="flex flex-col pt-4 gap-4 divide-y">
+        <div className="w-full px-10 flex flex-col bg-[#15537A] items-center min-h-screen">
+            <div className="flex flex-col w-full gap-4 max-w-3xl">
+                <div className="flex flex-col gap-4 divide-y sticky top-0 z-10 pt-[90px] bg-[#15537A]">
                     <div className="flex justify-between">
                         <h1 className="text-2xl text-white font-bold">{career.title}</h1>
                         <Link href={`/career/${career._id}/register`}>
                             <Button className="bg-[#FAC225] text-[#15537A]">Daftar Sekarang</Button>
                         </Link>
                     </div>
-                    <div className="flex pt-6">
+                    <div className="flex pt-6 pb-3">
                         <div className="flex gap-2 w-80">
                             <BriefcaseIcon color="white" />
                             <p className="text-white">{career.departement.name}</p>

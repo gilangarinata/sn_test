@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {cn} from "@/lib/utils";
+import {cn, translateText} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import React, {useEffect, useState} from "react";
 import {News} from "@/components/admin/media/news/news-table";
@@ -18,8 +18,9 @@ import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
 import {Video} from "@/components/admin/media/video/video-table";
 import {fetchAllVideos} from "@/lib/actions/admin/video.action";
+import {Locale} from "@/i18n.config";
 
-export default function VideoContent({ categoryId, videos, categories  } : { categoryId?: string, videos: Video[] , categories: Category[]}) {
+export default function VideoContent({ categoryId, videos, categories, lang, dictionary  } : { categoryId?: string, videos: Video[] , categories: Category[], lang: Locale, dictionary: any}) {
     const pathName = usePathname();
 
     const [videosA, setVideosA] = useState<Video[]>()
@@ -43,13 +44,13 @@ export default function VideoContent({ categoryId, videos, categories  } : { cat
                 <div className="w-full flex gap-4">
                     <Link href={"/media/video"}>
                         <p className={cn("font-bold", pathName == "/media/video" ? "text-yellow-400 underline underline-offset-8" : "")}>
-                            All
+                            {dictionary.all}
                         </p>
                     </Link>
                     {categories.map(category => (
                         <Link key={category.id} href={"/media/video/"+category._id}>
                             <p className={cn("font-bold", pathName == "/media/video/"+category._id ? "text-yellow-400 underline underline-offset-8" : "")}>
-                                {category.name}
+                                {translateText(category.name, lang)}
                             </p>
                         </Link>
                     ))}

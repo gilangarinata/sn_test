@@ -10,6 +10,9 @@ import React, {useEffect} from "react";
 import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
 import {OurBusinessBanner} from "@/components/admin/our-business/banners/banners-table";
+import {Locale} from "@/i18n.config";
+import {CareerBanner} from "@/components/admin/career/career_banner/career-banner-table";
+import {translateText} from "@/lib/utils";
 
 
 const divStyle = {
@@ -35,19 +38,19 @@ const properties = {
     nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
     autoplay: false,
 }
-export default function CareerBanner() {
+export default function CareerBanner({lang, dictionary, banners} : {lang: Locale, dictionary: any, banners : CareerBanner[]}) {
     return (
         <div className="">
             <Slide {...properties}>
-                {slideImages.map((slideImage, index) =>
-                    <a key={index} href={slideImage.url} target="_blank">
+                {banners.map((slideImage, index) =>
+                    <a key={index} href={slideImage.image} target="_blank">
                         <div>
                             <div className="flex items-center justify-center h-[200px] lg:h-[250px]" style={{ ...divStyle, 'backgroundImage': `url(${slideImage.image})`}}>
                                 <div className="w-full h-full px-20 pt-10 bg-gradient-to-b from-white to-transparent">
                                     <div className="flex text-[#154B6F] font-bold text-shadow-lg gap-2 items-center divide-x-8 divide-[#154B6F]">
                                         {/*<Image width={100} height={100} src={slideImage.logo} alt=""/>*/}
                                         <div></div>
-                                        {/*<h2 className="px-4 text-2xl" >Page Under Construction - Coming Soon!</h2>*/}
+                                        <h2 className="px-4 text-2xl" >{translateText(slideImage.description, lang)}</h2>
                                     </div>
                                 </div>
                             </div>

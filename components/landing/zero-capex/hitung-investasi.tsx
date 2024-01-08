@@ -18,6 +18,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {Locale} from "@/i18n.config";
 
 
 const scopes = [
@@ -56,7 +57,7 @@ const scopes = [
 const divStyle = {
     backgroundSize: 'cover',
 }
-export default function HistungInvestasi() {
+export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dictionary: any}) {
     const router = useRouter();
     const [jenisProperty, setJenisProperty] = React.useState('');
     const [dayaListrik, setDayaListrik] = React.useState('');
@@ -70,14 +71,14 @@ export default function HistungInvestasi() {
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
                 <div className="bg-white/70 lg:hidden w-full h-full">
-                    <h1 className="w-full text-end p-[60px] text-3xl font-bold text-[#f9c329] text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
+                    <h1 className="w-full text-end p-[60px] text-3xl font-bold text-[#f9c329] text-shadow-lg">{dictionary.hitung_investasi}</h1>
                 </div>
                 <div className="bg-white/70 w-full">
                     <div className="max-w-7xl mx-auto h-screen flex">
                         <div className="w-full lg:w-[600px] h-full">
                             <div className="flex flex-col items-center px-4 py-6 gap-4">
                                 <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4">
-                                    <h1>Mohon input data dibawah ini</h1>
+                                    <h1>{dictionary.mohon_input}</h1>
                                     {/*<Input type="text" placeholder="Jenis Property" onChange={(e) => {*/}
                                     {/*    setJenisProperty(e.target.value);*/}
                                     {/*}} />*/}
@@ -108,15 +109,15 @@ export default function HistungInvestasi() {
                                     <Input type="number" placeholder="Luas Area Property (m2)" onChange={(e) => {
                                         setLuasArea(e.target.value)
                                     }} />
-                                    <p>Lokasi Pemasangan</p>
+                                    <p>{dictionary.lokasi_pemasangan}</p>
                                     <div className="flex gap-4">
                                         <div className={cn("flex flex-col items-center hover:cursor-pointer", lokasiPemasangan === "rooftop" ? "bg-yellow-500" : "")} onClick={()=> setLokasiPemasangan("rooftop")}>
                                             <Image width={50} height={50} src="/images/ic_zero_capex_1.png" alt="" />
-                                            <p>Rooftop</p>
+                                            <p>{dictionary.rooftop}</p>
                                         </div>
                                         <div className={cn("flex flex-col items-center", lokasiPemasangan === "ground_mounted" ? "bg-yellow-500" : "")} onClick={() => setLokasiPemasangan("ground_mounted")}>
                                             <Image width={50} height={50} src="/images/ic_zero_capex_2.png" alt="" />
-                                            <p>Ground Mounted</p>
+                                            <p>{dictionary.ground_mounted}</p>
                                         </div>
                                     </div>
                                     <p className="text-red-500">{error}</p>

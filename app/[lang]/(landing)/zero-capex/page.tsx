@@ -6,12 +6,15 @@ import {VisionMission} from "@/components/landing/who-we-are/vision";
 import {fetchWhoWeAre} from "@/lib/actions/landing/who-we-are.action";
 import ZeroCapexBanner from "@/components/landing/zero-capex/zero-capex-banner";
 import HistungInvestasi from "@/components/landing/zero-capex/hitung-investasi";
+import {getDictionary} from "@/lib/dictionary";
+import {Locale} from "@/i18n.config";
 
-async function WhoWeArePage() {
+async function WhoWeArePage({params} : {params: { lang: Locale }}) {
+    const dictionary = await getDictionary(params.lang)
     return (
        <div className="relative">
-           <ZeroCapexBanner />
-           <HistungInvestasi />
+           <ZeroCapexBanner lang={params.lang} dictionary={dictionary} />
+           <HistungInvestasi lang={params.lang} dictionary={dictionary}/>
        </div>
     )
 }

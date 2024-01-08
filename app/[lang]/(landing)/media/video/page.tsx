@@ -15,13 +15,16 @@ import {Category} from "@/components/admin/media/category/category-table";
 import VideoContent from "@/components/landing/media/video/video-content";
 import {fetchAllVideos} from "@/lib/actions/admin/video.action";
 import {Video} from "@/components/admin/media/video/video-table";
+import {Locale} from "@/i18n.config";
+import {getDictionary} from "@/lib/dictionary";
 
-async function MediaPage() {
+async function MediaPage({params} : {params: { lang: Locale }}) {
     const video = await fetchAllVideos(1,2000)
     const categories = await fetchCategories("video")
+    const dictionary = await getDictionary(params.lang)
     return (
        <div className="h-full">
-           <VideoContent categories={categories?.categories ?? []} videos={video?.banners as Video[]}  />
+           <VideoContent categories={categories?.categories ?? []} videos={video?.banners as Video[]}  lang={params.lang} dictionary={dictionary} />
        </div>
     )
 }

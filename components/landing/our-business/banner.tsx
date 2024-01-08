@@ -10,6 +10,8 @@ import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
 import {OurBusinessBanner} from "@/components/admin/our-business/banners/banners-table";
 import { motion } from "framer-motion"
+import {Locale} from "@/i18n.config";
+import {translateText} from "@/lib/utils";
 
 
 const divStyle = {
@@ -35,7 +37,7 @@ const properties = {
     nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
     autoplay: false,
 }
-export default function OurBusinessBanner({banner} : {banner: OurBusinessBanner[]}) {
+export default function OurBusinessBanner({banner, lang, dictionary} : {banner: OurBusinessBanner[], lang: Locale, dictionary: any}) {
     return (
         <div className="">
             <Slide {...properties}>
@@ -48,7 +50,7 @@ export default function OurBusinessBanner({banner} : {banner: OurBusinessBanner[
                                         {/*<Image width={100} height={100} src={slideImage.logo} alt=""/>*/}
                                         <div></div>
                                         <motion.div initial={{ scale: 0 }} whileInView={{scale: 1, transition: { duration: 1 }}}>
-                                            <h2 className="px-4 text-2xl" dangerouslySetInnerHTML={{__html : slideImage.description}}/>
+                                            <h2 className="px-4 text-2xl" dangerouslySetInnerHTML={{__html : translateText(slideImage.description, lang) }}/>
                                         </motion.div>
                                     </div>
                                 </div>

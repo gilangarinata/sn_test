@@ -5,6 +5,7 @@ import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image';
 import {Button} from "@/components/ui/button";
 import Image from "next/image";
+import {Locale} from "@/i18n.config";
 
 
 const divStyle = {
@@ -32,7 +33,7 @@ const properties = {
     nextArrow: <ChevronRightCircle color="transparent" className="mx-4"/>,
     autoplay: false,
 }
-export default function NewsBanner({image, title} : {image: string, title: string}) {
+export default function NewsBanner({image, title, lang, dictionary} : {image: string, title: string, lang: Locale, dictionary: any}) {
     return (
         <div className="">
             <Slide {...properties}>

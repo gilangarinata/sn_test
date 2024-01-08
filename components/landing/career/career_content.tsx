@@ -90,6 +90,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {usePathname, useRouter} from "next/navigation";
+import {Locale} from "@/i18n.config";
 
 
 // const departenments = [
@@ -136,7 +137,7 @@ export type CareerContent = {
 }
 
 
-export default function CareerContent() {
+export default function CareerContent({lang, dictionary} : {lang: Locale, dictionary: any}) {
     const [depIds, setDepIds] = useState<string[]>([])
     const [achievements, setAchievements] = useState<CareerMdl[]>()
     const [departements, setDepartements] = useState<Departement[]>()
@@ -176,21 +177,30 @@ export default function CareerContent() {
         getAchievements(depIds, currentActivePage ?? 1)
     }, [currentActivePage,depIds, searchQuery, level])
 
+    const handleKeyDown = (e: any) => {
+        if (e.key === 'Enter') {
+            if (inputRef.current) {
+                const searchQuery = inputRef.current.value;
+                setSearchQuery(searchQuery);
+            }
+        }
+    };
+
     return (
         <div className="w-full flex flex-col bg-[#15537A] h-[1200px] pt-10">
             <div className="flex flex-col px-10 lg:flex-row w-full max-w-7xl justify-center lg:justify-end gap-4">
-                <Input className="w-full lg:w-60" type="text" placeholder="Cari pekerjaan" ref={inputRef} />
+                <Input onKeyDown={handleKeyDown} className="w-full lg:w-60" type="text" placeholder={dictionary.cari_pekerjaan} ref={inputRef} />
                 <Button className="bg-[#FAC225] text-[#15537A]" onClick={(ev) => {
                     ev.preventDefault();
                     if (inputRef.current) {
                         const searchQuery = inputRef.current.value;
                         setSearchQuery(searchQuery);
                     }
-                }}><SearchIcon className="mr-2" /> Cari Lowongan</Button>
+                }}><SearchIcon className="mr-2" /> {dictionary.cari_lowongan}</Button>
             </div>
             <div className="w-full flex flex-col lg:flex-row lg:divide-x lg:divide-white">
                 <div className="w-full lg:w-[500px] h-fit lg:h-[500px] flex flex-col px-10 gap-2">
-                    <h1 className="mt-10 text-xl text-white font-bold mb-6">Departemen</h1>
+                    <h1 className="mt-10 text-xl text-white font-bold mb-6">{dictionary.departemen}</h1>
                     {departements?.map((departement, index) => (
                         <div key={departement._id} className="flex gap-4">
                             <Input type="checkbox" className="w-5 h-5" onChange={(event) => {
@@ -246,9 +256,9 @@ export default function CareerContent() {
                     </div>
                 </div>
                 <div className="flex flex-col h-[500px] w-full px-10">
-                    <h1 className="mt-10 text-2xl text-white font-bold">Posisi yang tersedia</h1>
+                    <h1 className="mt-10 text-2xl text-white font-bold">{dictionary.posisi_yang_tersedia}</h1>
                     <hr className="w-full border-white mt-4"/>
-                    <p className={cn("text-white w-full mt-4",achievements?.length === 0 ? "block" : "hidden")}>Lowongan tidak tersedia</p>
+                    <p className={cn("text-white w-full mt-4",achievements?.length === 0 ? "block" : "hidden")}>{dictionary.lowongan_tidak_tersedia}</p>
                     {achievements?.map((position, index) => (
                         <div key={position.id} className="flex flex-col group w-full">
                             <Link href={`/career/${position._id}`} >

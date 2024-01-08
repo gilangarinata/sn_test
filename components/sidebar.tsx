@@ -138,6 +138,10 @@ const routes = [
         href : "/career",
         children: [
             {
+                label : "Banner",
+                href: "/admin-panel/career/career_banner"
+            },
+            {
                 label : "Departement",
                 href: "/admin-panel/career/departement"
             },

@@ -14,16 +14,19 @@ import ScopeOfWork from "@/components/landing/our-business/scope-of-work";
 import OurExperience from "@/components/landing/our-business/our-experience";
 import {fetchWhoWeAre} from "@/lib/actions/landing/who-we-are.action";
 import {fetchOurBusiness} from "@/lib/actions/landing/our-business.action";
+import {Locale} from "@/i18n.config";
+import {getDictionary} from "@/lib/dictionary";
 
-async function LandingPage() {
+async function LandingPage({params} : {params: { lang: Locale }}) {
     const ourBusiness = await fetchOurBusiness()
+    const dictionary = await getDictionary(params.lang)
     return (
        <div className="h-full">
-           <OurBusinessBanner banner={ourBusiness.banner} />
-           <WhySolar whySolar={ourBusiness.whySolar} />
-           <SolarPowerWorks solarPowerWorks={ourBusiness.solarPowerWorks} />
-           <ScopeOfWork scopeOfWork={ourBusiness.scopeOfWork} />
-           <OurExperience ourExperience={ourBusiness.ourExperience} />
+           <OurBusinessBanner banner={ourBusiness.banner} lang={params.lang} dictionary={dictionary}/>
+           <WhySolar whySolar={ourBusiness.whySolar} lang={params.lang} dictionary={dictionary}/>
+           <SolarPowerWorks solarPowerWorks={ourBusiness.solarPowerWorks} lang={params.lang} dictionary={dictionary}/>
+           <ScopeOfWork scopeOfWork={ourBusiness.scopeOfWork} lang={params.lang} dictionary={dictionary}/>
+           <OurExperience ourExperience={ourBusiness.ourExperience} lang={params.lang} dictionary={dictionary}/>
        </div>
     )
 }

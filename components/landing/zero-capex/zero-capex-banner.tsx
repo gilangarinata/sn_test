@@ -9,6 +9,8 @@ import {updateBanner} from "@/lib/actions/admin/banner.action";
 import React, {useEffect} from "react";
 import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
+import {Locale} from "@/i18n.config";
+import {translateText} from "@/lib/utils";
 
 
 const divStyle = {
@@ -36,7 +38,7 @@ const properties = {
     nextArrow: <ChevronRightCircle color="white" className="mx-4"/>,
     autoplay: true,
 }
-export default function ZeroCapexBanner() {
+export default function ZeroCapexBanner({ lang, dictionary} : { lang: Locale, dictionary: any}) {
     return (
         <div className="">
             <Slide {...properties}>
@@ -48,10 +50,10 @@ export default function ZeroCapexBanner() {
                                 <div className="flex flex-col md:flex-row items-center h-full justify-center">
                                     <motion.div initial={{scale : 0}} whileInView={{scale: 1, transition: { duration: 1 }}} className="flex flex-col items-start text-[#154B6F] px-16 pt-2 w-full gap-1">
                                         <h1 className="text-4xl font-bold" dangerouslySetInnerHTML={{
-                                            __html: slideImage.title,
+                                            __html: translateText(slideImage.title, lang),
                                         }}/>
                                         <p dangerouslySetInnerHTML={{
-                                            __html: slideImage.description,
+                                            __html: translateText(slideImage.description, lang),
                                         }}/>
                                     </motion.div>
                                     <motion.div whileInView={{scale : 1}} initial={{scale:0}} className="hidden md:flex items-center justify-center w-full">

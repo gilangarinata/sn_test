@@ -19,13 +19,14 @@ import Link from "next/link";
 import {Banner} from "@/components/admin/home/banners/edit-banner";
 import {WhySolar} from "@/components/admin/our-business/why-solar/why-solar-table";
 import {FancyCarousel} from "@/components/landing/our-business/fancy-carousel";
-import {cn} from "@/lib/utils";
+import {cn, translateText} from "@/lib/utils";
+import {Locale} from "@/i18n.config";
 
 
 
 
 
-export default function WhySolar({whySolar} : {whySolar: WhySolar[]}) {
+export default function WhySolar({whySolar, lang, dictionary} : {whySolar: WhySolar[],lang: Locale, dictionary: any}) {
     const pentagonImages = whySolar.map((solar) => solar.icon);
     const pentagonImages2 = whySolar.map((solar) => solar.icon);
 
@@ -50,7 +51,7 @@ export default function WhySolar({whySolar} : {whySolar: WhySolar[]}) {
         <div className="w-full flex flex-col items-center py-10 h-screen justify-center">
             <motion.div initial={{ scale: 0 }} whileInView={{scale: 1}}>
                 <h1 className="text-[#15537A] text-3xl font-bold">
-                    WHY SOLAR ?
+                    {dictionary.why_solar}
                 </h1>
             </motion.div>
 
@@ -68,8 +69,8 @@ export default function WhySolar({whySolar} : {whySolar: WhySolar[]}) {
                     }} color="#15537a" className="mx-4 hover:cursor-pointer"/>
                     {whySolar.map((slideImage, index) =>
                         <div key={index} className={cn("flex flex-col items-center h-24 justify-center", index === currentIndex ? "block" : "hidden")}>
-                            <p className="text-xl text-[#15537A] w-full text-center">{slideImage.title}</p>
-                            <p className="mx-16 text-[#15537A] text-sm text-center">{slideImage.description}</p>
+                            <p className="text-xl text-[#15537A] w-full text-center">{translateText(slideImage.title, lang)}</p>
+                            <p className="mx-16 text-[#15537A] text-sm text-center">{translateText(slideImage.description, lang)}</p>
                         </div>
                     )}
                     <ChevronRight size={40} onClick={() => {
@@ -104,61 +105,6 @@ export default function WhySolar({whySolar} : {whySolar: WhySolar[]}) {
                     }}
                 />
             </div>
-            {/*<div className="mt-28">*/}
-            {/*    <div*/}
-            {/*        className="w-1/2 mx-auto px-20"*/}
-            {/*        style={{*/}
-            {/*            position: 'relative',*/}
-            {/*            width: '200px',*/}
-            {/*            height: '200px',*/}
-            {/*            margin: '0 auto',*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        <img*/}
-            {/*            src='/images/why-solar-6.png'*/}
-            {/*            style={{*/}
-            {/*                position: 'absolute',*/}
-            {/*                width: '150px',*/}
-            {/*                height: '150px',*/}
-            {/*                top: '50%',*/}
-            {/*                left: '50%',*/}
-            {/*                transform: `translate(-50%, -50%) translate(0px, 0px)`, // Conditional scaling for the top image*/}
-            {/*                transition: 'transform 0.5s ease', // Smooth animation*/}
-            {/*            }}*/}
-            {/*        />*/}
-
-            {/*        {pentagonImages.map((image, index) => {*/}
-            {/*            const { x, y } = pentagonVertices[(index + currentIndex) % pentagonImages.length];*/}
-            {/*            const isTopImage = y === Math.min(...pentagonVertices.map(v => v.y));*/}
-            {/*            const scale = isTopImage ? 'scale(1.8)' : 'scale(1)'; // Scale the top image larger*/}
-            {/*            const imageFx = isTopImage ? pentagonImages2[index] : pentagonImages[index];*/}
-            {/*            return (*/}
-            {/*                <img*/}
-            {/*                    // onClick={() => setCurrentIndex((pr) => index - pr)}*/}
-            {/*                    className="hover:cursor-pointer"*/}
-            {/*                    key={index}*/}
-            {/*                    src={imageFx}*/}
-            {/*                    alt={`Image ${index + 1}`}*/}
-            {/*                    style={{*/}
-            {/*                        position: 'absolute',*/}
-            {/*                        width: '70px',*/}
-            {/*                        height: '70px',*/}
-            {/*                        top: '50%',*/}
-            {/*                        left: '50%',*/}
-            {/*                        transform: `translate(-50%, -50%) translate(${x}px, ${y}px) ${scale}`, // Conditional scaling for the top image*/}
-            {/*                        transition: 'transform 0.5s ease', // Smooth animation*/}
-            {/*                    }}*/}
-            {/*                />*/}
-            {/*            );*/}
-            {/*        })}*/}
-            {/*    </div>*/}
-            {/*    /!*<button*!/*/}
-            {/*    /!*    className="block mx-auto mt-4 bg-blue-500 text-white px-4 py-2 rounded"*!/*/}
-            {/*    /!*    onClick={nextImage}*!/*/}
-            {/*    /!*>*!/*/}
-            {/*    /!*    Next*!/*/}
-            {/*    /!*</button>*!/*/}
-            {/*</div>*/}
         </div>
     )
 }

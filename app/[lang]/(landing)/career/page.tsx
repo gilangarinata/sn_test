@@ -16,12 +16,18 @@ import {fetchWhoWeAre} from "@/lib/actions/landing/who-we-are.action";
 import {fetchOurBusiness} from "@/lib/actions/landing/our-business.action";
 import CareerBanner from "@/components/landing/career/career_banner";
 import CareerContent from "@/components/landing/career/career_content";
+import {Locale} from "@/i18n.config";
+import {getDictionary} from "@/lib/dictionary";
 
-async function LandingPage() {
+import {fetchCareerBanners} from "@/lib/actions/admin/career_banner.action";
+
+async function LandingPage({params} : {params: { lang: Locale }}) {
+    const dictionary = await getDictionary(params.lang)
+    const banners = await fetchCareerBanners();
     return (
        <div className="h-full">
-           <CareerBanner />
-           <CareerContent />
+           <CareerBanner lang={params.lang} dictionary={dictionary} banners={banners?.banners ?? []}/>
+           <CareerContent lang={params.lang} dictionary={dictionary}/>
        </div>
     )
 }

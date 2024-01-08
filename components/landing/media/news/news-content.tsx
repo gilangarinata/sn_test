@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {cn} from "@/lib/utils";
+import {cn, translateText} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import React, {useEffect, useState} from "react";
 import {News} from "@/components/admin/media/news/news-table";
@@ -18,8 +18,9 @@ import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
 import {NewEditor} from "@/components/admin/media/news/new_editor";
 import {underline} from "kleur/colors";
+import {Locale} from "@/i18n.config";
 
-export default function NewsContent({ categoryId, categories, newsA} : { categoryId?: string, categories: Category[], newsA?: News[]}) {
+export default function NewsContent({ categoryId, categories, newsA, lang, dictionary} : { categoryId?: string, categories: Category[], newsA?: News[],lang: Locale, dictionary: any}) {
     const pathName = usePathname();
     const [news, setNews] = useState<News[]>(newsA ?? [])
     const [totalBannersCount, setTotalBannersCount] = useState<number>()
@@ -42,13 +43,13 @@ export default function NewsContent({ categoryId, categories, newsA} : { categor
                 <div className="w-full flex gap-4 ">
                     <Link href={"/media/news"}>
                         <p className={cn("font-bold", pathName == "/media/news" ? "text-yellow-400 underline underline-offset-8" : "")}>
-                            All
+                            {dictionary.all}
                         </p>
                     </Link>
                     {categories.map(category => (
                         <Link key={category.id} href={"/media/news/"+category._id}>
                             <p className={cn("font-bold", pathName == "/media/news/"+category._id ? "text-yellow-400 underline underline-offset-8" : "")}>
-                                {category.name}
+                                {translateText(category.name, lang)}
                             </p>
                         </Link>
                     ))}

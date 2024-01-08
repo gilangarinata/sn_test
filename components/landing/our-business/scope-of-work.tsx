@@ -3,6 +3,8 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion"
 import {ScopeOfWOrk} from "@/components/admin/our-business/scope-of-works/scope-of-work-table";
+import {Locale} from "@/i18n.config";
+import {translateText} from "@/lib/utils";
 
 
 const scopes = [
@@ -38,13 +40,13 @@ const scopes = [
     },
 ]
 
-export default function ScopeOfWork({scopeOfWork} : {scopeOfWork: ScopeOfWOrk[]}) {
+export default function ScopeOfWork({scopeOfWork, lang, dictionary} : {scopeOfWork: ScopeOfWOrk[],lang: Locale, dictionary: any}) {
     return (
         <div className="w-full flex flex-col items-center py-10 min-h-screen justify-center">
             <div className="flex flex-col items-center max-w-6xl mx-auto gap-8">
                 <motion.div initial={{ scale: 0 }} whileInView={{scale: 1}}>
                     <h1 className="text-[#15537A] text-3xl font-bold">
-                        SCOPE OF WORK
+                        {dictionary.scope_of_work}
                     </h1>
                 </motion.div>
                 <div className="flex flex-col lg:grid lg:grid-cols-2 gap-4 px-6">
@@ -54,8 +56,8 @@ export default function ScopeOfWork({scopeOfWork} : {scopeOfWork: ScopeOfWOrk[]}
                                 <Image fill style={{objectFit:"cover"}} src={scope?.image} alt="" />
                             </div>
                             <div className="flex flex-col w-full">
-                                <h1 className="text-[#15537A] text-2xl font-bold">{scope.title}</h1>
-                                <p className="text-[#15537A] text-justify text-sm">{scope.description}</p>
+                                <h1 className="text-[#15537A] text-2xl font-bold">{translateText(scope.title, lang)}</h1>
+                                <p className="text-[#15537A] text-justify text-sm">{translateText(scope.description, lang)}</p>
                             </div>
                         </motion.div>
                     ))}

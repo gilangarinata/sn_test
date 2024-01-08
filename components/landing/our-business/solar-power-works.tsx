@@ -9,7 +9,8 @@ import {SolarPowerWorks} from "@/components/admin/our-business/solar-power-works
 import {Slide, SlideshowRef} from "react-slideshow-image";
 import {ChevronLeftCircle, ChevronRightCircle} from "lucide-react";
 import {StackedCarousel} from "react-stacked-center-carousel";
-import {cn} from "@/lib/utils";
+import {cn, translateText} from "@/lib/utils";
+import {Locale} from "@/i18n.config";
 
 const properties = {
     prevArrow: <div></div>,
@@ -32,7 +33,7 @@ const solarWorks = [
     }
 ]
 
-export default function SolarPowerWorks({solarPowerWorks} : {solarPowerWorks: SolarPowerWorks[]}) {
+export default function SolarPowerWorks({solarPowerWorks, lang, dictionary} : {solarPowerWorks: SolarPowerWorks[],lang: Locale, dictionary: any}) {
     const slideshowRef: RefObject<SlideshowRef> | null = useRef<SlideshowRef | null>(null);
     const [currentSlide, setCurrentSlide] = React.useState(0);
     return (
@@ -46,10 +47,10 @@ export default function SolarPowerWorks({solarPowerWorks} : {solarPowerWorks: So
                             <div className="flex flex-col md:flex-row items-center h-full justify-center">
 
                                 <motion.div whileInView={{scale : 1}} initial={{scale:0}} className="flex w-full flex-col gap-6 text-[#15537A]">
-                                    <h1 className="text-3xl font-bold">{slideImage.title}</h1>
-                                    <p className="text-xl mt-6">{slideImage.subtitle}</p>
+                                    <h1 className="text-3xl font-bold">{translateText(slideImage.title, lang)}</h1>
+                                    <p className="text-xl mt-6">{translateText(slideImage.subtitle, lang)}</p>
                                     <div className="container mx-auto p-4">
-                                        <ul className="list-disc" dangerouslySetInnerHTML={{__html: slideImage.description}}>
+                                        <ul className="list-disc" dangerouslySetInnerHTML={{__html: translateText(slideImage.description, lang)}}>
                                         </ul>
                                     </div>
                                     <div className="flex space-x-6 mt-12">
