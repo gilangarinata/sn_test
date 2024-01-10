@@ -57,6 +57,6 @@
   "daya_listrik" : "Daya Listrik (kVa)",
   "tarif_listrik" : "Tarif Listrik (per kWh)",
   "tagihan_listrik" : "Tagihan Listrik per bulan (Rupiah)",
-  "luas_area" : "Luas Area Property (m2)",
+  "luas_area" : "Luas Area Property (m2)"
 
 }
