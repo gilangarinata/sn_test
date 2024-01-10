@@ -86,27 +86,27 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         setJenisProperty(val)
                                     }}>
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Jenis Property" />
+                                            <SelectValue placeholder={dictionary.jenis_properti} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectItem  value="rumah">Rumah</SelectItem>
-                                                <SelectItem value="tambang">Tambang</SelectItem>
-                                                <SelectItem value="industri">Industri</SelectItem>
-                                                <SelectItem value="bangunan_publik">Bangunan publik</SelectItem>
+                                                <SelectItem  value="rumah">{dictionary.rumah}</SelectItem>
+                                                <SelectItem value="tambang">{dictionary.tambang}</SelectItem>
+                                                <SelectItem value="industri">{dictionary.indusctri}</SelectItem>
+                                                <SelectItem value="bangunan_publik">{dictionary.bangunan_publik}</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
-                                    <Input type="number" placeholder="Daya Listrik (kVa)" onChange={(e) => {
+                                    <Input type="number" placeholder={dictionary.daya_listrik} onChange={(e) => {
                                         setDayaListrik(e.target.value)
                                     }} />
-                                    <Input type="number" placeholder="Tarif Listrik (per kWh)" onChange={(e) => {
+                                    <Input type="number" placeholder={dictionary.tarif_listrik} onChange={(e) => {
                                         setTarifListrik(e.target.value)
                                     }} />
-                                    <Input type="number" placeholder="Tagihan Listrik per bulan (Rupiah)" onChange={(e) => {
+                                    <Input type="number" placeholder={dictionary.tagihan_listrik} onChange={(e) => {
                                         setTagihanListrik(e.target.value)
                                     }} />
-                                    <Input type="number" placeholder="Luas Area Property (m2)" onChange={(e) => {
+                                    <Input type="number" placeholder={dictionary.luas_area} onChange={(e) => {
                                         setLuasArea(e.target.value)
                                     }} />
                                     <p>{dictionary.lokasi_pemasangan}</p>

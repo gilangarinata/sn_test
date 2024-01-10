@@ -52,5 +52,10 @@
   "enter_your_phone": "Masukkan nomor telepon yang valid",
   "enter_your_message": "Masukkan pesan Anda",
   "accept_term": "Saya menerima syarat dan ketentuan layanan",
-  "submit": "Kirim"
+  "submit": "Kirim",
+  "jenis_properti": "Jenis Properti",
+  "daya_listrik" : "Daya Listrik (kVa)",
+  "tarif_listrik" : "Tarif Listrik (per kWh)",
+  "tagihan_listrik" : "Tagihan Listrik per bulan (Rupiah)",
+  "luas_area" : "Luas Area Property (m2)"
 }
