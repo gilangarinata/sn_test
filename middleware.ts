@@ -11,9 +11,17 @@ function getLocale(request: NextRequest): string | undefined {
     request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
 
     // @ts-ignore locales are readonly
-    const locales: string[] = i18n.locales
-    const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
+    // const locales: string[] = i18n.locales
+    // const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
 
+    const locales: string[] = i18n.locales;
+    let languages = new Negotiator({ headers: negotiatorHeaders }).languages();
+    if (languages.length === 1 && languages[0] === "*") {
+        languages = ["en"];
+    }
+
+    console.log("getLocaleshh")
+    console.log({languages, locales})
     return matchLocale(languages, locales, i18n.defaultLocale)
 }
 
