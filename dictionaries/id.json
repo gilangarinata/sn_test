@@ -53,9 +53,9 @@
   "enter_your_message": "Masukkan pesan Anda",
   "accept_term": "Saya menerima syarat dan ketentuan layanan",
   "submit": "Kirim",
-  "jenis_properti": "Jenis Properti",
-  "daya_listrik" : "Daya Listrik (kVa)",
-  "tarif_listrik" : "Tarif Listrik (per kWh)",
-  "tagihan_listrik" : "Tagihan Listrik per bulan (Rupiah)",
-  "luas_area" : "Luas Area Property (m2)"
+  "jenis_properti": "Property Type",
+  "daya_listrik": "Electric Power (kVA)",
+  "tarif_listrik": "Electricity Tariff (per kWh)",
+  "tagihan_listrik": "Electricity Bill per month (Rupiah)",
+  "luas_area": "Property Area (m2)"
 }

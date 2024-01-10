@@ -46,12 +46,16 @@
   "cari_pekerjaan": "Search for Jobs",
   "posisi_yang_tersedia": "Available Positions",
   "lowongan_tidak_tersedia": "No Vacancies Available",
-
   "are_you_passionate": "Are you passionate about shaping a sustainable future? Whether you have an exciting project or exploring opportunities to collaborate, feel free to reach out!",
   "enter_your_name": "Enter Your Name",
   "enter_your_email": "Enter a valid email address",
   "enter_your_phone": "Enter a valid phone number",
   "enter_your_message": "Enter your message",
   "accept_term": "I accept the terms of service",
-  "submit": "Submit"
+  "submit": "Submit",
+  "jenis_properti": "Jenis Properti",
+  "daya_listrik" : "Daya Listrik (kVa)",
+  "tarif_listrik" : "Tarif Listrik (per kWh)",
+  "tagihan_listrik" : "Tagihan Listrik per bulan (Rupiah)",
+  "luas_area" : "Luas Area Property (m2)"
 }
