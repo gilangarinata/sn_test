@@ -14,13 +14,16 @@ import {News} from "@/components/admin/media/news/news-table";
 import {fetchAllVideos, fetchVideoById} from "@/lib/actions/admin/video.action";
 import VideoDetail from "@/components/landing/media/video/video-detail";
 import {Video} from "@/components/admin/media/video/video-table";
+import {getDictionary} from "@/lib/dictionary";
+import {Locale} from "@/i18n.config";
 
-async function MediaPage ({ params }: { params: { videoId: string } }) {
+async function MediaPage ({ params }: { params: { videoId: string, lang: Locale } }) {
     const news = await fetchVideoById(params.videoId)
+    const dictionary = await getDictionary(params.lang)
 
     return (
        <div className="h-full">
-        <VideoDetail news={news?.news as Video} />
+        <VideoDetail lang={params.lang} dictionary={dictionary} news={news?.news as Video} />
        </div>
     )
 }

@@ -19,6 +19,7 @@ import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action
 import {Video} from "@/components/admin/media/video/video-table";
 import {fetchAllVideos} from "@/lib/actions/admin/video.action";
 import {Locale} from "@/i18n.config";
+import CustomLink from "@/components/custom-link";
 
 export default function VideoContent({ categoryId, videos, categories, lang, dictionary  } : { categoryId?: string, videos: Video[] , categories: Category[], lang: Locale, dictionary: any}) {
     const pathName = usePathname();
@@ -42,17 +43,17 @@ export default function VideoContent({ categoryId, videos, categories, lang, dic
         <div className="w-full flex flex-col mb-8 items-center justify-center">
             <div className="w-full flex flex-col lg:flex-row justify-between p-6 max-w-5xl mx-auto items-center">
                 <div className="w-full flex gap-4">
-                    <Link href={"/media/video"}>
+                    <CustomLink lang={lang} href={"/media/video"}>
                         <p className={cn("font-bold", pathName == "/media/video" ? "text-yellow-400 underline underline-offset-8" : "")}>
                             {dictionary.all}
                         </p>
-                    </Link>
+                    </CustomLink>
                     {categories.map(category => (
-                        <Link key={category.id} href={"/media/video/"+category._id}>
+                        <CustomLink lang={lang} key={category.id} href={"/media/video/"+category._id}>
                             <p className={cn("font-bold", pathName == "/media/video/"+category._id ? "text-yellow-400 underline underline-offset-8" : "")}>
                                 {translateText(category.name, lang)}
                             </p>
-                        </Link>
+                        </CustomLink>
                     ))}
                 </div>
             </div>
@@ -64,14 +65,14 @@ export default function VideoContent({ categoryId, videos, categories, lang, dic
                     return (
                         <div className="flex flex-col gap-4" key={content.title}>
                             <div className="relative w-full h-[250px]">
-                                <Link href={"/media/video/detail/"+content.id} >
+                                <CustomLink lang={lang} href={"/media/video/detail/"+content.id} >
                                     <Image fill src={`https://img.youtube.com/vi/${videoId}/default.jpg`} alt="" />
-                                </Link>
+                                </CustomLink>
                             </div>
-                            <Link href={"/media/video/detail/"+content.id} >
-                                <h1 className="text-xl font-bold hover:text-yellow-400">{content.title}</h1>
-                            </Link>
-                            <p className="max-h-[165px] overflow-hidden text-justify" dangerouslySetInnerHTML={{__html: content.description}} />
+                            <CustomLink lang={lang} href={"/media/video/detail/"+content.id} >
+                                <h1 className="text-xl font-bold hover:text-yellow-400">{translateText(content.title, lang)}</h1>
+                            </CustomLink>
+                            <p className="max-h-[165px] overflow-hidden text-justify" dangerouslySetInnerHTML={{__html: translateText(content.description, lang)}} />
                         </div>
                     )
                 })}

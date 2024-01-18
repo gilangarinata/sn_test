@@ -50,8 +50,9 @@ export default function SolarPowerWorks({solarPowerWorks, lang, dictionary} : {s
                                     <h1 className="text-3xl font-bold">{translateText(slideImage.title, lang)}</h1>
                                     <p className="text-xl mt-6">{translateText(slideImage.subtitle, lang)}</p>
                                     <div className="container mx-auto p-4">
-                                        <ul className="list-disc" dangerouslySetInnerHTML={{__html: translateText(slideImage.description, lang)}}>
-                                        </ul>
+                                        <div dangerouslySetInnerHTML={{__html: translateText(slideImage.description.replaceAll("<ul>", "<ul class=\"list-disc\">"), lang)}}>
+
+                                        </div>
                                     </div>
                                     <div className="flex space-x-6 mt-12">
                                         {solarPowerWorks.map((slideImage, index) => (

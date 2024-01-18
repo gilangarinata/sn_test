@@ -69,7 +69,7 @@ export default function WhySolar({whySolar, lang, dictionary} : {whySolar: WhySo
                     }} color="#15537a" className="mx-4 hover:cursor-pointer"/>
                     {whySolar.map((slideImage, index) =>
                         <div key={index} className={cn("flex flex-col items-center h-24 justify-center", index === currentIndex ? "block" : "hidden")}>
-                            <p className="text-xl text-[#15537A] w-full text-center">{translateText(slideImage.title, lang)}</p>
+                            <p className="text-xl text-[#15537A] w-full text-center mb-4">{translateText(slideImage.title, lang)}</p>
                             <p className="mx-16 text-[#15537A] text-sm text-center">{translateText(slideImage.description, lang)}</p>
                         </div>
                     )}

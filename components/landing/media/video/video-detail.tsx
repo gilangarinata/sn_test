@@ -7,15 +7,16 @@ import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
-import {cn, formatDateString2} from "@/lib/utils";
+import {cn, formatDateString2, translateText} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import React from "react";
 import {News} from "@/components/admin/media/news/news-table";
 import {Video} from "@/components/admin/media/video/video-table";
 import YouTube from "react-youtube";
+import {Locale} from "@/i18n.config";
 
 
-export default function VideoDetail({news} : {news : Video}) {
+export default function VideoDetail({news, lang, dictionary} : {news : Video, lang: Locale, dictionary: any}) {
     const opts = {
         height: "390",
         width: "640",
@@ -48,9 +49,9 @@ export default function VideoDetail({news} : {news : Video}) {
 
                     {/*/>*/}
 
-                    <h1 className="text-3xl font-semibold">{news?.title}</h1>
+                    <h1 className="text-3xl font-semibold">{translateText(news?.title, lang)}</h1>
                     <p className="text-gray-400">{news?.createdAt?.toLocaleTimeString()}</p>
-                    <p className="text-justify" dangerouslySetInnerHTML={{__html: news?.description}} />
+                    <p className="text-justify" dangerouslySetInnerHTML={{__html: translateText(news?.description, lang)}} />
                 </div>
             </div>
             <div></div>
