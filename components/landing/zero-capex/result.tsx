@@ -620,11 +620,17 @@ export default function ZeroCapexResult() {
                 )}
 
 
-                <LineChart/>
+                {selectedRecommendation === -1 ? (<div></div>) : (
+                        <LineChart/>
 
-                <div className="w-full bg-[#f9c329] flex justify-center mt-20">
-                    <Link className="my-4" href="" ><Button><DownloadIcon/> Download Hasil</Button></Link>
-                </div>
+                    )}
+                {selectedRecommendation === -1 ? (<div></div>) : (
+                    <div className="w-full bg-[#f9c329] flex justify-center mt-20">
+                        <Link className="my-4" href="" ><Button><DownloadIcon/> Download Hasil</Button></Link>
+                    </div>
+
+                )}
+
 
             </div>
     )
