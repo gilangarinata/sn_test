@@ -50,6 +50,7 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
     const router = useRouter();
     const [jenisProperty, setJenisProperty] = React.useState<PricingCategory>();
     const [dayaListrik, setDayaListrik] = React.useState('');
+    const [rataRataHarian, setRataRataHarian] = React.useState('');
     // const [tarifListrik, setTarifListrik] = React.useState(1025.88);
     const [tagihanListrik, setTagihanListrik] = React.useState('');
     const [luasArea, setLuasArea] = React.useState('');
@@ -62,13 +63,13 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
 
     //function to calculate estimated power usage
     const calculateEstimatedPowerUsage = () => {
-        const result = (parseFloat(tagihanListrik) / (jenisProperty?.tariffCode ?? 0.0)) / 26.0 / 24.0
+        const result = (parseFloat(tagihanListrik) / (jenisProperty?.tariffCode ?? 0.0)) / 26.0 / parseFloat(rataRataHarian)
         setEstimatedPowerUsage(result)
     }
 
     React.useEffect(() => {
         calculateEstimatedPowerUsage()
-    }, [tagihanListrik, jenisProperty])
+    }, [tagihanListrik, jenisProperty, rataRataHarian])
 
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
@@ -100,14 +101,11 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
-                                    {jenisProperty?.needEmail && (
-                                        <Input type="text" placeholder={dictionary.your_email} onChange={(e) => {
-                                            setYourEmail(e.target.value)
-                                        }} />
-                                    )}
-
                                     <Input type="number" placeholder={dictionary.daya_listrik} onChange={(e) => {
                                         setDayaListrik(e.target.value)
+                                    }} />
+                                    <Input type="number" placeholder="Average Daily Operations" onChange={(e) => {
+                                        setRataRataHarian(e.target.value)
                                     }} />
                                     <Input type="number" placeholder={dictionary.tagihan_listrik} onChange={(e) => {
                                         setTagihanListrik(e.target.value)
@@ -132,6 +130,13 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                             <p>{dictionary.ground_mounted}</p>
                                         </div>
                                     </div>
+
+                                    {jenisProperty?.needEmail && (
+                                        <Input type="text" placeholder={dictionary.your_email} onChange={(e) => {
+                                            setYourEmail(e.target.value)
+                                        }} />
+                                    )}
+
                                     <p className="text-red-500">{error}</p>
                                 </div>
 
@@ -145,6 +150,11 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
 
                                     if (dayaListrik === "") {
                                         setError(lang === "en" ? "Please fill electricity power" : "Mohon isi daya listrik")
+                                        return;
+                                    }
+
+                                    if (rataRataHarian === "") {
+                                        setError(lang === "en" ? "Please fill daily average" : "Mohon isi rata-rata operasi harian")
                                         return;
                                     }
 
@@ -181,6 +191,7 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     cookie.set("lokasiPemasangan",lokasiPemasangan);
                                     cookie.set("estimatedpowerusage",estimatedPowerUsage.toString());
                                     cookie.set("youremail",yourEmail.toString());
+                                    cookie.set("rataRataHarian",rataRataHarian.toString());
 
 
                                     router.push('/zero-capex-result');
