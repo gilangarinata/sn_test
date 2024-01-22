@@ -363,10 +363,10 @@ export default function ZeroCapexResult() {
     };
 
     return (
-            <div className="w-full flex flex-col bg-[#15537A] items-center min-h-screen justify-center">
+            <div className="w-full flex flex-col bg-[#15537A] items-center justify-center">
                 <h1 className="mt-10 text-3xl text-white font-bold">HASIL</h1>
                 <div className="w-full mt-20 mb-32">
-                    <div className="mx-auto mt-[300px] lg:mt-0 h-screen flex flex-col lg:flex-row gap-4 justify-center lg:justify-between lg:px-20">
+                    <div className="mx-auto mt-[300px] lg:mt-0 flex flex-col lg:flex-row gap-4 justify-center lg:justify-between lg:px-20">
                         <div className="flex-1">
                             <div className="flex flex-col items-center justify-center">
                                 <h1 className="text-2xl text-white">Pilih Pendekatan</h1>
