@@ -21,61 +21,63 @@ import {
 import {Locale} from "@/i18n.config";
 
 
-const scopes = [
-    {
-        icon: '/images/scope-work-1.png',
-        title: 'Planning & System Engineering',
-        description: "Every masterpiece starts with a great planning. Once we have determined the location, we will create a design that best meets your technical and environmental objectives. Not to forget, we are familiar to coordinate with local people and complete required steps and permits."
-    },
-    {
-        icon: '/images/scope-work-2.png',
-        title: 'Solar System Rental',
-        description: "Thanks to our experience and international network as an IPP developer, we provide financial solution as sustainable as solar energy through solar rental/leasing scheme. With this scheme, we will do the investment on the solar power system and manage the asset, while client should only prepare monthly payment as much as electricity consumed from solar rooftop"
-    },
-    {
-        icon: '/images/scope-work-3.png',
-        title: 'Project Management',
-        description: "Our many years of experience working on projects teach us how to manage and finalize our project completely optimized for reliability. We indicate every challenge on the field as early as possible to keep our project right based on technical plan and time schedule."
-    },
-    {
-        icon: '/images/scope-work-4.png',
-        title: 'Component & Technology Selection',
-        description: "To ensure our solar power plant built with very high quality, we only select suppliers that have already achieved best in class excellence in their field and integrate every each component with high quality engineering system."
-    },
-    {
-        icon: '/images/scope-work-5.png',
-        title: 'Installation & Construction',
-        description: "Our installation team are professional and experienced in the industry. Combined with our extensive history of proven solar success, rest assured our system will be optimally installed."
-    },
-    {
-        icon: '/images/scope-work-6.png',
-        title: 'Operations & Maintenance',
-        description: "We believe that we have a professional approach to keep our power plant working in highest level of performance. Through our experience, a comprehensive operations maintenance plan and monitoring system we aim our plant working with zero problem."
-    },
-]
+
+type PricingCategory = {
+    category: string;
+    categoryEn: string;
+    type: string;
+    tariffCode: number;
+    needEmail: boolean
+};
+
+export const pricingData: PricingCategory[] = [
+    { category: "Rumah (900 VA)", categoryEn: "House (900 VA)", type: "R-1/TR", tariffCode: 1.352, needEmail: false },
+    { category: "Rumah (1300 VA)", categoryEn: "House (1300 VA)", type: "R-1/TR", tariffCode: 1444.7, needEmail: false },
+    { category: "Rumah (2200 VA)", categoryEn: "House (2200 VA)", type: "R-1/TR", tariffCode: 1444.7, needEmail: false },
+    { category: "Rumah (3500 VA -5500 VA)",categoryEn: "House (3500 VA -5500 VA)", type: "R-2/TR", tariffCode: 1699.53, needEmail: false },
+    { category: "Rumah (6600 VA Keatas)", categoryEn: "House (6600 VA Keatas)",type: "R-3/TR", tariffCode: 1699.53, needEmail: false },
+    { category: "Komersial (6600 VA-200 kVA)",categoryEn: "Commercial (6600 VA-200 kVA)", type: "B-2/TR", tariffCode: 1444.70, needEmail: true },
+    { category: "Komersial (200 kVA Ke atas)",categoryEn: "Commercial (200 kVA and above)", type: "B-3/TM", tariffCode: 1065, needEmail: true },
+    { category: "Industri (200 kVA Ke atas)",categoryEn: "Industry (200 kVA and above)", type: "I-3/TM", tariffCode: 1065, needEmail: true },
+    { category: "Industri (30.000 kVA ke atas)", categoryEn: "Industry (30.000 kVA and above)",type: "I-4/TT", tariffCode: 1025.88, needEmail: true },
+    { category: "Tambang", type: "P-1/TR",categoryEn: "Mining", tariffCode: 5115, needEmail: true },
+];
 
 const divStyle = {
     backgroundSize: 'cover',
 }
 export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dictionary: any}) {
     const router = useRouter();
-    const [jenisProperty, setJenisProperty] = React.useState('');
+    const [jenisProperty, setJenisProperty] = React.useState<PricingCategory>();
     const [dayaListrik, setDayaListrik] = React.useState('');
-    const [tarifListrik, setTarifListrik] = React.useState('');
+    // const [tarifListrik, setTarifListrik] = React.useState(1025.88);
     const [tagihanListrik, setTagihanListrik] = React.useState('');
     const [luasArea, setLuasArea] = React.useState('');
+    const [yourEmail, setYourEmail] = React.useState('');
     const [lokasiPemasangan, setLokasiPemasangan] = React.useState('');
 
+    const [estimatedPowerUsage, setEstimatedPowerUsage] = React.useState(0);
+
     const [error, setError] = React.useState('');
+
+    //function to calculate estimated power usage
+    const calculateEstimatedPowerUsage = () => {
+        const result = (parseFloat(tagihanListrik) / (jenisProperty?.tariffCode ?? 0.0)) / 26.0 / 24.0
+        setEstimatedPowerUsage(result)
+    }
+
+    React.useEffect(() => {
+        calculateEstimatedPowerUsage()
+    }, [tagihanListrik, jenisProperty])
 
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
                 <div className="bg-white/70 lg:hidden w-full h-full">
                     <h1 className="w-full text-end p-[60px] text-3xl font-bold text-[#f9c329] text-shadow-lg">{dictionary.hitung_investasi}</h1>
                 </div>
-                <div className="bg-white/70 w-full">
-                    <div className="max-w-7xl mx-auto h-screen flex">
-                        <div className="w-full lg:w-[600px] h-full">
+                <div className="bg-white/70 w-full h-full">
+                    <div className="max-w-7xl mx-auto h-full flex">
+                        <div className="w-full lg:w-[600px] h-full pb-20">
                             <div className="flex flex-col items-center px-4 py-6 gap-4">
                                 <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4">
                                     <h1>{dictionary.mohon_input}</h1>
@@ -83,31 +85,41 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     {/*    setJenisProperty(e.target.value);*/}
                                     {/*}} />*/}
                                     <Select onValueChange={(val) => {
-                                        setJenisProperty(val)
+                                        setJenisProperty(pricingData.find(item => item.categoryEn === val))
                                     }}>
                                         <SelectTrigger className="w-full">
                                             <SelectValue placeholder={dictionary.jenis_properti} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
-                                                <SelectItem  value="rumah">{dictionary.rumah}</SelectItem>
-                                                <SelectItem value="tambang">{dictionary.tambang}</SelectItem>
-                                                <SelectItem value="industri">{dictionary.indusctri}</SelectItem>
-                                                <SelectItem value="bangunan_publik">{dictionary.bangunan_publik}</SelectItem>
+                                                {pricingData.map((item, index) => (
+                                                    <SelectItem key={item.categoryEn} value={item.categoryEn}>{lang === "en" ? item.categoryEn : item.category}</SelectItem>
+                                                ))}
+
+
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
+                                    {jenisProperty?.needEmail && (
+                                        <Input type="text" placeholder={dictionary.your_email} onChange={(e) => {
+                                            setYourEmail(e.target.value)
+                                        }} />
+                                    )}
+
                                     <Input type="number" placeholder={dictionary.daya_listrik} onChange={(e) => {
                                         setDayaListrik(e.target.value)
-                                    }} />
-                                    <Input type="number" placeholder={dictionary.tarif_listrik} onChange={(e) => {
-                                        setTarifListrik(e.target.value)
                                     }} />
                                     <Input type="number" placeholder={dictionary.tagihan_listrik} onChange={(e) => {
                                         setTagihanListrik(e.target.value)
                                     }} />
                                     <Input type="number" placeholder={dictionary.luas_area} onChange={(e) => {
                                         setLuasArea(e.target.value)
+                                    }} />
+                                    <p>{dictionary.tarif_listrik}</p>
+                                    <Input readOnly={true} type="text" value={jenisProperty ?  "Rp " +jenisProperty?.tariffCode : ""}  onChange={(e) => {
+                                    }} />
+                                    <p>{lang === "en" ? "Estimated Power Usage" : "Estimasi Daya Terpakai"}</p>
+                                    <Input readOnly={true} type="text" value={estimatedPowerUsage ?  Math.ceil(estimatedPowerUsage) + " kW" : ""}  onChange={(e) => {
                                     }} />
                                     <p>{dictionary.lokasi_pemasangan}</p>
                                     <div className="flex gap-4">
@@ -126,49 +138,56 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                 <Button onClick={(bt) => {
                                     bt.preventDefault()
 
-                                    if (jenisProperty === "") {
-                                        setError("Mohon isi jenis property")
+                                    if (!jenisProperty) {
+                                        setError(lang === "en" ? "Please fill property type" : "Mohon isi jenis property")
                                         return;
                                     }
 
                                     if (dayaListrik === "") {
-                                        setError("Mohon isi daya listrik")
+                                        setError(lang === "en" ? "Please fill electricity power" : "Mohon isi daya listrik")
                                         return;
                                     }
 
-                                    if (tarifListrik === "") {
-                                        setError("Mohon isi tarif listrik")
-                                        return;
-                                    }
+                                    // if (tarifListrik === "") {
+                                    //     setError(lang === "en" ? "Please fill electricity tariff" :"Mohon isi tarif listrik")
+                                    //     return;
+                                    // }
 
                                     if (tagihanListrik === "") {
-                                        setError("Mohon isi tagihan listrik")
+                                        setError(lang === "en" ? "Please fill electricity bill" :"Mohon isi tagihan listrik")
                                         return;
                                     }
 
                                     if (luasArea === "") {
-                                        setError("Mohon isi luas area")
+                                        setError(lang === "en" ? "Please fill property area" :"Mohon isi luas area")
                                         return;
                                     }
 
                                     if (lokasiPemasangan === "") {
-                                        setError("Mohon pilih lokasi pemasangan")
+                                        setError(lang === "en" ? "Please fill installation location" :"Mohon pilih lokasi pemasangan")
                                         return;
                                     }
 
-                                    cookie.set("jenisProperty",jenisProperty);
+                                    if (jenisProperty.needEmail && yourEmail === "") {
+                                        setError(lang === "en" ? "Please fill your email" :"Mohon isi email anda")
+                                        return;
+                                    }
+
+                                    cookie.set("jenisProperty",jenisProperty.categoryEn);
                                     cookie.set("dayaListrik",dayaListrik);
-                                    cookie.set("tarifListrik",tarifListrik);
+                                    cookie.set("tarifListrik",jenisProperty.tariffCode.toString());
                                     cookie.set("tagihanListrik",tagihanListrik);
                                     cookie.set("luasArea",luasArea);
                                     cookie.set("lokasiPemasangan",lokasiPemasangan);
+                                    cookie.set("estimatedpowerusage",estimatedPowerUsage.toString());
+                                    cookie.set("youremail",yourEmail.toString());
 
 
                                     router.push('/zero-capex-result');
-                                }} className="bg-[#f9c329] text-blue-950 font-bold w-full">Selanjutnya</Button>
+                                }} className="bg-[#f9c329] text-blue-950 font-bold w-full">{dictionary.next}</Button>
                             </div>
                         </div>
-                        <h1 className="w-full hidden lg:block text-center lg:text-end p-[60px] lg:text-7xl font-bold text-[#f9c329] text-shadow-lg">HITUNG INVESTASI<br/>PANEL SURYA MU<br/>SEKARANG</h1>
+                        <h1 className="w-full hidden lg:block text-center lg:text-end p-[60px] lg:text-7xl font-bold text-[#f9c329] text-shadow-lg" dangerouslySetInnerHTML={{__html: dictionary.hitung_investasi}}></h1>
                     </div>
                 </div>
             </div>

@@ -14,8 +14,8 @@ async function WhoWeArePage() {
     return (
        <div className="relative">
            <ZeroCapexResult />
-           <ResultPlan />
-           <ResultChart />
+           {/*<ResultPlan />*/}
+           {/*<ResultChart />*/}
        </div>
     )
 }

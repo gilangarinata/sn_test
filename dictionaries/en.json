@@ -57,5 +57,7 @@
   "daya_listrik": "Electric Power (kVA)",
   "tarif_listrik": "Electricity Tariff (per kWh)",
   "tagihan_listrik": "Electricity Bill per month (Rupiah)",
-  "luas_area": "Property Area (m2)"
+  "luas_area": "Property Area (m2)",
+  "your_email": "Your Email",
+  "next": "Next"
 }

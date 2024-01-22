@@ -19,8 +19,9 @@ import {
     Settings, SettingsIcon,
     VideoIcon
 } from "lucide-react";
-import {usePathname} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import React, {useState} from "react";
+import cookie from "js-cookie";
 
 const montserrat = Montserrat({ weight : "600", subsets : ["latin"]});
 
@@ -186,6 +187,13 @@ const selectedRoute = {
 const Sidebar = ( {isMobile = false} ) => {
     const pathName = usePathname();
     const [selectedManu,setSelectedMenu] = useState(selectedRoute);
+
+    const router = useRouter();
+    const userName = cookie.get("username") || "";
+
+    if(!userName) {
+        router.push("/login");
+    }
 
     return (
         <div className="flex h-full overflow-auto">
