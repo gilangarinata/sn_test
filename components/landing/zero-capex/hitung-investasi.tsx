@@ -63,13 +63,23 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
 
     //function to calculate estimated power usage
     const calculateEstimatedPowerUsage = () => {
-        const result = (parseFloat(tagihanListrik) / (jenisProperty?.tariffCode ?? 0.0)) / 26.0 / parseFloat(rataRataHarian)
+        console.log("tagihanListrik : " + parseFloat(tagihanListrik))
+        console.log("jenisProperty?.tariffCode : " + jenisProperty?.tariffCode ?? 0.0)
+        console.log("rataRataHarian : " + parseFloat(rataRataHarian))
+        const result = (parseFloat(tagihanListrik.replaceAll(",","")) / (jenisProperty?.tariffCode ?? 0.0)) / 26.0 / parseFloat(rataRataHarian.replaceAll(",",""))
+        console.log("setEstimatedPowerUsage : " + result)
         setEstimatedPowerUsage(result)
     }
 
     React.useEffect(() => {
         calculateEstimatedPowerUsage()
-    }, [tagihanListrik, jenisProperty, rataRataHarian])
+    }, [tagihanListrik, jenisProperty, rataRataHarian, luasArea])
+
+    const currencyFormatter = new Intl.NumberFormat(window.navigator.language, {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 2,
+    });
 
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
@@ -101,17 +111,24 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
-                                    <Input type="number" placeholder={dictionary.daya_listrik} onChange={(e) => {
-                                        setDayaListrik(e.target.value)
+                                    <Input type="text" value={dayaListrik} placeholder={dictionary.daya_listrik} onChange={(e) => {
+                                        // setDayaListrik(e.target.value)
+                                        const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
+                                        setDayaListrik(vl === "0" ? "" : vl)
                                     }} />
-                                    <Input type="number" placeholder="Average Daily Operations" onChange={(e) => {
-                                        setRataRataHarian(e.target.value)
+                                    <Input type="text" value={rataRataHarian} placeholder="Average Daily Operations" onChange={(e) => {
+                                        const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
+                                        setRataRataHarian(vl === "0" ? "" : vl)
                                     }} />
-                                    <Input type="number" placeholder={dictionary.tagihan_listrik} onChange={(e) => {
-                                        setTagihanListrik(e.target.value)
+                                    <Input type="text" value={tagihanListrik} placeholder={dictionary.tagihan_listrik} onChange={(e) => {
+                                        // setTagihanListrik(e.target.value)
+                                        const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
+                                        setTagihanListrik(vl === "0" ? "" : vl)
                                     }} />
-                                    <Input type="number" placeholder={dictionary.luas_area} onChange={(e) => {
-                                        setLuasArea(e.target.value)
+                                    <Input type="text" value={luasArea} placeholder={dictionary.luas_area} onChange={(e) => {
+                                        // setLuasArea(e.target.value)
+                                        const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
+                                        setLuasArea(vl === "0" ? "" : vl)
                                     }} />
                                     <p>{dictionary.tarif_listrik}</p>
                                     <Input readOnly={true} type="text" value={jenisProperty ?  "Rp " +jenisProperty?.tariffCode : ""}  onChange={(e) => {
