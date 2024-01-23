@@ -201,14 +201,14 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     }
 
                                     cookie.set("jenisProperty",jenisProperty.categoryEn);
-                                    cookie.set("dayaListrik",dayaListrik);
+                                    cookie.set("dayaListrik",dayaListrik.replaceAll(",",""));
                                     cookie.set("tarifListrik",jenisProperty.tariffCode.toString());
-                                    cookie.set("tagihanListrik",tagihanListrik);
-                                    cookie.set("luasArea",luasArea);
+                                    cookie.set("tagihanListrik",tagihanListrik.replaceAll(",",""));
+                                    cookie.set("luasArea",luasArea.replaceAll(",",""));
                                     cookie.set("lokasiPemasangan",lokasiPemasangan);
-                                    cookie.set("estimatedpowerusage",estimatedPowerUsage.toString());
+                                    cookie.set("estimatedpowerusage",estimatedPowerUsage.toString().replaceAll(",",""));
                                     cookie.set("youremail",yourEmail.toString());
-                                    cookie.set("rataRataHarian",rataRataHarian.toString());
+                                    cookie.set("rataRataHarian",rataRataHarian.toString().replaceAll(",",""));
 
 
                                     router.push('/zero-capex-result');
