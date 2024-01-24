@@ -10,8 +10,8 @@ import {Locale} from "@/i18n.config";
 const poppins = Poppins({ subsets: ['latin'], weight: "400" })
 
 export const metadata: Metadata = {
-  title: 'Sesna',
-  description: 'Sesna description',
+  title: 'Sesna Group',
+  description: ''
 }
 
 export default function RootLayout({
@@ -29,6 +29,15 @@ export default function RootLayout({
                     rel="stylesheet"
                     href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
                 />
+                <title>SESNA Group</title>
+                <script type="application/ld+json" dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "WebSite",
+                        "name": "SESNA Group",
+                        "url": "https://sesna.id/"
+                    })
+                }} />
             </Head>
           <body className={poppins.className}>{children}</body>
         </html>

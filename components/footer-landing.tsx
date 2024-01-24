@@ -63,7 +63,7 @@ export default function FooterLanding({dictionary, lang}: {dictionary: any, lang
                     </div>
                 </div>
                 <div className="w-full text-white py-4 flex justify-between">
-                    <p>Copyright 2023 © <span className="text-yellow-400 font-bold">Solar Warrior</span> | Owned by PT Sumber Energi Surya Nusantara.</p>
+                    <p>Copyright 2023 © <span className="text-yellow-400 font-bold">SESNA Group</span> | Owned by PT Sumber Energi Surya Nusantara.</p>
                     <div className=" gap-2 font-semibold hidden md:flex">
                         {/*<Link href="/">*/}
                             <p className="hover:text-yellow-400">{dictionary.term_and_condition}</p>
