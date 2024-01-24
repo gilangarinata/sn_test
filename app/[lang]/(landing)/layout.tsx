@@ -12,7 +12,7 @@ import {Helmet} from "react-helmet";
 import Head from "next/head";
 
 export const metadata: Metadata = {
-    title: 'Sesna',
+    title: 'SESNA Group',
     description: 'Sesna website',
 }
 
@@ -32,6 +32,11 @@ export default async function RootLayout({
 
     return (
         <main className="w-full">
+            <Helmet>
+                <meta charSet="utf-8"/>
+                <title>Sesna Group</title>
+                <link rel="canonical" href="https://sesna.id"/>
+            </Helmet>
             <QontakWebChat />
             <meta name="google-site-verification" content="6y-KyjbdApsSaEAFXmZa2mYLgzhyV1rAOq4dpUfhfu8"/>
             <div className="container">
