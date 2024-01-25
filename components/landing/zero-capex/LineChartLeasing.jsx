@@ -3,15 +3,24 @@ import {Line} from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-export default function LineChart(
-    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity}
+export default function LineChartLeasing(
+    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, kwhPerYear}
 ) {
+    const leasingPercent = 0.2; //20%
+    const vatPercent = 0.11; // 11%
+    // const kwhPerYear =   2259327;
+    // const currentPLNTarrif = 1025.88;
+    const leasingTarrif = currentPLNTarrif * (1 - leasingPercent);
+    const vat = leasingTarrif * vatPercent;
+    const firstYearLeasingTarrif = leasingTarrif + vat;
+
+
+    //=============================
 
     // const solarInvestment =  13383647799;
-    // const currentPLNTarrif = 1025.88;
     const plnIncreaserate = 0.03;
     // const electricityUsagePerMonth =  4873864.390;
-
+    //
     // const capacity =  1672.96;
     const capacityPerDay = (capacity * 1405.0) / 365.0;
     const capacityPerMonth = capacityPerDay * 30;
@@ -28,54 +37,83 @@ export default function LineChart(
 
     const electricityCost = Math.ceil(electricityUsagePerMonth * currentPLNTarrif);
     const electricityCostWithPln = Math.ceil(capacityPerYear * currentPLNTarrif);
-    const offset = (electricityCost - onmCost) - electricityCostWithPln;
+
+    //===================
+
+
+
+
+
+
+    const firstYearSolarLeasing = kwhPerYear * firstYearLeasingTarrif;
+
+
+
+    const finalLeasingCost = electricityCost - firstYearSolarLeasing;
 
     const firstYearData = [{
         tahun: 1,
+        kwhPerYear: kwhPerYear,
+        leasingTarrif: leasingTarrif,
+        totalPlnTarrif: currentPLNTarrif,
+        firstYearLeasing: firstYearSolarLeasing,
+        tarifIncludeTax: firstYearLeasingTarrif,
+
+        preVat: leasingTarrif,
+        vat: vat,
+
+
         electricityInKwh: Math.ceil(capacityPerYear),
         plnTarrif: Math.ceil(currentPLNTarrif),
         electricityCostWithPln: electricityCostWithPln,
         electricityCost: electricityCost,
 
-        onmCost: Math.ceil(onmCost),
-        insurance: Math.ceil(insurance),
-        visit: Math.ceil(visit),
-        maintenance: Math.ceil(maintenance),
-        offset: Math.ceil(offset)
+        finalLeasingCost: finalLeasingCost
     }]
 
 
     //looping 25 times
     for (let i = 0; i < 25; i++) {
         if(i === 0) continue;
+        let perYearPercent;
+        if(i === 1) {
+            perYearPercent = 0.015;
+        } else {
+            perYearPercent = 0.005;
+        }
+        const kwhPerYear = Math.ceil(firstYearData[i -1].kwhPerYear * (1 - perYearPercent));
+        const totalPlnTariff = Math.ceil(firstYearData[i -1].totalPlnTarrif * (1 + 0.03));
+        const solarLeasingTarif = totalPlnTariff * (1 - leasingPercent);
+        const solarLeasingTarifIncludeTaxt = solarLeasingTarif * (1 + 0.11);
+        const firstYearSolarLeasing = kwhPerYear * solarLeasingTarifIncludeTaxt;
+
+
+        //======
         const electricityInKwh = Math.ceil(firstYearData[i -1].electricityInKwh * 0.993);
         const plnTarrif = Math.ceil(firstYearData[i -1].plnTarrif * (1 + plnIncreaserate));
         const electricityCostWithPln = Math.ceil(electricityInKwh * plnTarrif);
         const electricityCost = Math.ceil(electricityUsagePerMonth * plnTarrif);
-        let roundedNumber = Math.round(electricityCost / 100000) * 100000;
-
-        const insurance = firstYearData[i -1].insurance * 0.95;
-        const visit = firstYearData[i -1].visit * (1 + plnIncreaserate);
-        const maintenance = firstYearData[i -1].maintenance * (1 + plnIncreaserate);
-
-        const onmCost = insurance + visit + maintenance;
 
 
-        const offset = (electricityCost - onmCost) - electricityCostWithPln;
+        //======
+
+        const finalLeasingCost = electricityCost - firstYearSolarLeasing;
 
         firstYearData.push({
             tahun: i + 1,
-            electricityInKwh,
-            plnTarrif,
-            electricityCostWithPln,
-            electricityCost: roundedNumber,
+            kwhPerYear: kwhPerYear,
+            totalPlnTarrif: totalPlnTariff,
+            leasingTarrif: solarLeasingTarif,
+            firstYearLeasing: firstYearSolarLeasing,
+            tarifIncludeTax: solarLeasingTarifIncludeTaxt,
 
-            onmCost: Math.ceil(onmCost),
-            insurance: Math.ceil(insurance),
-            visit: Math.ceil(visit),
-            maintenance: Math.ceil(maintenance),
 
-            offset: Math.ceil(offset)
+            electricityInKwh: electricityInKwh,
+            plnTarrif: plnTarrif,
+            electricityCostWithPln: electricityCostWithPln,
+            electricityCost: electricityCost,
+
+            finalLeasingCost: finalLeasingCost
         })
     }
 
@@ -107,7 +145,7 @@ export default function LineChart(
                 data: firstYearData.map((data) => data.electricityCost),
             },
             {
-                label: 'PLN Bills with Solar PV',
+                label: 'With Leasing',
                 fill: false,
                 lineTension: 0.1,
                 backgroundColor: 'rgb(220,187,54, 0.4)',
@@ -125,7 +163,7 @@ export default function LineChart(
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: firstYearData.map((data) => data.offset),
+                data: firstYearData.map((data) => data.finalLeasingCost)
             },
         ]
     };

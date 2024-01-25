@@ -13,6 +13,7 @@ import {pricingData} from "@/components/landing/zero-capex/hitung-investasi";
 import { Line } from 'react-chartjs-2';
 import LineChart from "@/components/landing/zero-capex/LineChart";
 import Link from "next/link";
+import LineChartLeasing from "@/components/landing/zero-capex/LineChartLeasing";
 
 interface LineChartProps {
     data: {
@@ -227,6 +228,7 @@ export default function ZeroCapexResult() {
     const [treesNeeded, setTreesNeeded] = React.useState('');
 
     const [selectedRecommendation, setSelectedRecommendation] = React.useState(-1)
+    const [selectedPlan, setSelectedPlan] = React.useState(-1)
 
     const [priceSolarRental, setPriceSolarRental] = React.useState('')
     const [priceTurnkeyEPC, setPriceTurnkeyEPC] = React.useState('')
@@ -300,17 +302,30 @@ export default function ZeroCapexResult() {
         console.log('Produksi Energi per Tahun (kWh):', produksiEnergiPerTahun);
         console.log('Periode Installasi:', periodeInstallasi);
 
-        setRekomendasiInstallasi(rekomendasiInstallasi.toFixed(2).toString())
-        setAreaPotensial(areaPotensial.toFixed(0).toString())
-        setJumlahModulSurya(Math.round(jumlahModulSurya).toString())
-        setProduksiEnergiPerTahun(produksiEnergiPerTahun.toFixed(4).toString())
-        setPeriodeInstallasi(periodeInstallasi.toString())
 
-        setRekomendasiInstallasi2(rekomendasiInstallasi2.toFixed(2).toString())
-        setAreaPotensial2(areaPotensial2.toFixed(0).toString())
-        setJumlahModulSurya2(Math.round(jumlahModulSurya2).toString())
-        setProduksiEnergiPerTahun2(produksiEnergiPerTahun2.toFixed(4).toString())
-        setPeriodeInstallasi2(periodeInstallasi2.toString())
+        const a1 = isNaN(parseFloat(rekomendasiInstallasi.toFixed(2).toString().replace(/,/g, ''))) ? "" : parseFloat(rekomendasiInstallasi.toFixed(2).toString().replace(/,/g, '')).toLocaleString();
+        const a2 = isNaN(parseFloat(areaPotensial.toFixed(0).toString().replace(/,/g, ''))) ? "" : parseFloat(areaPotensial.toFixed(0).toString().replace(/,/g, '')).toLocaleString();
+        const a3 = isNaN(parseFloat(jumlahModulSurya.toFixed(0).toString().replace(/,/g, ''))) ? "" : parseFloat(jumlahModulSurya.toFixed(0).toString().replace(/,/g, '')).toLocaleString();
+        const a4 = isNaN(parseFloat(produksiEnergiPerTahun.toFixed(4).toString().replace(/,/g, ''))) ? "" : parseFloat(produksiEnergiPerTahun.toFixed(4).toString().replace(/,/g, '')).toLocaleString();
+        const a5 = isNaN(parseFloat(periodeInstallasi.toString().replace(/,/g, ''))) ? "" : parseFloat(periodeInstallasi.toString().replace(/,/g, '')).toLocaleString();
+
+        const a6 = isNaN(parseFloat(rekomendasiInstallasi2.toFixed(2).toString().replace(/,/g, ''))) ? "" : parseFloat(rekomendasiInstallasi2.toFixed(2).toString().replace(/,/g, '')).toLocaleString();
+        const a7 = isNaN(parseFloat(areaPotensial2.toFixed(0).toString().replace(/,/g, ''))) ? "" : parseFloat(areaPotensial2.toFixed(0).toString().replace(/,/g, '')).toLocaleString();
+        const a8 = isNaN(parseFloat(jumlahModulSurya2.toFixed(0).toString().replace(/,/g, ''))) ? "" : parseFloat(jumlahModulSurya2.toFixed(0).toString().replace(/,/g, '')).toLocaleString();
+        const a9 = isNaN(parseFloat(produksiEnergiPerTahun2.toFixed(4).toString().replace(/,/g, ''))) ? "" : parseFloat(produksiEnergiPerTahun2.toFixed(4).toString().replace(/,/g, '')).toLocaleString();
+        const a10 = isNaN(parseFloat(periodeInstallasi2.toString().replace(/,/g, ''))) ? "" : parseFloat(periodeInstallasi2.toString().replace(/,/g, '')).toLocaleString();
+
+        setRekomendasiInstallasi(a1)
+        setAreaPotensial(a2)
+        setJumlahModulSurya(a3)
+        setProduksiEnergiPerTahun(a4)
+        setPeriodeInstallasi(a5)
+
+        setRekomendasiInstallasi2(a6)
+        setAreaPotensial2(a7)
+        setJumlahModulSurya2(a8)
+        setProduksiEnergiPerTahun2(a9)
+        setPeriodeInstallasi2(a10)
 
 
         const selectedJenisProperty = pricingData.find(e => e.categoryEn === cookie.get("jenisProperty"))
@@ -346,21 +361,6 @@ export default function ZeroCapexResult() {
         }
 
     }, [selectedRecommendation])
-
-
-
-    const chartData = {
-        labels: ['January', 'February', 'March', 'April', 'May'],
-        datasets: [{
-            label: 'My Dataset',
-            data: [10, 15, 7, 22, 18],
-            fill: {
-                target: 'origin',
-            },
-            borderColor: 'blue',
-            backgroundColor: 'rgba(0, 0, 255, 0.2)',
-        }],
-    };
 
     return (
             <div className="w-full flex flex-col bg-[#15537A] items-center justify-center">
@@ -550,7 +550,7 @@ export default function ZeroCapexResult() {
                                 style={{ width: '100%', height: 'auto' }} // optional
                             />
                         </div>
-                        <div className="px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col">
+                        <div className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 0 ? "border-white border-4" : "")}>
                             <div className="flex">
                                 <h1 className="text-xl font-bold">Solar Rental Zero Capex</h1>
                                 <Image src="/images/ic_plan_1.png" alt="" width={0}
@@ -581,9 +581,10 @@ export default function ZeroCapexResult() {
                             </div>
                             <div className="flex-1"></div>
                             <h1 className="w-full text-center text-lg font-black mt-4">Start from<br/>{priceSolarRental}<br/>/Month</h1>
-                            <Button className="text-white text-lg font-bold mt-4">Choose Plan</Button>
+                            <Button onClick={(a) => setSelectedPlan(0)} className="text-white text-lg font-bold mt-4">Choose Plan</Button>
                         </div>
-                        <div className="px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col">
+
+                        <div className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 1 ? "border-white border-4" : "")}>
                             <div className="flex">
                                 <h1 className="text-xl font-bold">Turnkey EPC Direct Purchase</h1>
                                 <Image src="/images/ic_plan_2.png" alt="" width={0}
@@ -614,16 +615,32 @@ export default function ZeroCapexResult() {
                             </div>
                             <div className="flex-1"></div>
                             <h1 className="w-full text-center text-lg font-black mt-4">Start from<br/>{priceTurnkeyEPC}</h1>
-                            <Button className="text-white text-lg font-bold mt-4">Choose Plan</Button>
+                            <Button onClick={(a) => setSelectedPlan(1)} className="text-white text-lg font-bold mt-4">Choose Plan</Button>
                         </div>
                     </div>
                 )}
 
 
-                {selectedRecommendation === -1 ? (<div></div>) : (
-                        <LineChart/>
-
+                {selectedPlan === 1 ? (
+                    <LineChart
+                        currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                        solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
+                        electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                        capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
+                    />) : (
+                    <div></div>
                     )}
+
+                {selectedPlan === 0 ? (<LineChartLeasing
+                    currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                    solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
+                    electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                    capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
+                    kwhPerYear={parseFloat( selectedRecommendation === 0 ? produksiEnergiPerTahun.replaceAll(",", "") : produksiEnergiPerTahun2.replaceAll(",", ""))}
+                />) : (
+                    <div></div>
+                )}
+
                 {selectedRecommendation === -1 ? (<div></div>) : (
                     <div className="w-full bg-[#f9c329] flex justify-center mt-20">
                         <Link className="my-4" href="" ><Button><DownloadIcon/> Download Hasil</Button></Link>

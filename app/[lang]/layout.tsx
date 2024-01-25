@@ -30,6 +30,7 @@ export default function RootLayout({
                     href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
                 />
                 <title>SESNA Group</title>
+                <meta property="og:site_name" content="SESNA Group" />
                 <script type="application/ld+json" dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
