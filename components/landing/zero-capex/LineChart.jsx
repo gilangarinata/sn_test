@@ -1,6 +1,7 @@
 import React from 'react';
-import {Line} from 'react-chartjs-2';
+import {Bar, Line} from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import {BarChart} from "lucide-react";
 Chart.register(...registerables);
 
 export default function LineChart(
@@ -89,7 +90,7 @@ export default function LineChart(
                 label: 'Tagihan Listrik PLN',
                 fill: false,
                 lineTension: 0.1,
-                backgroundColor: 'rgba(75,192,192,0.4)',
+                backgroundColor: 'rgba(75,192,192)',
                 borderColor: 'rgba(75,192,192,1)',
                 borderCapStyle: 'butt',
                 borderDash: [],
@@ -110,7 +111,7 @@ export default function LineChart(
                 label: 'PLN Bills with Solar PV',
                 fill: false,
                 lineTension: 0.1,
-                backgroundColor: 'rgb(220,187,54, 0.4)',
+                backgroundColor: 'rgb(220,187,54)',
                 borderColor: 'rgb(220,187,54)',
                 borderCapStyle: 'butt',
                 borderDash: [],
@@ -167,7 +168,7 @@ export default function LineChart(
 
     return (
         <div>
-            <Line
+            <Bar
                 className="mt-20"
                 data={data}
                 width={600}
