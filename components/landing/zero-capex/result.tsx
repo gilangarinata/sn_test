@@ -125,14 +125,14 @@ interface SolarPanelInfo {
 }
 
 const solarPanelInfo: SolarPanelInfo = {
-    PeakSunHour: 3.7,
+    PeakSunHour: 3.853424658,
     LuasPanel: {
-        Panjang: 1.35,
-        Lebar: 2.35,
+        Panjang: 2.38,
+        Lebar: 1.3,
         Unit: "m",
     },
-    LuasPanelM2: 3.18,
-    DayaYangDihasilkanSatuPanel: 665,
+    LuasPanelM2: 3.106352,
+    DayaYangDihasilkanSatuPanel: 695.0,
     UnitOfPower: "Wp",
 };
 
@@ -251,18 +251,19 @@ export default function ZeroCapexResult() {
         // Area Potensial (m2) & Jumlah Modul Surya (Pcs)
         const jumlahModulSurya = (luasAreaProperty - (luasAreaProperty*20/100)) / solarPanelInfo.LuasPanelM2;
         const areaPotensial = jumlahModulSurya * solarPanelInfo.LuasPanelM2; // Satu modul surya memiliki dimensi 3 m
-        const rekomendasiInstallasi = (jumlahModulSurya * solarPanelInfo.DayaYangDihasilkanSatuPanel) / 1000; // Kapasitas PLTS tidak boleh melebihi PLN dalam kWp
+        const rekomendasiInstallasi =  parseFloat((Math.floor(luasAreaProperty / 1.3 / 2.4) * 0.695).toFixed(2));
 
-
-        const rekomendasiInstallasi2 = estimatedPowerUsage; // Kapasitas PLTS tidak boleh melebihi PLN dalam kWp
+        const rekomendasiInstallasi2 = parseFloat(((estimatedPowerUsage / 26 / solarPanelInfo.PeakSunHour) * 0.8).toFixed(2));
         const areaPotensial2 = rekomendasiInstallasi2 * solarPanelInfo.LuasPanelM2; // Satu modul surya memiliki dimensi 3 m
         const jumlahModulSurya2 = ceilingMath(rekomendasiInstallasi2 / solarPanelInfo.DayaYangDihasilkanSatuPanel * 1000, 1); // Satu modul surya memiliki dimensi 3 m
 
 
         // Produksi Energi per Tahun (kWh)
-        const produksiEnergiPerTahun = (rekomendasiInstallasi * solarPanelInfo.PeakSunHour) * 365;
+        const produksiEnergiPerTahun = parseFloat(((rekomendasiInstallasi * solarPanelInfo.PeakSunHour) * 365).toFixed(2));
 
-        const produksiEnergiPerTahun2 = (rekomendasiInstallasi2 * solarPanelInfo.PeakSunHour) * 365;
+
+        console.log("rekomendasi installasi" + rekomendasiInstallasi)
+        const produksiEnergiPerTahun2 = parseFloat(((rekomendasiInstallasi2 * solarPanelInfo.PeakSunHour) * 365).toFixed(2));
 
         // Periode Installasi
         let periodeInstallasi;
@@ -306,13 +307,13 @@ export default function ZeroCapexResult() {
         const a1 = isNaN(parseFloat(rekomendasiInstallasi.toFixed(2).toString().replace(/,/g, ''))) ? "" : parseFloat(rekomendasiInstallasi.toFixed(2).toString().replace(/,/g, '')).toLocaleString();
         const a2 = isNaN(parseFloat(areaPotensial.toFixed(0).toString().replace(/,/g, ''))) ? "" : parseFloat(areaPotensial.toFixed(0).toString().replace(/,/g, '')).toLocaleString();
         const a3 = isNaN(parseFloat(jumlahModulSurya.toFixed(0).toString().replace(/,/g, ''))) ? "" : parseFloat(jumlahModulSurya.toFixed(0).toString().replace(/,/g, '')).toLocaleString();
-        const a4 = isNaN(parseFloat(produksiEnergiPerTahun.toFixed(4).toString().replace(/,/g, ''))) ? "" : parseFloat(produksiEnergiPerTahun.toFixed(4).toString().replace(/,/g, '')).toLocaleString();
+        const a4 = isNaN(parseFloat(produksiEnergiPerTahun.toFixed(2).toString().replace(/,/g, ''))) ? "" : parseFloat(produksiEnergiPerTahun.toFixed(4).toString().replace(/,/g, '')).toLocaleString();
         const a5 = isNaN(parseFloat(periodeInstallasi.toString().replace(/,/g, ''))) ? "" : parseFloat(periodeInstallasi.toString().replace(/,/g, '')).toLocaleString();
 
         const a6 = isNaN(parseFloat(rekomendasiInstallasi2.toFixed(2).toString().replace(/,/g, ''))) ? "" : parseFloat(rekomendasiInstallasi2.toFixed(2).toString().replace(/,/g, '')).toLocaleString();
         const a7 = isNaN(parseFloat(areaPotensial2.toFixed(0).toString().replace(/,/g, ''))) ? "" : parseFloat(areaPotensial2.toFixed(0).toString().replace(/,/g, '')).toLocaleString();
         const a8 = isNaN(parseFloat(jumlahModulSurya2.toFixed(0).toString().replace(/,/g, ''))) ? "" : parseFloat(jumlahModulSurya2.toFixed(0).toString().replace(/,/g, '')).toLocaleString();
-        const a9 = isNaN(parseFloat(produksiEnergiPerTahun2.toFixed(4).toString().replace(/,/g, ''))) ? "" : parseFloat(produksiEnergiPerTahun2.toFixed(4).toString().replace(/,/g, '')).toLocaleString();
+        const a9 = isNaN(parseFloat(produksiEnergiPerTahun2.toFixed(2).toString().replace(/,/g, ''))) ? "" : parseFloat(produksiEnergiPerTahun2.toFixed(4).toString().replace(/,/g, '')).toLocaleString();
         const a10 = isNaN(parseFloat(periodeInstallasi2.toString().replace(/,/g, ''))) ? "" : parseFloat(periodeInstallasi2.toString().replace(/,/g, '')).toLocaleString();
 
         setRekomendasiInstallasi(a1)
@@ -332,12 +333,18 @@ export default function ZeroCapexResult() {
         const tarrif = selectedJenisProperty?.tariffCode ?? 0.0;
         const leasing20Percent = tarrif - (tarrif * 20 / 100);
 
-        const priceLeasingBulanan = (leasing20Percent * (rekomendasiInstallasi * solarPanelInfo.PeakSunHour)) * 30;
-        const priceLeasingBulanan2 = (leasing20Percent * (rekomendasiInstallasi2 * solarPanelInfo.PeakSunHour)) * 30;
+        // const priceLeasingBulanan = (leasing20Percent * (rekomendasiInstallasi * solarPanelInfo.PeakSunHour)) * 30;
+        const priceLeasingBulanan = ((selectedJenisProperty?.leasing20 ?? 0) * (rekomendasiInstallasi * solarPanelInfo.PeakSunHour)) * 30;
+        const priceLeasingBulanan2 = ((selectedJenisProperty?.leasing20 ?? 0) * (rekomendasiInstallasi2 * solarPanelInfo.PeakSunHour)) * 30;
         const hargaDolar = calculateDiscount(rekomendasiInstallasi);
         const hargaDolar2 = calculateDiscount(rekomendasiInstallasi);
         const priceLeasingTahunan = (rekomendasiInstallasi * 16000) * hargaDolar * 1000;
-        const priceLeasingTahunan2 = (rekomendasiInstallasi2 * 16000) * hargaDolar2 * 1000;
+        const priceLeasingTahunan2 = (rekomendasiInstallasi2 * 15800) * hargaDolar2 * 1000;
+
+
+        console.log("check1 " + selectedJenisProperty?.leasing20);
+        console.log("check2 " + rekomendasiInstallasi);
+        console.log("check3 " + solarPanelInfo.PeakSunHour);
 
 
         if(selectedRecommendation === 0) {

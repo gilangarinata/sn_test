@@ -16,6 +16,9 @@ export default function LineChartLeasing(
     const firstYearLeasingTarrif = leasingTarrif + vat;
 
 
+    console.log("olok")
+    console.log(solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, kwhPerYear)
+
     //=============================
 
     // const solarInvestment =  13383647799;

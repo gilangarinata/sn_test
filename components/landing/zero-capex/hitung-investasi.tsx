@@ -27,20 +27,21 @@ type PricingCategory = {
     categoryEn: string;
     type: string;
     tariffCode: number;
-    needEmail: boolean
+    needEmail: boolean;
+    leasing20: number;
 };
 
 export const pricingData: PricingCategory[] = [
-    { category: "Rumah (900 VA)", categoryEn: "House (900 VA)", type: "R-1/TR", tariffCode: 1.352, needEmail: false },
-    { category: "Rumah (1300 VA)", categoryEn: "House (1300 VA)", type: "R-1/TR", tariffCode: 1444.7, needEmail: false },
-    { category: "Rumah (2200 VA)", categoryEn: "House (2200 VA)", type: "R-1/TR", tariffCode: 1444.7, needEmail: false },
-    { category: "Rumah (3500 VA -5500 VA)",categoryEn: "House (3500 VA -5500 VA)", type: "R-2/TR", tariffCode: 1699.53, needEmail: false },
-    { category: "Rumah (6600 VA Keatas)", categoryEn: "House (6600 VA Keatas)",type: "R-3/TR", tariffCode: 1699.53, needEmail: false },
-    { category: "Komersial (6600 VA-200 kVA)",categoryEn: "Commercial (6600 VA-200 kVA)", type: "B-2/TR", tariffCode: 1444.70, needEmail: true },
-    { category: "Komersial (200 kVA Ke atas)",categoryEn: "Commercial (200 kVA and above)", type: "B-3/TM", tariffCode: 1065, needEmail: true },
-    { category: "Industri (200 kVA Ke atas)",categoryEn: "Industry (200 kVA and above)", type: "I-3/TM", tariffCode: 1065, needEmail: true },
-    { category: "Industri (30.000 kVA ke atas)", categoryEn: "Industry (30.000 kVA and above)",type: "I-4/TT", tariffCode: 1025.88, needEmail: true },
-    { category: "Tambang", type: "P-1/TR",categoryEn: "Mining", tariffCode: 5115, needEmail: true },
+    { category: "Rumah (900 VA)", categoryEn: "House (900 VA)", type: "R-1/TR", tariffCode: 1.352, needEmail: false, leasing20:  1081.60 },
+    { category: "Rumah (1300 VA)", categoryEn: "House (1300 VA)", type: "R-1/TR", tariffCode: 1444.7, needEmail: false, leasing20:  1155.76 },
+    { category: "Rumah (2200 VA)", categoryEn: "House (2200 VA)", type: "R-1/TR", tariffCode: 1444.7, needEmail: false, leasing20:  1155.76 },
+    { category: "Rumah (3500 VA -5500 VA)",categoryEn: "House (3500 VA -5500 VA)", type: "R-2/TR", tariffCode: 1699.53, needEmail: false, leasing20:  1359.624 },
+    { category: "Rumah (6600 VA Keatas)", categoryEn: "House (6600 VA Keatas)",type: "R-3/TR", tariffCode: 1699.53, needEmail: false, leasing20:  1359.624 },
+    { category: "Komersial (6600 VA-200 kVA)",categoryEn: "Commercial (6600 VA-200 kVA)", type: "B-2/TR", tariffCode: 1444.70, needEmail: true, leasing20:  1155.76 },
+    { category: "Komersial (200 kVA Ke atas)",categoryEn: "Commercial (200 kVA and above)", type: "B-3/TM", tariffCode: 1065, needEmail: true, leasing20:  852 },
+    { category: "Industri (200 kVA Ke atas)",categoryEn: "Industry (200 kVA and above)", type: "I-3/TM", tariffCode: 1065, needEmail: true, leasing20:  852 },
+    { category: "Industri (30.000 kVA ke atas)", categoryEn: "Industry (30.000 kVA and above)",type: "I-4/TT", tariffCode: 1025.88, needEmail: true, leasing20:  820.704 },
+    { category: "Tambang", type: "P-1/TR",categoryEn: "Mining", tariffCode: 5115, needEmail: true, leasing20:  4092 },
 ];
 
 const divStyle = {
@@ -50,23 +51,26 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
     const router = useRouter();
     const [jenisProperty, setJenisProperty] = React.useState<PricingCategory>();
     const [dayaListrik, setDayaListrik] = React.useState('');
-    const [rataRataHarian, setRataRataHarian] = React.useState('');
     // const [tarifListrik, setTarifListrik] = React.useState(1025.88);
     const [tagihanListrik, setTagihanListrik] = React.useState('');
     const [luasArea, setLuasArea] = React.useState('');
     const [yourEmail, setYourEmail] = React.useState('');
     const [lokasiPemasangan, setLokasiPemasangan] = React.useState('');
+    const [lokasi, setLokasi] = React.useState('');
 
     const [estimatedPowerUsage, setEstimatedPowerUsage] = React.useState(0);
 
     const [error, setError] = React.useState('');
+
+    const rataRataHarian = "1";
+
 
     //function to calculate estimated power usage
     const calculateEstimatedPowerUsage = () => {
         console.log("tagihanListrik : " + parseFloat(tagihanListrik))
         console.log("jenisProperty?.tariffCode : " + jenisProperty?.tariffCode ?? 0.0)
         console.log("rataRataHarian : " + parseFloat(rataRataHarian))
-        const result = (parseFloat(tagihanListrik.replaceAll(",","")) / (jenisProperty?.tariffCode ?? 0.0)) / 26.0 / parseFloat(rataRataHarian.replaceAll(",",""))
+        const result = (parseFloat(tagihanListrik.replaceAll(",","")) / (jenisProperty?.tariffCode ?? 0.0))
         console.log("setEstimatedPowerUsage : " + result)
         setEstimatedPowerUsage(result)
     }
@@ -95,11 +99,16 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     {/*<Input type="text" placeholder="Jenis Property" onChange={(e) => {*/}
                                     {/*    setJenisProperty(e.target.value);*/}
                                     {/*}} />*/}
+                                    <Input type="text" value={lokasi} placeholder="Lokasi" onChange={(e) => {
+                                        // setDayaListrik(e.target.value)
+                                        // const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
+                                        setLokasi(e.target.value);
+                                    }} />
                                     <Select onValueChange={(val) => {
                                         setJenisProperty(pricingData.find(item => item.categoryEn === val))
                                     }}>
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder={dictionary.jenis_properti} />
+                                            <SelectValue placeholder="Daya Terpasang PLN" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
@@ -116,25 +125,21 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
                                         setDayaListrik(vl === "0" ? "" : vl)
                                     }} />
-                                    <Input type="text" value={rataRataHarian} placeholder="Average Daily Operations" onChange={(e) => {
+                                    <Input type="text" value={luasArea} placeholder={dictionary.luas_area} onChange={(e) => {
+                                        // setLuasArea(e.target.value)
                                         const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
-                                        setRataRataHarian(vl === "0" ? "" : vl)
+                                        setLuasArea(vl === "0" ? "" : vl)
                                     }} />
                                     <Input type="text" value={tagihanListrik} placeholder={dictionary.tagihan_listrik} onChange={(e) => {
                                         // setTagihanListrik(e.target.value)
                                         const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
                                         setTagihanListrik(vl === "0" ? "" : vl)
                                     }} />
-                                    <Input type="text" value={luasArea} placeholder={dictionary.luas_area} onChange={(e) => {
-                                        // setLuasArea(e.target.value)
-                                        const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
-                                        setLuasArea(vl === "0" ? "" : vl)
-                                    }} />
                                     <p>{dictionary.tarif_listrik}</p>
                                     <Input readOnly={true} type="text" value={jenisProperty ?  "Rp " +jenisProperty?.tariffCode : ""}  onChange={(e) => {
                                     }} />
                                     <p>{lang === "en" ? "Estimated Power Usage" : "Estimasi Daya Terpakai"}</p>
-                                    <Input readOnly={true} type="text" value={estimatedPowerUsage ?  Math.ceil(estimatedPowerUsage) + " kW" : ""}  onChange={(e) => {
+                                    <Input readOnly={true} type="text" value={estimatedPowerUsage ?  Math.ceil(estimatedPowerUsage) + " kWh" : ""}  onChange={(e) => {
                                     }} />
                                     <p>{dictionary.lokasi_pemasangan}</p>
                                     <div className="flex gap-4">
@@ -170,10 +175,6 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         return;
                                     }
 
-                                    if (rataRataHarian === "") {
-                                        setError(lang === "en" ? "Please fill daily average" : "Mohon isi rata-rata operasi harian")
-                                        return;
-                                    }
 
                                     // if (tarifListrik === "") {
                                     //     setError(lang === "en" ? "Please fill electricity tariff" :"Mohon isi tarif listrik")
@@ -195,12 +196,18 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         return;
                                     }
 
+                                    if (lokasi === "") {
+                                        setError(lang === "en" ? "Please fill location" :"Mohon pilih lokasi")
+                                        return;
+                                    }
+
                                     if (jenisProperty.needEmail && yourEmail === "") {
                                         setError(lang === "en" ? "Please fill your email" :"Mohon isi email anda")
                                         return;
                                     }
 
                                     cookie.set("jenisProperty",jenisProperty.categoryEn);
+                                    cookie.set("lokasi",lokasi);
                                     cookie.set("dayaListrik",dayaListrik.replaceAll(",",""));
                                     cookie.set("tarifListrik",jenisProperty.tariffCode.toString());
                                     cookie.set("tagihanListrik",tagihanListrik.replaceAll(",",""));
