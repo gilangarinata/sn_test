@@ -21,7 +21,7 @@ export default function NewsDetail({news} : {news : News}) {
             <div className="flex flex-col gap-16 md:flex-row md:gap-8 px-6">
                 <div className="w-full flex flex-col gap-6">
                     <div className="relative w-full h-[500px]">
-                        <Image fill style={{objectFit:"cover"}} src={news?.image} alt="" />
+                        <img style={{objectFit:"cover"}} src={news?.image} alt="" />
                     </div>
                     <h1 className="text-3xl font-semibold">{news?.title}</h1>
                     <p className="text-gray-400">{formatDateString2(news?.createdAt)}</p>

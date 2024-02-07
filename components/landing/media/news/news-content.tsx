@@ -77,7 +77,7 @@ export default function NewsContent({ categoryId, categories, newsA, lang, dicti
                     <div className="flex flex-col gap-4" key={content.title}>
                         <div className="relative w-full h-[250px]">
                             <Link href={"/media/news/detail/"+content.id} >
-                                <Image fill src={content.image} alt="" />
+                                <img src={content.image} alt="" />
                             </Link>
                         </div>
                         <Link href={"/media/news/detail/"+content.id} >
