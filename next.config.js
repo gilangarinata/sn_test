@@ -1,7 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['images.unsplash.com', 'utfs.io', 'sesna.id', 'img.youtube.com', 'www.sesna.id']
+        domains: ['images.unsplash.com', 'utfs.io', 'sesna.id', 'img.youtube.com', 'www.sesna.id'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'sesna.id',
+                port: '',
+            },
+            {
+                protocol: 'https',
+                hostname: '**.sesna.id',
+                port: '',
+            },
+        ],
     },
     experimental: {
         serverActions: {
