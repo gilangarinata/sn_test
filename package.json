@@ -67,6 +67,7 @@
     "react-stacked-center-carousel": "^1.0.12",
     "react-youtube": "^10.1.0",
     "rsuite": "^5.46.0",
+    "sharp": "^0.33.2",
     "slate": "^0.94.1",
     "slate-history": "^0.93.0",
     "slate-react": "^0.98.3",
