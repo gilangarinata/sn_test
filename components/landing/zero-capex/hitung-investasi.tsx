@@ -44,6 +44,48 @@ export const pricingData: PricingCategory[] = [
     { category: "Tambang", type: "P-1/TR",categoryEn: "Mining", tariffCode: 5115, needEmail: true, leasing20:  4092 },
 ];
 
+
+export const locationData = [
+    {"province": "Aceh", "value1": 1283.90, "psh": 3.517534247},
+    {"province": "Sumatera Utara", "value1": 1220.10, "psh": 3.342739726},
+    {"province": "Sumatera Selatan", "value1": 1331.80, "psh": 3.648767123},
+    {"province": "Sumatra Barat", "value1": 1364.60, "psh": 3.738630137},
+    {"province": "Bengkulu", "value1": 1317.10, "psh": 3.608493151},
+    {"province": "Riau", "value1": 1307.50, "psh": 3.582191781},
+    {"province": "Kepulauan Riau", "value1": 1288.50, "psh": 3.530136986},
+    {"province": "Jambi", "value1": 1289.40, "psh": 3.53260274},
+    {"province": "Lampung", "value1": 1369.60, "psh": 3.752328767},
+    {"province": "Bangka Belitung", "value1": 1281.80, "psh": 3.511780822},
+    {"province": "Kalimantan Barat", "value1": 1361.50, "psh": 3.730136986},
+    {"province": "Kalimantan Timur", "value1": 1406.50, "psh": 3.853424658},
+    {"province": "Kalimantan Selatan", "value1": 1287.70, "psh": 3.527945205},
+    {"province": "Kalimantan Tengah", "value1": 1333.60, "psh": 3.65369863},
+    {"province": "Kalimantan Utara", "value1": 1358.70, "psh": 3.722465753},
+    {"province": "Banten", "value1": 1359.00, "psh": 3.723287671},
+    {"province": "DKI Jakarta", "value1": 1335.90, "psh": 3.66},
+    {"province": "Jawa Barat", "value1": 1388.00, "psh": 3.802739726},
+    {"province": "Jawa Tengah", "value1": 1429.30, "psh": 3.915890411},
+    {"province": "DIY Yogyakarta", "value1": 1506.00, "psh": 4.126027397},
+    {"province": "Jawa Timur", "value1": 1510.60, "psh": 4.138630137},
+    {"province": "Bali", "value1": 1677.70, "psh": 4.596438356},
+    {"province": "Nusa Tenggara Timur", "value1": 1733.50, "psh": 4.749315068},
+    {"province": "Nusa Tenggara Barat", "value1": 1742.00, "psh": 4.77260274},
+    {"province": "Gorontalo", "value1": 1631.20, "psh": 4.469041096},
+    {"province": "Sulawesi Barat", "value1": 1614.60, "psh": 4.423561644},
+    {"province": "Sulawesi Tengah", "value1": 1587.90, "psh": 4.350410959},
+    {"province": "Sulawesi Utara", "value1": 1457.80, "psh": 3.993972603},
+    {"province": "Sulawesi Tenggara", "value1": 1491.40, "psh": 4.086027397},
+    {"province": "Sulawesi Selatan", "value1": 1553.20, "psh": 4.255342466},
+    {"province": "Maluku Utara", "value1": 1506.80, "psh": 4.128219178},
+    {"province": "Maluku", "value1": 1342.40, "psh": 3.677808219},
+    {"province": "Papua Barat", "value1": 1329.60, "psh": 3.642739726},
+    {"province": "Papua", "value1": 1410.90, "psh": 3.865479452},
+    {"province": "Papua Tengah", "value1": 1533.00, "psh": 4.2},
+    {"province": "Papua Pegunungan", "value1": 1213.50, "psh": 3.324657534},
+    {"province": "Papua Selatan", "value1": 1348.80, "psh": 3.695342466},
+    {"province": "Papua Barat Daya", "value1": 1364.90, "psh": 3.739452055}
+]
+
 const divStyle = {
     backgroundSize: 'cover',
 }
@@ -99,16 +141,32 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     {/*<Input type="text" placeholder="Jenis Property" onChange={(e) => {*/}
                                     {/*    setJenisProperty(e.target.value);*/}
                                     {/*}} />*/}
-                                    <Input type="text" value={lokasi} placeholder="Lokasi" onChange={(e) => {
-                                        // setDayaListrik(e.target.value)
-                                        // const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
-                                        setLokasi(e.target.value);
-                                    }} />
+                                    {/*<Input type="text" value={lokasi} placeholder="Lokasi" onChange={(e) => {*/}
+                                    {/*    // setDayaListrik(e.target.value)*/}
+                                    {/*    // const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();*/}
+                                    {/*    setLokasi(e.target.value);*/}
+                                    {/*}} />*/}
+                                    <Select onValueChange={(val) => {
+                                        const lokasi = locationData.find(item => item.province === val)?.province
+                                        setLokasi(lokasi ?? "")
+                                    }}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Lokasi*" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                {locationData.map((item, index) => (
+                                                    <SelectItem key={item.province} value={item.province}>{lang === "en" ? item.province : item.province}</SelectItem>
+                                                ))}
+
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
                                     <Select onValueChange={(val) => {
                                         setJenisProperty(pricingData.find(item => item.categoryEn === val))
                                     }}>
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Daya Terpasang PLN" />
+                                            <SelectValue placeholder="Daya Terpasang PLN*" />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
@@ -130,18 +188,18 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
                                         setLuasArea(vl === "0" ? "" : vl)
                                     }} />
-                                    <Input type="text" value={tagihanListrik} placeholder={dictionary.tagihan_listrik} onChange={(e) => {
+                                    <Input type="text" value={tagihanListrik} placeholder={dictionary.tagihan_listrik + "*"} onChange={(e) => {
                                         // setTagihanListrik(e.target.value)
                                         const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
                                         setTagihanListrik(vl === "0" ? "" : vl)
                                     }} />
-                                    <p>{dictionary.tarif_listrik}</p>
+                                    <p>{dictionary.tarif_listrik + "*"}</p>
                                     <Input readOnly={true} type="text" value={jenisProperty ?  "Rp " +jenisProperty?.tariffCode : ""}  onChange={(e) => {
                                     }} />
-                                    <p>{lang === "en" ? "Estimated Power Usage" : "Estimasi Daya Terpakai"}</p>
+                                    <p>{lang === "en" ? "Estimated Power Usage*" : "Estimasi Daya Terpakai*"}</p>
                                     <Input readOnly={true} type="text" value={estimatedPowerUsage ?  Math.ceil(estimatedPowerUsage) + " kWh" : ""}  onChange={(e) => {
                                     }} />
-                                    <p>{dictionary.lokasi_pemasangan}</p>
+                                    <p>{dictionary.lokasi_pemasangan + "*"}</p>
                                     <div className="flex gap-4">
                                         <div className={cn("flex flex-col items-center hover:cursor-pointer", lokasiPemasangan === "rooftop" ? "bg-yellow-500" : "")} onClick={()=> setLokasiPemasangan("rooftop")}>
                                             <Image width={50} height={50} src="/images/ic_zero_capex_1.png" alt="" />
@@ -166,14 +224,19 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     bt.preventDefault()
 
                                     if (!jenisProperty) {
-                                        setError(lang === "en" ? "Please fill property type" : "Mohon isi jenis property")
+                                        setError(lang === "en" ? "Please fill electricity installed PLN" : "Mohon isi daya terpasang PLN")
                                         return;
                                     }
 
-                                    if (dayaListrik === "") {
-                                        setError(lang === "en" ? "Please fill electricity power" : "Mohon isi daya listrik")
+                                    if (lokasi === "") {
+                                        setError(lang === "en" ? "Please fill your location" : "Mohon isi lokasi anda")
                                         return;
                                     }
+
+                                    // if (dayaListrik === "") {
+                                    //     setError(lang === "en" ? "Please fill electricity power" : "Mohon isi daya listrik")
+                                    //     return;
+                                    // }
 
 
                                     // if (tarifListrik === "") {
@@ -186,10 +249,10 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         return;
                                     }
 
-                                    if (luasArea === "") {
-                                        setError(lang === "en" ? "Please fill property area" :"Mohon isi luas area")
-                                        return;
-                                    }
+                                    // if (luasArea === "") {
+                                    //     setError(lang === "en" ? "Please fill property area" :"Mohon isi luas area")
+                                    //     return;
+                                    // }
 
                                     if (lokasiPemasangan === "") {
                                         setError(lang === "en" ? "Please fill installation location" :"Mohon pilih lokasi pemasangan")
@@ -206,12 +269,27 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         return;
                                     }
 
+                                    let dl = "";
+                                    if(dayaListrik === "") {
+                                        dl = "30000"
+                                    } else {
+                                        dl = dayaListrik.replaceAll(",","")
+                                    }
+
+                                    let la = "";
+                                    if(luasArea === "") {
+                                        la = "1000"
+                                    } else {
+                                        la = luasArea.replaceAll(",","")
+                                    }
+
+
                                     cookie.set("jenisProperty",jenisProperty.categoryEn);
                                     cookie.set("lokasi",lokasi);
-                                    cookie.set("dayaListrik",dayaListrik.replaceAll(",",""));
+                                    cookie.set("dayaListrik",dl);
                                     cookie.set("tarifListrik",jenisProperty.tariffCode.toString());
                                     cookie.set("tagihanListrik",tagihanListrik.replaceAll(",",""));
-                                    cookie.set("luasArea",luasArea.replaceAll(",",""));
+                                    cookie.set("luasArea",la);
                                     cookie.set("lokasiPemasangan",lokasiPemasangan);
                                     cookie.set("estimatedpowerusage",estimatedPowerUsage.toString().replaceAll(",",""));
                                     cookie.set("youremail",yourEmail.toString());

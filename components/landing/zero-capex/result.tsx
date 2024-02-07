@@ -8,7 +8,7 @@ import {Button} from "@/components/ui/button";
 import cookie from "js-cookie";
 import {cn} from "@/lib/utils";
 import {ArrowRight, DownloadIcon} from "lucide-react";
-import {pricingData} from "@/components/landing/zero-capex/hitung-investasi";
+import {locationData, pricingData} from "@/components/landing/zero-capex/hitung-investasi";
 
 import { Line } from 'react-chartjs-2';
 import LineChart from "@/components/landing/zero-capex/LineChart";
@@ -113,7 +113,6 @@ const divStyle = {
 }
 
 interface SolarPanelInfo {
-    PeakSunHour: number;
     LuasPanel: {
         Panjang: number;
         Lebar: number;
@@ -125,7 +124,6 @@ interface SolarPanelInfo {
 }
 
 const solarPanelInfo: SolarPanelInfo = {
-    PeakSunHour: 3.853424658,
     LuasPanel: {
         Panjang: 2.38,
         Lebar: 1.3,
@@ -240,6 +238,7 @@ export default function ZeroCapexResult() {
         const tagihanListrikPerBulan = Number(cookie.get("tagihanListrik")); // Tagihan listrik per bulan dalam rupiah
         const luasAreaProperty = Number(cookie.get("luasArea")); // Luas area property dalam m2
         const estimatedPowerUsage = Number(cookie.get("estimatedpowerusage"));
+        const lokasi = cookie.get("lokasi");
 
         // Rekomendasi Installasi (kWp)
 
@@ -249,21 +248,24 @@ export default function ZeroCapexResult() {
         }
 
         // Area Potensial (m2) & Jumlah Modul Surya (Pcs)
+
+
+        const psh = locationData.find(e => e.province === lokasi)?.psh ?? 0;
         const jumlahModulSurya = (luasAreaProperty - (luasAreaProperty*20/100)) / solarPanelInfo.LuasPanelM2;
         const areaPotensial = jumlahModulSurya * solarPanelInfo.LuasPanelM2; // Satu modul surya memiliki dimensi 3 m
         const rekomendasiInstallasi =  parseFloat((Math.floor(luasAreaProperty / 1.3 / 2.4) * 0.695).toFixed(2));
 
-        const rekomendasiInstallasi2 = parseFloat(((estimatedPowerUsage / 26 / solarPanelInfo.PeakSunHour) * 0.8).toFixed(2));
+        const rekomendasiInstallasi2 = parseFloat(((estimatedPowerUsage / 26 / psh) * 0.8).toFixed(2));
         const areaPotensial2 = rekomendasiInstallasi2 * solarPanelInfo.LuasPanelM2; // Satu modul surya memiliki dimensi 3 m
         const jumlahModulSurya2 = ceilingMath(rekomendasiInstallasi2 / solarPanelInfo.DayaYangDihasilkanSatuPanel * 1000, 1); // Satu modul surya memiliki dimensi 3 m
 
 
         // Produksi Energi per Tahun (kWh)
-        const produksiEnergiPerTahun = parseFloat(((rekomendasiInstallasi * solarPanelInfo.PeakSunHour) * 365).toFixed(2));
+        const produksiEnergiPerTahun = parseFloat(((rekomendasiInstallasi * psh) * 365).toFixed(2));
 
 
         console.log("rekomendasi installasi" + rekomendasiInstallasi)
-        const produksiEnergiPerTahun2 = parseFloat(((rekomendasiInstallasi2 * solarPanelInfo.PeakSunHour) * 365).toFixed(2));
+        const produksiEnergiPerTahun2 = parseFloat(((rekomendasiInstallasi2 * psh) * 365).toFixed(2));
 
         // Periode Installasi
         let periodeInstallasi;
@@ -333,9 +335,8 @@ export default function ZeroCapexResult() {
         const tarrif = selectedJenisProperty?.tariffCode ?? 0.0;
         const leasing20Percent = tarrif - (tarrif * 20 / 100);
 
-        // const priceLeasingBulanan = (leasing20Percent * (rekomendasiInstallasi * solarPanelInfo.PeakSunHour)) * 30;
-        const priceLeasingBulanan = ((selectedJenisProperty?.leasing20 ?? 0) * (rekomendasiInstallasi * solarPanelInfo.PeakSunHour)) * 30;
-        const priceLeasingBulanan2 = ((selectedJenisProperty?.leasing20 ?? 0) * (rekomendasiInstallasi2 * solarPanelInfo.PeakSunHour)) * 30;
+        const priceLeasingBulanan = ((selectedJenisProperty?.leasing20 ?? 0) * (rekomendasiInstallasi * psh)) * 30;
+        const priceLeasingBulanan2 = ((selectedJenisProperty?.leasing20 ?? 0) * (rekomendasiInstallasi2 * psh)) * 30;
         const hargaDolar = calculateDiscount(rekomendasiInstallasi);
         const hargaDolar2 = calculateDiscount(rekomendasiInstallasi);
         const priceLeasingTahunan = (rekomendasiInstallasi * 16000) * hargaDolar * 1000;
@@ -344,7 +345,7 @@ export default function ZeroCapexResult() {
 
         console.log("check1 " + selectedJenisProperty?.leasing20);
         console.log("check2 " + rekomendasiInstallasi);
-        console.log("check3 " + solarPanelInfo.PeakSunHour);
+        console.log("check3 " + psh);
 
 
         if(selectedRecommendation === 0) {
