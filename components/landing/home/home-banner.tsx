@@ -108,7 +108,7 @@ export default function HomeBanner({banners, lang, dictionary} : {banners: Banne
                                     <div className="w-full h-full lg:px-20 pt-10 bg-gradient-to-b from-white to-transparent">
                                         <div className="flex text-[#154B6F] font-bold text-shadow-lg gap-2 items-center divide-x divide-[#154B6F]">
                                             <div className="relative w-20 h-20">
-                                                <Image fill className="object-fill" src={slideImage.logo} alt="" />
+                                                <img className="object-fill" src={slideImage.logo} alt="" />
                                             </div>
                                             <h2 className="px-4 text-sm lg:text-2xl" dangerouslySetInnerHTML={{__html : translateText(slideImage.description, lang)}}/>
                                         </div>
