@@ -13,6 +13,16 @@ const nextConfig = {
                 hostname: '**.sesna.id',
                 port: '',
             },
+            {
+                protocol: 'http',
+                hostname: 'sesna.id',
+                port: '',
+            },
+            {
+                protocol: 'http',
+                hostname: '**.sesna.id',
+                port: '',
+            },
         ],
     },
     experimental: {
