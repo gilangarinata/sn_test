@@ -17,6 +17,7 @@ import Link from "next/link";
 import LineChartLeasing from "@/components/landing/zero-capex/LineChartLeasing";
 import { useReactToPrint } from 'react-to-print';
 import ReactPDF, {Page, Text, View, Document, StyleSheet, PDFViewer} from '@react-pdf/renderer';
+import {delay} from "framer-motion";
 import {useRouter} from "next/navigation";
 
 // Create styles
@@ -224,8 +225,7 @@ function calculateDiscount(rekomendasiInstallasi: number): number {
 }
 
 
-export default function ZeroCapexResult() {
-    const router = useRouter();
+export default function ZeroCapexResultPdf() {
     const [rekomendasiInstallasi, setRekomendasiInstallasi] = React.useState('');
     const [areaPotensial, setAreaPotensial] = React.useState('');
     const [jumlahModulSurya, setJumlahModulSurya] = React.useState('');
@@ -251,66 +251,25 @@ export default function ZeroCapexResult() {
     const [priceSolarRental, setPriceSolarRental] = React.useState('')
     const [priceTurnkeyEPC, setPriceTurnkeyEPC] = React.useState('')
 
-    const [isDownload, setIsDownload] = React.useState(false)
 
     const convertNextPageToPDF = () => {
-        setIsDownload(true)
         const input = document.getElementById('page-content');
         if(input === null) return;
-
-        const input2 = document.getElementById('page-content2');
-        if(input2 === null) return;
-
-        let plan: HTMLElement | null;
-        if(selectedPlan == 0) {
-            plan = document.getElementById('solar-rental');
-        } else if (selectedPlan == 1) {
-            plan = document.getElementById('turnkey-epc');
-        }
-
-        let rekomendasi: HTMLElement | null;
-        if(selectedRecommendation == 0) {
-            rekomendasi = document.getElementById('rekomendasi1');
-        } else if (selectedRecommendation == 1) {
-            rekomendasi = document.getElementById('rekomendasi2');
-        }
-
-        // @ts-ignore
-
         // Capture the content of the page as an image using html2canvas
         html2canvas(input)
             .then((canvas) => {
                 const imgData = canvas.toDataURL('image/png');
                 const pdf = new jsPDF();
 
-                html2canvas(input2)
-                    .then(async (canvas2) => {
-                        if(plan === null) return;
-                        if(rekomendasi === null) return;
-                        const planz = await html2canvas(plan)
-                        const rekomendasiz = await html2canvas(rekomendasi)
-                        const imgRekomendasi = rekomendasiz.toDataURL('image/png');
-                        pdf.addImage(imgRekomendasi, 'PNG', 50, 0, 120, 300);
-                        pdf.addPage();
+                // Add the captured image to the PDF
+                pdf.addImage(imgData, 'PNG', 0, 0,200,300);
 
-                        const imgPlan = planz.toDataURL('image/png');
-                        pdf.addImage(imgPlan, 'PNG', 50, 0, 120, 200);
-                        pdf.addPage();
-
-                        const imgData2 = canvas2.toDataURL('image/png');
-                        pdf.addImage(imgData2, 'PNG', 0, 0, 210, 300);
-                        pdf.addPage();
-                        // Add the captured image to the PDF
-                        pdf.addImage(imgData, 'PNG', 0, 0, 210, 260);
-
-                        // Save the PDF file
-                        pdf.save('next_page.pdf');
-                        setIsDownload(false)
-                    })
+                // Save the PDF file
+                pdf.save('next_page.pdf');
             });
     };
 
-
+    const router = useRouter();
     useEffect(() => {
         // Data dari klien
         const dayaListrikPLN = Number(cookie.get("dayaListrik")); // Kapasitas PLN dalam kVa
@@ -450,6 +409,15 @@ export default function ZeroCapexResult() {
 
     }, [selectedRecommendation])
 
+    useEffect(() => {
+        setTimeout(() => {
+            convertNextPageToPDF();
+            setTimeout(() => {
+                router.push("/zero-capex")
+            }, 1000);
+        }, 2000);
+    }, [])
+
 
     const MyDocument = () => (
         <Document>
@@ -466,7 +434,7 @@ export default function ZeroCapexResult() {
 
         // @ts-ignore
     return (
-            <div className="w-full flex flex-col bg-[#15537A] items-center justify-center">
+            <div id="page-content" className="w-full flex flex-col bg-[#15537A] items-center justify-center">
                 <h1 className="mt-10 text-3xl text-white font-bold">HASIL</h1>
                 <div className="w-full mt-20 mb-32">
                     <div className="mx-auto mt-[300px] lg:mt-0 flex flex-col lg:flex-row gap-4 justify-center lg:justify-between lg:px-20">
@@ -476,7 +444,7 @@ export default function ZeroCapexResult() {
                                 <div className="flex">
                                     <div className="flex-1">
                                         <div className="flex flex-col items-center px-4 py-6 gap-4">
-                                            <div id="rekomendasi1" className={cn("rounded-2xl  px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4", selectedRecommendation === 0 ? "border-white border-4" : "")}>
+                                            <div className={cn("rounded-2xl  px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4", selectedRecommendation === 0 ? "border-white border-4" : "")}>
                                                 <h1 className="text-lg text-center">Rekomendasi Installasi<br/>Sesuai Luasan Tersedia</h1>
                                                 <p className="text-xs text-gray-700 text-center h-[80px]">Dengan memilih pendekatan ini, data akan menyesuaikan dengan luasan lahan yang tersedia</p>
 
@@ -485,71 +453,54 @@ export default function ZeroCapexResult() {
                                                     <h1 className="text-[#15537A]">
                                                         Rekomendasi Installasi (kWp)
                                                     </h1>
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{rekomendasiInstallasi}</p>
-                                                    </div>
-                                                    {/*<Input value={rekomendasiInstallasi} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={rekomendasiInstallasi} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
+                                                    }} />
                                                 </div>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
                                                         Area Potensial (m2)
                                                     </h1>
-                                                    {/*<Input value={areaPotensial} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={areaPotensial} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{areaPotensial}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
                                                         Jumlah Modul Surya (pcs)
                                                     </h1>
-                                                    {/*<Input value={jumlahModulSurya} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={jumlahModulSurya} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{jumlahModulSurya}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
 
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
                                                         Produksi Energi per Tahun (kWh)
                                                     </h1>
-                                                    {/*<Input value={produksiEnergiPerTahun} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={produksiEnergiPerTahun} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{produksiEnergiPerTahun}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
 
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
                                                         Periode Installasi
                                                     </h1>
-                                                    {/*<Input value={periodeInstallasi} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={periodeInstallasi} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{periodeInstallasi}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
 
-                                                {isDownload ? <></> : (
-                                                    <Button className="w-full mt-4" onClick={() => {
-                                                        setSelectedRecommendation(0)
-                                                    }}>Choose Plan</Button>
-                                                )}
+                                                <Button className="w-full mt-4" onClick={() => {
+                                                    setSelectedRecommendation(0)
+                                                }}>Choose Plan</Button>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex flex-col items-center px-4 py-6 gap-4">
-                                            <div id="rekomendasi2" className={cn("rounded-2xl  px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4", selectedRecommendation === 1 ? "border-white border-4" : "")}>
+                                            <div className={cn("rounded-2xl  px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4", selectedRecommendation === 1 ? "border-white border-4" : "")}>
                                                 <h1 className="text-lg text-center">Rekomendasi Installasi<br/>Sesuai Profil Beban</h1>
                                                 <p className="text-xs text-gray-700 text-center h-[80px]">Dengan memilih pendekatan ini, data akan menyesuaikan dengan daya yang dibutuhkan untuk memenuhi beban yang ada</p>
 
@@ -558,65 +509,48 @@ export default function ZeroCapexResult() {
                                                     <h1 className="text-[#15537A]">
                                                         Rekomendasi Installasi (kWp)
                                                     </h1>
-                                                    {/*<Input value={rekomendasiInstallasi2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={rekomendasiInstallasi2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{rekomendasiInstallasi2}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
                                                         Area Potensial (m2)
                                                     </h1>
-                                                    {/*<Input value={areaPotensial2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={areaPotensial2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{areaPotensial2}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
                                                         Jumlah Modul Surya (pcs)
                                                     </h1>
-                                                    {/*<Input value={jumlahModulSurya2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={jumlahModulSurya2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{jumlahModulSurya2}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
 
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
                                                         Produksi Energi per Tahun (kWh)
                                                     </h1>
-                                                    {/*<Input value={produksiEnergiPerTahun2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={produksiEnergiPerTahun2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{produksiEnergiPerTahun2}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
 
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
                                                         Periode Installasi
                                                     </h1>
-                                                    {/*<Input value={periodeInstallasi2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
+                                                    <Input value={periodeInstallasi2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {
 
-                                                    {/*}} />*/}
-                                                    <div className="bg-white rounded-lg flex py-2 px-4">
-                                                        <p>{periodeInstallasi2}</p>
-                                                    </div>
+                                                    }} />
                                                 </div>
-                                                {isDownload ?<></> :(
-                                                    <Button className="w-full mt-4" onClick={() => {
-                                                        setSelectedRecommendation(1)
-                                                    }}>Choose Plan</Button>
-                                                    )}
 
+                                                <Button className="w-full mt-4" onClick={() => {
+                                                    setSelectedRecommendation(1)
+                                                }}>Choose Plan</Button>
                                             </div>
                                         </div>
                                     </div>
@@ -624,7 +558,7 @@ export default function ZeroCapexResult() {
                             </div>
                         </div>
                         <div className="h-full border-l border-solid border-white"></div>
-                        <div className="flex-1 bg-[#15537A]" id="page-content2">
+                        <div className="flex-1">
                             <div className="flex flex-col items-center justify-center">
                                 <h1 className="text-2xl text-white text-center">Dampak Lingkungan<br/>dalam 25 tahun</h1>
                                 {selectedRecommendation !== -1 ? (
@@ -687,7 +621,7 @@ export default function ZeroCapexResult() {
                                 style={{ width: '100%', height: 'auto' }} // optional
                             />
                         </div>
-                        <div id="solar-rental" className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 0 ? "border-white border-4" : "")}>
+                        <div className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 0 ? "border-white border-4" : "")}>
                             <div className="flex">
                                 <h1 className="text-xl font-bold">Solar Rental Zero Capex</h1>
                                 <Image src="/images/ic_plan_1.png" alt="" width={0}
@@ -718,13 +652,10 @@ export default function ZeroCapexResult() {
                             </div>
                             <div className="flex-1"></div>
                             <h1 className="w-full text-center text-lg font-black mt-4">Start from<br/>{priceSolarRental}<br/>/Month</h1>
-                            {isDownload ?<></> : (
-                                <Button onClick={(a) => setSelectedPlan(0)} className="text-white text-lg font-bold mt-4">Choose Plan</Button>
-                            )}
-
+                            <Button onClick={(a) => setSelectedPlan(0)} className="text-white text-lg font-bold mt-4">Choose Plan</Button>
                         </div>
 
-                        <div id="turnkey-epc" className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 1 ? "border-white border-4" : "")}>
+                        <div className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 1 ? "border-white border-4" : "")}>
                             <div className="flex">
                                 <h1 className="text-xl font-bold">Turnkey EPC Direct Purchase</h1>
                                 <Image src="/images/ic_plan_2.png" alt="" width={0}
@@ -755,40 +686,35 @@ export default function ZeroCapexResult() {
                             </div>
                             <div className="flex-1"></div>
                             <h1 className="w-full text-center text-lg font-black mt-4">Start from<br/>{priceTurnkeyEPC}</h1>
-                            {isDownload ?<></> : (
-                                <Button onClick={(a) => setSelectedPlan(1)} className="text-white text-lg font-bold mt-4">Choose Plan</Button>
-                            )}
+                            <Button onClick={(a) => setSelectedPlan(1)} className="text-white text-lg font-bold mt-4">Choose Plan</Button>
                         </div>
                     </div>
                 )}
 
-                <div className="bg-[#15537A]" id="page-content">
-                    {selectedPlan === 1 ? (
-                        <LineChart
-                            currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
-                            solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
-                            electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
-                            capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
-                        />) : (
-                        <div></div>
-                    )}
 
-                    {selectedPlan === 0 ? (<LineChartLeasing
+                {selectedPlan === 1 ? (
+                    <LineChart
                         currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
                         solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
                         electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
                         capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
-                        kwhPerYear={parseFloat( selectedRecommendation === 0 ? produksiEnergiPerTahun.replaceAll(",", "") : produksiEnergiPerTahun2.replaceAll(",", ""))}
                     />) : (
-                        <div></div>
+                    <div></div>
                     )}
-                </div>
 
-
+                {selectedPlan === 0 ? (<LineChartLeasing
+                    currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                    solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
+                    electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                    capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
+                    kwhPerYear={parseFloat( selectedRecommendation === 0 ? produksiEnergiPerTahun.replaceAll(",", "") : produksiEnergiPerTahun2.replaceAll(",", ""))}
+                />) : (
+                    <div></div>
+                )}
 
                 {selectedRecommendation === -1 ? (<div></div>) : (
                     <div className="w-full bg-[#f9c329] flex justify-center mt-20">
-                        <Button className="my-4" onClick={convertNextPageToPDF}><DownloadIcon/> Download Hasil</Button>
+                        <Button onClick={convertNextPageToPDF}><DownloadIcon/> Download Hasil</Button>
                     </div>
                 )}
             </div>

@@ -73,7 +73,7 @@ export default function SolarPowerWorks({solarPowerWorks, lang, dictionary} : {s
                                             <source src={slideImage.image} />
                                         </video>
                                     ) : (
-                                        <Image sizes="100vw"
+                                        <img sizes="100vw"
                                                width={0}
                                                height={0}
                                                style={{ width: '100%', height: 'auto' }} src={slideImage.image} alt="logo" />
