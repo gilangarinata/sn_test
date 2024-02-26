@@ -5,7 +5,7 @@ import {BarChart} from "lucide-react";
 Chart.register(...registerables);
 
 export default function LineChart(
-    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity}
+    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, size}
 ) {
 
 
@@ -186,10 +186,10 @@ export default function LineChart(
     return (
         <div>
             <Bar
-                className="mt-20"
+                className={cn("mt-20", size === 200 ? "mt-0" : "mt-20")}
                 data={data}
-                width={600}
-                height={600}
+                width={size}
+                height={size}
                 options={options} />
         </div>
     );

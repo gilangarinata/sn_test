@@ -310,6 +310,10 @@ export default function ZeroCapexResult() {
             });
     };
 
+    useEffect(() => {
+        cookie.set("selectedPlan", String(selectedPlan))
+    }, [selectedPlan])
+
 
     useEffect(() => {
         // Data dari klien
@@ -447,6 +451,9 @@ export default function ZeroCapexResult() {
                 currency: "IDR",
             }).format(priceLeasingTahunan2))
         }
+
+
+        cookie.set("selectedRecommendation", String(selectedRecommendation))
 
     }, [selectedRecommendation])
 
@@ -630,7 +637,7 @@ export default function ZeroCapexResult() {
                                 {selectedRecommendation !== -1 ? (
                                     <div className={cn("flex flex-col py-6 gap-8 mx-10","")}>
                                         <div className="flex gap-4">
-                                            <Image src="/images/icon_zero_capex_1.png" alt="" width={50} height={30} />
+                                            <img className="w-[50px] h-[50px]" src="/images/icon_zero_capex_1.png" alt="" width={50} height={30} />
                                             <div className="flex flex-col">
                                                 <p className="text-white text-sm">Co2 Avoided (kg Co2/kWh)</p>
                                                 <h4 className="text-white text-2xl font-bold">{`${co2Avoided}`}</h4>
@@ -769,6 +776,7 @@ export default function ZeroCapexResult() {
                             solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
                             electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
                             capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
+                            size={600}
                         />) : (
                         <div></div>
                     )}
@@ -779,6 +787,7 @@ export default function ZeroCapexResult() {
                         electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
                         capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
                         kwhPerYear={parseFloat( selectedRecommendation === 0 ? produksiEnergiPerTahun.replaceAll(",", "") : produksiEnergiPerTahun2.replaceAll(",", ""))}
+                        size={600}
                     />) : (
                         <div></div>
                     )}
@@ -788,7 +797,8 @@ export default function ZeroCapexResult() {
 
                 {selectedRecommendation === -1 ? (<div></div>) : (
                     <div className="w-full bg-[#f9c329] flex justify-center mt-20">
-                        <Button className="my-4" onClick={convertNextPageToPDF}><DownloadIcon/> Download Hasil</Button>
+                        {/*<Button className="my-4" onClick={convertNextPageToPDF}><DownloadIcon/> Download Hasil</Button>*/}
+                        <Link href="/zero-capex-pdf"><Button className="my-4" onClick={convertNextPageToPDF}><DownloadIcon/> Download Hasil</Button></Link>
                     </div>
                 )}
             </div>

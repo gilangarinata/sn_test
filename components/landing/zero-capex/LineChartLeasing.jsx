@@ -2,10 +2,11 @@ import React from 'react';
 import {Bar, Line} from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import {BarChart} from "lucide-react";
+import {cn} from "@/lib/utils";
 Chart.register(...registerables);
 
 export default function LineChartLeasing(
-    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, kwhPerYear}
+    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, kwhPerYear,size}
 ) {
     const leasingPercent = 0.2; //20%
     const vatPercent = 0.11; // 11%
@@ -248,10 +249,10 @@ export default function LineChartLeasing(
     return (
         <div>
             <Bar
-                className="mt-20"
+                className={cn("mt-20", size === 200 ? "mt-0" : "mt-20")}
                 data={data}
-                width={600}
-                height={600}
+                width={size}
+                height={size}
                 options={options} />
         </div>
     );
