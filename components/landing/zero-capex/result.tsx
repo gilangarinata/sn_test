@@ -798,7 +798,7 @@ export default function ZeroCapexResult() {
                 {selectedRecommendation === -1 ? (<div></div>) : (
                     <div className="w-full bg-[#f9c329] flex justify-center mt-20">
                         {/*<Button className="my-4" onClick={convertNextPageToPDF}><DownloadIcon/> Download Hasil</Button>*/}
-                        <Link href="/zero-capex-pdf"><Button className="my-4" onClick={convertNextPageToPDF}><DownloadIcon/> Download Hasil</Button></Link>
+                        <Link href="/zero-capex-pdf"><Button className="my-4"><DownloadIcon/> Download Hasil</Button></Link>
                     </div>
                 )}
             </div>

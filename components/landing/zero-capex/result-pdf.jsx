@@ -206,22 +206,22 @@ export default function ZeroCapexResultPdf() {
     const [priceTurnkeyEPC, setPriceTurnkeyEPC] = React.useState('')
 
 
-    const convertNextPageToPDF = () => {
-        const input = document.getElementById('page-content');
-        if (input === null) return;
-        // Capture the content of the page as an image using html2canvas
-        html2canvas(input)
-            .then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF();
-
-                // Add the captured image to the PDF
-                pdf.addImage(imgData, 'PNG', 0, 0, 200, 300);
-
-                // Save the PDF file
-                pdf.save('next_page.pdf');
-            });
-    };
+    // const convertNextPageToPDF = () => {
+    //     const input = document.getElementById('page-content');
+    //     if (input === null) return;
+    //     // Capture the content of the page as an image using html2canvas
+    //     html2canvas(input)
+    //         .then((canvas) => {
+    //             const imgData = canvas.toDataURL('image/png');
+    //             const pdf = new jsPDF();
+    //
+    //             // Add the captured image to the PDF
+    //             pdf.addImage(imgData, 'PNG', 0, 0, 200, 300);
+    //
+    //             // Save the PDF file
+    //             pdf.save('next_page.pdf');
+    //         });
+    // };
 
     const router = useRouter();
     useEffect(() => {
