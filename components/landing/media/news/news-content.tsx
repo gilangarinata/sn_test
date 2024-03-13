@@ -40,7 +40,7 @@ export default function NewsContent({ categoryId, categories, newsA, lang, dicti
     return (
         <div className="w-full flex flex-col mb-8">
             <div className="w-full flex flex-col lg:flex-row justify-between p-6 max-w-5xl mx-auto items-center">
-                <div className="w-full flex gap-4 ">
+                <div className="w-screen flex gap-4 overflow-x-scroll">
                     <Link href={"/media/news"}>
                         <p className={cn("font-bold", pathName == "/media/news" ? "text-yellow-400 underline underline-offset-8" : "")}>
                             {dictionary.all}
@@ -75,7 +75,7 @@ export default function NewsContent({ categoryId, categories, newsA, lang, dicti
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:mx-auto mx-4 max-w-5xl gap-4 mb-8">
                 {news?.map(content => (
                     <div className="flex flex-col gap-4" key={content.title}>
-                        <div className="relative w-full h-[250px]">
+                        <div className="relative w-full">
                             <Link href={"/media/news/detail/"+content.id} >
                                 <img src={content.image} alt="" />
                             </Link>

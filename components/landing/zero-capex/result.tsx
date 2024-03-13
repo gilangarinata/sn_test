@@ -1,6 +1,6 @@
 "use client"
 
-import React, {ReactDOM, useEffect, useRef} from "react";
+import React, {ReactDOM, useEffect, useRef, useState} from "react";
 import Image from "next/image";
 import {ScopeOfWOrk} from "@/components/admin/our-business/scope-of-works/scope-of-work-table";
 import {Input} from "@/components/ui/input";
@@ -20,6 +20,7 @@ import ReactPDF, {Page, Text, View, Document, StyleSheet, PDFViewer} from '@reac
 import {useRouter} from "next/navigation";
 import ImageComponent from "@/components/landing/zero-capex/image-component";
 import {Locale} from "@/i18n.config";
+import { number } from "zod";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -615,37 +616,22 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
         </Document>
     );
 
-    // "hasil": "HASIL",
-    //     "pilih_pendekatan": "Pilih Pendekatan",
-    //     "rekomendasi_installasi_luasan": "Rekomendasi Installasi\nSesuai Luasan Tersedia",
-    //     "rekomendasi_installasi_profil_beban": "Rekomendasi Installasi\nSesuai Profil Beban",
-    //     "rekomendasi_luasan_desc": "Dengan memilih pendekatan ini, data akan menyesuaikan dengan luasan lahan yang tersedia",
-    //     "rekomendasi_profil_desc": "Dengan memilih pendekatan ini, data akan menyesuaikan dengan daya yang dibutuhkan untuk memenuhi beban yang ada",
-    //     "rekomendasi_installasi": "Rekomendasi Installasi (kWp)",
-    //     "area_potensial": "Area Potensial (m2)",
-    //     "jumlah_modul_surya": "Jumlah Modul Surya (pcs)",
-    //     "produksi_energi_per_tahun": "Produksi Energi per Tahun (kWh)",
-    //     "periode_installasi": "Periode Installasi",
-    //     "dampak_lingkungan": "Dampak Lingkungan\ndalam 25 tahun",
-    //     "co2_avoided": "Co2 yang Dihindari (kg Co2/kWh)",
-    //     "coal_burned": "Batubara Terbakar (kg Co2/kWh)",
-    //     "vehicle_driven": "Kendaraan Dikendarai (km Co2/kWh)",
-    //     "gasoline_burned": "Bensin Terbakar (liter Co2/kWh)",
-    //     "tree_needed": "Kebutuhan Pohon (pohon Co2/kWh)",
-    //     "choose_best_plan": "Pilih paket terbaik untuk bisnis Anda",
-    //     "choose_best_plan_desc": "Silakan pilih layanan kami yang paling sesuai untuk bisnis Anda.\nJelajahi rencana kami dan jadikan itu sebagai referensi Anda",
-    //     "download_hasil": "Download Hasil"
+    const size = useWindowSize();
 
-        // @ts-ignore
+    console.log(size.width, size.height)
+
+
+
+    // @ts-ignore
     return (
             <div className="w-full flex flex-col bg-[#15537A] items-center justify-center">
                 <h1 className="mt-10 text-3xl text-white font-bold">{dictionary.hasil}</h1>
-                <div className="w-full mt-20 mb-32">
-                    <div className="mx-auto mt-[300px] lg:mt-0 flex flex-col lg:flex-row gap-4 justify-center lg:justify-between lg:px-20">
+                <div className="w-full mt-20 md:mb-32">
+                    <div className="mx-auto md:mt-[300px] lg:mt-0 flex flex-col lg:flex-row gap-4 justify-center lg:justify-between lg:px-20">
                         <div className="flex-1">
                             <div className="flex flex-col items-center justify-center">
                                 <h1 className="text-2xl text-white">{dictionary.pilih_pendekatan}</h1>
-                                <div className="flex">
+                                <div className="flex flex-col md:flex-row">
                                     <div className="flex-1">
                                         <div className="flex flex-col items-center px-4 py-6 gap-4">
                                             <div id="rekomendasi1" className={cn("rounded-2xl  px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4", selectedRecommendation === 0 ? "border-white border-4" : "")}>
@@ -846,7 +832,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                 </div>
 
                 {selectedRecommendation === -1 ? (<div></div>) : (
-                    <div className="flex flex-col mt-64 md:mt-0 md:flex-row w-full px-10 md:px-60 gap-4">
+                    <div className="flex flex-col md:flex-row w-full px-10 md:px-60 gap-4">
                         <div className="px-8 py-8 flex-1 bg-[#2190AE] rounded-sm flex flex-col gap-4">
                             <h1 className="text-white text-xl font-bold">{dictionary.choose_best_plan}</h1>
                             <p className="text-white/80 text-sm">{dictionary.choose_best_plan_desc}</p>
@@ -942,7 +928,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                             solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
                             electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
                             capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
-                            size={600}
+                            size={size.width < 450 ? 350 : 600}
                         />) : (
                         <div></div>
                     )}
@@ -953,7 +939,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                         electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
                         capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
                         kwhPerYear={parseFloat( selectedRecommendation === 0 ? produksiEnergiPerTahun.replaceAll(",", "") : produksiEnergiPerTahun2.replaceAll(",", ""))}
-                        size={600}
+                        size={size.width < 450 ? 350 : 600}
                     />) : (
                         <div></div>
                     )}
@@ -961,7 +947,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
 
 
 
-                {selectedRecommendation === -1 ? (<div></div>) : (
+                {selectedRecommendation === -1 && selectedPlan === -1 ? (<div></div>) : (
                     <div className="w-full bg-[#f9c329] flex justify-center mt-20">
                         <Button className="my-4" onClick={convertNextPageToPDF2}><DownloadIcon/> {dictionary.download_hasil}</Button>
                         {/*<Link href="/zero-capex-pdf"><Button className="my-4"><DownloadIcon/> Download Hasil</Button></Link>*/}
@@ -969,4 +955,36 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                 )}
             </div>
     )
+}
+
+// Hook
+function useWindowSize() {
+    // Initialize state with undefined width/height so server and client renders match
+    // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
+    const [windowSize, setWindowSize] = useState({
+        width: -1,
+        height: -1,
+    });
+
+    useEffect(() => {
+        // only execute all the code below in client side
+        // Handler to call on window resize
+        function handleResize() {
+            // Set window width/height to state
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+        }
+
+        // Add event listener
+        window.addEventListener("resize", handleResize);
+
+        // Call handler right away so state gets updated with initial window size
+        handleResize();
+
+        // Remove event listener on cleanup
+        return () => window.removeEventListener("resize", handleResize);
+    }, []); // Empty array ensures that effect is only run on mount
+    return windowSize;
 }

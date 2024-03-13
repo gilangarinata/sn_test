@@ -66,7 +66,7 @@ export default function VideoContent({ categoryId, videos, categories, lang, dic
                         <div className="flex flex-col gap-4" key={content.title}>
                             <div className="relative w-full h-[250px]">
                                 <CustomLink lang={lang} href={"/media/video/detail/"+content.id} >
-                                    <Image fill src={`https://img.youtube.com/vi/${videoId}/default.jpg`} alt="" />
+                                    <Image fill src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`} alt="" />
                                 </CustomLink>
                             </div>
                             <CustomLink lang={lang} href={"/media/video/detail/"+content.id} >

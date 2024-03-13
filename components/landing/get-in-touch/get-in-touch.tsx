@@ -48,8 +48,8 @@ export default function GetInTouch({lang, dictionary} : {lang: Locale, dictionar
         <div className="">
             <div className="w-screen flex flex-col bg-[#FABD24] h-fit lg:h-screen">
                 <motion.div className="flex flex-col py-10" whileInView={{scale: 1, transition: { duration: 1 }}} initial={{scale: 0}}>
-                    <h1 className="w-full text-[#15537A]/20 text-center text-7xl lg:text-[10rem] font-bold">{dictionary.get_in_touch}</h1>
-                    <h1 className="w-full text-[#15537A] text-center text-4xl font-bold mb-8 mt-[-50px] lg:mt-[-130px]">{dictionary.get_in_touch}</h1>
+                    <h1 className="w-full text-[#15537A]/10 text-center text-7xl lg:text-[10rem] font-bold">{dictionary.get_in_touch}</h1>
+                    <h1 className="w-full text-[#15537A] text-center text-4xl font-bold mb-8 lg:mt-[-130px]">{dictionary.get_in_touch}</h1>
                 </motion.div>
                 <div className="flex flex-col md:flex-row items-center gap-4 lg:mt-20">
                     <motion.div whileInView={{scale: 1, transition: { duration: 1 }}} initial={{scale: 0}} className="px-4 lg:w-1/2 lg:px-10 flex flex-col items-center lg:items-start">

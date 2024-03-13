@@ -100,14 +100,14 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                 <div className="w-full bg-[#FABD24] z-40 relative mt-[-120px]">
                     <div className="flex flex-col items-center p-6 gap-4 pt-[180px]">
                         <h1 className="font-bold text-[#15537A] text-3xl">{dictionary.our_dna}</h1>
-                        <div className="flex flex-col lg:flex-row text-[#15537A] px-8 gap-8 lg:divide-x">
+                        <div className="flex flex-col lg:flex-row text-[#15537A] px-2 md:px-8 gap-8 lg:divide-x">
                             {
                                 ourDna.map((dna) => {
                                     return (
                                         <div key={dna.image} className="flex flex-col items-center w-full gap-4">
                                             <Image src={dna.image} alt={dna.title} width={150} height={150} />
-                                            <h1 className="font-bold text-2xl">{translateText(dna.title, lang)}</h1>
-                                            <p className="text-center w-full justify-center px-4">{translateText(dna.description, lang)}</p>
+                                            <h1 className="font-bold text-2xl text-center">{translateText(dna.title, lang)}</h1>
+                                            <p className="text-center w-full justify-center md:px-4">{translateText(dna.description, lang)}</p>
                                         </div>
                                     )
                                 })
