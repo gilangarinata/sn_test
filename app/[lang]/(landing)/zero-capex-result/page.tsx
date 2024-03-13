@@ -9,11 +9,14 @@ import HistungInvestasi from "@/components/landing/zero-capex/hitung-investasi";
 import ZeroCapexResult from "@/components/landing/zero-capex/result";
 import ResultPlan from "@/components/landing/zero-capex/result-plan";
 import ResultChart from "@/components/landing/zero-capex/result-chart";
+import {Locale} from "@/i18n.config";
+import {getDictionary} from "@/lib/dictionary";
 
-async function WhoWeArePage() {
+async function WhoWeArePage({params} : {params: { lang: Locale }}) {
+    const dictionary = await getDictionary(params.lang)
     return (
        <div className="relative">
-           <ZeroCapexResult />
+           <ZeroCapexResult lang={params.lang} dictionary={dictionary} />
            {/*<ResultPlan />*/}
            {/*<ResultChart />*/}
        </div>

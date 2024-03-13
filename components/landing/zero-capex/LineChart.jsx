@@ -2,6 +2,7 @@ import React from 'react';
 import {Bar, Line} from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import {BarChart} from "lucide-react";
+import {cn} from "@/lib/utils";
 Chart.register(...registerables);
 
 export default function LineChart(

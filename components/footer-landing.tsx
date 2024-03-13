@@ -30,18 +30,18 @@ export default function FooterLanding({dictionary, lang}: {dictionary: any, lang
                         <Image width={200} height={200} src="/images/logo_putih.png" alt="Logo sesna" />
                         <h1 className="font-bold text-lg">{dictionary.follow_us}</h1>
                         <div className="flex flex-row gap-4">
-                            <CustomLink lang={lang} href="https://www.instagram.com/sesnagroup/">
+                            <Link lang={lang} href="https://www.instagram.com/sesnagroup/">
                                 <InstagramIcon className="hover:cursor-pointer" />
-                            </CustomLink>
-                            <CustomLink lang={lang} href="https://www.youtube.com/@solarwarriorindonesia1483">
+                            </Link>
+                            <Link lang={lang} href="https://www.youtube.com/@solarwarriorindonesia1483">
                                 <YoutubeIcon className="hover:cursor-pointer" />
-                            </CustomLink>
-                            <CustomLink lang={lang} href="https://www.linkedin.com/company/14474669/admin/feed/posts/">
+                            </Link>
+                            <Link lang={lang} href="https://www.linkedin.com/company/14474669/admin/feed/posts/">
                                 <LinkedinIcon className="hover:cursor-pointer" />
-                            </CustomLink>
-                            <CustomLink lang={lang} href="">
+                            </Link>
+                            <Link lang={lang} href="">
                                 <FacebookIcon className="hover:cursor-pointer" />
-                            </CustomLink>
+                            </Link>
                         </div>
                     </div>
 

@@ -151,7 +151,7 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         setLokasi(lokasi ?? "")
                                     }}>
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Lokasi*" />
+                                            <SelectValue placeholder={lang === "id" ? "Location*" : "Lokasi*" } />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
@@ -166,12 +166,12 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         setJenisProperty(pricingData.find(item => item.categoryEn === val))
                                     }}>
                                         <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Daya Terpasang PLN*" />
+                                            <SelectValue placeholder={lang === "id" ? "PLN Installation Power*" : "Daya Terpasang PLN*" } />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectGroup>
                                                 {pricingData.map((item, index) => (
-                                                    <SelectItem key={item.categoryEn} value={item.categoryEn}>{lang === "en" ? item.categoryEn : item.category}</SelectItem>
+                                                    <SelectItem key={item.categoryEn} value={item.categoryEn}>{lang === "id" ? item.categoryEn : item.category}</SelectItem>
                                                 ))}
 
 
@@ -196,7 +196,7 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     <p>{dictionary.tarif_listrik + "*"}</p>
                                     <Input readOnly={true} type="text" value={jenisProperty ?  "Rp " +jenisProperty?.tariffCode : ""}  onChange={(e) => {
                                     }} />
-                                    <p>{lang === "en" ? "Estimated Power Usage*" : "Estimasi Daya Terpakai*"}</p>
+                                    <p>{lang === "id" ? "Estimated Power Usage*" : "Estimasi Daya Terpakai*"}</p>
                                     <Input readOnly={true} type="text" value={estimatedPowerUsage ?  Math.ceil(estimatedPowerUsage) + " kWh" : ""}  onChange={(e) => {
                                     }} />
                                     <p>{dictionary.lokasi_pemasangan + "*"}</p>
@@ -224,12 +224,12 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     bt.preventDefault()
 
                                     if (!jenisProperty) {
-                                        setError(lang === "en" ? "Please fill electricity installed PLN" : "Mohon isi daya terpasang PLN")
+                                        setError(lang === "id" ? "Please fill electricity installed PLN" : "Mohon isi daya terpasang PLN")
                                         return;
                                     }
 
                                     if (lokasi === "") {
-                                        setError(lang === "en" ? "Please fill your location" : "Mohon isi lokasi anda")
+                                        setError(lang === "id" ? "Please fill your location" : "Mohon isi lokasi anda")
                                         return;
                                     }
 
@@ -245,7 +245,7 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     // }
 
                                     if (tagihanListrik === "") {
-                                        setError(lang === "en" ? "Please fill electricity bill" :"Mohon isi tagihan listrik")
+                                        setError(lang === "id" ? "Please fill electricity bill" :"Mohon isi tagihan listrik")
                                         return;
                                     }
 
@@ -255,17 +255,17 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     // }
 
                                     if (lokasiPemasangan === "") {
-                                        setError(lang === "en" ? "Please fill installation location" :"Mohon pilih lokasi pemasangan")
+                                        setError(lang === "id" ? "Please fill installation location" :"Mohon pilih lokasi pemasangan")
                                         return;
                                     }
 
                                     if (lokasi === "") {
-                                        setError(lang === "en" ? "Please fill location" :"Mohon pilih lokasi")
+                                        setError(lang === "id" ? "Please fill location" :"Mohon pilih lokasi")
                                         return;
                                     }
 
                                     if (jenisProperty.needEmail && yourEmail === "") {
-                                        setError(lang === "en" ? "Please fill your email" :"Mohon isi email anda")
+                                        setError(lang === "id" ? "Please fill your email" :"Mohon isi email anda")
                                         return;
                                     }
 
@@ -295,8 +295,11 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     cookie.set("youremail",yourEmail.toString());
                                     cookie.set("rataRataHarian",rataRataHarian.toString().replaceAll(",",""));
 
-
-                                    router.push('/zero-capex-result');
+                                     if(lang === "en") {
+                                         router.push(`/zero-capex-result`);
+                                     } else {
+                                         router.push(`${lang}/zero-capex-result`);
+                                     }
                                 }} className="bg-[#f9c329] text-blue-950 font-bold w-full">{dictionary.next}</Button>
                             </div>
                         </div>

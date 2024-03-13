@@ -17,7 +17,7 @@ import Link from "next/link";
 import LineChartLeasing from "@/components/landing/zero-capex/LineChartLeasing";
 import {useReactToPrint} from 'react-to-print';
 import ReactPDF, {Page, Text, View, Document, StyleSheet, PDFViewer} from '@react-pdf/renderer';
-import {delay} from "framer-motion";
+import {delay, motion} from "framer-motion";
 import {useRouter} from "next/navigation";
 import {createFileName, useScreenshot} from 'use-react-screenshot'
 
@@ -376,7 +376,7 @@ export default function ZeroCapexResultPdf() {
 
     useEffect(() => {
         if (image) {
-            download(image, {name: 'zero-capex-result', extension: 'png'})
+            // download(image, {name: 'zero-capex-result', extension: 'png'})
         }
     }, [image])
 
@@ -507,8 +507,8 @@ export default function ZeroCapexResultPdf() {
 
     return (
         <div className="w-full flex items-center justify-center flex-col">
-            <div ref={ref}>
-                <img width={800} src="/images/banner_pdf.png" alt=""/>
+            <div ref={ref} className="w-[800px]">
+                <Image width={850} height={300} src="/images/banner_pdf.png" alt="" draggable={false}/>
                 <div className="flex w-[800px]">
                     <div className="w-full flex-col p-4 gap-4">
                         <h1 className="font-bold">Data yang dimasukkan</h1>
@@ -527,7 +527,7 @@ export default function ZeroCapexResultPdf() {
 
                     </div>
 
-                    <div className="w-full p-4 gap-2">
+                    <div className="w-full p-4 gap-2 text">
                         <h1 className="font-bold">Pendekatan yang dipilih</h1>
                         {/*<hr className="w-full border-yellow-500"/>*/}
                         {pendekatan.map((e, i) => (
@@ -551,9 +551,9 @@ export default function ZeroCapexResultPdf() {
                 {/*</div>*/}
 
                 <div className="relative w-[800px] h-[150px]">
-                    <img src="/images/banner_co2.png" alt="Avatar" width={800} height={150} className="object-cover"/>
+                    <img src="/images/banner_co2.png" alt="Avatar" width={800} height={150}/>
                     <div
-                        className="absolute w-full top-0 inset-x-0 h-full px-4 text-white text-xs text-center leading-4 flex flex-col justify-center">
+                        className="absolute mb-6 w-full top-0 inset-x-0 h-full px-4 text-white text-xs text-center leading-4 flex flex-col justify-center">
                         <h1 className="font-bold text-lg">Dampak Lingkungan dalam 25 tahun</h1>
                         <div className="flex justify-between mt-2">
                             {dampakLingkunan.map((e, i) => (

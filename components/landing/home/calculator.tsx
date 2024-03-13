@@ -21,16 +21,16 @@ export default function Calculator({dictionary}:{dictionary: any}) {
 
             if (!isNaN(powerInstallNumber)) {
                 const maximum = (powerInstallNumber / 330) * 330 / 1000;
-                setTxt3(maximum.toFixed(2));
+                setTxt3(maximum.toFixed(0));
 
                 const space = (powerInstallNumber / 330) * 330 / 1000 * 6.06;
-                setTxt4(space.toFixed(2) + ' m²');
+                setTxt4(space.toFixed(0) + ' m²');
 
                 const saving = (1304 * (powerInstallNumber / 330) * 330 / 1000 * 1467) / 12;
-                setTxt5('Rp. ' + saving.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+                setTxt5('Rp. ' + saving.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 
                 const bill = electricityBillsNumber - saving;
-                setTxt6('Rp. ' + bill.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
+                setTxt6('Rp. ' + bill.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ','));
             }
         };
 
@@ -63,31 +63,33 @@ export default function Calculator({dictionary}:{dictionary: any}) {
                     <motion.div whileInView={{scale: 1, transition: { duration: 1 }}} initial={{scale: 0}} className="w-full font-semibold h-fit border-t-white rounded-lg mx-10 border-2 p-6 grid gap-2 gap-y-6 grid-cols-1 lg:grid-cols-2">
                         <div className="flex flex-col text-[#15537A] gap-2">
                             <p>{dictionary.your_monthly_electricity}</p>
-                            <Input type="number" placeholder="" onChange={(e) => {
-                                setElectricityBills(e.target.value)
+                            <Input value={electricityBills} type="text" placeholder="" onChange={(e) => {
+                                const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
+                                setElectricityBills(vl === "0" ? "" : vl)
                             }} />
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">
                             <p>{dictionary.electricity_power_installed}</p>
-                            <Input type="number" placeholder="" onChange={(e) => {
-                                setPowerInstall(e.target.value)
+                            <Input value={powerInstall} type="text" placeholder="" onChange={(e) => {
+                                const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();
+                                setPowerInstall(vl === "0" ? "" : vl)
                             }} />
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">
                             <p>{dictionary.max_solar_panel_capacity}</p>
-                            <Input value={txt3} disabled={true} type="text" placeholder="" />
+                            <Input value={txt3.replaceAll(",",".")} disabled={true} type="text" placeholder="" />
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">
                             <p>{dictionary.available_space}</p>
-                            <Input value={txt4} disabled={true} type="text" placeholder="" />
+                            <Input value={txt4.replaceAll(",",".")} disabled={true} type="text" placeholder="" />
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">
                             <p>{dictionary.your_saving_electricity}</p>
-                            <Input value={txt5} disabled={true} type="text" placeholder="" />
+                            <Input value={txt5.replaceAll(",",".")} disabled={true} type="text" placeholder="" />
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">
                             <p>{dictionary.monthly_electricity_bill}</p>
-                            <Input value={txt6} disabled={true} type="text" placeholder="" />
+                            <Input value={txt6.replaceAll(",",".")} disabled={true} type="text" placeholder="" />
                         </div>
                     </motion.div>
                 </div>

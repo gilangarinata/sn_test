@@ -18,6 +18,8 @@ import LineChartLeasing from "@/components/landing/zero-capex/LineChartLeasing";
 import { useReactToPrint } from 'react-to-print';
 import ReactPDF, {Page, Text, View, Document, StyleSheet, PDFViewer} from '@react-pdf/renderer';
 import {useRouter} from "next/navigation";
+import ImageComponent from "@/components/landing/zero-capex/image-component";
+import {Locale} from "@/i18n.config";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -224,7 +226,7 @@ function calculateDiscount(rekomendasiInstallasi: number): number {
 }
 
 
-export default function ZeroCapexResult() {
+export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, dictionary: any}) {
     const router = useRouter();
     const [rekomendasiInstallasi, setRekomendasiInstallasi] = React.useState('');
     const [areaPotensial, setAreaPotensial] = React.useState('');
@@ -307,6 +309,148 @@ export default function ZeroCapexResult() {
                         pdf.save('next_page.pdf');
                         setIsDownload(false)
                     })
+            });
+    };
+
+    const convertNextPageToPDF2 = () => {
+        setIsDownload(true)
+        const chart = document.getElementById('chart');
+        if(chart === null) return;
+
+        // @ts-ignore
+
+        // Capture the content of the page as an image using html2canvas
+        html2canvas(chart)
+            .then(async (canvas) => {
+
+                // const bg = await html2canvas(<ImageComponent />);
+                const selectedJenisProperty = pricingData.find(e => e.categoryEn === cookie.get("jenisProperty"))
+
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF();
+
+                const justifyText = (pdf: jsPDF, text: string, x: number, y: number, maxWidth: number, lineHeight: number) => {
+                    const words = text.split(' ');
+                    let line = '';
+                    let newY = y;
+                    words.forEach(word => {
+                        const testLine = line + word + ' ';
+                        const { w } = pdf.getTextDimensions(testLine);
+                        if (w > maxWidth) {
+                            pdf.text(line, x, newY);
+                            line = word + ' ';
+                            newY += lineHeight;
+                        } else {
+                            line = testLine;
+                        }
+                    });
+                    pdf.text(line, x, newY);
+                };
+
+                pdf.addImage(lang === "id" ? "/images/zero_capex_br_en.png" : "/images/zero_capex_br_id.png", 'PNG', 0, 0, 210, 297);
+                pdf.setFontSize(9);
+                pdf.setTextColor(39, 73, 105);
+                pdf.text(cookie.get("lokasi") ?? "", 58, 117);
+                pdf.text(selectedJenisProperty?.categoryEn ?? "", 58, 122.7);
+                pdf.text((cookie.get("dayaListrik") ?? "") + " kVA", 58, 128.5);
+                pdf.text((cookie.get("luasArea") ?? "") + " m2", 58, 134.2);
+                pdf.text("Rp "+(cookie.get("tagihanListrik") ?? "") + " ", 58, 140);
+                pdf.text("Rp "+(cookie.get("tarifListrik") ?? "") + " per kWh", 58, 146);
+                pdf.text((Number(cookie.get("estimatedpowerusage")).toFixed(2) ?? "") + " kWh", 58, 152);
+                pdf.text(cookie.get("lokasiPemasangan") ?? "", 58, 157.5);
+                pdf.text(cookie.get("youremail") ?? "-", 58, 163);
+
+                const rekomendasi = selectedRecommendation === 0 ? rekomendasiInstallasi : rekomendasiInstallasi2;
+                const area = selectedRecommendation === 0 ? areaPotensial : areaPotensial2;
+                const jumlah = selectedRecommendation === 0 ? jumlahModulSurya : jumlahModulSurya2;
+                const produksi = selectedRecommendation === 0 ? produksiEnergiPerTahun : produksiEnergiPerTahun2;
+                const periode = selectedRecommendation === 0 ? periodeInstallasi : periodeInstallasi2;
+
+                pdf.text((rekomendasi ?? "") + " kWp", 170, 117);
+                pdf.text(area + " m2", 170, 122.7);
+                pdf.text(jumlah + " pcs", 170, 128.5);
+                pdf.text(produksi + " kWp", 170, 134.2);
+                pdf.text(periode + " month", 170, 140);
+
+                pdf.setFontSize(12);
+                pdf.setTextColor(255, 255, 255);
+                pdf.setFont('helvetica', 'bold');
+
+                pdf.text(co2Avoided, 22, 198);
+                pdf.text(coalBurned, 61, 198);
+                pdf.text(vehicleDriven, 100, 198);
+                pdf.text(gasolineBurned, 139, 198);
+                pdf.text(treesNeeded, 178, 198);
+
+                pdf.setFontSize(15);
+                if(selectedPlan === 0) {
+                    pdf.text("Solar Rental\nZero Capex",10, 228)
+                } else if (selectedPlan === 1) {
+                    pdf.text("Turnkey EPC Direct\nPurchase",10, 228)
+                }
+
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'normal');
+
+                if(selectedPlan === 0) {
+                    if(lang === "id") {
+                        pdf.text("Zero advance, Monthly fee",14, 243)
+                        pdf.text("Long-term Cooperation",14, 250)
+                        pdf.text("Minimum installed Capacity 500 kWp",14, 257)
+                        pdf.text("Warranty & OM Service",14, 264)
+                        pdf.text("Digital Performance Monitoring",14, 271)
+                    } else {
+                        pdf.text("Tanpa uang muka, Biaya bulanan", 14, 243);
+                        pdf.text("Kerjasama jangka panjang", 14, 250);
+                        pdf.text("Kapasitas minimum terpasang 500 kWp", 14, 257);
+                        pdf.text("Jaminan & Layanan OM", 14, 264);
+                        pdf.text("Pemantauan Kinerja Digital", 14, 271);
+
+                    }
+
+                } else if(selectedPlan === 1) {
+                    if(lang === "id") {
+                        pdf.text("Zero advance, Monthly fee",14, 243)
+                        pdf.text("Short-term Cooperation",14, 250)
+                        pdf.text("Unlimited installed Capacity",14, 257)
+                        pdf.text("Warranty & OM Service",14, 264)
+                        pdf.text("Digital Performance Monitoring",14, 271)
+                    } else {
+                        pdf.text("Tanpa uang muka, Biaya bulanan", 14, 243);
+                        pdf.text("Kerjasama jangka pendek", 14, 250);
+                        pdf.text("Kapasitas terpasang tanpa batas", 14, 257);
+                        pdf.text("Jaminan & Layanan OM", 14, 264);
+                        pdf.text("Pemantauan Kinerja Digital", 14, 271);
+                    }
+                }
+
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(12);
+
+                if(selectedPlan === 0) {
+                    if(lang === "id") {
+                        pdf.text(`Start from ${priceSolarRental}/month`,8, 281)
+                    } else {
+                        pdf.text(`Mulai Dari ${priceSolarRental}/bulan`,8, 281)
+                    }
+                } else if(selectedPlan === 1) {
+                    if(lang === "id") {
+                        pdf.text(`Start from ${priceTurnkeyEPC}/month`,8, 281)
+                    } else {
+                        pdf.text(`Mulai dari ${priceTurnkeyEPC}/bulan`,8, 281)
+                    }
+                }
+
+                pdf.addImage(imgData, 'PNG', 95, 225, 60, 60);
+
+                pdf.setFontSize(9);
+                pdf.setFont('helvetica', 'normal');
+
+                const text = lang === "id" ? "*This graph shows a comparison of the client's expenditure if using solar leasing compared to using only PLN electricity from year to year. You can see this comparison, using a solar power plant can save electricity expenses every year." : '*Grafik ini menunjukkan perband- ingan jumlah pengeluaran klien jika menggunakan solar leasing dibandingkan dengan hanya menggunakan listrik PLN dari tahun ke tahun. Bisa dilihat perbandingan tersebut, menggu- nakan Pembangkit Listri Tenaga Surya dapat menghemat pengel- uaran listrik setiap tahun.';
+                justifyText(pdf, text, 160, 227, 48, 4);
+
+                pdf.save('zero_capex_result.pdf');
+                setIsDownload(false)
             });
     };
 
@@ -471,26 +615,47 @@ export default function ZeroCapexResult() {
         </Document>
     );
 
+    // "hasil": "HASIL",
+    //     "pilih_pendekatan": "Pilih Pendekatan",
+    //     "rekomendasi_installasi_luasan": "Rekomendasi Installasi\nSesuai Luasan Tersedia",
+    //     "rekomendasi_installasi_profil_beban": "Rekomendasi Installasi\nSesuai Profil Beban",
+    //     "rekomendasi_luasan_desc": "Dengan memilih pendekatan ini, data akan menyesuaikan dengan luasan lahan yang tersedia",
+    //     "rekomendasi_profil_desc": "Dengan memilih pendekatan ini, data akan menyesuaikan dengan daya yang dibutuhkan untuk memenuhi beban yang ada",
+    //     "rekomendasi_installasi": "Rekomendasi Installasi (kWp)",
+    //     "area_potensial": "Area Potensial (m2)",
+    //     "jumlah_modul_surya": "Jumlah Modul Surya (pcs)",
+    //     "produksi_energi_per_tahun": "Produksi Energi per Tahun (kWh)",
+    //     "periode_installasi": "Periode Installasi",
+    //     "dampak_lingkungan": "Dampak Lingkungan\ndalam 25 tahun",
+    //     "co2_avoided": "Co2 yang Dihindari (kg Co2/kWh)",
+    //     "coal_burned": "Batubara Terbakar (kg Co2/kWh)",
+    //     "vehicle_driven": "Kendaraan Dikendarai (km Co2/kWh)",
+    //     "gasoline_burned": "Bensin Terbakar (liter Co2/kWh)",
+    //     "tree_needed": "Kebutuhan Pohon (pohon Co2/kWh)",
+    //     "choose_best_plan": "Pilih paket terbaik untuk bisnis Anda",
+    //     "choose_best_plan_desc": "Silakan pilih layanan kami yang paling sesuai untuk bisnis Anda.\nJelajahi rencana kami dan jadikan itu sebagai referensi Anda",
+    //     "download_hasil": "Download Hasil"
+
         // @ts-ignore
     return (
             <div className="w-full flex flex-col bg-[#15537A] items-center justify-center">
-                <h1 className="mt-10 text-3xl text-white font-bold">HASIL</h1>
+                <h1 className="mt-10 text-3xl text-white font-bold">{dictionary.hasil}</h1>
                 <div className="w-full mt-20 mb-32">
                     <div className="mx-auto mt-[300px] lg:mt-0 flex flex-col lg:flex-row gap-4 justify-center lg:justify-between lg:px-20">
                         <div className="flex-1">
                             <div className="flex flex-col items-center justify-center">
-                                <h1 className="text-2xl text-white">Pilih Pendekatan</h1>
+                                <h1 className="text-2xl text-white">{dictionary.pilih_pendekatan}</h1>
                                 <div className="flex">
                                     <div className="flex-1">
                                         <div className="flex flex-col items-center px-4 py-6 gap-4">
                                             <div id="rekomendasi1" className={cn("rounded-2xl  px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4", selectedRecommendation === 0 ? "border-white border-4" : "")}>
-                                                <h1 className="text-lg text-center">Rekomendasi Installasi<br/>Sesuai Luasan Tersedia</h1>
-                                                <p className="text-xs text-gray-700 text-center h-[80px]">Dengan memilih pendekatan ini, data akan menyesuaikan dengan luasan lahan yang tersedia</p>
+                                                <h1 className="text-lg text-center">{dictionary.rekomendasi_installasi_luasan}</h1>
+                                                <p className="text-xs text-gray-700 text-center h-[80px]">{dictionary.rekomendasi_luasan_desc}</p>
 
                                                 <hr className="w-full border-white"/>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Rekomendasi Installasi (kWp)
+                                                        {dictionary.rekomendasi_installasi}
                                                     </h1>
                                                     <div className="bg-white rounded-lg flex py-2 px-4">
                                                         <p>{rekomendasiInstallasi}</p>
@@ -501,7 +666,7 @@ export default function ZeroCapexResult() {
                                                 </div>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Area Potensial (m2)
+                                                        {dictionary.area_potensial }
                                                     </h1>
                                                     {/*<Input value={areaPotensial} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -512,7 +677,7 @@ export default function ZeroCapexResult() {
                                                 </div>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Jumlah Modul Surya (pcs)
+                                                        {dictionary.jumlah_modul_surya }
                                                     </h1>
                                                     {/*<Input value={jumlahModulSurya} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -524,7 +689,7 @@ export default function ZeroCapexResult() {
 
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Produksi Energi per Tahun (kWh)
+                                                        {dictionary.produksi_energi_per_tahun }
                                                     </h1>
                                                     {/*<Input value={produksiEnergiPerTahun} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -536,7 +701,7 @@ export default function ZeroCapexResult() {
 
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Periode Installasi
+                                                        {dictionary.periode_installasi }
                                                     </h1>
                                                     {/*<Input value={periodeInstallasi} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -549,7 +714,7 @@ export default function ZeroCapexResult() {
                                                 {isDownload ? <></> : (
                                                     <Button className="w-full mt-4" onClick={() => {
                                                         setSelectedRecommendation(0)
-                                                    }}>Choose Plan</Button>
+                                                    }}>{lang === "id" ? "Choose Plan" : "Pilih Paket"}</Button>
                                                 )}
                                             </div>
                                         </div>
@@ -557,13 +722,13 @@ export default function ZeroCapexResult() {
                                     <div className="flex-1">
                                         <div className="flex flex-col items-center px-4 py-6 gap-4">
                                             <div id="rekomendasi2" className={cn("rounded-2xl  px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4", selectedRecommendation === 1 ? "border-white border-4" : "")}>
-                                                <h1 className="text-lg text-center">Rekomendasi Installasi<br/>Sesuai Profil Beban</h1>
-                                                <p className="text-xs text-gray-700 text-center h-[80px]">Dengan memilih pendekatan ini, data akan menyesuaikan dengan daya yang dibutuhkan untuk memenuhi beban yang ada</p>
+                                                <h1 className="text-lg text-center">{dictionary.rekomendasi_installasi_profil_beban}</h1>
+                                                <p className="text-xs text-gray-700 text-center h-[80px]">{dictionary.rekomendasi_profil_desc}</p>
 
                                                 <hr className="w-full border-white"/>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Rekomendasi Installasi (kWp)
+                                                        {dictionary.rekomendasi_installasi}
                                                     </h1>
                                                     {/*<Input value={rekomendasiInstallasi2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -574,7 +739,7 @@ export default function ZeroCapexResult() {
                                                 </div>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Area Potensial (m2)
+                                                        {dictionary.area_potensial }
                                                     </h1>
                                                     {/*<Input value={areaPotensial2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -585,7 +750,7 @@ export default function ZeroCapexResult() {
                                                 </div>
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Jumlah Modul Surya (pcs)
+                                                        {dictionary.jumlah_modul_surya }
                                                     </h1>
                                                     {/*<Input value={jumlahModulSurya2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -597,7 +762,7 @@ export default function ZeroCapexResult() {
 
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Produksi Energi per Tahun (kWh)
+                                                        {dictionary.produksi_energi_per_tahun }
                                                     </h1>
                                                     {/*<Input value={produksiEnergiPerTahun2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -609,7 +774,7 @@ export default function ZeroCapexResult() {
 
                                                 <div className="flex flex-col w-full gap-2">
                                                     <h1 className="text-[#15537A]">
-                                                        Periode Installasi
+                                                        {dictionary.periode_installasi }
                                                     </h1>
                                                     {/*<Input value={periodeInstallasi2} readOnly={true} type="text" placeholder="Kapasitas " onChange={(e) => {*/}
 
@@ -621,7 +786,7 @@ export default function ZeroCapexResult() {
                                                 {isDownload ?<></> :(
                                                     <Button className="w-full mt-4" onClick={() => {
                                                         setSelectedRecommendation(1)
-                                                    }}>Choose Plan</Button>
+                                                    }}>{lang === "id" ? "Choose Plan" : "Pilih Paket"}</Button>
                                                     )}
 
                                             </div>
@@ -630,49 +795,50 @@ export default function ZeroCapexResult() {
                                 </div>
                             </div>
                         </div>
+
                         <div className="h-full border-l border-solid border-white"></div>
                         <div className="flex-1 bg-[#15537A]" id="page-content2">
                             <div className="flex flex-col items-center justify-center">
-                                <h1 className="text-2xl text-white text-center">Dampak Lingkungan<br/>dalam 25 tahun</h1>
+                                <h1 className="text-2xl text-white text-center">{dictionary.dampak_lingkungan}</h1>
                                 {selectedRecommendation !== -1 ? (
                                     <div className={cn("flex flex-col py-6 gap-8 mx-10","")}>
                                         <div className="flex gap-4">
                                             <img className="w-[50px] h-[50px]" src="/images/icon_zero_capex_1.png" alt="" width={50} height={30} />
                                             <div className="flex flex-col">
-                                                <p className="text-white text-sm">Co2 Avoided (kg Co2/kWh)</p>
+                                                <p className="text-white text-sm">{dictionary.co2_avoided}</p>
                                                 <h4 className="text-white text-2xl font-bold">{`${co2Avoided}`}</h4>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">
                                             <Image src="/images/icon_zero_capex_2.png" alt="" width={50} height={30} />
                                             <div className="flex flex-col">
-                                                <p className="text-white text-sm">Coal Burned (kg Co2/kWh)</p>
+                                                <p className="text-white text-sm">{dictionary.coal_burned}</p>
                                                 <h4 className="text-white text-2xl font-bold">{`${coalBurned}`}</h4>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">
                                             <Image src="/images/icon_zero_capex_2.png" alt="" width={50} height={30} />
                                             <div className="flex flex-col">
-                                                <p className="text-white text-sm">Vehicle Driven (km Co2/kWh)</p>
+                                                <p className="text-white text-sm">{dictionary.vehicle_driven}</p>
                                                 <h4 className="text-white text-2xl font-bold">{`${vehicleDriven}`}</h4>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">
                                             <Image src="/images/icon_zero_capex_2.png" alt="" width={50} height={30} />
                                             <div className="flex flex-col">
-                                                <p className="text-white text-sm">Gasoline Burned (liter Co2/kWh)</p>
+                                                <p className="text-white text-sm">{dictionary.gasoline_burned}</p>
                                                 <h4 className="text-white text-2xl font-bold">{`${gasolineBurned}`}</h4>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">
                                             <Image src="/images/icon_zero_capex_2.png" alt="" width={50} height={30} />
                                             <div className="flex flex-col">
-                                                <p className="text-white text-sm">Tree Needed (trees Co2/kWh)</p>
+                                                <p className="text-white text-sm">{dictionary.tree_needed}</p>
                                                 <h4 className="text-white text-2xl font-bold">{`${treesNeeded}`}</h4>
                                             </div>
                                         </div>
                                     </div>
-                                ) : (<div className="text-white mt-20">Silahkan pilih pendekatan</div>)}
+                                ) : (<div className="text-white mt-20">{lang === "id" ? "Please choose an Approach" : "Silahkan pilih pendekatan"}</div>)}
                             </div>
                         </div>
                         {/*<Image className="h-fit pb-[600px]" src="/images/zero-capex-banner-2.png" alt="" width={500} height={500} />*/}
@@ -682,8 +848,8 @@ export default function ZeroCapexResult() {
                 {selectedRecommendation === -1 ? (<div></div>) : (
                     <div className="flex flex-col mt-64 md:mt-0 md:flex-row w-full px-10 md:px-60 gap-4">
                         <div className="px-8 py-8 flex-1 bg-[#2190AE] rounded-sm flex flex-col gap-4">
-                            <h1 className="text-white text-xl font-bold">Choose best plan for your business</h1>
-                            <p className="text-white/80 text-sm">Please choose our service that is most suitable for your business.<br/>Explore our plan and have it as your reference</p>
+                            <h1 className="text-white text-xl font-bold">{dictionary.choose_best_plan}</h1>
+                            <p className="text-white/80 text-sm">{dictionary.choose_best_plan_desc}</p>
                             <ArrowRight color="#ffffff"></ArrowRight>
                             <Image
                                 alt='Mountains'
@@ -705,28 +871,28 @@ export default function ZeroCapexResult() {
                             <hr className="my-3"/>
                             <div className="flex gap-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Zero advance, Monthly fee</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Zero advance, Monthly fee" : "Tanpa uang muka, biaya bulanan"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Long-term Cooperation</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Long-term Cooperation" : "Kerja Sama Jangka Panjang"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Minimum installed Capacity 500 kWp</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Minimum installed Capacity 500 kWp" : "Kapasitas terpasang minimal 500 kWp"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Warranty & OM Service</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Warranty & OM Service" : "Garansi & Layanan OM"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Digital Performance Monitoring</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Digital Performance Monitoring" : "Pemantauan Kinerja Digital"}</p>
                             </div>
                             <div className="flex-1"></div>
-                            <h1 className="w-full text-center text-lg font-black mt-4">Start from<br/>{priceSolarRental}<br/>/Month</h1>
+                            <h1 className="w-full text-center text-lg font-black mt-4">{lang === "id" ? "Start from" : "Mulai dari"}<br/>{priceSolarRental}<br/>/{lang === "id" ? "Month" : "Bulan"}</h1>
                             {isDownload ?<></> : (
-                                <Button onClick={(a) => setSelectedPlan(0)} className="text-white text-lg font-bold mt-4">Choose Plan</Button>
+                                <Button onClick={(a) => setSelectedPlan(0)} className="text-white text-lg font-bold mt-4">{dictionary.choose_plan}</Button>
                             )}
 
                         </div>
@@ -742,34 +908,34 @@ export default function ZeroCapexResult() {
                             <hr className="my-3"/>
                             <div className="flex gap-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Low advance, Monthly fee</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Low advance, Monthly fee" : "Uang muka rendah, biaya bulanan"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Short-term Cooperation</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Short-term Cooperation" : "Kerja Sama Jangka Pendek"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Unlimited installed Capacity</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Unlimited installed Capacity" : "Kapasitas terpasang tidak terbatas"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Warranty & OM Training</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Warranty & OM Training" : "Garansi & Pelatihan OM"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">Digital Performance Monitoring</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Digital Performance Monitoring" : "Pemantauan Kinerja Digital"}</p>
                             </div>
                             <div className="flex-1"></div>
-                            <h1 className="w-full text-center text-lg font-black mt-4">Start from<br/>{priceTurnkeyEPC}</h1>
+                            <h1 className="w-full text-center text-lg font-black mt-4">{lang === "id" ? "Start from" : "Mulai dari"}<br/>{priceTurnkeyEPC}<br/>/{lang === "id" ? "Month" : "Bulan"}</h1>
                             {isDownload ?<></> : (
-                                <Button onClick={(a) => setSelectedPlan(1)} className="text-white text-lg font-bold mt-4">Choose Plan</Button>
+                                <Button onClick={(a) => setSelectedPlan(1)} className="text-white text-lg font-bold mt-4">{dictionary.choose_plan}</Button>
                             )}
                         </div>
                     </div>
                 )}
 
-                <div className="bg-[#15537A]" id="page-content">
+                <div className="bg-[#15537A]" id="chart">
                     {selectedPlan === 1 ? (
                         <LineChart
                             currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
@@ -797,8 +963,8 @@ export default function ZeroCapexResult() {
 
                 {selectedRecommendation === -1 ? (<div></div>) : (
                     <div className="w-full bg-[#f9c329] flex justify-center mt-20">
-                        {/*<Button className="my-4" onClick={convertNextPageToPDF}><DownloadIcon/> Download Hasil</Button>*/}
-                        <Link href="/zero-capex-pdf"><Button className="my-4"><DownloadIcon/> Download Hasil</Button></Link>
+                        <Button className="my-4" onClick={convertNextPageToPDF2}><DownloadIcon/> {dictionary.download_hasil}</Button>
+                        {/*<Link href="/zero-capex-pdf"><Button className="my-4"><DownloadIcon/> Download Hasil</Button></Link>*/}
                     </div>
                 )}
             </div>

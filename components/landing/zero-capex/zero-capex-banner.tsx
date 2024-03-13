@@ -20,7 +20,7 @@ const slideImages = [
     {
         url: 'main-banner',
         title: "<b class='text-white'>ZERO</b> CAPEX",
-        description: 'We specially provide you a design with <b>no Investment fee required or Zero Capex</b> (Capital Expenditure) <br/> It allows you to allocate costs over the duration of the solar energy project contract-term, providing mode flexibility in budgeting and cash flow management',
+        description: 'We specially provide you a design with <b>no Investment fee required or Zero Capex</b> (Capital Expenditure) <br/> It allows you to allocate costs over the duration of the solar energy project contract-term, providing mode flexibility in budgeting and cash flow management [[Kami secara khusus memberi Anda desain yang <b>tidak memerlukan biaya Investasi atau Nol Belanja Modal</b> (Belanja Modal) <br/> Memungkinkan Anda mengalokasikan biaya selama jangka waktu kontrak proyek energi surya, memberikan fleksibilitas mode dalam penganggaran dan manajemen arus kas]]',
         isCustomBanner: true,
         image: "",
         logo: ""

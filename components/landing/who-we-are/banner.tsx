@@ -51,7 +51,7 @@ export function Banner({banner, lang, dictionary} : {banner : WhoWeAreBannerCont
                             </motion.div>
                             <motion.p initial={{ opacity: 0, scale: 0.5 }}
                                       whileInView={{scale: 1,opacity: 1, transition: { duration: 1 }}}
-                                      transition={{ duration: 1 }} className="text-white" dangerouslySetInnerHTML={{__html : translateText(banner?.description ?? "", lang)}} />
+                                      transition={{ duration: 1 }} className="text-white md:pr-32" dangerouslySetInnerHTML={{__html : translateText(banner?.description ?? "", lang)}} />
                         </div>
                         <div className="hidden w-0 md:w-80 md:block "></div>
                     </div>

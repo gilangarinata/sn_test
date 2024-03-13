@@ -132,7 +132,7 @@ export function translateText(inputString: string, lang: Locale) {
     console.log(`translationResult ${translationResult}`)
 
     if (startIndex > -1 && endIndex !== -1) {
-        if(lang === 'id') {
+        if(lang === 'en') {
             translationResult = inputString.substring(startIndex + idTagStart.length, endIndex).trim();
         }
     }
