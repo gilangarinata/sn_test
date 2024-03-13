@@ -16,8 +16,8 @@ export default function Calculator({dictionary}:{dictionary: any}) {
 
     useEffect(() => {
         const calculateValues = () => {
-            const electricityBillsNumber = parseFloat(electricityBills);
-            const powerInstallNumber = parseFloat(powerInstall);
+            const electricityBillsNumber = parseFloat(electricityBills.replaceAll(",",""));
+            const powerInstallNumber = parseFloat(powerInstall.replaceAll(",",""));
 
             if (!isNaN(powerInstallNumber)) {
                 const maximum = (powerInstallNumber / 330) * 330 / 1000;
