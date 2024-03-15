@@ -56,7 +56,7 @@ const users: User[] = [
     {
         Nama: "Aditya Bilal Digdayana",
         Pass: "DmWarrior100113",
-        Email: "-",
+        Email: "radenaditya25@gmail.com",
     },
     {
         Nama: "Meidyna Silva",
