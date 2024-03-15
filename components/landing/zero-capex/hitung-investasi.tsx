@@ -298,8 +298,9 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                      if(lang === "en") {
                                          router.push(`/zero-capex-result`);
                                      } else {
-                                         router.push(`${lang}/zero-capex-result`);
+                                         router.push(`/${lang}/zero-capex-result`);
                                      }
+                                    // router.push(`/zero-capex-result`);
                                 }} className="bg-[#f9c329] text-blue-950 font-bold w-full">{dictionary.next}</Button>
                             </div>
                         </div>
