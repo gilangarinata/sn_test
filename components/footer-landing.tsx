@@ -36,7 +36,7 @@ export default function FooterLanding({dictionary, lang}: {dictionary: any, lang
                             <Link lang={lang} href="https://www.youtube.com/@SESNAGroup">
                                 <YoutubeIcon className="hover:cursor-pointer" />
                             </Link>
-                            <Link lang={lang} href="https://www.linkedin.com/company/14474669/admin/feed/posts/">
+                            <Link lang={lang} href="https://www.linkedin.com/company/sesna-energy">
                                 <LinkedinIcon className="hover:cursor-pointer" />
                             </Link>
                         </div>

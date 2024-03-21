@@ -192,7 +192,7 @@ function NewsTable({newsA}: {newsA: News[]}) {
                                     <TableCell>{experience.category?.name}</TableCell>
                                     <TableCell>{experience?.tags?.map(t => t.tag).join(",")}</TableCell>
                                     <TableCell>
-                                        <Image className="mx-auto" width={60} height={60}
+                                        <img className="mx-auto" width={60} height={60}
                                                       src={experience.image} alt=""/>
                                     </TableCell>
                                     <TableCell>
