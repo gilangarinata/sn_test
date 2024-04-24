@@ -40,7 +40,7 @@ import {deleteWhySolar, fetchWhySolar} from "@/lib/actions/admin/our-business/wh
 import AddEditWhySolar from "@/components/admin/our-business/why-solar/edit-why-solar";
 import {deleteScopeWork, fetchScopeWork} from "@/lib/actions/admin/our-business/scope-work.action";
 import AddEditScopeOfWork from "@/components/admin/our-business/scope-of-works/edit-scope-of-work";
-import {fetchGetInTouch} from "@/lib/actions/admin/get-in-touch/get-in-touch.action";
+import {deleteGetInTouch, fetchGetInTouch} from "@/lib/actions/admin/get-in-touch/get-in-touch.action";
 
 export type GetInTouch = {
     id: string,
@@ -86,7 +86,7 @@ function GetInTouchTable() {
     const handleDelete = async (id: string) => {
         try {
             setDeleteLoading(true);
-            await deleteScopeWork({id: id});
+            await deleteGetInTouch({id: id});
             setDeleteLoading(false);
             setOpen({banner: null, isOpen: false})
             await getAchievements()

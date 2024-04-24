@@ -2,6 +2,7 @@
 
 import {connectToDb} from "@/lib/mongoose";
 import GetInTouchModel from "@/lib/models/get-in-touch.model";
+import ScopeWorksModel from "@/lib/models/scope-works.model";
 
 interface Params {
     id: string,
@@ -61,5 +62,17 @@ export async function updateGetInTouch({
         )
     }catch (error) {
         throw new Error(`Failed to update banner : ${error}`)
+    }
+}
+
+export async function deleteGetInTouch({id} : {id:string}): Promise<void> {
+    await connectToDb();
+
+    try {
+        await GetInTouchModel.findOneAndDelete(
+            {id: id }
+        )
+    }catch (error) {
+        throw new Error(`Failed to delete banner : ${error}`)
     }
 }
