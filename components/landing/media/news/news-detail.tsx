@@ -20,10 +20,10 @@ export default function NewsDetail({news} : {news : News}) {
         <div className="w-full flex flex-col mx-auto max-w-5xl my-10">
             <div className="flex flex-col gap-16 md:flex-row md:gap-8 px-6">
                 <div className="w-full flex flex-col gap-6">
+                    <h1 className="text-3xl font-semibold">{news?.title}</h1>
                     <div className="relative w-full h-[500px]">
                         <img style={{objectFit:"cover"}} src={news?.image} alt="" />
                     </div>
-                    <h1 className="text-3xl font-semibold">{news?.title}</h1>
                     <p className="text-gray-400">{formatDateString2(news?.createdAt)}</p>
                     <NewEditor onChange={(val) => {}} initialContent={news?.content} editable={false} />
                     {/*<p className="text-justify" dangerouslySetInnerHTML={{__html: news?.content}} />*/}
@@ -39,7 +39,7 @@ export default function NewsDetail({news} : {news : News}) {
                             <div className="w-[200px] h-[100px] rounded-lg relative overflow-hidden">
                                 {n?.image !== "" && n?.image !== null && n?.image !== undefined ? <Image style={{objectFit:"cover"}} fill src={n?.image} alt="" /> : <></>}
                             </div>
-                            <Link href={`/media/news/detail/${n.id}`} className="w-full">
+                            <Link href={`/media/news/detail/${n.slug}`} className="w-full">
                                 <p className="font-bold hover:text-yellow-500 hover:cursor-pointer">{n.title}</p>
                             </Link>
                         </div>)

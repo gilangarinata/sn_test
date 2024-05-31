@@ -20,7 +20,7 @@ import {
     VideoIcon
 } from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import cookie from "js-cookie";
 
 const montserrat = Montserrat({ weight : "600", subsets : ["latin"]});
@@ -191,9 +191,11 @@ const Sidebar = ( {isMobile = false} ) => {
     const router = useRouter();
     const userName = cookie.get("username") || "";
 
+
     if(!userName) {
-        router.push("/login");
+        // router.push("/login");
     }
+
 
     return (
         <div className="flex h-full overflow-auto">

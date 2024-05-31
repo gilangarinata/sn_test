@@ -42,10 +42,15 @@ function MainBanner() {
 
     async function getBanners() {
         const banners = await fetchMainBanners();
-        setBanners(banners);
+        console.log("bannersg22","banners")
+        if (banners) {
+            const firstBanner = banners[0];
+            setBanners(firstBanner);
+        }
     }
 
     useEffect(() => {
+
         getBanners()
     }, [])
 

@@ -136,7 +136,7 @@ function CareerTable() {
                                 <TableRow key={achievement.id}>
                                     <TableCell>{achievement.title}</TableCell>
                                     <TableCell>{achievement.type}</TableCell>
-                                    <TableCell>{achievement.departement.name}</TableCell>
+                                    <TableCell>{achievement.departement?.name == null ? "-" : ""}</TableCell>
                                     <TableCell>{achievement.location}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">

@@ -4,7 +4,7 @@ import {connectToDb} from "@/lib/mongoose";
 import Experience from "@/lib/models/experience.model";
 import News from "@/lib/models/news.model";
 import NewsCategory from "@/lib/models/news-category.model";
-import mongoose from "mongoose";
+import mongoose, {Types} from "mongoose";
 import Tag from "@/lib/models/tag.model";
 
 interface Params {
@@ -14,13 +14,54 @@ interface Params {
     category: string,
     image: string,
     tags: string[],
-    relatedNews: string[]
+    relatedNews: string[],
 }
 
 interface TagParam {
     id: string,
     tag: string,
     news: string
+}
+
+interface INews extends Document {
+    _id: Types.ObjectId;
+    title: string;
+    slug?: string;
+}
+
+// Utility function to generate a slug from a title
+function generateSlug(title: string): string {
+    return title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')  // Replace non-alphanumeric characters with hyphens
+        .replace(/^-+|-+$/g, '');     // Trim leading and trailing hyphens
+}
+
+export async function updateNewsSlugs() {
+    await connectToDb();
+    try {
+        const newsQuery = News.find().sort({ _id: -1 });
+        const news: INews[] = await newsQuery.exec();
+
+        // Iterate through each news item and update the slug
+        for (let item of news) {
+            const slug = generateSlug(item.title);  // Generate slug from the title
+
+            // Update the news document with the generated slug
+            await News.updateOne({ _id: item._id }, { $set: { slug: slug } });
+        }
+
+        // Fetch the updated news items if you need to return them
+        const updatedNews: INews[] = await newsQuery.exec();
+
+        return {
+            banners: updatedNews,
+        };
+    } catch (error) {
+        console.log("Failed to get banner")
+        return null;
+    }
+
 }
 
 export async function fetchNewsByCategory(_categoryId: string, pageNumber: number, pageSize: number) {
@@ -121,6 +162,27 @@ export async function fetchNewsById(id: string) {
     }
 }
 
+export async function fetchNewsBySlug(slug: string) {
+    await connectToDb();
+    try {
+        const bannersQuery = News.findOne({slug: slug})
+            .populate("tags")
+            .populate("relatedNews")
+            .populate("category")
+            .lean()
+        // const totalBannersCount = await News.countDocuments();
+        const news = await bannersQuery.exec();
+        // const isNext = totalBannersCount > skipAmount + banner.length;
+
+        return {
+            news
+        };
+    }catch (error) {
+        console.log("Failed to get banner")
+        return null;
+    }
+}
+
 export async function updateNews({
        id,
        title,
@@ -128,7 +190,7 @@ export async function updateNews({
        category,
         image,
         tags,
-        relatedNews
+        relatedNews,
    } : Params): Promise<void> {
     await connectToDb();
     try {
@@ -140,6 +202,8 @@ export async function updateNews({
         console.log(`cat : ${category} `)
         console.log(cat)
 
+        const slug = generateSlug(title)
+
         await News.findOneAndUpdate(
             {id: currentId},
             {
@@ -147,7 +211,8 @@ export async function updateNews({
                 content: content,
                 category: cat._id,
                 image: image,
-                relatedNews: relatedNews
+                relatedNews: relatedNews,
+                slug: slug
             }, { upsert: true }
         )
 

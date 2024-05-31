@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const newsSchema = new  mongoose.Schema({
     id: {type: String, required: true},
     title: String,
+    slug: String,
     content: String,
     createdAt: {
         type: Date,

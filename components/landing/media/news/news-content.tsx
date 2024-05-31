@@ -76,11 +76,11 @@ export default function NewsContent({ categoryId, categories, newsA, lang, dicti
                 {news?.map(content => (
                     <div className="flex flex-col gap-4" key={content.title}>
                         <div className="relative w-full">
-                            <Link href={"/media/news/detail/"+content.id} >
+                            <Link href={"/media/news/detail/"+content.slug} >
                                 <img src={content.image} alt="" />
                             </Link>
                         </div>
-                        <Link href={"/media/news/detail/"+content.id} >
+                        <Link href={"/media/news/detail/"+content.slug} >
                             <h1 className="text-xl font-bold hover:text-yellow-400">{content.title}</h1>
                         </Link>
                         <div className="max-h-[165px] overflow-hidden">

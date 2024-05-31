@@ -16,6 +16,8 @@ export async function fetchHome() {
             Customer.find().exec()
         ]);
 
+        console.log("banners-gilang", banners)
+
         // Combine the data into a single object
         // Return the combined data
         return {

@@ -39,6 +39,7 @@ export type News = {
     _id: any,
     id: string,
     title: string,
+    slug: string,
     content: string,
     image: string,
     category: Category,
@@ -55,27 +56,28 @@ export type News = {
             id: string,
             title: string,
             content: string,
-            image: string
+            image: string,
+            slug: string
         }
     ]
 }
 
-function NewsTable({newsA}: {newsA: News[]}) {
+function NewsTable({news}: {news: News[]}) {
     const [message, setMessage] = useState<string[]>()
-    const [news, setNews] = useState<News[]>()
+    // const [news, setNews] = useState<News[]>()
     const getExperiences = async () => {
         try {
             setMessage((prevState) => {
                 return [...(prevState ?? []), "banners1"]
             })
-            const banners = await fetchAllNews(1,400);
+            const banners = await fetchAllNews(1,2);
             console.log("banner:-")
             setMessage((prevState) => {
                 const st = "banners2";
                 return [...(prevState ?? []), st]
             })
             // console.log(banner)
-            setNews(banners?.banners as News[]);
+            // setNews(banners?.banners as News[]);
         }catch (e) {
             setMessage((prevState) => {
                 return [...(prevState ?? []), `banners3 ${e}`]
@@ -176,6 +178,7 @@ function NewsTable({newsA}: {newsA: News[]}) {
                             <TableRow>
                                 <TableHead>News ID</TableHead>
                                 <TableHead>Title</TableHead>
+                                <TableHead>Slug</TableHead>
                                 <TableHead>Created at</TableHead>
                                 <TableHead>Category</TableHead>
                                 <TableHead>Tags</TableHead>
@@ -188,6 +191,7 @@ function NewsTable({newsA}: {newsA: News[]}) {
                                 <TableRow key={experience.id}>
                                     <TableCell>{experience._id}</TableCell>
                                     <TableCell>{experience.title}</TableCell>
+                                    <TableCell>{experience.slug}</TableCell>
                                     <TableCell>{formatDateString(experience.createdAt)}</TableCell>
                                     <TableCell>{experience.category?.name}</TableCell>
                                     <TableCell>{experience?.tags?.map(t => t.tag).join(",")}</TableCell>

@@ -22,7 +22,6 @@ export default function RootLayout({
     params: { lang: Locale }
 }) {
   return (
-      <ClerkProvider>
         <html lang={params.lang}>
             <Head>
                 <link
@@ -42,6 +41,5 @@ export default function RootLayout({
             </Head>
           <body className={poppins.className}>{children}</body>
         </html>
-       </ClerkProvider>
   )
 }

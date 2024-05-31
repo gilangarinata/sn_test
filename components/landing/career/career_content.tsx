@@ -306,7 +306,7 @@ export default function CareerContent({lang, dictionary} : {lang: Locale, dictio
                                                 <div className="flex">
                                                     <div className="flex gap-2 w-80">
                                                         <BriefcaseIcon color="white" />
-                                                        <p className="text-white">{position.departement.name}</p>
+                                                        <p className="text-white">{position.departement?.name == null ? "-" : ""}</p>
                                                     </div>
                                                     <div className="flex gap-2 w-40">
                                                         <SignalIcon color="white" />

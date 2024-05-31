@@ -43,8 +43,9 @@ export async function fetchBanners() {
 export async function fetchMainBanners() {
     await connectToDb();
     try {
-        const bannersQuery = Banner.findOne({id:"main-banner"})
-        return await bannersQuery.exec();
+        console.log("fetchMainBanners")
+        const bannersQuery = Banner.find().exec(); //Banner.findOne({id:"main-banner"})
+        return await bannersQuery;
     }catch (error) {
         console.log("Failed to get banner")
         return null;

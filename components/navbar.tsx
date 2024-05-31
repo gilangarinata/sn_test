@@ -45,7 +45,7 @@ async function Navbar() {
 
     return (
         <div className="flex items-center p-4">
-            <MobileSidebar />
+            {/*<MobileSidebar />*/}
             <div className="flex w-full justify-end items-center gap-4">
                 <DropdownMenu>
                     <DropdownMenuTrigger>

@@ -36,7 +36,7 @@ export default function CareerDetail({career} : {career: CareerMdl}) {
                     <div className="flex pt-6 pb-3">
                         <div className="flex gap-2 w-80">
                             <BriefcaseIcon color="white" />
-                            <p className="text-white">{career.departement.name}</p>
+                            <p className="text-white">{career.departement?.name == null ? "-" : ""}</p>
                         </div>
                         <div className="flex gap-2 w-40">
                             <SignalIcon color="white" />
