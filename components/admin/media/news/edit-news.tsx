@@ -37,7 +37,7 @@ import {AchievementValidation} from "@/lib/validations/achievement";
 import {updateAchievement} from "@/lib/actions/admin/achievement.action";
 import {News} from "@/components/admin/media/news/news-table";
 import {NewsValidation} from "@/lib/validations/news";
-import {generateSlug, updateNews} from "@/lib/actions/admin/news.action";
+import {updateNews} from "@/lib/actions/admin/news.action";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
 import {fetchCategories} from "@/lib/actions/admin/news-category.action";
