@@ -159,10 +159,6 @@ function AddEditNews({ achievement}: Props) {
     }
     const [logo, setLogo] = useState<File[]>([]);
 
-    if(achievement?.image.includes("data:")) {
-        return
-    }
-
     const form = useForm<z.infer<typeof NewsValidation>>({
         resolver: zodResolver(NewsValidation),
         defaultValues: {
@@ -207,6 +203,9 @@ function AddEditNews({ achievement}: Props) {
 
             // console.log(`selected category id : ${value} ${selectedCategoryId} ${categories?.length}`)
 
+            if(values.image.includes("data:")) {
+                return;
+            }
             await updateNews({
                 id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
                 title: values.title,
