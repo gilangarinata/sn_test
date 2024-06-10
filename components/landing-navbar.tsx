@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import Sidebar from "@/components/sidebar";
-import React from "react";
+import React, {useState} from "react";
 import LocaleSwitcher from "@/components/locale-switcher";
 import CustomLink from "@/components/custom-link";
 import {Locale} from "@/i18n.config";
@@ -31,7 +31,7 @@ export const LandingNavBar = (
     {dictionary, lang} : {dictionary: any, lang: Locale}
 ) => {
 
-
+    const [sheetOpen, setSheetOpen] = useState(false)
 
 
     return (
@@ -43,19 +43,19 @@ export const LandingNavBar = (
                        style={{ width: '200px', height: 'auto' }} src="/images/logo_sesna.png" alt="logo" />
             </Link>
             <div className="block lg:hidden mr-4">
-                <Sheet>
+                <Sheet open={sheetOpen} onOpenChange={(open) => setSheetOpen(open)}>
                   <SheetTrigger>
                       <Menu />
                   </SheetTrigger>
                     <SheetContent side="right" className="p-0">
                         <div className="flex flex-col px-4 gap-4 py-20">
-                            <NavContent dictionary={dictionary} lang={lang} />
+                            <NavContent dictionary={dictionary} lang={lang} clickCallback={() => setSheetOpen(false)} />
                         </div>
                     </SheetContent>
                 </Sheet>
             </div>
             <div className="hidden lg:flex items-center justify-end gap-x-8 w-full">
-                <NavContent dictionary={dictionary} lang={lang} />
+                <NavContent dictionary={dictionary} lang={lang} clickCallback={() => setSheetOpen(false)}/>
             </div>
         </nav>
     )
@@ -63,7 +63,7 @@ export const LandingNavBar = (
 
 
 export default function NavContent(
-    {dictionary, lang} : {dictionary: any, lang: Locale}
+    {dictionary, lang,clickCallback} : {dictionary: any, lang: Locale,   clickCallback: () => void}
 ) {
     const routes = [
         {
@@ -133,14 +133,16 @@ export default function NavContent(
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="hover:cursor-pointer z-[100]">
-                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/news">News</CustomLink></DropdownMenuItem>
-                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/video">Video</CustomLink></DropdownMenuItem>
+                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/news">                        <a onClick={clickCallback}>News</a></CustomLink></DropdownMenuItem>
+                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/video">                        <a onClick={clickCallback}>Video</a></CustomLink></DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
 
                 ) : (
                     <CustomLink lang={lang} href={route.href} key={route.label} >
-                        <p className={cn("font-semibold", pathName == route.href ? "text-[#FAC225]" : "text-[#15527B]/80")}>{route.label}</p>
+                        <a onClick={clickCallback}>
+                            <p className={cn("font-semibold", pathName == route.href ? "text-[#FAC225]" : "text-[#15527B]/80")}>{route.label}</p>
+                        </a>
                     </CustomLink>
                 )
     )

@@ -20,7 +20,15 @@ import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
 
 import {fetchCareerBanners} from "@/lib/actions/admin/career_banner.action";
+import {Metadata} from "next";
 
+export const metadata: Metadata = {
+    title: 'SESNA Group | Karir',
+    metadataBase: new URL(`https://sesna.id`),
+    alternates: {
+        canonical: './',
+    }
+}
 async function LandingPage({params} : {params: { lang: Locale }}) {
     const dictionary = await getDictionary(params.lang)
     const banners = await fetchCareerBanners();

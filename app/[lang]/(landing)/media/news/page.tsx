@@ -14,10 +14,19 @@ import {fetchCategories} from "@/lib/actions/admin/news-category.action";
 import {Category} from "@/components/admin/media/category/category-table";
 import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
+import {Metadata} from "next";
 
+export const metadata: Metadata = {
+    title: 'SESNA Group | Media News',
+    description: 'Find the latest need and information',
+    metadataBase: new URL(`https://sesna.id`),
+    alternates: {
+        canonical: './',
+    }
+}
 async function MediaPage({params} : {params: { lang: Locale }}) {
     const categories = await fetchCategories("news")
-    const news = await fetchAllNews(1, 200)
+    const news = await fetchAllNews(3, 200)
     const dictionary = await getDictionary(params.lang)
     return (
        <div className="h-full">

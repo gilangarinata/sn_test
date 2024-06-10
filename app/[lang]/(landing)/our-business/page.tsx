@@ -16,7 +16,15 @@ import {fetchWhoWeAre} from "@/lib/actions/landing/who-we-are.action";
 import {fetchOurBusiness} from "@/lib/actions/landing/our-business.action";
 import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
+import {Metadata} from "next";
 
+export const metadata: Metadata = {
+    title: 'SESNA Group | Our Business',
+    metadataBase: new URL(`https://sesna.id`),
+    alternates: {
+        canonical: './',
+    }
+}
 async function LandingPage({params} : {params: { lang: Locale }}) {
     const ourBusiness = await fetchOurBusiness()
     const dictionary = await getDictionary(params.lang)

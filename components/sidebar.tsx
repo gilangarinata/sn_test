@@ -172,8 +172,8 @@ const routes = [
         href : "/setting",
         children: [
             {
-                label : "SEO",
-                href: "/"
+                label : "Footer",
+                href: "/admin-panel/setting/footer"
             },
         ]
     },

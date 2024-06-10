@@ -15,6 +15,6 @@ export default function CustomLink(
     const path = isDefaultLang ? href : `/${lang}${href}`
 
     return (
-        <Link href={path} {...props} />
+        <Link href={path} {...props} passHref legacyBehavior/>
     )
 }

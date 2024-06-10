@@ -17,7 +17,16 @@ import {fetchAllVideos} from "@/lib/actions/admin/video.action";
 import {Video} from "@/components/admin/media/video/video-table";
 import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
+import {Metadata} from "next";
 
+export const metadata: Metadata = {
+    title: 'SESNA Group | Media Video',
+    description: 'Find the latest need and information',
+    metadataBase: new URL(`https://sesna.id`),
+    alternates: {
+        canonical: './',
+    }
+}
 async function MediaPage({params} : {params: { lang: Locale }}) {
     const video = await fetchAllVideos(1,2000)
     const categories = await fetchCategories("video")

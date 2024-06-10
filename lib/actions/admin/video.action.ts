@@ -50,6 +50,8 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number, categ
             filters.category = categoryId;
         }
 
+        console.log("catidg: " + categoryId)
+
         if (year) {
             // Assuming you have a 'date' field in your news documents
             filters.createdAt = { $gte: new Date(`${year}-01-01`), $lte: new Date(`${year}-12-31`) };

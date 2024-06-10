@@ -36,7 +36,8 @@ export type Category = {
     id: string,
     name: string,
     banner: string,
-    description: string
+    description: string,
+    type: string
 }
 
 function CategoryTable({type} : {type: string}) {

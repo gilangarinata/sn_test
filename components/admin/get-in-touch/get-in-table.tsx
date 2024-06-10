@@ -96,6 +96,35 @@ function GetInTouchTable() {
         }
     }
 
+    function generateWhatsAppLink(phoneNumber: string): string {
+        let formattedNumber: string;
+
+        // Check if the phone number starts with +62
+        if (phoneNumber.startsWith('+62')) {
+            formattedNumber = phoneNumber;
+        } else if (phoneNumber.startsWith('0')) {
+            // Replace the leading 0 with +62
+            formattedNumber = '+62' + phoneNumber.slice(1);
+        } else {
+            throw new Error('Invalid phone number format');
+        }
+
+        // Generate the wa.me link
+        const waMeLink = `https://wa.me/${formattedNumber}`;
+        return waMeLink;
+    }
+
+    function openWhatsAppLinkInNewTab(phoneNumber: string): void {
+        const waMeLink = generateWhatsAppLink(phoneNumber);
+        window.open(waMeLink, '_blank');
+    }
+    const handleOpenWhatsApp = (phoneNumber: string) => {
+        try {
+            openWhatsAppLinkInNewTab(phoneNumber);
+        } catch (error) {
+        }
+    };
+
     return (
             <div className="flex flex-col">
                 <Button className="w-fit mx-10" onClick={handleExport}>Export to Excel</Button>
@@ -157,7 +186,7 @@ function GetInTouchTable() {
                                 <TableRow key={achievement.id}>
                                     <TableCell>{achievement.name}</TableCell>
                                     <TableCell>{achievement.email}</TableCell>
-                                    <TableCell>{achievement.phone}</TableCell>
+                                    <TableCell><div className="flex flex-col">{achievement.phone} <Button onClick={() => handleOpenWhatsApp(achievement.phone)}>Balas di Whatsapp</Button></div></TableCell>
                                     <TableCell>{achievement.message}</TableCell>
                                     <TableCell>{achievement.createdAt?.toLocaleTimeString()}</TableCell>
                                     <TableCell>

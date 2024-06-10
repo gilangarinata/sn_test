@@ -129,6 +129,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
         console.log("BN:")
         console.log(banners.length)
         console.log(categoryId)
+        console.log(banners)
         const totalPages = Math.ceil(totalBannersCount / pageSize);
 
         return {

@@ -11,7 +11,12 @@ const poppins = Poppins({ subsets: ['latin'], weight: "400" })
 
 export const metadata: Metadata = {
   title: 'Sesna Group',
-  description: ''
+  description: '',
+    metadataBase: new URL(`https://sesna.id`),
+    alternates: {
+        canonical: './',
+    },
+    keywords: ['Sesna', 'Sesna Group'],
 }
 
 export default function RootLayout({

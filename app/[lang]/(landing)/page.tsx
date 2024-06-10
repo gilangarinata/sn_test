@@ -9,6 +9,17 @@ import FooterLanding from "@/components/footer-landing";
 import {fetchHome} from "@/lib/actions/landing/home.action";
 import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
+import {Metadata} from "next";
+
+export const metadata: Metadata = {
+    title: 'SESNA Group',
+    description: 'Kami secara khusus memberi Anda desain tanpa memerlukan biaya Investasi atau Nol Capex (Belanja Modal) Memungkinkan Anda mengalokasikan biaya selama durasi jangka waktu kontrak proyek energi surya, memberikan fleksibilitas mode dalam penganggaran dan manajemen arus kas serta',
+    metadataBase: new URL(`https://sesna.id`),
+    alternates: {
+        canonical: './',
+    },
+}
+
 
 async function LandingPage({params} : {params: { lang: Locale }}) {
     const data = await fetchHome()
