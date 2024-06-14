@@ -335,7 +335,7 @@ function AddEditNews({ achievement}: Props) {
                     render={({ field }) => (
                         <FormItem className='flex w-full flex-col'>
                             <FormLabel className='text-base-semibold text-light-2'>
-                                Related News ID (Seperated by comma ,)
+                                Recommendation News ID (Seperated by comma ,)
                             </FormLabel>
                             <FormControl>
                                 <Input

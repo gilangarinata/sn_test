@@ -12,12 +12,11 @@ import Footer from "@/lib/models/footer.model";
 //     phone: String,
 //     whatsapp: String
 interface Params {
-    id: string,
     title: string,
     address: string,
     address2: string,
     email: string,
-    phone: boolean,
+    phone: string,
     whatsapp: string,
 }
 
@@ -26,14 +25,16 @@ export async function fetchFooter() {
     await connectToDb();
     try {
         const bannersQuery = Footer.findOne({id:"main-footer"})
-        return await bannersQuery;
+        const categories = await bannersQuery.exec();
+        return {
+            categories
+        }
     }catch (error) {
         return null;
     }
 }
 
 export async function updateFooter({
-       id,
        title,
        address,
        address2,

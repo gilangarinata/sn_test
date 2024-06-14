@@ -30,7 +30,7 @@ export default function NewsDetail({news} : {news : News}) {
                     <p className="text-justify">Tag: {news?.tags.map((t) => t.tag).join(", ")}</p>
                 </div>
                 <div className={cn("flex flex-col w-[300px] gap-4", news?.relatedNews?.length > 0 ? "block" :"hidden")}>
-                    <h2 className="font-bold text-2xl">Related News</h2>
+                    <h2 className="font-bold text-2xl">Recommendations</h2>
                     <hr className="w-64 h-0.5 bg-gray-500 border-0 rounded"/>
                     {news?.relatedNews
                         ?.filter((n) => n.id !== news.id)

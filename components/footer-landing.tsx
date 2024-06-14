@@ -6,7 +6,7 @@ import {
     StackedCarousel,
     ResponsiveContainer,
 } from "react-stacked-center-carousel";
-import {cn} from "@/lib/utils";
+import {cn, translateText} from "@/lib/utils";
 import {
     ChevronLeftCircle,
     ChevronRightCircle,
@@ -19,9 +19,10 @@ import {
 import Link from "next/link";
 import {Locale} from "@/i18n.config";
 import CustomLink from "@/components/custom-link";
+import {FooterData} from "@/components/admin/footer/footer-table";
 
 
-export default function FooterLanding({dictionary, lang}: {dictionary: any, lang: Locale}) {
+export default function FooterLanding({dictionary, lang, footerData}: {dictionary: any, lang: Locale, footerData: FooterData}) {
     return (
         <section className="z-[1000px] relative">
             <div className="w-full flex flex-col px-6 md:px-20 bg-[#15537A] my-0 divide-y divide-blue-100/20">
@@ -43,19 +44,19 @@ export default function FooterLanding({dictionary, lang}: {dictionary: any, lang
                     </div>
 
                     <div className="w-full flex flex-col gap-2">
-                        <h1 className="font-bold text-xl">{dictionary.center_office}</h1>
-                        <p>World Trade Center, WTC 1, 5th Floor</p>
+                        <h1 className="font-bold text-xl">{translateText(footerData.title, lang)}</h1>
+                        <p>{footerData.address}</p>
                         <div className="flex gap-2">
                             <MapPin width={30} color="white"/>
-                            <p> Jl. Jend. Sudirman Kav 29, RT.8/RW.3, Kuningan, Karet, Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12920</p>
+                            <p>{footerData.address2}</p>
                         </div>
                         <div className="flex gap-2">
                             <LucideMail width={14} color="white"/>
-                            <p>info@s-energy.id</p>
+                            <p>{footerData.email}</p>
                         </div>
                         <div className="flex gap-2">
                             <PhoneCall width={14} color="white"/>
-                            <p>0851 5865 9911</p>
+                            <p>{footerData.phone}</p>
                         </div>
                     </div>
                 </div>

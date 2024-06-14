@@ -42,6 +42,7 @@ import {deleteScopeWork, fetchScopeWork} from "@/lib/actions/admin/our-business/
 import AddEditScopeOfWork from "@/components/admin/our-business/scope-of-works/edit-scope-of-work";
 import {deleteGetInTouch, fetchGetInTouch} from "@/lib/actions/admin/get-in-touch/get-in-touch.action";
 import {fetchFooter} from "@/lib/actions/admin/footer.action";
+import AddEditFooter from "@/components/admin/footer/edit-footer";
 
 export type FooterData = {
     id: string,
@@ -49,7 +50,7 @@ export type FooterData = {
     address: string,
     address2: string,
     email: string,
-    phone: boolean,
+    phone: string,
     whatsapp: string,
 }
 function FooterTable() {
@@ -57,7 +58,7 @@ function FooterTable() {
     const [achievements, setAchievements] = useState<FooterData>()
     async function getAchievements() {
         const achievements = await fetchFooter()
-        setAchievements(achievements as FooterData);
+        setAchievements(achievements?.categories as FooterData);
     }
 
     useEffect(() => {
@@ -69,7 +70,10 @@ function FooterTable() {
 
     return (
             <div className="flex flex-col py-20">
-                <Button className="w-[150px]">Edit Footer</Button>
+                <Button onClick={(bt) => {
+                    bt.preventDefault();
+                    setCreateBannerOpen({banner: achievements ?? null, isOpen:true,})
+                }} className="w-[150px]">Edit Footer</Button>
                 <Dialog open={createBannerOpen.isOpen} onOpenChange={(isOpen) => setCreateBannerOpen(prevState => {
                     return  {isOpen: isOpen, banner: null}
                 })}>
@@ -82,10 +86,10 @@ function FooterTable() {
                             <DialogTitle>Edit Footer</DialogTitle>
                         </DialogHeader>
                         <DialogBody className="overflow-y-auto max-h-[420px]">
-                            {/*<AddEditScopeOfWork achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {*/}
-                            {/*    setCreateBannerOpen({banner: null, isOpen:false})*/}
-                            {/*    getAchievements();*/}
-                            {/*}} />*/}
+                            <AddEditFooter footerData={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {
+                                setCreateBannerOpen({banner: null, isOpen:false})
+                                getAchievements();
+                            }} />
                         </DialogBody>
                     </DialogContent>
                 </Dialog>

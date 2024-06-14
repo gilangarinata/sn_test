@@ -10,6 +10,8 @@ import {Locale} from "@/i18n.config";
 import QontakWebChat from "@/components/QontakWebChat";
 import {Helmet} from "react-helmet";
 import Head from "next/head";
+import {fetchFooter} from "@/lib/actions/admin/footer.action";
+import {FooterData} from "@/components/admin/footer/footer-table";
 
 export const metadata: Metadata = {
     title: 'SESNA Group',
@@ -29,6 +31,8 @@ export default async function RootLayout({
 }) {
 
     const dictionary = await getDictionary(params.lang)
+    const achievements = await fetchFooter()
+
 
     return (
         <main className="w-full">
@@ -56,7 +60,7 @@ export default async function RootLayout({
 
                 <div className="flex flex-col">
                     {children}
-                    <FooterLanding dictionary={dictionary} lang={params.lang}/>
+                    <FooterLanding dictionary={dictionary} lang={params.lang} footerData={achievements?.categories as FooterData}/>
                 </div>
             </div>
         </main>

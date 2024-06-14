@@ -121,11 +121,11 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
         calculateEstimatedPowerUsage()
     }, [tagihanListrik, jenisProperty, rataRataHarian, luasArea])
 
-    const currencyFormatter = new Intl.NumberFormat(window.navigator.language, {
-        style: 'currency',
-        currency: 'USD',
-        maximumFractionDigits: 2,
-    });
+    // const currencyFormatter = new Intl.NumberFormat(window.navigator.language, {
+    //     style: 'currency',
+    //     currency: 'USD',
+    //     maximumFractionDigits: 2,
+    // });
 
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
