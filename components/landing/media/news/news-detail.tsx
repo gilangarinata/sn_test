@@ -31,16 +31,15 @@ export default function NewsDetail({news} : {news : News}) {
                 </div>
                 <div className={cn("flex flex-col w-[300px] gap-4", news?.relatedNews?.length > 0 ? "block" :"hidden")}>
                     <h2 className="font-bold text-2xl">Recommendations</h2>
-                    <hr className="w-64 h-0.5 bg-gray-500 border-0 rounded"/>
                     {news?.relatedNews
                         ?.filter((n) => n.id !== news.id)
                         ?.map((n) => {
-                        return ( <div key={n.id} className="flex items-center gap-2">
-                            <div className="w-[200px] h-[100px] rounded-lg relative overflow-hidden">
-                                {n?.image !== "" && n?.image !== null && n?.image !== undefined ? <Image style={{objectFit:"cover"}} fill src={n?.image} alt="" /> : <></>}
+                        return ( <div key={n.id} className="flex items-center gap-2 justify-center ">
+                            <div className="w-[200px] h-[70px] rounded-lg relative overflow-hidden ">
+                                {n?.image !== "" && n?.image !== null && n?.image !== undefined ? <img style={{objectFit:"cover"}} src={n?.image} alt="" /> : <></>}
                             </div>
                             <Link href={`/media/news/detail/${n.slug}`} className="w-full">
-                                <p className="font-bold hover:text-yellow-500 hover:cursor-pointer">{n.title}</p>
+                                <p className="font-bold hover:text-yellow-500 hover:cursor-pointer text-xs">{n.title}</p>
                             </Link>
                         </div>)
                     })}
