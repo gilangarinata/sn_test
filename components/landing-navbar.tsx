@@ -133,8 +133,8 @@ export default function NavContent(
                             </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="hover:cursor-pointer z-[100]">
-                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/news">                        <a onClick={clickCallback}>News</a></CustomLink></DropdownMenuItem>
-                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/video">                        <a onClick={clickCallback}>Video</a></CustomLink></DropdownMenuItem>
+                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/news"><a onClick={clickCallback}>News</a></CustomLink></DropdownMenuItem>
+                            <DropdownMenuItem><CustomLink lang={lang} className="w-full" href="/media/video"><a onClick={clickCallback}>Video</a></CustomLink></DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
 
