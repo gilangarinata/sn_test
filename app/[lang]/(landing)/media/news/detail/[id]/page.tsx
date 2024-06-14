@@ -42,9 +42,11 @@ export async function generateMetadata(
     const newsO = news?.news as News;
     const desc = JSON.parse(newsO?.content)
 
+
     return {
         title: newsO.title,
         description: desc[0].content[0].text,
+        keywords: newsO.tags.map(e => e.tag),
         openGraph: {
             images: [newsO.image],
         },
