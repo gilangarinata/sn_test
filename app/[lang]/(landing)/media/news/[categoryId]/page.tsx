@@ -1,8 +1,3 @@
-import {LandingNavBar} from "@/components/landing-navbar";
-import HomeBanner from "@/components/landing/home/home-banner";
-import SesnaGroup from "@/components/landing/home/sesna-group";
-import OurAchievement from "@/components/landing/home/our-achievement";
-import SatisfiedCustomer from "@/components/landing/home/satisfied-customer";
 import React from "react";
 import Calculator from "@/components/landing/home/calculator";
 import FooterLanding from "@/components/footer-landing";
@@ -24,7 +19,7 @@ async function MediaPage({ params }: { params: { categoryId: string, lang: Local
     return (
        <div className="h-full">
            <NewsBanner image={category?.banner ?? ""} title={category?.description ?? ""} lang={params.lang} dictionary={dictionary} />
-           <NewsContent newsA={news?.banners as News[]} categoryId={params.categoryId} categories={categories?.categories as Category[]} lang={params.lang} dictionary={dictionary} />
+           <NewsContent categories={categories?.categories as Category[]} lang={params.lang} dictionary={dictionary} />
        </div>
     )
 }

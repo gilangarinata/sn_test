@@ -1,40 +1,17 @@
 "use client"
 
-import {Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription, DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger
-} from "@/components/ui/dialog";
-import {Button} from "@/components/ui/button";
-import {EditIcon, PlusIcon, Trash2Icon, TrashIcon} from "lucide-react";
-import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
-import {Input} from "@/components/ui/input";
-import RichTextEditor from "@/components/rich-text-editor";
-import Image from "next/image";
-import React, {ChangeEvent, SetStateAction, useEffect, useState} from "react";
-
-
-import AddEditBanner from "@/components/admin/home/banners/edit-banner";
-import {deleteBanner, fetchBanners} from "@/lib/actions/admin/banner.action";
-import Spinner from "@/components/spinner";
-import {deleteExperience, fetchExperiences, fetchMainExperience} from "@/lib/actions/admin/experience.action";
-import AddEditExperience from "@/components/admin/home/experience/edit-experience";
-import {Label} from "@/components/ui/label";
-import {Achievement} from "@/components/admin/home/achievement/achievement-table";
-import mongoose from "mongoose";
-import {deleteNews, fetchAllNews} from "@/lib/actions/admin/news.action";
-import AddEditNews from "@/components/admin/media/news/edit-news";
-import {formatDateString} from "@/lib/utils";
-import {Category} from "@/components/admin/media/category/category-table";
-import axiosInstance from "@/lib/axios_config";
-import Link from "next/link";
-import {router} from "next/client";
+import React, { useState, useEffect, useCallback } from "react";
 import {useRouter} from "next/navigation";
-
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { EditIcon, PlusIcon, Trash2Icon } from "lucide-react";
+import Spinner from "@/components/spinner";
+import axiosInstance from "@/lib/axios_config";
+import { deleteNews, fetchAllNews } from "@/lib/actions/admin/news.action";
+import { formatDateString } from "@/lib/utils";
+import Link from "next/link";
+import {Category} from "@/components/admin/media/category/category-table";
 export type News = {
     _id: any,
     id: string,
@@ -62,162 +39,178 @@ export type News = {
     ]
 }
 
-function NewsTable({news}: {news: News[]}) {
-    const [message, setMessage] = useState<string[]>()
-    // const [news, setNews] = useState<News[]>()
-    const getExperiences = async () => {
-        try {
-            setMessage((prevState) => {
-                return [...(prevState ?? []), "banners1"]
-            })
-            const banners = await fetchAllNews(1,2);
-            console.log("banner:-")
-            setMessage((prevState) => {
-                const st = "banners2";
-                return [...(prevState ?? []), st]
-            })
-            // console.log(banner)
-            // setNews(banners?.banners as News[]);
-        }catch (e) {
-            setMessage((prevState) => {
-                return [...(prevState ?? []), `banners3 ${e}`]
-            })
-        }
+const NewsTable = () => {
+    const [news, setNews] = useState<News[]>([]);
+    const [page, setPage] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [open, setOpen] = useState<{ banner: News | null; isOpen: boolean }>({ banner: null, isOpen: false });
+    const [deleteLoading, setDeleteLoading] = useState(false);
+    const [createBannerOpen, setCreateBannerOpen] = useState<{ banner: News | null; isOpen: boolean }>({ banner: null, isOpen: false });
+    const router = useRouter();
 
-    }
+    const getNews = async (pageNumber: number) => {
+        try {
+            setIsLoading(true);
+            const result = await fetchAllNews(pageNumber, 5);
+            if (result?.banners.length) {
+                const newNews = result.banners as News[]
+                setNews((prev) => [...prev, ...newNews]);
+            }
+            setHasMore(result?.banners.length === 5);
+            setIsLoading(false);
+        } catch (error) {
+            setIsLoading(false);
+            console.error("Failed to fetch news", error);
+        }
+    };
 
     useEffect(() => {
-        getExperiences()
-            .catch(console.error);
-    }, [])
+        getNews(page);
+    }, [page]);
 
-    const [open, setOpen] = useState<{banner : News | null, isOpen : boolean}>({banner: null, isOpen:false});
-    const [deleteLoading, setDeleteLoading] = useState(false);
-    const [createBannerOpen, setCreateBannerOpen] = useState<{banner : News | null, isOpen : boolean}>({banner: null, isOpen: false})
-    const router = useRouter()
-    const handleDelete = async (id: string,logo: string) => {
+    const loadMore = () => {
+        if (!isLoading && hasMore) {
+            setPage((prev) => prev + 1);
+        }
+    };
+
+    const handleDelete = async (id: string, logo: string) => {
         try {
             setDeleteLoading(true);
-            const fileLogo = logo.substring(logo.lastIndexOf('/') + 1)
+            const fileLogo = logo.substring(logo.lastIndexOf("/") + 1);
             try {
                 await axiosInstance.delete(`/api/delete/${fileLogo}`, {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        "Content-Type": "multipart/form-data",
                     },
                 });
-
             } catch (error) {
-                // Handle any upload error
-                console.error('File upload error:', error);
+                console.error("File upload error:", error);
             }
-            await deleteNews({id: id});
+            await deleteNews({ id });
             setDeleteLoading(false);
-            setOpen({banner: null, isOpen: true})
-            await getExperiences()
-        } catch (e) {
+            setOpen({ banner: null, isOpen: false });
+            setNews([]);
+            setPage(1);
+        } catch (error) {
             setDeleteLoading(false);
-            console.log("eror delete " + e);
+            console.error("Error deleting news:", error);
         }
-    }
+    };
+
+    const handleScroll = useCallback(() => {
+        const bottom =
+            Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight;
+        if (bottom && hasMore) {
+            loadMore();
+        }
+    }, [hasMore, loadMore]);
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [handleScroll]);
 
     return (
-            <div className="flex flex-col">
+        <div className="flex flex-col">
+            <Dialog open={open.isOpen} onOpenChange={(isOpen) => setOpen({ banner: null, isOpen })}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Delete Item</DialogTitle>
+                        <DialogDescription>Are you sure want to delete this item?</DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <div className="flex gap-2">
+                            <Button variant="outline" onClick={() => setOpen({ banner: null, isOpen: false })}>
+                                Cancel
+                            </Button>
+                            <Button
+                                variant="destructive"
+                                onClick={() => handleDelete(open?.banner?.id ?? "", open?.banner?.image ?? "")}
+                            >
+                                {deleteLoading ? <Spinner /> : `Delete Item`}
+                            </Button>
+                        </div>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
-                <Dialog open={open.isOpen} onOpenChange={(isOpen) => setOpen({banner: null, isOpen})}>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                            <DialogTitle>Delete Item</DialogTitle>
-                            <DialogDescription>
-                                Are you sure want to delete this item?
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <div className="flex gap-2">
-                                <Button variant="outline" onClick={(bt) => {
-                                    bt.preventDefault();
-                                    setOpen({banner:null, isOpen:false})
-                                }}>Cancel</Button>
-                                <Button variant="destructive" onClick={(bt) => {
-                                    bt.preventDefault();
-                                    handleDelete(open?.banner?.id ?? "", open?.banner?.image ?? "");
-                                }}>{deleteLoading ? <Spinner /> : `Delete Item`}</Button>
-                            </div>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
-
-
-                <Dialog open={createBannerOpen.isOpen} onOpenChange={(isOpen) => setCreateBannerOpen(prevState => {
-                    return  {isOpen: isOpen, banner: null}
-                })}>
-                    <Button onClick={(bt) => {
-                        bt.preventDefault();
-                        router.push("/admin-panel/media/news/add")
-                        // setCreateBannerOpen({banner: null, isOpen:true})
-                    }} variant="outline" className="w-fit ml-8"><PlusIcon className="w-4 h-4"/> Add News</Button>
-                    <DialogContent onInteractOutside={(e) => {
-                        e.preventDefault();
-                    }} className="w-8">
-                        <DialogHeader>
-                            <DialogTitle>Add news</DialogTitle>
-                        </DialogHeader>
-                        <DialogBody className="overflow-y-auto max-h-[420px]">
-                            {/*<AddEditNews achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {*/}
-                            {/*    setCreateBannerOpen({banner: null, isOpen:false})*/}
-                            {/*    getExperiences();*/}
-                            {/*}} />*/}
-                        </DialogBody>
-                    </DialogContent>
-                </Dialog>
-                <div className="rounded-md border mt-2 mx-8 mb-10">
-                    <div className="flex flex-col">
-                        {/*{message?.map(m => <p key={m}>{m}</p>)}*/}
-                    </div>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>News ID</TableHead>
-                                <TableHead>Title</TableHead>
-                                <TableHead>Slug</TableHead>
-                                <TableHead>Created at</TableHead>
-                                <TableHead>Category</TableHead>
-                                <TableHead>Tags</TableHead>
-                                <TableHead className="text-center">Image</TableHead>
-                                <TableHead></TableHead>
+            <Dialog
+                open={createBannerOpen.isOpen}
+                onOpenChange={(isOpen) => setCreateBannerOpen({ isOpen, banner: null })}
+            >
+                <Button
+                    onClick={() => {
+                        router.push("/admin-panel/media/news/add");
+                    }}
+                    variant="outline"
+                    className="w-fit ml-8"
+                >
+                    <PlusIcon className="w-4 h-4" /> Add News
+                </Button>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Add news</DialogTitle>
+                    </DialogHeader>
+              {/*      <DialogBody className="overflow-y-auto max-h-[420px]">*/}
+              {/*          /!* <AddEditNews achievement={createBannerOpen.banner == null ? undefined : createBannerOpen.banner} onNeedRefresh={() => {*/}
+              {/*  setCreateBannerOpen({ banner: null, isOpen: false });*/}
+              {/*  getExperiences();*/}
+              {/*}} /> *!/*/}
+              {/*      </DialogBody>*/}
+                </DialogContent>
+            </Dialog>
+            <div className="rounded-md border mt-2 mx-8 mb-10">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>News ID</TableHead>
+                            <TableHead>Title</TableHead>
+                            <TableHead>Slug</TableHead>
+                            <TableHead>Created at</TableHead>
+                            <TableHead>Category</TableHead>
+                            <TableHead>Tags</TableHead>
+                            <TableHead className="text-center">Image</TableHead>
+                            <TableHead></TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {news.map((newsItem) => (
+                            <TableRow key={newsItem.id}>
+                                <TableCell>{newsItem._id}</TableCell>
+                                <TableCell>{newsItem.title}</TableCell>
+                                <TableCell>{newsItem.slug}</TableCell>
+                                <TableCell>{formatDateString(newsItem.createdAt)}</TableCell>
+                                <TableCell>{newsItem.category?.name}</TableCell>
+                                <TableCell>{newsItem.tags?.map((t) => t.tag).join(",")}</TableCell>
+                                <TableCell>
+                                    <img className="mx-auto" width={60} height={60} src={newsItem.image} alt="" />
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex items-center justify-center gap-4">
+                                        <Trash2Icon
+                                            onClick={() => setOpen({ banner: newsItem, isOpen: true })}
+                                            width={18}
+                                            color="red"
+                                            className="hover:cursor-pointer"
+                                        />
+                                        <Link href={`/admin-panel/media/news/${newsItem.id}`}>
+                                            <EditIcon width={18} className="hover:cursor-pointer" />
+                                        </Link>
+                                    </div>
+                                </TableCell>
                             </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {news?.map((experience) => (
-                                <TableRow key={experience.id}>
-                                    <TableCell>{experience._id}</TableCell>
-                                    <TableCell>{experience.title}</TableCell>
-                                    <TableCell>{experience.slug}</TableCell>
-                                    <TableCell>{formatDateString(experience.createdAt)}</TableCell>
-                                    <TableCell>{experience.category?.name}</TableCell>
-                                    <TableCell>{experience?.tags?.map(t => t.tag).join(",")}</TableCell>
-                                    <TableCell>
-                                        <img className="mx-auto" width={60} height={60}
-                                                      src={experience.image} alt=""/>
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex items-center justify-center gap-4">
-                                            <Trash2Icon onClick={() => setOpen({banner: experience, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
-                                            {/*<EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {*/}
-                                            {/*    // bt.preventDefault();*/}
-                                            {/*    // setCreateBannerOpen({banner: experience, isOpen: true})*/}
-                                            {/*}} />*/}
-                                            <Link href={`/admin-panel/media/news/${experience.id}`}>
-                                                <EditIcon width={18} className="hover:cursor-pointer" />
-                                            </Link>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </div>
+                        ))}
+                    </TableBody>
+                </Table>
+                {isLoading && <Spinner />}
+                {!hasMore && <p className="text-center my-4">No more news to load</p>}
             </div>
-    )
-}
+        </div>
+    );
+};
 
 export default NewsTable;

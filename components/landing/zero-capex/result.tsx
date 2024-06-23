@@ -21,6 +21,7 @@ import {useRouter} from "next/navigation";
 import ImageComponent from "@/components/landing/zero-capex/image-component";
 import {Locale} from "@/i18n.config";
 import { number } from "zod";
+import {createZeroCapex} from "@/lib/actions/admin/zero-capex.action";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -372,6 +373,26 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                 pdf.text(jumlah + " pcs", 170, 128.5);
                 pdf.text(produksi + " kWp", 170, 134.2);
                 pdf.text(periode + " month", 170, 140);
+
+                await createZeroCapex(
+                    {
+                        url: "",
+                        email: cookie.get("youremail") ?? "-",
+                        dayaTerpasang: selectedJenisProperty?.categoryEn ?? "",
+                        dayaListrik: (cookie.get("dayaListrik") ?? "") + " kVA",
+                        luasProperty: (cookie.get("luasArea") ?? "") + " m2",
+                        tagihanPerBulan: "Rp "+(cookie.get("tagihanListrik") ?? ""),
+                        tarifListrik: "Rp "+(cookie.get("tarifListrik") ?? "") + " per kWh",
+                        estimasiPenggunaanDaya: (Number(cookie.get("estimatedpowerusage")).toFixed(2) ?? "") + " kWh",
+                        lokasiInstallasi: cookie.get("lokasiPemasangan") ?? "",
+                        rekomendasiInstallasi: (rekomendasi ?? "") + " kWp",
+                        areaPotensial: area + " m2",
+                        jumlahModulSurya: jumlah + " pcs",
+                        produksiEnergiPerTahun: produksi + " kWp",
+                        periodeInstallasi: periode + " month",
+                        lokasi: cookie.get("lokasi") ?? ""
+                    }
+                )
 
                 pdf.setFontSize(12);
                 pdf.setTextColor(255, 255, 255);

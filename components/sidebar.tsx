@@ -131,6 +131,10 @@ const routes = [
                 label : "Video",
                 href: "/admin-panel/media/video"
             },
+            {
+                label : "Upload Image",
+                href: "/admin-panel/media/upload-image"
+            },
         ]
     },
     {
@@ -164,6 +168,12 @@ const routes = [
         label : "Get In Touch",
         icon : ContactIcon,
         href : "/admin-panel/get-in-touch",
+        children: []
+    },
+    {
+        label : "Zero Capex",
+        icon : ContactIcon,
+        href : "/admin-panel/zero-capex",
         children: []
     },
     {

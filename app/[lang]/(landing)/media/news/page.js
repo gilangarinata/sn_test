@@ -14,9 +14,8 @@ import {fetchCategories} from "@/lib/actions/admin/news-category.action";
 import {Category} from "@/components/admin/media/category/category-table";
 import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
-import {Metadata} from "next";
 
-export const metadata: Metadata = {
+export const metadata = {
     title: 'SESNA Group | Media News',
     description: 'Find the latest need and information',
     metadataBase: new URL(`https://sesna.id`),
@@ -24,16 +23,16 @@ export const metadata: Metadata = {
         canonical: './',
     }
 }
-async function MediaPage({params} : {params: { lang: Locale }}) {
+
+async function MediaPage({params}) {
     const categories = await fetchCategories("news")
-    const news = await fetchAllNews(3, 200)
+    // const news = await fetchAllNews(3, 200)
     const dictionary = await getDictionary(params.lang)
     return (
        <div className="h-full">
            <NewsBanner image="" title="" lang={params.lang} dictionary={dictionary}/>
-           <NewsContent newsA={news?.banners as News[]} categories={categories?.categories as Category[]} lang={params.lang} dictionary={dictionary}/>
+           <NewsContent categories={categories?.categories} lang={params.lang} dictionary={dictionary}/>
        </div>
     )
 }
-
 export default MediaPage;

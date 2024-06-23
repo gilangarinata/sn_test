@@ -20,9 +20,9 @@ import {NewEditor} from "@/components/admin/media/news/new_editor";
 import {underline} from "kleur/colors";
 import {Locale} from "@/i18n.config";
 
-export default function NewsContent({ categoryId, categories, newsA, lang, dictionary} : { categoryId?: string, categories: Category[], newsA?: News[],lang: Locale, dictionary: any}) {
+export default function NewsContent({ categoryId, categories, lang, dictionary} : { categoryId?: string, categories: Category[],lang: Locale, dictionary: any}) {
     const pathName = usePathname();
-    const [news, setNews] = useState<News[]>(newsA ?? [])
+    const [news, setNews] = useState<News[]>()
     const [totalBannersCount, setTotalBannersCount] = useState<number>()
     const [year, setYear] = useState<number>()
 
