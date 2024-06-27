@@ -123,7 +123,7 @@ export default function LineChart(
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: firstYearData.map((data) => data.yearlyElectricityCost),
+                data: firstYearData.map((data) => Math.trunc(data.yearlyElectricityCost)),
             },
             {
                 label: 'PLN Bills with Solar PV',
@@ -144,7 +144,7 @@ export default function LineChart(
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: firstYearData.map((data) => data.offset),
+                data: firstYearData.map((data) => Math.trunc(data.offset)),
             },
         ]
     };

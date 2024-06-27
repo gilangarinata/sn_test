@@ -1,19 +1,16 @@
 "use client"
 
-import {
-    BlockNoteEditor,
-    PartialBlock
-} from "@blocknote/core";
 
 import {
-    BlockNoteView, darkDefaultTheme, lightDefaultTheme, Theme,
-    useBlockNote
+    BlockNoteView, lightDefaultTheme, Theme,
+    useCreateBlockNote
 } from "@blocknote/react";
 
 import "@blocknote/core/style.css";
-import {useTheme} from "@emotion/react";
 import {cn} from "@/lib/utils";
 import "@/app/[lang]/custom.css";
+import "@blocknote/mantine/style.css";
+import {BlockNoteEditor, PartialBlock} from "@blocknote/core";
 
 
 const lightRedTheme = {
@@ -45,23 +42,10 @@ const lightRedTheme = {
         shadow: "#640000",
         border: "#870000",
         sideMenu: "#bababa",
-        highlightColors: lightDefaultTheme.colors.highlightColors,
+        // highlightColors: lightDefaultTheme.colors.highlightColors,
     },
     borderRadius: 4,
     fontFamily: "Helvetica Neue, sans-serif",
-} satisfies Theme;
-
-const theme = {
-    ...lightRedTheme,
-    componentStyles: (theme) => ({
-        // Adds basic styling to the editor.
-        Editor: {
-            // backgroundColor: theme.colors.editor.background,
-            // borderRadius: theme.borderRadius,
-            // border: `1px solid ${theme.colors.border}`,
-            // boxShadow: `0 4px 12px ${theme.colors.shadow}`,
-        },
-    }),
 } satisfies Theme;
 
 interface Props {
@@ -87,23 +71,26 @@ export const NewEditor = ({
         return true;
     }
 
-    const editor: BlockNoteEditor = useBlockNote({
-        editable,
+    const editor: BlockNoteEditor = useCreateBlockNote({
+        // editable,
         initialContent: initialContent && isJsonString(initialContent) ? JSON.parse(initialContent) as PartialBlock[] : undefined,
-        onEditorContentChange: (content) => {
-            onChange(JSON.stringify(content.topLevelBlocks, null,2));
-        },
+        // onEditorContentChange: (content) => {
+        //     onChange(JSON.stringify(content.topLevelBlocks, null,2));
+        // },
         domAttributes: {
             // Adds a class to all `blockContainer` elements.
-            blockContainer: {
+            block: {
                 class: "block-container",
             },
 
         },
     });
 
+    editor.onChange((content) => {
+        onChange(JSON.stringify(content.document, null,2));
+    })
 
-// Custom red light theme
+
     const lightRedTheme = {
         colors: {
             editor: {
@@ -133,13 +120,12 @@ export const NewEditor = ({
             shadow: "#640000",
             border: "#870000",
             sideMenu: "#bababa",
-            highlightColors: lightDefaultTheme.colors.highlightColors,
+            // highlightColors: lightDefaultTheme.colors.highlightColors,
         },
         borderRadius: 4,
         fontFamily: "Helvetica Neue, sans-serif",
     } satisfies Theme;
 
-// Custom red dark theme
     const darkRedTheme = {
         ...lightRedTheme,
         colors: {
@@ -150,7 +136,7 @@ export const NewEditor = ({
             },
             sideMenu: "#ffffff",
             // TODO: Update
-            highlightColors: darkDefaultTheme.colors.highlightColors,
+            // highlightColors: darkDefaultTheme.colors.highlightColors,
         },
     } satisfies Theme;
 
@@ -159,9 +145,11 @@ export const NewEditor = ({
         light: lightDefaultTheme
     };
 
+    const ed = useCreateBlockNote()
+
     return (
         <div>
-            <BlockNoteView className={cn(`text-justify ${bgColor}`, editable ? "mx-0" : "mx-[-50px]")} editor={editor} theme={bgColor === "" ? "light" : redTheme}/>
+            <BlockNoteView editable={editable} className={cn(`text-justify ${bgColor}`, editable ? "mx-0" : "mx-[-50px]")} editor={editor} theme={bgColor === "" ? "light" : redTheme}/>
         </div>
     )
 }

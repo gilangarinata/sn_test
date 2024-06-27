@@ -185,7 +185,7 @@ export default function LineChartLeasing(
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: firstYearData.map((data) => data.yearlyElectricityCost),
+                data: firstYearData.map((data) => Math.trunc(data.yearlyElectricityCost)),
             },
             {
                 label: 'With Leasing',
@@ -206,7 +206,7 @@ export default function LineChartLeasing(
                 pointHoverBorderWidth: 2,
                 pointRadius: 1,
                 pointHitRadius: 10,
-                data: firstYearData.map((data) => data.finalLeasingOffset)
+                data: firstYearData.map((data) => Math.trunc(data.finalLeasingOffset))
             },
         ]
     };

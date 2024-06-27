@@ -411,6 +411,8 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                     pdf.text("Turnkey EPC Direct\nPurchase",10, 228)
                 }
 
+                const isDirectPurchase = selectedPlan === 1
+
                 pdf.setFontSize(9);
                 pdf.setFont('helvetica', 'normal');
 
@@ -468,7 +470,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                 pdf.setFontSize(9);
                 pdf.setFont('helvetica', 'normal');
 
-                const text = lang === "id" ? "*This graph shows a comparison of the client's expenditure if using solar leasing compared to using only PLN electricity from year to year. You can see this comparison, using a solar power plant can save electricity expenses every year." : '*Grafik ini menunjukkan perband- ingan jumlah pengeluaran klien jika menggunakan solar leasing dibandingkan dengan hanya menggunakan listrik PLN dari tahun ke tahun. Bisa dilihat perbandingan tersebut, menggu- nakan Pembangkit Listri Tenaga Surya dapat menghemat pengel- uaran listrik setiap tahun.';
+                const text = lang === "id" ? `*This graph shows a comparison of the client's expenditure if using ${isDirectPurchase ? "direct purchase" : "solar leasing"} compared to using only PLN electricity from year to year. You can see this comparison, using a solar power plant can save electricity expenses every year.` : '*Grafik ini menunjukkan perband- ingan jumlah pengeluaran klien jika menggunakan solar leasing dibandingkan dengan hanya menggunakan listrik PLN dari tahun ke tahun. Bisa dilihat perbandingan tersebut, menggu- nakan Pembangkit Listri Tenaga Surya dapat menghemat pengel- uaran listrik setiap tahun.';
                 justifyText(pdf, text, 160, 227, 48, 4);
 
                 pdf.save('zero_capex_result.pdf');

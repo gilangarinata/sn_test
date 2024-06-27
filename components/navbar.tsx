@@ -60,7 +60,7 @@ async function Navbar() {
                         {filteredGit?.map((item) => {
                             return (
                                 <DropdownMenuItem key={item.id}>
-                                    <Link href="/admin-panel/get-in-touch">
+                                    <Link href="/admin-panel/get-in-touch" className="w-full">
                                         <div className="flex flex-col">
                                             <p className="text-xs text-gray-400">{item.createdAt?.toLocaleTimeString()} {item.createdAt?.getFullYear()}</p>
                                             <p className="text-sm">{item.name} Just published new get in touch message</p>
