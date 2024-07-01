@@ -84,7 +84,6 @@ export default function NewsContent({ categoryId, categories, lang, dictionary} 
                             <h1 className="text-xl font-bold hover:text-yellow-400">{content.title}</h1>
                         </Link>
                         <div className="max-h-[165px] overflow-hidden">
-                            <div>{content.content}</div>
                             <NewEditor editable={false} onChange={(v) => {}} initialContent={content.content} />
                         </div>
                         {/*<p className="max-h-[165px] overflow-hidden text-justify" dangerouslySetInnerHTML={{__html: content.content}} />*/}
