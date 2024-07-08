@@ -87,7 +87,9 @@ export const NewEditor = ({
     });
 
     editor.onChange((content) => {
-        onChange(JSON.stringify(content.document, null,2));
+        if(editable) {
+            onChange(JSON.stringify(content.document, null,2));
+        }
     })
 
 

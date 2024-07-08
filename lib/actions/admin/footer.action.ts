@@ -18,6 +18,9 @@ interface Params {
     email: string,
     phone: string,
     whatsapp: string,
+    faq: string,
+    privacy: string,
+    term: string
 }
 
 
@@ -41,6 +44,9 @@ export async function updateFooter({
        phone,
        email,
        whatsapp,
+        faq,
+    privacy,
+    term
    } : Params): Promise<void> {
     await connectToDb();
     try {
@@ -53,6 +59,9 @@ export async function updateFooter({
                 phone: phone,
                 email: email,
                 whatsapp: whatsapp,
+                faq: faq,
+                privacy: privacy,
+                term: term
             }, { upsert: true }
         )
     }catch (error) {

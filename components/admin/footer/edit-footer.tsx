@@ -32,6 +32,7 @@ import {updateAchievement} from "@/lib/actions/admin/achievement.action";
 import axiosInstance from "@/lib/axios_config";
 import {FooterData} from "@/components/admin/footer/footer-table";
 import {updateFooter} from "@/lib/actions/admin/footer.action";
+import {NewEditor} from "@/components/admin/media/news/new_editor";
 
 
 interface Props {
@@ -58,7 +59,9 @@ export const FooterValidation = z.object({
 function AddEditFooter({ footerData, onNeedRefresh}: Props) {
 
     const [saveLoading, setSaveLoading] = useState(false);
-
+    const [faqContent, setFaqContent] = useState<string>(footerData?.faq ?? "");
+    const [privacyContent, setPrivacyContent] = useState<string>(footerData?.privacy ?? "");
+    const [termContent, setTermContent] = useState<string>(footerData?.term ?? "");
 
     const form = useForm<z.infer<typeof FooterValidation>>({
         resolver: zodResolver(FooterValidation),
@@ -82,7 +85,10 @@ function AddEditFooter({ footerData, onNeedRefresh}: Props) {
                 address2: values.address2,
                 email: values.email,
                 phone:values.phone,
-                whatsapp: values.whatsapp
+                whatsapp: values.whatsapp,
+                faq: faqContent,
+                privacy: privacyContent,
+                term : termContent
             })
 
             setSaveLoading(false)
@@ -212,6 +218,24 @@ function AddEditFooter({ footerData, onNeedRefresh}: Props) {
                         </FormItem>
                     )}
                 />
+                <div className="flex flex-col gap-2">
+                    <p>FAQ</p>
+                    <NewEditor initialContent={faqContent} onChange={(val) => {
+                        setFaqContent(val)
+                    }} />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <p>Privacy Policy</p>
+                    <NewEditor initialContent={privacyContent} onChange={(val) => {
+                        setPrivacyContent(val)
+                    }} />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <p>Term of Service</p>
+                    <NewEditor initialContent={termContent} onChange={(val) => {
+                        setTermContent(val)
+                    }} />
+                </div>
                 <Button disabled={saveLoading} type='submit' className='bg-primary-500'>
                     {saveLoading ? <Spinner /> : "Save"}
                 </Button>

@@ -7,7 +7,10 @@ const bannerSchema = new  mongoose.Schema({
     address2: String,
     email: String,
     phone: String,
-    whatsapp: String
+    whatsapp: String,
+    faq: String,
+    privacy: String,
+    term: String
 });
 
 const Footer = mongoose.models.Footer || mongoose.model('Footer', bannerSchema);

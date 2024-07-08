@@ -9,11 +9,19 @@ import {getDictionary} from "@/lib/dictionary";
 import {Metadata} from "next";
 
 export const metadata: Metadata = {
-    title: 'SESNA Group | Who We Are',
-    description: 'SESNA Group (PT Sumber Energi Surya Nusantara) adalah perusahaan energi terbarukan Indonesia yang fokus pada pengembangan pembangkit listrik tenaga surya. Didirikan pada tahun 2013, SESNA Group memberdayakan Indonesia melalui layanan end-to-end: pengembangan proyek - teknik - pengadaan & instalasi - investasi - dan tidak terbatas pada operasi & pemeliharaan, kami melakukan semuanya.',
+    title: 'Who We Are',
+    description: 'Sesna adalah perusahaan yang bergerak di bidang energi terbarukan yang berfokus pada pengembangan panel surya.',
     metadataBase: new URL(`https://sesna.id`),
     alternates: {
         canonical: './',
+    },
+    keywords: [
+        "Tentang kami",
+        "Company profile sesna",
+        "profil perusahaan sesna"
+    ],
+    openGraph: {
+        url: new URL(`https://sesna.id/who-we-are`)
     }
 }
 async function WhoWeArePage({params} : {params: { lang: Locale }}) {

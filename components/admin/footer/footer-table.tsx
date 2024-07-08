@@ -43,6 +43,7 @@ import AddEditScopeOfWork from "@/components/admin/our-business/scope-of-works/e
 import {deleteGetInTouch, fetchGetInTouch} from "@/lib/actions/admin/get-in-touch/get-in-touch.action";
 import {fetchFooter} from "@/lib/actions/admin/footer.action";
 import AddEditFooter from "@/components/admin/footer/edit-footer";
+import {NewEditor} from "@/components/admin/media/news/new_editor";
 
 export type FooterData = {
     id: string,
@@ -52,6 +53,9 @@ export type FooterData = {
     email: string,
     phone: string,
     whatsapp: string,
+    faq: string,
+    privacy: string,
+    term: string
 }
 function FooterTable() {
 
@@ -125,6 +129,40 @@ function FooterTable() {
                             <TableRow >
                                 <TableCell>Whatsapp</TableCell>
                                 <TableCell>{achievements?.whatsapp}</TableCell>
+                            </TableRow>
+                            <TableRow >
+                                <TableCell>FAQ</TableCell>
+                                <TableCell>
+                                    <Button onClick={(bt) => {
+                                        bt.preventDefault();
+                                        setCreateBannerOpen({banner: achievements ?? null, isOpen:true,})
+                                    }} className="w-[150px]">Lihat</Button>
+                                    {/*{achievements?.faq}*/}
+                                    {/*<NewEditor initialContent={achievements?.faq} onChange={(val) => {*/}
+
+                                    {/*}} />*/}
+                                    {/*<NewEditor onChange={(val) => {}} initialContent={achievements?.faq} editable={false} />*/}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow >
+                                <TableCell>Privacy Policy</TableCell>
+                                <TableCell>
+                                    <Button onClick={(bt) => {
+                                        bt.preventDefault();
+                                        setCreateBannerOpen({banner: achievements ?? null, isOpen:true,})
+                                    }} className="w-[150px]">Lihat</Button>
+                                    {/*<NewEditor onChange={(val) => {}} initialContent={achievements?.privacy} editable={false} />*/}
+                                </TableCell>
+                            </TableRow>
+                            <TableRow >
+                                <TableCell>Term of Service</TableCell>
+                                <TableCell>
+                                    <Button onClick={(bt) => {
+                                        bt.preventDefault();
+                                        setCreateBannerOpen({banner: achievements ?? null, isOpen:true,})
+                                    }} className="w-[150px]">Lihat</Button>
+                                    {/*<NewEditor onChange={(val) => {}} initialContent={achievements?.term} editable={false} />*/}
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

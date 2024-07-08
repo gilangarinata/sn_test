@@ -20,12 +20,25 @@ import {getDictionary} from "@/lib/dictionary";
 import {Metadata} from "next";
 
 export const metadata: Metadata = {
-    title: 'SESNA Group | Media Video',
-    description: 'Find the latest need and information',
+    title: 'Media',
+    description: 'Dapatkan informasi seputar acara, podcast, dan proyek terbaru dari kami',
     metadataBase: new URL(`https://sesna.id`),
     alternates: {
         canonical: './',
+    },
+    keywords: [
+        "Video",
+        "sesna",
+        "event sesna",
+        "acara sesna",
+        "podcast sesna",
+        "proyek plts sesna",
+        "portofolio plts sesna"
+    ],
+    openGraph: {
+        url: new URL(`https://sesna.id/media/video`)
     }
+
 }
 async function MediaPage({params} : {params: { lang: Locale }}) {
     const video = await fetchAllVideos(1,2000)

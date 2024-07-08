@@ -19,10 +19,20 @@ import {getDictionary} from "@/lib/dictionary";
 import {Metadata} from "next";
 
 export const metadata: Metadata = {
-    title: 'SESNA Group | Our Business',
+    title: 'Our Business',
+    description: "Sebagai perusahaan energi terbarukan yang berfokus pada pengembangan panel surya, kami melayani solusi lengkap mulai dari penyewaan sistem tenaga surya, instalasi dan konstruksi, perencanaan dan rekayasa sistem, manajemen proyek, pemilihan komponen dan tekonlogi, serta operasi dan pemeliharaan.",
     metadataBase: new URL(`https://sesna.id`),
     alternates: {
         canonical: './',
+    },
+    keywords: [
+        "Bisnis perusahaan",
+        "Layanan perusahaan sesna",
+        "sesna",
+        "sesna group"
+    ],
+    openGraph: {
+        url: new URL(`https://sesna.id/our-business`)
     }
 }
 async function LandingPage({params} : {params: { lang: Locale }}) {

@@ -11,11 +11,19 @@ import {Locale} from "@/i18n.config";
 import {Metadata} from "next";
 
 export const metadata: Metadata = {
-    title: 'SESNA Group | Zero Capex',
-    description: 'Kami secara khusus memberi Anda desain yang tidak memerlukan biaya Investasi atau Nol Belanja Modal (Belanja Modal) Memungkinkan Anda mengalokasikan biaya selama jangka waktu kontrak proyek energi surya, memberikan fleksibilitas mode dalam penganggaran dan manajemen arus kas',
+    title: 'Sesna Zero Capex',
+    description: 'Sesna secara khusus memberikan anda skema pembayaran yang tidak memerlukan biaya investasi atau skema zero capex',
     metadataBase: new URL(`https://sesna.id`),
     alternates: {
         canonical: './',
+    },
+    keywords: [
+        "Solar leasing",
+        "solar rental",
+        "zero capex"
+    ],
+    openGraph: {
+        url: new URL(`https://sesna.id/zero-capex`)
     }
 }
 async function WhoWeArePage({params} : {params: { lang: Locale }}) {

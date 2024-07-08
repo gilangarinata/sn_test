@@ -10,14 +10,26 @@ import {fetchHome} from "@/lib/actions/landing/home.action";
 import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
 import {Metadata} from "next";
+import {OpenGraphMetadata} from "next/dist/lib/metadata/generate/opengraph";
 
 export const metadata: Metadata = {
-    title: 'SESNA Group',
-    description: 'Kami secara khusus memberi Anda desain tanpa memerlukan biaya Investasi atau Nol Capex (Belanja Modal) Memungkinkan Anda mengalokasikan biaya selama durasi jangka waktu kontrak proyek energi surya, memberikan fleksibilitas mode dalam penganggaran dan manajemen arus kas serta',
+    title: 'Homepage',
+    description: 'SESNA Group (PT Sumber Energi Surya Nusantara) adalah perusahaan energi terbarukan Indonesia yang berfokus pada pengembangan pembangkit listrik tenaga surya dan penyedia layanan Rekayasa, Pengadaan & Konstruksi',
     metadataBase: new URL(`https://sesna.id`),
     alternates: {
         canonical: './',
     },
+    keywords: [
+        "Sesna",
+        "Sesna Grup",
+        "Beranda Perusahaan",
+        "homepage sesna",
+        "PT Sumber Energi Surya Nusantara",
+        "pengembang proyek PLTS"
+    ],
+    openGraph: {
+        url: new URL(`https://sesna.id`)
+    }
 }
 
 

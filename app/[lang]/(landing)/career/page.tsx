@@ -23,11 +23,21 @@ import {fetchCareerBanners} from "@/lib/actions/admin/career_banner.action";
 import {Metadata} from "next";
 
 export const metadata: Metadata = {
-    title: 'SESNA Group | Karir',
+    title: 'Career',
+    description: 'Bergabunglah menjadi bagian dari tim sesna',
     metadataBase: new URL(`https://sesna.id`),
     alternates: {
         canonical: './',
+    },
+    keywords: [
+        "Sesna",
+        "Sesna Group",
+        "sesna karir"
+    ],
+    openGraph: {
+        url: new URL(`https://sesna.id/career`)
     }
+
 }
 async function LandingPage({params} : {params: { lang: Locale }}) {
     const dictionary = await getDictionary(params.lang)

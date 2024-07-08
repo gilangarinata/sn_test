@@ -16,11 +16,19 @@ import {Locale} from "@/i18n.config";
 import {getDictionary} from "@/lib/dictionary";
 
 export const metadata = {
-    title: 'SESNA Group | Media News',
-    description: 'Find the latest need and information',
+    title: 'Media',
+    description: 'Temukan informasi dan edukasi terbarukan dari kami',
     metadataBase: new URL(`https://sesna.id`),
     alternates: {
         canonical: './',
+    },
+    keywords: [
+        "Panel surya",
+        "PLTS",
+        "Energi Terbarukan"
+    ],
+    openGraph: {
+        url: new URL(`https://sesna.id/media/news`)
     }
 }
 

@@ -62,17 +62,23 @@ export default function FooterLanding({dictionary, lang, footerData}: {dictionar
                 </div>
                 <div className="w-full text-white py-4 flex justify-between">
                     <p>Copyright 2023 © <span className="text-yellow-400 font-bold">SESNA Group</span> | Owned by PT Sumber Energi Surya Nusantara.</p>
-                    <div className=" gap-2 font-semibold hidden md:flex">
+                    <div className=" gap-2 font-semibold hidden md:flex cursor-pointer">
                         {/*<Link href="/">*/}
+                        <CustomLink href="/term-and-condition" lang={lang}>
                             <p className="hover:text-yellow-400">{dictionary.term_and_condition}</p>
+                        </CustomLink>
                         {/*</Link>*/}
                          <p>|</p>
                         {/*<Link href="/">*/}
+                        <CustomLink href="/privacy-policy" lang={lang}>
                             <p className="hover:text-yellow-400">{dictionary.privacy_policy}</p>
+                        </CustomLink>
                         {/*</Link>*/}
                         <p>|</p>
                         {/*<Link href="/">*/}
+                        <CustomLink href="/faq" lang={lang}>
                             <p className="hover:text-yellow-400">FAQ</p>
+                        </CustomLink>
                         {/*</Link>*/}
                     </div>
                 </div>

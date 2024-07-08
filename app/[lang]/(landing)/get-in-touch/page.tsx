@@ -8,11 +8,21 @@ const Map = dynamic(() => import('@/components/landing/get-in-touch/map'), {
     ssr: false,
 })
 export const metadata: Metadata = {
-    title: 'SESNA Group | Get In Touch',
-    description: 'Apakah Anda bersemangat untuk membentuk masa depan yang berkelanjutan? Baik Anda memiliki proyek yang menarik atau sedang menjelajahi peluang untuk berkolaborasi, jangan ragu untuk menghubungi kami!',
+    title: 'Get In Touch',
+    description: 'Silahkan hubungi kami untuk mendapatkan informasi lebih lanjut',
     metadataBase: new URL(`https://sesna.id`),
     alternates: {
         canonical: './',
+    },
+    keywords: [
+        "Sesna",
+        "Sesna Group",
+        "PT Sumber energi surya nusantara",
+        "kontak sesna",
+        "sesna kantor"
+    ],
+    openGraph: {
+        url: new URL(`https://sesna.id/get-in-touch`)
     }
 
 }
