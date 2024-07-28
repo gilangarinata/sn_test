@@ -22,7 +22,7 @@ async function MediaPage ({ params }: { params: { lang: Locale} }) {
     const news = await fetchFooter()
     return (
        <div className="h-full">
-        <FaqDetail title="FAQ" content={news?.categories?.faq} />
+        <FaqDetail title="FAQ" content={news?.categories?.faq} lang={params.lang} desc1={"Frequently Asked Question [[Paling Sering Ditanyakan]]"} desc2={"Punya pertanyaan? Cek FAQ kami untuk panduan lengkap seputar pertanyaan anda"} />
        </div>
     )
 }

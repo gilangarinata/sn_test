@@ -100,6 +100,10 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
     const [lokasiPemasangan, setLokasiPemasangan] = React.useState('');
     const [lokasi, setLokasi] = React.useState('');
 
+    const [yourName, setYourName] = React.useState('');
+    const [yourCompany, setYourCompany] = React.useState('');
+    const [yourWhatsapp, setYourWhatsapp] = React.useState('');
+
     const [estimatedPowerUsage, setEstimatedPowerUsage] = React.useState(0);
 
     const [error, setError] = React.useState('');
@@ -211,11 +215,27 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         </div>
                                     </div>
 
-                                    {jenisProperty?.needEmail && (
-                                        <Input type="text" placeholder={dictionary.your_email} onChange={(e) => {
-                                            setYourEmail(e.target.value)
-                                        }} />
-                                    )}
+                                    {/*{jenisProperty?.needEmail && (*/}
+                                    {/*    */}
+                                    {/*)}*/}
+
+
+
+                                    <Input type="text" placeholder={dictionary.nama_user} onChange={(e) => {
+                                        setYourName(e.target.value)
+                                    }} />
+
+                                    <Input type="text" placeholder={dictionary.perusahaan} onChange={(e) => {
+                                        setYourCompany(e.target.value)
+                                    }} />
+
+                                    <Input type="text" placeholder={dictionary.whatsapp} onChange={(e) => {
+                                        setYourWhatsapp(e.target.value)
+                                    }} />
+
+                                    <Input type="text" placeholder={dictionary.your_email} onChange={(e) => {
+                                        setYourEmail(e.target.value)
+                                    }} />
 
                                     <p className="text-red-500">{error}</p>
                                 </div>
@@ -264,7 +284,22 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         return;
                                     }
 
-                                    if (jenisProperty.needEmail && yourEmail === "") {
+                                    if (yourName === "") {
+                                        setError(lang === "id" ? "Please fill your nama" :"Mohon isi nama anda")
+                                        return;
+                                    }
+
+                                    if (yourCompany === "") {
+                                        setError(lang === "id" ? "Please fill your company" :"Mohon isi perusahaan anda")
+                                        return;
+                                    }
+
+                                    if (yourWhatsapp === "") {
+                                        setError(lang === "id" ? "Please fill your whatsapp number" :"Mohon isi whatsapp anda")
+                                        return;
+                                    }
+
+                                    if (yourEmail === "") {
                                         setError(lang === "id" ? "Please fill your email" :"Mohon isi email anda")
                                         return;
                                     }
@@ -293,6 +328,10 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     cookie.set("lokasiPemasangan",lokasiPemasangan);
                                     cookie.set("estimatedpowerusage",estimatedPowerUsage.toString().replaceAll(",",""));
                                     cookie.set("youremail",yourEmail.toString());
+                                    cookie.set("yourname",yourName.toString());
+                                    cookie.set("yourwhatsapp",yourWhatsapp.toString());
+                                    cookie.set("yourcompany",yourCompany.toString());
+
                                     cookie.set("rataRataHarian",rataRataHarian.toString().replaceAll(",",""));
 
                                      if(lang === "en") {

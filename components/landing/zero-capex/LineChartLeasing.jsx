@@ -3,10 +3,11 @@ import {Bar, Line} from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import {BarChart} from "lucide-react";
 import {cn} from "@/lib/utils";
+import {locationData} from "@/components/landing/zero-capex/hitung-investasi";
 Chart.register(...registerables);
 
 export default function LineChartLeasing(
-    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, kwhPerYear,size}
+    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, kwhPerYear,size,lokasi}
 ) {
     const leasingPercent = 0.2; //20%
     const vatPercent = 0.11; // 11%
@@ -25,9 +26,10 @@ export default function LineChartLeasing(
     // const currentPLNTarrif = 1025.88;
     const plnIncreaserate = 0.03;
     // const electricityUsagePerMonth =  4873864.390;
+    const value1 = locationData.find(e => e.province === lokasi)?.value1;
 
     // const capacity =  1672.96;
-    const capacityPerDay = parseFloat(((capacity * 1406.5) / 365.0).toFixed(6));
+    const capacityPerDay = parseFloat(((capacity * parseFloat(value1)) / 365.0).toFixed(6));
     const capacityPerMonth = parseFloat((capacityPerDay * 30).toFixed(4));
     const capacityPerYear = parseFloat((capacityPerMonth * 12).toFixed(3));
 
@@ -46,7 +48,7 @@ export default function LineChartLeasing(
     const electricityCost = Math.ceil(electricityUsagePerMonth * currentPLNTarrif);
     const electricityCostWithPln = Math.ceil(capacityPerYear * currentPLNTarrif);
 
-    const plnTarriff = electricityCost;
+    const plnTarriff = currentPLNTarrif;
 
     const yearlyElectricityCost = electricityUsagePerMonth.toFixed(4) * plnTarriff * 12;
 
@@ -93,6 +95,8 @@ export default function LineChartLeasing(
         finalLeasingOffset:finalLeasingOffset,
         log: `${yearlyElectricityCost}  ${firstYearSolarLeasing}   ${onmCost}`
     }]
+
+    console.log(firstYearData)
 
 
     //looping 25 times

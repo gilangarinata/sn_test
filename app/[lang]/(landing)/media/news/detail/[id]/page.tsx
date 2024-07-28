@@ -49,11 +49,12 @@ export async function generateMetadata(
         keywords: newsO.tags.map(e => e.tag),
         openGraph: {
             images: [newsO.image],
+            url: new URL(`https://sesna.id/media/news/detail/${newsO.slug}`)
         },
         metadataBase: new URL(`https://sesna.id`),
         alternates: {
             canonical: './',
-        }
+        },
     }
 }
 async function MediaPage ({ params }: { params: { id: string } }) {

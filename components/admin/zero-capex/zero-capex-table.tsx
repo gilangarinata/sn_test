@@ -15,11 +15,16 @@ import cookie from "js-cookie";
 import jsPDF from "jspdf";
 import {number} from "zod";
 import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card";
+import axiosInstance from "@/lib/axios_config";
+import {deleteImage} from "@/lib/actions/admin/upload-image.action";
 
 export type ZeroCapex = {
     _id: string;
     url: string;
     email: string;
+    name: string;
+    company: string;
+    whatsapp: string;
     dayaTerpasang: string;
     dayaListrik: string;
     luasProperty: string;
@@ -32,7 +37,8 @@ export type ZeroCapex = {
     jumlahModulSurya: string;
     produksiEnergiPerTahun: string;
     periodeInstallasi: string;
-    lokasi: string
+    lokasi: string,
+    pdfUrl: string
 };
 
 function ZeroCapexTable() {
@@ -50,39 +56,28 @@ function ZeroCapexTable() {
         }
     };
 
-    const convertNextPageToPDF2 = async (data : ZeroCapex) => {
-        const pdf = new jsPDF();
-        // pdf.addImage( "/images/zero_capex_br_id.png", 'PNG', 0, 0, 210, 297);
-        pdf.setFontSize(9);
-        pdf.setTextColor(39, 73, 105);
-        pdf.text(data.lokasi ?? "", 58, 117);
-        pdf.text(data.dayaTerpasang, 58, 122.7);
-        pdf.text(data.dayaListrik, 58, 128.5);
-        pdf.text(data.luasProperty, 58, 134.2);
-        pdf.text(data.tagihanPerBulan, 58, 140);
-        pdf.text(data.tarifListrik, 58, 146);
-        pdf.text(data.estimasiPenggunaanDaya, 58, 152);
-        pdf.text(data.lokasiInstallasi, 58, 157.5);
-        pdf.text(data.email, 58, 163);
-
-
-        pdf.text(data.rekomendasiInstallasi, 170, 117);
-        pdf.text(data.luasProperty, 170, 122.7);
-        pdf.text(data.jumlahModulSurya, 170, 128.5);
-        pdf.text(data.produksiEnergiPerTahun, 170, 134.2);
-        pdf.text(data.periodeInstallasi, 170, 140);
-
-        pdf.save('zero_capex_data.pdf');
-    };
 
     useEffect(() => {
         getZeroCapex();
     }, []);
 
-    const handleDelete = async (id: string) => {
+
+    const handleDelete = async (id: string, pdf: string) => {
         try {
             setDeleteLoading(true);
             // Assuming you have logic to handle file deletion here
+            const fileLogo = pdf.substring(pdf.lastIndexOf('/') + 1)
+            try {
+                await axiosInstance.delete(`/api/delete/${fileLogo}`, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+            } catch (error) {
+                // Handle any upload error
+                console.error('File upload error:', error);
+            }
             await deleteZeroCapex({ id });
             setDeleteLoading(false);
             setOpenDialog({ category: null, isOpen: false });
@@ -107,7 +102,7 @@ function ZeroCapexTable() {
                     <DialogFooter>
                         <div className="flex gap-2">
                             <Button variant="outline" onClick={() => setOpenDialog({ category: null, isOpen: false })}>Cancel</Button>
-                            <Button variant="destructive" onClick={() => handleDelete(openDialog.category?._id ?? "")}>
+                            <Button variant="destructive" onClick={() => handleDelete(openDialog.category?._id ?? "", openDialog.category?.pdfUrl ?? "")}>
                                 {deleteLoading ? <Spinner /> : `Delete Data`}
                             </Button>
                         </div>
@@ -120,22 +115,34 @@ function ZeroCapexTable() {
                 <Table>
                     <TableHeader>
                         <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Company</TableHead>
+                            <TableHead>Whatsapp</TableHead>
                             <TableHead>Email</TableHead>
                             <TableHead>Daya Terpasang</TableHead>
                             <TableHead>Daya Listrik</TableHead>
                             <TableHead>Luas Property</TableHead>
                             <TableHead>Tagihan Perbulan</TableHead>
+                            <TableHead>PDF</TableHead>
                             <TableHead></TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {zeroCapexList?.map((category) => (
                             <TableRow key={category._id}>
+                                <TableCell>{category.name}</TableCell>
+                                <TableCell>{category.company}</TableCell>
+                                <TableCell>{category.whatsapp}</TableCell>
                                 <TableCell>{category.email}</TableCell>
                                 <TableCell>{category.dayaTerpasang}</TableCell>
                                 <TableCell>{category.dayaListrik}</TableCell>
                                 <TableCell>{category.luasProperty}</TableCell>
                                 <TableCell>{category.tagihanPerBulan}</TableCell>
+                                <TableCell>
+                                    <a target="_blank" href={category.pdfUrl} rel="noopener noreferrer">
+                                        {category.pdfUrl ? <div className="text-blue-900">Lihat PDF</div> : <></>}
+                                    </a>
+                                </TableCell>
                                 <TableCell>
                                     <div className="flex items-center justify-center gap-4">
                                         <Trash2Icon onClick={() => setOpenDialog({ category, isOpen: true })} width={18} color="red" className="hover:cursor-pointer" />

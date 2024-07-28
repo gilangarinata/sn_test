@@ -15,7 +15,11 @@ const newsSchema = new  mongoose.Schema({
     jumlahModulSurya: String,
     produksiEnergiPerTahun: String,
     periodeInstallasi: String,
-    lokasi: String
+    lokasi: String,
+    name: String,
+    whatsapp: String,
+    company: String,
+    pdfUrl: String
 });
 
 const ZeroCapexModel = mongoose.models?.ZeroCapexModel || mongoose.model('ZeroCapexModel', newsSchema);

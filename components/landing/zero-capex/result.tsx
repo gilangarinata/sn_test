@@ -22,6 +22,7 @@ import ImageComponent from "@/components/landing/zero-capex/image-component";
 import {Locale} from "@/i18n.config";
 import { number } from "zod";
 import {createZeroCapex} from "@/lib/actions/admin/zero-capex.action";
+import axiosInstance from "@/lib/axios_config";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -257,63 +258,47 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
 
     const [isDownload, setIsDownload] = React.useState(false)
 
-    const convertNextPageToPDF = () => {
-        setIsDownload(true)
-        const input = document.getElementById('page-content');
-        if(input === null) return;
+    const calculateImageSizeInMB = (base64String : string) => {
+        // Calculate the length of the base64 string
+        const stringLength = base64String.length;
 
-        const input2 = document.getElementById('page-content2');
-        if(input2 === null) return;
+        // Subtract the padding characters (if any)
+        const padding = (base64String.endsWith('==')) ? 2 : (base64String.endsWith('=')) ? 1 : 0;
 
-        let plan: HTMLElement | null;
-        if(selectedPlan == 0) {
-            plan = document.getElementById('solar-rental');
-        } else if (selectedPlan == 1) {
-            plan = document.getElementById('turnkey-epc');
-        }
+        // Calculate the size in bytes
+        const bytes = (stringLength * 3 / 4) - padding;
 
-        let rekomendasi: HTMLElement | null;
-        if(selectedRecommendation == 0) {
-            rekomendasi = document.getElementById('rekomendasi1');
-        } else if (selectedRecommendation == 1) {
-            rekomendasi = document.getElementById('rekomendasi2');
-        }
+        // Convert bytes to megabytes
+        const megabytes = bytes / (1024 * 1024);
 
-        // @ts-ignore
-
-        // Capture the content of the page as an image using html2canvas
-        html2canvas(input)
-            .then((canvas) => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF();
-
-                html2canvas(input2)
-                    .then(async (canvas2) => {
-                        if(plan === null) return;
-                        if(rekomendasi === null) return;
-                        const planz = await html2canvas(plan)
-                        const rekomendasiz = await html2canvas(rekomendasi)
-                        const imgRekomendasi = rekomendasiz.toDataURL('image/png');
-                        pdf.addImage(imgRekomendasi, 'PNG', 50, 0, 120, 300);
-                        pdf.addPage();
-
-                        const imgPlan = planz.toDataURL('image/png');
-                        pdf.addImage(imgPlan, 'PNG', 50, 0, 120, 200);
-                        pdf.addPage();
-
-                        const imgData2 = canvas2.toDataURL('image/png');
-                        pdf.addImage(imgData2, 'PNG', 0, 0, 210, 300);
-                        pdf.addPage();
-                        // Add the captured image to the PDF
-                        pdf.addImage(imgData, 'PNG', 0, 0, 210, 260);
-
-                        // Save the PDF file
-                        pdf.save('next_page.pdf');
-                        setIsDownload(false)
-                    })
-            });
+        return megabytes.toFixed(2); // return the size in MB with 2 decimal places
     };
 
+    const startUpload = async (logo: File[]) : Promise<{
+        message: string;
+        fileUrl: string;
+    }[]> => {
+        var file = logo[0];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await axiosInstance.post<{
+                message: string;
+                fileUrl: string;
+            }[]>('/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            return response.data;
+        } catch (error) {
+            // Handle any upload error
+            console.error('File upload error:', error);
+            return [{ message: 'File upload failed', fileUrl: '' }];
+        }
+    }
     const convertNextPageToPDF2 = () => {
         setIsDownload(true)
         const chart = document.getElementById('chart');
@@ -349,8 +334,32 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                     pdf.text(line, x, newY);
                 };
 
-                pdf.addImage(lang === "id" ? "/images/zero_capex_br_en.png" : "/images/zero_capex_br_id.png", 'PNG', 0, 0, 210, 297);
+                pdf.addImage(lang === "id" ? "/images/zero_capex_br_en.png" : "/images/zero_capex_br_id.png", 'PNG', 0, 0, 210, 297,'','FAST');
                 pdf.setFontSize(9);
+
+
+                const x = 0;
+                const y = 78;
+                const width = 700;
+                const height = 20;
+
+                // Define the opacity
+                const opacity = 0.85;
+
+                // Draw the rectangle with opacity
+                pdf.setFillColor(21, 83, 122);
+                pdf.setGState(pdf.GState({ opacity }));
+                pdf.rect(x, y, width, height, 'F');
+
+                pdf.setTextColor(255, 255, 255);
+                pdf.setFontSize(16)
+                pdf.text(`Perusahaan : ${cookie.get("yourcompany") ?? ""}`, 10, 85);
+                pdf.text(`Nama : ${cookie.get("yourname") ?? ""}`, 10, 93);
+
+                pdf.text(`No. WA : ${cookie.get("yourwhatsapp") ?? ""}`, 120, 89);
+
+
+                pdf.setFontSize(9)
                 pdf.setTextColor(39, 73, 105);
                 pdf.text(cookie.get("lokasi") ?? "", 58, 117);
                 pdf.text(selectedJenisProperty?.categoryEn ?? "", 58, 122.7);
@@ -374,25 +383,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                 pdf.text(produksi + " kWp", 170, 134.2);
                 pdf.text(periode + " month", 170, 140);
 
-                await createZeroCapex(
-                    {
-                        url: "",
-                        email: cookie.get("youremail") ?? "-",
-                        dayaTerpasang: selectedJenisProperty?.categoryEn ?? "",
-                        dayaListrik: (cookie.get("dayaListrik") ?? "") + " kVA",
-                        luasProperty: (cookie.get("luasArea") ?? "") + " m2",
-                        tagihanPerBulan: "Rp "+(cookie.get("tagihanListrik") ?? ""),
-                        tarifListrik: "Rp "+(cookie.get("tarifListrik") ?? "") + " per kWh",
-                        estimasiPenggunaanDaya: (Number(cookie.get("estimatedpowerusage")).toFixed(2) ?? "") + " kWh",
-                        lokasiInstallasi: cookie.get("lokasiPemasangan") ?? "",
-                        rekomendasiInstallasi: (rekomendasi ?? "") + " kWp",
-                        areaPotensial: area + " m2",
-                        jumlahModulSurya: jumlah + " pcs",
-                        produksiEnergiPerTahun: produksi + " kWp",
-                        periodeInstallasi: periode + " month",
-                        lokasi: cookie.get("lokasi") ?? ""
-                    }
-                )
+
 
                 pdf.setFontSize(12);
                 pdf.setTextColor(255, 255, 255);
@@ -465,13 +456,51 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                     }
                 }
 
-                pdf.addImage(imgData, 'PNG', 95, 225, 60, 60);
+                const imageSizeInMB = calculateImageSizeInMB(imgData);
+
+                console.log(`Image size: ${imageSizeInMB} MB`);
+
+                pdf.addImage(imgData, 'PNG', 95, 225, 60, 60,'','FAST');
 
                 pdf.setFontSize(9);
                 pdf.setFont('helvetica', 'normal');
 
                 const text = lang === "id" ? `*This graph shows a comparison of the client's expenditure if using ${isDirectPurchase ? "direct purchase" : "solar leasing"} compared to using only PLN electricity from year to year. You can see this comparison, using a solar power plant can save electricity expenses every year.` : `*Grafik ini menunjukkan perband- ingan jumlah pengeluaran klien jika menggunakan ${isDirectPurchase ? "direct purchase" : "solar leasing"} dibandingkan dengan hanya menggunakan listrik PLN dari tahun ke tahun. Bisa dilihat perbandingan tersebut, menggu- nakan Pembangkit Listri Tenaga Surya dapat menghemat pengel- uaran listrik setiap tahun.`;
                 justifyText(pdf, text, 160, 227, 48, 4);
+
+                const timestamp = new Date().getTime();
+
+                const pdfBlob = pdf.output('blob');
+                const pdfFile = new File([pdfBlob], `zero_capex_${timestamp}.pdf`, {
+                    type: 'application/pdf',
+                });
+
+                // Step 4: Upload the PDF file
+                const result = await startUpload([pdfFile]);
+                console.log(`GILS ${result[0].fileUrl}`)
+                await createZeroCapex(
+                    {
+                        url: "",
+                        email: cookie.get("youremail") ?? "-",
+                        dayaTerpasang: selectedJenisProperty?.categoryEn ?? "",
+                        dayaListrik: (cookie.get("dayaListrik") ?? "") + " kVA",
+                        luasProperty: (cookie.get("luasArea") ?? "") + " m2",
+                        tagihanPerBulan: "Rp "+(cookie.get("tagihanListrik") ?? ""),
+                        tarifListrik: "Rp "+(cookie.get("tarifListrik") ?? "") + " per kWh",
+                        estimasiPenggunaanDaya: (Number(cookie.get("estimatedpowerusage")).toFixed(2) ?? "") + " kWh",
+                        lokasiInstallasi: cookie.get("lokasiPemasangan") ?? "",
+                        rekomendasiInstallasi: (rekomendasi ?? "") + " kWp",
+                        areaPotensial: area + " m2",
+                        jumlahModulSurya: jumlah + " pcs",
+                        produksiEnergiPerTahun: produksi + " kWp",
+                        periodeInstallasi: periode + " month",
+                        lokasi: cookie.get("lokasi") ?? "",
+                        name: cookie.get("yourname") ?? "",
+                        whatsapp: cookie.get("yourwhatsapp") ?? "",
+                        company: cookie.get("yourcompany") ?? "",
+                        pdfUrl: result[0].fileUrl
+                    }
+                )
 
                 pdf.save('zero_capex_result.pdf');
                 setIsDownload(false)
@@ -936,7 +965,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                                 <p className="text-sm w-full">{lang === "id" ? "Digital Performance Monitoring" : "Pemantauan Kinerja Digital"}</p>
                             </div>
                             <div className="flex-1"></div>
-                            <h1 className="w-full text-center text-lg font-black mt-4">{lang === "id" ? "Start from" : "Mulai dari"}<br/>{priceTurnkeyEPC}<br/>/{lang === "id" ? "Month" : "Bulan"}</h1>
+                            <h1 className="w-full text-center text-lg font-black mt-4">{lang === "id" ? "Start from" : "Mulai dari"}<br/>{priceTurnkeyEPC}<br/></h1>
                             {isDownload ?<></> : (
                                 <Button onClick={(a) => setSelectedPlan(1)} className="text-white text-lg font-bold mt-4">{dictionary.choose_plan}</Button>
                             )}
@@ -952,6 +981,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                             electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
                             capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
                             size={size.width < 450 ? 350 : 600}
+                            lokasi={cookie.get("lokasi") ?? ""}
                         />) : (
                         <div></div>
                     )}
@@ -963,6 +993,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                         capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
                         kwhPerYear={parseFloat( selectedRecommendation === 0 ? produksiEnergiPerTahun.replaceAll(",", "") : produksiEnergiPerTahun2.replaceAll(",", ""))}
                         size={size.width < 450 ? 350 : 600}
+                        lokasi={cookie.get("lokasi") ?? ""}
                     />) : (
                         <div></div>
                     )}
@@ -972,7 +1003,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
 
                 {selectedRecommendation === -1 && selectedPlan === -1 ? (<div></div>) : (
                     <div className="w-full bg-[#f9c329] flex justify-center mt-20">
-                        <Button className="my-4" onClick={convertNextPageToPDF2}><DownloadIcon/> {dictionary.download_hasil}</Button>
+                        {isDownload ? <>Downloading PDF...</> : <Button className="my-4" onClick={convertNextPageToPDF2}><DownloadIcon/> {dictionary.download_hasil}</Button> }
                         {/*<Link href="/zero-capex-pdf"><Button className="my-4"><DownloadIcon/> Download Hasil</Button></Link>*/}
                     </div>
                 )}

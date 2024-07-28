@@ -3,28 +3,30 @@ import {Bar, Line} from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import {BarChart} from "lucide-react";
 import {cn} from "@/lib/utils";
+import {locationData} from "@/components/landing/zero-capex/hitung-investasi";
 Chart.register(...registerables);
 
 export default function LineChart(
-    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, size}
+    {solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity, size, lokasi}
 ) {
 
 
-    console.log("olek")
-    console.log(solarInvestment, currentPLNTarrif, electricityUsagePerMonth, capacity)
+    console.log(solarInvestment, `CUR ${currentPLNTarrif}`, electricityUsagePerMonth, capacity)
 
     // const solarInvestment =  13383647799;
     // const currentPLNTarrif = 1025.88;
     const plnIncreaserate = 0.03;
     // const electricityUsagePerMonth =  4873864.390;
+    const value1 = locationData.find(e => e.province === lokasi)?.value1;
+
 
     // const capacity =  1672.96;
-    const capacityPerDay = parseFloat(((capacity * 1406.5) / 365.0).toFixed(6));
+    const capacityPerDay = parseFloat(((capacity * parseFloat(value1)) / 365.0).toFixed(6));
     const capacityPerMonth = parseFloat((capacityPerDay * 30).toFixed(4));
     const capacityPerYear = parseFloat((capacityPerMonth * 12).toFixed(3));
 
     console.log("olek2")
-    console.log(capacityPerDay, capacityPerMonth, capacityPerYear)
+    console.log(capacity, capacityPerDay, capacityPerMonth, capacityPerYear)
 
 
     const insurance = solarInvestment * 0.4 / 100;
@@ -39,7 +41,7 @@ export default function LineChart(
     const electricityCostWithPln = Math.ceil(capacityPerYear * currentPLNTarrif);
     const offset = (electricityCost - onmCost) - electricityCostWithPln;
 
-    const plnTarriff = electricityCost;
+    const plnTarriff = currentPLNTarrif;
 
     const yearlyElectricityCost = electricityUsagePerMonth.toFixed(4) * plnTarriff * 12;
 
@@ -58,6 +60,8 @@ export default function LineChart(
         maintenance: Math.ceil(maintenance),
         offset: (yearlyElectricityCost + plnTarriff) - (capacityPerYear * plnTarriff)
     }]
+
+    console.log(`test ${Math.ceil(capacityPerYear)}  ${plnTarriff}  ${capacityPerYear * plnTarriff}  ${yearlyElectricityCost}  ${electricityCost}`)
 
 
     //looping 25 times
@@ -79,6 +83,9 @@ export default function LineChart(
         const offset = (electricityCost - onmCost) - electricityCostWithPln;
 
         const yearlyElectricityCost = electricityUsagePerMonth.toFixed(4) * plnTarriff * 12;
+
+        console.log(`test2 ${electricityInKwh}  ${plnTarriff}  ${electricityCostWithPln}  ${yearlyElectricityCost} `)
+
 
         firstYearData.push({
             tahun: i + 1,

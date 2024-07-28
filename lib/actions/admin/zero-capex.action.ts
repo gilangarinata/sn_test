@@ -19,6 +19,10 @@ interface ZeroCapexParams {
     produksiEnergiPerTahun: string;
     periodeInstallasi: string;
     lokasi: string;
+    name: string;
+    company: string;
+    whatsapp: string;
+    pdfUrl: string
 }
 
 export async function fetchZeroCapex() {
