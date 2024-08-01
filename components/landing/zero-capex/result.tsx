@@ -407,15 +407,24 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                 pdf.setFontSize(9);
                 pdf.setFont('helvetica', 'normal');
 
+
+                // <div className="flex gap-4">
+                //     <Input type="checkbox" className="w-5 h-5" checked={true}/>
+                //     <p className="text-sm w-full">{lang === "id" ? "Initial investment with full benefit of cost saving" : "Investasi awal dengan manfaat penuh dari penghematan biaya."}</p>
+                // </div>
+                // <div className="flex gap-4 mt-4">
+                //     <Input type="checkbox" className="w-5 h-5" checked={true}/>
+                //     <p className="text-sm w-full">{lang === "id" ? "Cooperation during EPC period with possible O&M service contract" : "Kerja sama selama periode EPC dengan kemungkinan kontrak layanan O&M."}</p>
+                // </div>
                 if(selectedPlan === 0) {
                     if(lang === "id") {
-                        pdf.text("Zero advance, Monthly fee",14, 243)
+                        pdf.text("No (zero) upfront investment",14, 243)
                         pdf.text("Long-term Cooperation",14, 250)
                         pdf.text("Minimum installed Capacity 500 kWp",14, 257)
                         pdf.text("Warranty & OM Service",14, 264)
                         pdf.text("Digital Performance Monitoring",14, 271)
                     } else {
-                        pdf.text("Tanpa uang muka, Biaya bulanan", 14, 243);
+                        pdf.text("Tidak ada (nol) investasi di muka", 14, 243);
                         pdf.text("Kerjasama jangka panjang", 14, 250);
                         pdf.text("Kapasitas minimum terpasang 500 kWp", 14, 257);
                         pdf.text("Jaminan & Layanan OM", 14, 264);
@@ -425,14 +434,18 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
 
                 } else if(selectedPlan === 1) {
                     if(lang === "id") {
-                        pdf.text("Zero advance, Monthly fee",14, 243)
-                        pdf.text("Short-term Cooperation",14, 250)
+                        pdf.text("Initial investment with full benefit of cost saving",14, 243)
+                        pdf.setFontSize(6);
+                        pdf.text("Cooperation during EPC period with possible O&M service contract",14, 250)
+                        pdf.setFontSize(9);
                         pdf.text("Unlimited installed Capacity",14, 257)
                         pdf.text("Warranty & OM Service",14, 264)
                         pdf.text("Digital Performance Monitoring",14, 271)
                     } else {
-                        pdf.text("Tanpa uang muka, Biaya bulanan", 14, 243);
-                        pdf.text("Kerjasama jangka pendek", 14, 250);
+                        pdf.text("Investasi awal dengan manfaat penuh dari penghematan biaya.", 14, 243);
+                        pdf.setFontSize(6);
+                        pdf.text("Kerja sama selama periode EPC dengan kemungkinan kontrak layanan O&M.", 14, 250);
+                        pdf.setFontSize(9);
                         pdf.text("Kapasitas terpasang tanpa batas", 14, 257);
                         pdf.text("Jaminan & Layanan OM", 14, 264);
                         pdf.text("Pemantauan Kinerja Digital", 14, 271);
@@ -909,7 +922,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                             <hr className="my-3"/>
                             <div className="flex gap-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Zero advance, Monthly fee" : "Tanpa uang muka, biaya bulanan"}</p>
+                                <p className="text-sm w-full">{lang === "id" ? "No (zero) upfront investment" : "Tidak ada (nol) investasi di muka"}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
@@ -946,11 +959,11 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                             <hr className="my-3"/>
                             <div className="flex gap-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Low advance, Monthly fee" : "Uang muka rendah, biaya bulanan"}</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Initial investment with full benefit of cost saving" : "Investasi awal dengan manfaat penuh dari penghematan biaya."}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Short-term Cooperation" : "Kerja Sama Jangka Pendek"}</p>
+                                <p className="text-sm w-full">{lang === "id" ? "Cooperation during EPC period with possible O&M service contract" : "Kerja sama selama periode EPC dengan kemungkinan kontrak layanan O&M."}</p>
                             </div>
                             <div className="flex gap-4 mt-4">
                                 <Input type="checkbox" className="w-5 h-5" checked={true}/>
