@@ -39,7 +39,9 @@ export default function LineChartLeasing(
 
     const insurance = solarInvestment * 0.33 / 100;
     const visit = 1500000*3;
-    const maintenance =   0.003 * capacity * solarInvestment * 1000; //solarInvestment * 0.5 / 100;
+    const maintenance =   0.0025 * capacity * solarInvestment * 1000; //solarInvestment * 0.5 / 100;
+
+    console.log(`capacity ${capacity}  solarInvestment ${solarInvestment}`)
 
     const onmCost = insurance + visit + maintenance;
 
@@ -92,7 +94,7 @@ export default function LineChartLeasing(
         visit: visit,
         maintenance: maintenance,
         onmCost: onmCost,
-        finalLeasingOffset:finalLeasingOffset,
+        finalLeasingOffset: Math.abs(finalLeasingOffset),
         log: `${yearlyElectricityCost}  ${firstYearSolarLeasing}   ${onmCost}`
     }]
 
@@ -158,7 +160,7 @@ export default function LineChartLeasing(
             visit: visit,
             maintenance: maintenance,
             onmCost: onmCost,
-            finalLeasingOffset: finalLeasingOffset
+            finalLeasingOffset: Math.abs(finalLeasingOffset)
         })
     }
 
