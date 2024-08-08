@@ -39,7 +39,7 @@ export default function LineChartLeasing(
 
     const insurance = solarInvestment * 0.33 / 100;
     const visit = 1500000*3;
-    const maintenance =   0.0025 * capacity * solarInvestment * 1000; //solarInvestment * 0.5 / 100;
+    const maintenance =   0.0025 * capacity * 15800 * 1000; //solarInvestment * 0.5 / 100;
 
     console.log(`capacity ${capacity}  solarInvestment ${solarInvestment}`)
 
