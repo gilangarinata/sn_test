@@ -44,14 +44,24 @@ export default async function RootLayout({
             <QontakWebChat />
             <meta name="google-site-verification" content="6y-KyjbdApsSaEAFXmZa2mYLgzhyV1rAOq4dpUfhfu8"/>
             <div className="container">
-                <Script src="https://www.googletagmanager.com/gtag/js?id=G-EM5J07JC7L"/>
+                {/*<Script src="https://www.googletagmanager.com/gtag/js?id=G-EM5J07JC7L"/>*/}
+                {/*<Script id="google-analytics">*/}
+                {/*    {`*/}
+                {/*       window.dataLayer = window.dataLayer || [];*/}
+                {/*        function gtag(){dataLayer.push(arguments);}*/}
+                {/*        gtag('js', new Date());*/}
+
+                {/*        gtag('config', 'G-EM5J07JC7L');*/}
+                {/*    `}*/}
+                {/*</Script>*/}
+                <Script src="https://www.googletagmanager.com/gtag/js?id=AW-11457539871"/>
                 <Script id="google-analytics">
                     {`
                        window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
 
-                        gtag('config', 'G-EM5J07JC7L');
+                        gtag('config', 'AW-11457539871');
                     `}
                 </Script>
             </div>
