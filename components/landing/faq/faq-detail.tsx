@@ -18,7 +18,6 @@ import {cn, formatDateString2, translateText} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import React, {useState} from "react";
 import {News} from "@/components/admin/media/news/news-table";
-import {BlockNoteView} from "@blocknote/react";
 import {NewEditor} from "@/components/admin/media/news/new_editor";
 import {FooterData} from "@/components/admin/footer/footer-table";
 import {Locale} from "@/i18n.config";

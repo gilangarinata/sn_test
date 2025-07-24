@@ -11,7 +11,6 @@ import {cn, formatDateString2} from "@/lib/utils";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import React from "react";
 import {News} from "@/components/admin/media/news/news-table";
-import {BlockNoteView} from "@blocknote/react";
 import {NewEditor} from "@/components/admin/media/news/new_editor";
 
 export default function NewsDetail({news} : {news : News}) {
