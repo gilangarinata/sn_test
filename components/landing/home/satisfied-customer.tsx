@@ -73,8 +73,19 @@ export const SatisfiedCustomerCard = React.memo(function (props) {
     const { title } = data[dataIndex];
     const { url } = data[dataIndex];
     return (
-        <Link href={url === "" ? "/" : url}>
-            <Image width={600} height={600} src={icon} alt={title} draggable={false} className="px-4"/>
+        <Link
+            href={url === "" ? "/" : url}
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            <img
+                src={icon}
+                alt={title}
+                draggable="false"
+                className="px-4"
+                width="600"
+                height="600"
+            />
         </Link>
     );
 });

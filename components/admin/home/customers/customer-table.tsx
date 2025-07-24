@@ -136,11 +136,17 @@ function CustomerTable() {
                                     <TableCell>{customer.title}</TableCell>
                                     <TableCell>{customer.url}</TableCell>
                                     <TableCell>
-                                        <Image className="mx-auto" width={60} height={60}
-                                                      src={customer.icon} alt=""/>
+                                        <img
+                                            className="mx-auto"
+                                            width="60"
+                                            height="60"
+                                            src={customer.icon}
+                                            alt=""
+                                            draggable="false"
+                                        />
                                     </TableCell>
                                     <TableCell>
-                                        <div className="flex items-center justify-center gap-4">
+                                    <div className="flex items-center justify-center gap-4">
                                             <Trash2Icon onClick={()=> setOpen({isOpen: true, banner: customer})} width={18} color="red" className="hover:cursor-pointer" />
                                             <EditIcon width={18} className="hover:cursor-pointer" onClick={(bt) => {
                                                 bt.preventDefault();
