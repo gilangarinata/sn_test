@@ -17,7 +17,6 @@ import {fetchCareerByDepIds} from "@/lib/actions/admin/career.action";
 import {CareerMdl} from "@/components/admin/career/add_career/career-table";
 import {fetchAllNews, fetchNewsByCategory} from "@/lib/actions/admin/news.action";
 import {NewEditor} from "@/components/admin/media/news/new_editor";
-import {underline} from "kleur/colors";
 import {Locale} from "@/i18n.config";
 
 export default function NewsContent({ categoryId, categories, lang, dictionary} : { categoryId?: string, categories: Category[],lang: Locale, dictionary: any}) {
