@@ -2,47 +2,46 @@
 
 ARG NODE_VERSION=20
 
-# ---------- Base for build ----------
+# ---------- Base ----------
 FROM node:${NODE_VERSION}-bookworm-slim AS base
 WORKDIR /app
-ENV NODE_ENV=production
+# (No NODE_ENV here so dev deps can be installed/built)
 
-# ---------- Install deps (build stage) ----------
+# ---------- Deps ----------
 FROM base AS deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 make g++ git \
   && rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
-# Use lockfile if present for reproducible builds
-RUN if [ -f package-lock.json ]; then npm ci --include=dev; else npm i --include=dev; fi
+# Force install deps (ignores peer/engine conflicts)
+RUN npm install --force --no-audit --no-fund
 
 # ---------- Build ----------
 FROM deps AS builder
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-# Make sure we produce a standalone build (see next.config.js below)
+# Ensure standalone output via next.config.js: { output: 'standalone' }
 RUN npm run build
 
-# ---------- Runtime image ----------
+# ---------- Runtime ----------
 FROM node:${NODE_VERSION}-bookworm-slim AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
-    PORT=3000
-
-# Healthcheck tool
-RUN apt-get update && apt-get install -y --no-install-recommends curl \
-  && rm -rf /var/lib/apt/lists/*
+    PORT=3000 \
+    HOSTNAME=0.0.0.0   # bind IPv4 so Coolify can reach it
 
 # Run as non-root
 RUN useradd -m -u 1001 nextjs
 USER 1001
 
-# Copy the standalone output and static/public assets
+# Copy standalone server + assets
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
+# If you use Prisma/native binaries, uncomment:
+# COPY --from=deps /app/node_modules ./node_modules
 
 EXPOSE 3000
-HEALTHCHECK --interval=30s --timeout=5s --start-period=40s CMD curl -fsS http://127.0.0.1:${PORT}/ || exit 1
 CMD ["node", "server.js"]
