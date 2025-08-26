@@ -42,11 +42,6 @@ COPY --from=builder /app/public ./public
 # COPY --from=deps /app/node_modules ./node_modules
 
 
-
-
-
-
-
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
   CMD node -e "process.exit(0)"
 
