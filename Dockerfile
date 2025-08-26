@@ -5,14 +5,12 @@ ARG NODE_VERSION=20
 # ---------- Base ----------
 FROM node:${NODE_VERSION}-bookworm-slim AS base
 WORKDIR /app
-# (No NODE_ENV here so dev deps can be installed/built)
 
 # ---------- Deps ----------
 FROM base AS deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 make g++ git \
   && rm -rf /var/lib/apt/lists/*
-
 COPY package*.json ./
 # Force install deps (ignores peer/engine conflicts)
 RUN npm install --force --no-audit --no-fund
@@ -21,7 +19,7 @@ RUN npm install --force --no-audit --no-fund
 FROM deps AS builder
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-# Ensure standalone output via next.config.js: { output: 'standalone' }
+# Ensure next.config.js has: module.exports = { output: 'standalone' };
 RUN npm run build
 
 # ---------- Runtime ----------
@@ -30,7 +28,7 @@ WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PORT=3000 \
-    HOSTNAME=0.0.0.0   # bind IPv4 so Coolify can reach it
+    HOSTNAME=0.0.0.0
 
 # Run as non-root
 RUN useradd -m -u 1001 nextjs
