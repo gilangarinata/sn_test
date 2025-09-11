@@ -12,6 +12,7 @@ import {Helmet} from "react-helmet";
 import Head from "next/head";
 import {fetchFooter} from "@/lib/actions/admin/footer.action";
 import {FooterData} from "@/components/admin/footer/footer-table";
+import QiscusWidget from "@/app/[lang]/(landing)/QiscusWidget";
 
 export const metadata: Metadata = {
     title: 'SESNA Group',
@@ -42,6 +43,7 @@ export default async function RootLayout({
             {/*    <link rel="canonical" href="https://sesna.id"/>*/}
             {/*</Helmet>*/}
             {/*<QontakWebChat />*/}
+            <QiscusWidget />
             <meta name="google-site-verification" content="6y-KyjbdApsSaEAFXmZa2mYLgzhyV1rAOq4dpUfhfu8"/>
             <div className="container">
                 {/*<Script src="https://www.googletagmanager.com/gtag/js?id=G-EM5J07JC7L"/>*/}
