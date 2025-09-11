@@ -914,7 +914,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                             />
                         </div>
                         <div id="solar-rental"
-                             className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", "")}>
+                             className={cn("px-8 py-8 flex-1 rounded-sm flex flex-col", "")}>
 
                             <div className="bg-[#15537A]" id="chart">
                                 {selectedPlan === 1 ? (
