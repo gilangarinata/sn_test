@@ -765,6 +765,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                                                 {isDownload ? <></> : (
                                                     <Button className="w-full mt-4" onClick={() => {
                                                         setSelectedRecommendation(0)
+                                                        setSelectedPlan(0)
                                                     }}>{lang === "id" ? "Choose Plan" : "Pilih Paket"}</Button>
                                                 )}
                                             </div>
@@ -837,6 +838,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                                                 {isDownload ?<></> :(
                                                     <Button className="w-full mt-4" onClick={() => {
                                                         setSelectedRecommendation(1)
+                                                        setSelectedPlan(0)
                                                     }}>{lang === "id" ? "Choose Plan" : "Pilih Paket"}</Button>
                                                     )}
 
@@ -908,115 +910,127 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                                 width={0}
                                 height={0}
                                 sizes="100vw"
-                                style={{ width: '100%', height: 'auto' }} // optional
+                                style={{width: '100%', height: 'auto'}} // optional
                             />
                         </div>
-                        <div id="solar-rental" className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 0 ? "border-white border-4" : "")}>
-                            <div className="flex">
-                                <h1 className="text-xl font-bold">Solar Rental Zero Capex</h1>
-                                <Image src="/images/ic_plan_1.png" alt="" width={0}
-                                       height={0}
-                                       sizes="50vw"
-                                       style={{ width: '20%', height: 'auto' }}  />
+                        <div id="solar-rental"
+                             className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", "")}>
+
+                            <div className="bg-[#15537A]" id="chart">
+                                {selectedPlan === 1 ? (
+                                    <LineChart
+                                        currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                                        solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".", "").replaceAll("Rp", "").replaceAll(",", ".").trim())}
+                                        electricityUsagePerMonth={parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                                        capacity={parseFloat(selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
+                                        size={size.width < 450 ? 350 : 600}
+                                        lokasi={cookie.get("lokasi") ?? ""}
+                                    />) : (
+                                    <div></div>
+                                )}
+
+                                {selectedPlan === 0 ? (<LineChartLeasing
+                                    currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                                    solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".", "").replaceAll("Rp", "").replaceAll(",", ".").trim())}
+                                    electricityUsagePerMonth={parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
+                                    capacity={parseFloat(selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
+                                    kwhPerYear={parseFloat(selectedRecommendation === 0 ? produksiEnergiPerTahun.replaceAll(",", "") : produksiEnergiPerTahun2.replaceAll(",", ""))}
+                                    size={size.width < 450 ? 350 : 600}
+                                    lokasi={cookie.get("lokasi") ?? ""}
+                                />) : (
+                                    <div></div>
+                                )}
                             </div>
-                            <hr className="my-3"/>
-                            <div className="flex gap-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "No (zero) upfront investment" : "Tidak ada (nol) investasi di muka"}</p>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Long-term Cooperation" : "Kerja Sama Jangka Panjang"}</p>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Minimum installed Capacity 500 kWp" : "Kapasitas terpasang minimal 500 kWp"}</p>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Warranty & OM Service" : "Garansi & Layanan OM"}</p>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Digital Performance Monitoring" : "Pemantauan Kinerja Digital"}</p>
-                            </div>
-                            <div className="flex-1"></div>
-                            <h1 className="w-full text-center text-lg font-black mt-4">{lang === "id" ? "Start from" : "Mulai dari"}<br/>{priceSolarRental}<br/>/{lang === "id" ? "Month" : "Bulan"}</h1>
-                            {isDownload ?<></> : (
-                                <Button onClick={(a) => setSelectedPlan(0)} className="text-white text-lg font-bold mt-4">{dictionary.choose_plan}</Button>
-                            )}
 
                         </div>
 
-                        <div id="turnkey-epc" className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 1 ? "border-white border-4" : "")}>
-                            <div className="flex">
-                                <h1 className="text-xl font-bold">Turnkey EPC Direct Purchase</h1>
-                                <Image src="/images/ic_plan_2.png" alt="" width={0}
-                                       height={0}
-                                       sizes="50vw"
-                                       style={{ width: '20%', height: 'auto' }}  />
-                            </div>
-                            <hr className="my-3"/>
-                            <div className="flex gap-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Initial investment with full benefit of cost saving" : "Investasi awal dengan manfaat penuh dari penghematan biaya."}</p>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Cooperation during EPC period with possible O&M service contract" : "Kerja sama selama periode EPC dengan kemungkinan kontrak layanan O&M."}</p>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Unlimited installed Capacity" : "Kapasitas terpasang tidak terbatas"}</p>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Warranty & OM Training" : "Garansi & Pelatihan OM"}</p>
-                            </div>
-                            <div className="flex gap-4 mt-4">
-                                <Input type="checkbox" className="w-5 h-5" checked={true}/>
-                                <p className="text-sm w-full">{lang === "id" ? "Digital Performance Monitoring" : "Pemantauan Kinerja Digital"}</p>
-                            </div>
-                            <div className="flex-1"></div>
-                            <h1 className="w-full text-center text-lg font-black mt-4">{lang === "id" ? "Start from" : "Mulai dari"}<br/>{priceTurnkeyEPC}<br/></h1>
-                            {isDownload ?<></> : (
-                                <Button onClick={(a) => setSelectedPlan(1)} className="text-white text-lg font-bold mt-4">{dictionary.choose_plan}</Button>
-                            )}
-                        </div>
+                        {/*<div id="solar-rental"*/}
+                        {/*     className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 0 ? "border-white border-4" : "")}>*/}
+                        {/*    <div className="flex">*/}
+                        {/*        <h1 className="text-xl font-bold">Solar Rental Zero Capex</h1>*/}
+                        {/*        <Image src="/images/ic_plan_1.png" alt="" width={0}*/}
+                        {/*               height={0}*/}
+                        {/*               sizes="50vw"*/}
+                        {/*               style={{width: '20%', height: 'auto'}}/>*/}
+                        {/*    </div>*/}
+                        {/*    <hr className="my-3"/>*/}
+                        {/*    <div className="flex gap-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "No (zero) upfront investment" : "Tidak ada (nol) investasi di muka"}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex gap-4 mt-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Long-term Cooperation" : "Kerja Sama Jangka Panjang"}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex gap-4 mt-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Minimum installed Capacity 500 kWp" : "Kapasitas terpasang minimal 500 kWp"}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex gap-4 mt-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Warranty & OM Service" : "Garansi & Layanan OM"}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex gap-4 mt-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Digital Performance Monitoring" : "Pemantauan Kinerja Digital"}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex-1"></div>*/}
+                        {/*    <h1 className="w-full text-center text-lg font-black mt-4">{lang === "id" ? "Start from" : "Mulai dari"}<br/>{priceSolarRental}<br/>/{lang === "id" ? "Month" : "Bulan"}*/}
+                        {/*    </h1>*/}
+                        {/*    {isDownload ? <></> : (*/}
+                        {/*        <Button onClick={(a) => setSelectedPlan(0)}*/}
+                        {/*                className="text-white text-lg font-bold mt-4">{dictionary.choose_plan}</Button>*/}
+                        {/*    )}*/}
+
+                        {/*</div>*/}
+
+                        {/*<div id="turnkey-epc"*/}
+                        {/*     className={cn("px-8 py-8 flex-1 bg-[#FCBA28] rounded-sm flex flex-col", selectedPlan === 1 ? "border-white border-4" : "")}>*/}
+                        {/*    <div className="flex">*/}
+                        {/*        <h1 className="text-xl font-bold">Turnkey EPC Direct Purchase</h1>*/}
+                        {/*        <Image src="/images/ic_plan_2.png" alt="" width={0}*/}
+                        {/*               height={0}*/}
+                        {/*               sizes="50vw"*/}
+                        {/*               style={{width: '20%', height: 'auto'}}/>*/}
+                        {/*    </div>*/}
+                        {/*    <hr className="my-3"/>*/}
+                        {/*    <div className="flex gap-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Initial investment with full benefit of cost saving" : "Investasi awal dengan manfaat penuh dari penghematan biaya."}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex gap-4 mt-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Cooperation during EPC period with possible O&M service contract" : "Kerja sama selama periode EPC dengan kemungkinan kontrak layanan O&M."}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex gap-4 mt-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Unlimited installed Capacity" : "Kapasitas terpasang tidak terbatas"}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex gap-4 mt-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Warranty & OM Training" : "Garansi & Pelatihan OM"}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex gap-4 mt-4">*/}
+                        {/*        <Input type="checkbox" className="w-5 h-5" checked={true}/>*/}
+                        {/*        <p className="text-sm w-full">{lang === "id" ? "Digital Performance Monitoring" : "Pemantauan Kinerja Digital"}</p>*/}
+                        {/*    </div>*/}
+                        {/*    <div className="flex-1"></div>*/}
+                        {/*    <h1 className="w-full text-center text-lg font-black mt-4">{lang === "id" ? "Start from" : "Mulai dari"}<br/>{priceTurnkeyEPC}<br/>*/}
+                        {/*    </h1>*/}
+                        {/*    {isDownload ? <></> : (*/}
+                        {/*        <Button onClick={(a) => setSelectedPlan(1)}*/}
+                        {/*                className="text-white text-lg font-bold mt-4">{dictionary.choose_plan}</Button>*/}
+                        {/*    )}*/}
+                        {/*</div>*/}
                     </div>
                 )}
-
-                <div className="bg-[#15537A]" id="chart">
-                    {selectedPlan === 1 ? (
-                        <LineChart
-                            currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
-                            solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
-                            electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
-                            capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
-                            size={size.width < 450 ? 350 : 600}
-                            lokasi={cookie.get("lokasi") ?? ""}
-                        />) : (
-                        <div></div>
-                    )}
-
-                    {selectedPlan === 0 ? (<LineChartLeasing
-                        currentPLNTarrif={parseFloat(cookie.get("tarifListrik") ?? "0.0")}
-                        solarInvestment={parseFloat(priceTurnkeyEPC.replaceAll(".","").replaceAll("Rp", "").replaceAll(",", ".").trim())}
-                        electricityUsagePerMonth = {parseFloat(cookie.get("tagihanListrik") ?? "0.0") / parseFloat(cookie.get("tarifListrik") ?? "0.0")}
-                        capacity={parseFloat( selectedRecommendation === 0 ? rekomendasiInstallasi.replaceAll(",", "") : rekomendasiInstallasi2.replaceAll(",", ""))}
-                        kwhPerYear={parseFloat( selectedRecommendation === 0 ? produksiEnergiPerTahun.replaceAll(",", "") : produksiEnergiPerTahun2.replaceAll(",", ""))}
-                        size={size.width < 450 ? 350 : 600}
-                        lokasi={cookie.get("lokasi") ?? ""}
-                    />) : (
-                        <div></div>
-                    )}
-                </div>
-
 
 
                 {selectedRecommendation === -1 && selectedPlan === -1 ? (<div></div>) : (
                     <div className="w-full bg-[#f9c329] flex justify-center mt-20">
-                        {isDownload ? <>Downloading PDF...</> : <Button className="my-4" onClick={convertNextPageToPDF2}><DownloadIcon/> {dictionary.download_hasil}</Button> }
+                        {isDownload ? <>Downloading PDF...</> : <Button className="my-4"
+                                                                        onClick={convertNextPageToPDF2}><DownloadIcon/> {dictionary.download_hasil}
+                        </Button>}
                         {/*<Link href="/zero-capex-pdf"><Button className="my-4"><DownloadIcon/> Download Hasil</Button></Link>*/}
                     </div>
                 )}
