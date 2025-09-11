@@ -13,6 +13,7 @@ import {fetchAllNews, fetchNewsById, fetchNewsBySlug} from "@/lib/actions/admin/
 import {News} from "@/components/admin/media/news/news-table";
 import {Metadata} from "next";
 import {PartialBlock, PartialInlineContent} from "@blocknote/core";
+import StructuredData from "@/app/[lang]/(landing)/StructuredDate";
 
 function getFirst50Characters(blocks: PartialBlock[]): string {
     let result = "";
@@ -59,9 +60,39 @@ export async function generateMetadata(
 }
 async function MediaPage ({ params }: { params: { id: string } }) {
     const news = await fetchNewsBySlug(params.id)
+    const article = news?.news as News;
+
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        headline: article.title,
+        description: article?.content || "", // or slice of content
+        image: [article.image],
+        datePublished: article.createdAt,   // use your real date field
+        dateModified: article.createdAt,
+        author: {
+            "@type": "Organization",
+            name: "SESNA Group"
+        },
+        publisher: {
+            "@type": "Organization",
+            name: "SESNA Group",
+            logo: {
+                "@type": "ImageObject",
+                url: "https://sesna.id/logo.svg"
+            }
+        },
+        mainEntityOfPage: {
+            "@type": "WebPage",
+            "@id": `https://sesna.id/media/news/detail/${article.slug}`
+        }
+    };
+
+
     return (
        <div className="h-full">
-        <NewsDetail news={news?.news as News} />
+           <StructuredData id="news-article" data={jsonLd} />
+           <NewsDetail news={news?.news as News} />
        </div>
     )
 }
