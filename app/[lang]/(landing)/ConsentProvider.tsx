@@ -67,6 +67,7 @@ function CookieBanner() {
                 inset: "auto 0 0 0",
                 background: "#15537a",
                 padding: "12px 16px",
+                color: "white",
                 display: "flex",
                 gap: 12,
                 alignItems: "center",
