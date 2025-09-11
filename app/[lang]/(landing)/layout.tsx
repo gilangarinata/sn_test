@@ -13,6 +13,9 @@ import Head from "next/head";
 import {fetchFooter} from "@/lib/actions/admin/footer.action";
 import {FooterData} from "@/components/admin/footer/footer-table";
 import QiscusWidget from "@/app/[lang]/(landing)/QiscusWidget";
+import {cookies} from "next/headers";
+import {Consent, CONSENT_COOKIE, defaultConsent} from "@/app/[lang]/(landing)/cookies";
+import ConsentProvider from "@/app/[lang]/(landing)/ConsentProvider";
 
 export const metadata: Metadata = {
     title: 'SESNA Group',
@@ -33,48 +36,52 @@ export default async function RootLayout({
 
     const dictionary = await getDictionary(params.lang)
     const achievements = await fetchFooter()
-
+    const c = cookies().get(CONSENT_COOKIE)?.value;
+    const initialConsent: Consent = c ? JSON.parse(c) : defaultConsent;
 
     return (
-        <main className="w-full">
-            {/*<Helmet>*/}
-            {/*    <meta charSet="utf-8"/>*/}
-            {/*    <title>SESNA Group</title>*/}
-            {/*    <link rel="canonical" href="https://sesna.id"/>*/}
-            {/*</Helmet>*/}
-            {/*<QontakWebChat />*/}
-            <QiscusWidget />
-            <meta name="google-site-verification" content="6y-KyjbdApsSaEAFXmZa2mYLgzhyV1rAOq4dpUfhfu8"/>
-            <div className="container">
-                {/*<Script src="https://www.googletagmanager.com/gtag/js?id=G-EM5J07JC7L"/>*/}
-                {/*<Script id="google-analytics">*/}
-                {/*    {`*/}
-                {/*       window.dataLayer = window.dataLayer || [];*/}
-                {/*        function gtag(){dataLayer.push(arguments);}*/}
-                {/*        gtag('js', new Date());*/}
+        <ConsentProvider initial={initialConsent}>
+            <main className="w-full">
+                {/*<Helmet>*/}
+                {/*    <meta charSet="utf-8"/>*/}
+                {/*    <title>SESNA Group</title>*/}
+                {/*    <link rel="canonical" href="https://sesna.id"/>*/}
+                {/*</Helmet>*/}
+                {/*<QontakWebChat />*/}
+                <QiscusWidget/>
+                <meta name="google-site-verification" content="6y-KyjbdApsSaEAFXmZa2mYLgzhyV1rAOq4dpUfhfu8"/>
+                <div className="container">
+                    {/*<Script src="https://www.googletagmanager.com/gtag/js?id=G-EM5J07JC7L"/>*/}
+                    {/*<Script id="google-analytics">*/}
+                    {/*    {`*/}
+                    {/*       window.dataLayer = window.dataLayer || [];*/}
+                    {/*        function gtag(){dataLayer.push(arguments);}*/}
+                    {/*        gtag('js', new Date());*/}
 
-                {/*        gtag('config', 'G-EM5J07JC7L');*/}
-                {/*    `}*/}
-                {/*</Script>*/}
-                <Script src="https://www.googletagmanager.com/gtag/js?id=AW-11457539871"/>
-                <Script id="google-analytics">
-                    {`
+                    {/*        gtag('config', 'G-EM5J07JC7L');*/}
+                    {/*    `}*/}
+                    {/*</Script>*/}
+                    <Script src="https://www.googletagmanager.com/gtag/js?id=AW-11457539871"/>
+                    <Script id="google-analytics">
+                        {`
                        window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
                         gtag('js', new Date());
 
                         gtag('config', 'AW-11457539871');
                     `}
-                </Script>
-            </div>
-            <div className="mx-auto h-full">
-                <LandingNavBar dictionary={dictionary} lang={params.lang}/>
-
-                <div className="flex flex-col">
-                    {children}
-                    <FooterLanding dictionary={dictionary} lang={params.lang} footerData={achievements?.categories as FooterData}/>
+                    </Script>
                 </div>
-            </div>
-        </main>
+                <div className="mx-auto h-full">
+                    <LandingNavBar dictionary={dictionary} lang={params.lang}/>
+
+                    <div className="flex flex-col">
+                        {children}
+                        <FooterLanding dictionary={dictionary} lang={params.lang}
+                                       footerData={achievements?.categories as FooterData}/>
+                    </div>
+                </div>
+            </main>
+        </ConsentProvider>
     )
 }
