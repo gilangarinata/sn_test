@@ -9,7 +9,12 @@ import FooterLanding from "@/components/footer-landing";
 import NewsBanner from "@/components/landing/media/news/news-banner";
 import NewsContent from "@/components/landing/media/news/news-content";
 import NewsDetail from "@/components/landing/media/news/news-detail";
-import {fetchAllNews, fetchNewsById, fetchNewsBySlug} from "@/lib/actions/admin/news.action";
+import {
+    fetchAllNews,
+    fetchLatestNews,
+    fetchNewsById,
+    fetchNewsBySlug,
+} from "@/lib/actions/admin/news.action";
 import {News} from "@/components/admin/media/news/news-table";
 import {Metadata} from "next";
 import {PartialBlock, PartialInlineContent} from "@blocknote/core";
@@ -60,6 +65,7 @@ export async function generateMetadata(
 }
 async function MediaPage ({ params }: { params: { id: string } }) {
     const news = await fetchNewsBySlug(params.id)
+    const relatedNews = await fetchLatestNews(params.id);
     const article = news?.news as News;
 
     const jsonLd = {
@@ -92,7 +98,7 @@ async function MediaPage ({ params }: { params: { id: string } }) {
     return (
        <div className="h-full">
            <StructuredData id="news-article" data={jsonLd} />
-           <NewsDetail news={news?.news as News} />
+           <NewsDetail news={news?.news as News} related={relatedNews as News[]} />
        </div>
     )
 }

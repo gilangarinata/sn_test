@@ -288,3 +288,31 @@ export async function deleteNews({id} : {id:string}): Promise<void> {
         throw new Error(`Failed to delete NewsCategory : ${error}`)
     }
 }
+
+
+
+export async function fetchLatestNews(  slug?: string, limit: number = 6): Promise<any[]> {
+    await connectToDb();
+    try {
+        const filter: any = {};
+        if (slug && slug.trim().length > 0) {
+            filter.slug = { $ne: slug.trim() };
+        }
+
+        const items = await News.find(filter)
+            .sort({ createdAt: -1, _id: -1 })
+            .limit(limit)
+            .populate([
+                { path: "category", model: NewsCategory },
+                { path: "tags", model: Tag },
+                { path: "relatedNews" },
+            ])
+            .lean()
+            .exec();
+
+        return items as any[];
+    } catch (e) {
+        // Return an empty array to satisfy the any[] contract on failure
+        return [];
+    }
+}
