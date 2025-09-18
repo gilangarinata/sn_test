@@ -16,23 +16,29 @@ export default function GetInTouch({lang, dictionary} : {lang: Locale, dictionar
     const [email, setEmail] = useState('');
     const [mobilePhone, setMobilePhone] = useState('');
     const [message, setMessage] = useState('');
+    const [namaPerusahaan, setNamaPerusahaan] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
     const handleSubmit = async () => {
         setIsLoading(true)
         setError("")
         console.log(name, email, mobilePhone, message)
-        if(name === '' || email === '' || mobilePhone === '' || message === '') {
-            setError("Please fill all the fields")
-            return
+        if (name === '' || email === '' || mobilePhone === '' || message === '' || namaPerusahaan === '') {
+            setError("Please fill all the fields");
+            setIsLoading(false);
+            return;
         }
+
 
         await updateGetInTouch({
             id: "",
-            name: name,
-            email: email,
+            name,
+            email,
             phone: mobilePhone,
-            message: message
+            message,
+            namaPerusahaan
         })
+
 
         setIsLoading(false)
         setName("")
@@ -61,28 +67,39 @@ export default function GetInTouch({lang, dictionary} : {lang: Locale, dictionar
                         <h1 className="text-2xl text-[#15537A] text-justify mt-10 lg:mt-20 font-bold">“Just Like The Sun,<br/>
                             We are Here For You”</h1>
                     </motion.div>
-                    <motion.div whileInView={{scale: 1, transition: { duration: 1 }}} initial={{scale: 0}} className="flex flex-col gap-4 w-3/4 lg:mr-20">
-                        <div  className="w-full h-fit border-t-white rounded-lg grid gap-2 gap-y-6 grid-cols-1 lg:grid-cols-2">
+                    <motion.div whileInView={{scale: 1, transition: {duration: 1}}} initial={{scale: 0}}
+                                className="flex flex-col gap-4 w-3/4 lg:mr-20">
+                        <div
+                            className="w-full h-fit border-t-white rounded-lg grid gap-2 gap-y-6 grid-cols-1 lg:grid-cols-2">
                             <div className="flex flex-col text-[#15537A] gap-2">
                                 <Input type="text" placeholder={dictionary.enter_your_name} onChange={(e) => {
                                     setName(e.target.value)
-                                }} />
+                                }}/>
                             </div>
                             <div className="flex flex-col text-[#15537A] gap-2">
                                 <Input type="email" placeholder={dictionary.enter_your_email} onChange={(e) => {
                                     setEmail(e.target.value)
-                                }} />
+                                }}/>
                             </div>
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">
                             <Input type="number" placeholder={dictionary.enter_your_phone} onChange={(e) => {
                                 setMobilePhone(e.target.value)
-                            }} />
+                            }}/>
                         </div>
                         <div className="flex flex-col text-[#15537A] gap-2">
-                            <Input className="h-32" type="text" placeholder={dictionary.enter_your_message} onChange={(e) => {
-                                setMessage(e.target.value)
-                            }} />
+                            <Input
+                                type="text"
+                                placeholder="Perusahaan"
+                                onChange={(e) => setNamaPerusahaan(e.target.value)}
+                                value={namaPerusahaan}
+                            />
+                        </div>
+                        <div className="flex flex-col text-[#15537A] gap-2">
+                            <Input className="h-32" type="text" placeholder={dictionary.enter_your_message}
+                                   onChange={(e) => {
+                                       setMessage(e.target.value)
+                                   }}/>
                         </div>
                         <div className="flex gap-4">
                             <Input type="checkbox" className="w-5 h-5"/>

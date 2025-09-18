@@ -39,31 +39,41 @@ export async function fetchGetInTouch() {
 }
 
 export async function updateGetInTouch({
-       id,
-       name,
-       email,
-       phone,
-         message,
-   } : Params): Promise<void> {
+                                           id,
+                                           name,
+                                           email,
+                                           phone,
+                                           message,
+                                           namaPerusahaan
+                                       } : {
+    id: string,
+    name: string,
+    email: string,
+    phone: string,
+    message: string,
+    namaPerusahaan: string
+}): Promise<void> {
     await connectToDb();
     try {
         const now = Date.now();
-        const currentId = id === "" ? now.toString() : id
-        console.log(currentId);
+        const currentId = id === "" ? now.toString() : id;
         await GetInTouchModel.findOneAndUpdate(
-            {id: currentId},
+            { id: currentId },
             {
-                name: name,
-                email: email,
-                phone: phone,
-                message: message,
+                name,
+                email,
+                phone,
+                message,
+                namaPerusahaan,
                 createdAt: Date.now()
-            }, { upsert: true }
+            },
+            { upsert: true }
         )
-    }catch (error) {
-        throw new Error(`Failed to update banner : ${error}`)
+    } catch (error) {
+        throw new Error(`Failed to update GetInTouch : ${error}`);
     }
 }
+
 
 export async function deleteGetInTouch({id} : {id:string}): Promise<void> {
     await connectToDb();

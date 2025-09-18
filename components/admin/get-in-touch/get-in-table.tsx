@@ -48,6 +48,7 @@ export type GetInTouch = {
     email: string,
     phone: string,
     message: string,
+    namaPerusahaan: string,
     createdAt: Date,
 }
 
@@ -176,6 +177,7 @@ function GetInTouchTable() {
                                 <TableHead>Name</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead className="text-center">Phone</TableHead>
+                                <TableHead className="text-center">Nama Perusahaan</TableHead>
                                 <TableHead className="text-center">Message</TableHead>
                                 <TableHead className="text-center">Date</TableHead>
                                 <TableHead></TableHead>
@@ -187,6 +189,7 @@ function GetInTouchTable() {
                                     <TableCell>{achievement.name}</TableCell>
                                     <TableCell>{achievement.email}</TableCell>
                                     <TableCell><div className="flex flex-col">{achievement.phone} <Button onClick={() => handleOpenWhatsApp(achievement.phone)}>Balas di Whatsapp</Button></div></TableCell>
+                                    <TableCell>{achievement.namaPerusahaan}</TableCell>
                                     <TableCell>{achievement.message}</TableCell>
                                     <TableCell>{achievement.createdAt?.toLocaleTimeString()}</TableCell>
                                     <TableCell>

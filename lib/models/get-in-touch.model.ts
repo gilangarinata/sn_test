@@ -9,6 +9,11 @@ const bannerSchema = new  mongoose.Schema({
     createdAt: {
         type: Date,
     },
+    namaPerusahaan: {
+        type: String,
+        required: true,
+        default: "Unknown Company"   // ✅ default value
+    },
 });
 
 const GetInTouch = mongoose.models.GetInTouch || mongoose.model('GetInTouch', bannerSchema);
