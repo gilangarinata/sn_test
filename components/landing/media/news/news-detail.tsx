@@ -111,10 +111,8 @@ export default function NewsDetail({
     news: News;
     related?: News[];
 }) {
-    const author =
-        (news as any)?.authorName ?? (news as any)?.author ?? "—";
-    const editor =
-        (news as any)?.editorName ?? (news as any)?.editor ?? "—";
+    const author = (news as any)?.authorName ?? (news as any)?.author ?? "—";
+    const editor = (news as any)?.editorName ?? (news as any)?.editor ?? "—";
 
     return (
         <div className="w-full flex flex-col mx-auto max-w-5xl my-10">

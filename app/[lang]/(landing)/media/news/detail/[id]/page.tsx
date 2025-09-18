@@ -19,6 +19,7 @@ import {News} from "@/components/admin/media/news/news-table";
 import {Metadata} from "next";
 import {PartialBlock, PartialInlineContent} from "@blocknote/core";
 import StructuredData from "@/app/[lang]/(landing)/StructuredDate";
+import {getContributorsByNews} from "@/lib/actions/admin/news-contributor.action";
 
 function getFirst50Characters(blocks: PartialBlock[]): string {
     let result = "";
@@ -68,6 +69,30 @@ async function MediaPage ({ params }: { params: { id: string } }) {
     const relatedNews = await fetchLatestNews(params.id);
     const article = news?.news as News;
 
+
+    // --- NEW: fetch contributors (Penulis & Editor), then decorate the article ---
+    let authorName = "—";
+    let editorName = "—";
+    try {
+        // NOTE: getContributorsByNews expects the Mongo `_id` (ObjectId) of News
+        const contributors = await getContributorsByNews((article as any)._id as string);
+        const penulis = contributors.find((c: any) => c.role === "penulis" && !c.isDeleted);
+        const editor  = contributors.find((c: any) => c.role === "editor"  && !c.isDeleted);
+
+        authorName = penulis?.name ?? authorName;
+        editorName = editor?.name ?? editorName;
+    } catch {
+        console.error("Failed to fetch contributors for news:", article._id);
+    }
+
+    // decorate (do not persist)
+    const articleWithBylines = {
+        ...article,
+        authorName,
+        editorName,
+    } as News & { authorName?: string; editorName?: string };
+
+
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "NewsArticle",
@@ -98,7 +123,7 @@ async function MediaPage ({ params }: { params: { id: string } }) {
     return (
        <div className="h-full">
            <StructuredData id="news-article" data={jsonLd} />
-           <NewsDetail news={news?.news as News} related={relatedNews as News[]} />
+           <NewsDetail news={articleWithBylines as News} related={relatedNews as News[]} />
        </div>
     )
 }
