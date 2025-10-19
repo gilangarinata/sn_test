@@ -1,6 +1,12 @@
 "use client";
 
-import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import React, {
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import { Montserrat } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,7 +26,10 @@ const font = Montserrat({ weight: "600", subsets: ["latin"] });
 /* =======================
    Low-level utilities
 ======================= */
-function useOnClickOutside<T extends HTMLElement>(ref: React.RefObject<T>, handler: (e: MouseEvent | TouchEvent) => void) {
+function useOnClickOutside<T extends HTMLElement>(
+    ref: React.RefObject<T>,
+    handler: (e: MouseEvent | TouchEvent) => void
+) {
     useEffect(() => {
         function listener(e: MouseEvent | TouchEvent) {
             if (!ref.current || ref.current.contains(e.target as Node)) return;
@@ -39,7 +48,9 @@ function useLockBodyScroll(locked: boolean) {
     useEffect(() => {
         const original = document.body.style.overflow;
         if (locked) document.body.style.overflow = "hidden";
-        return () => { document.body.style.overflow = original; };
+        return () => {
+            document.body.style.overflow = original;
+        };
     }, [locked]);
 }
 
@@ -84,8 +95,7 @@ function Drawer({
     const container = typeof window !== "undefined" ? document.body : null;
 
     const handleOutside = useCallback(() => onOpenChange(false), [onOpenChange]);
-    useOnClickOutside(panelRef, (e) => {
-        // only close when backdrop is present
+    useOnClickOutside(panelRef, () => {
         if (open) handleOutside();
     });
 
@@ -98,7 +108,6 @@ function Drawer({
                 "fixed inset-0 z-[70] transition-opacity",
                 open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
             )}
-            style={{}}
         >
             {/* Backdrop */}
             <div
@@ -127,7 +136,7 @@ function Drawer({
                     <span className="font-semibold">Menu</span>
                     <button
                         ref={firstFocusableRef}
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-md"
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-md cursor-pointer"
                         aria-label="Close menu"
                         onClick={() => onOpenChange(false)}
                     >
@@ -142,7 +151,7 @@ function Drawer({
 }
 
 /* =======================
-   Dropdown – custom
+   Dropdown – custom (desktop)
 ======================= */
 function Dropdown({
                       label,
@@ -164,9 +173,9 @@ function Dropdown({
             if (!open) return;
             if (e.key === "Escape") setOpen(false);
             if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-                // Let browser handle focus within menu; could be extended.
                 e.preventDefault();
-                const first = menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]');
+                const first =
+                    menuRef.current?.querySelector<HTMLElement>('[role="menuitem"]');
                 first?.focus();
             }
         };
@@ -182,7 +191,7 @@ function Dropdown({
                 aria-haspopup="menu"
                 aria-expanded={open}
                 onClick={() => setOpen((v) => !v)}
-                className="flex items-center gap-1"
+                className="flex items-center gap-1 cursor-pointer"
             >
         <span className={cn("font-semibold", active ? "text-[#FAC225]" : "text-[#15527B]/80")}>
           {label}
@@ -218,7 +227,7 @@ function DropdownItem({
     return (
         <button
             role="menuitem"
-            className="w-full text-left px-3 py-2 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none"
+            className="w-full text-left px-3 py-2 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none cursor-pointer"
             onClick={() => {
                 onSelect?.();
                 if (href) router.push(href);
@@ -253,7 +262,11 @@ export function LandingNavBar({
         <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 h-16 pointer-events-none">
             <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6 pointer-events-auto">
                 {/* Logo */}
-                <Link href="/" className="flex items-center" aria-label="Go to home">
+                <Link
+                    href="/"
+                    className="flex items-center cursor-pointer"
+                    aria-label="Go to home"
+                >
                     <Image
                         width={200}
                         height={40}
@@ -269,7 +282,7 @@ export function LandingNavBar({
                     <button
                         type="button"
                         aria-label="Open menu"
-                        className="inline-flex h-10 w-10 items-center justify-center rounded-md"
+                        className="inline-flex h-10 w-10 items-center justify-center rounded-md cursor-pointer"
                         onClick={() => setOpen(true)}
                     >
                         <Menu />
@@ -278,12 +291,22 @@ export function LandingNavBar({
 
                 {/* Desktop menu */}
                 <div className="hidden w-full items-center justify-end gap-x-8 lg:flex">
-                    <NavContent dictionary={dictionary} lang={lang} variant="desktop" closeDrawer={() => setOpen(false)} />
+                    <NavContent
+                        dictionary={dictionary}
+                        lang={lang}
+                        variant="desktop"
+                        closeDrawer={() => setOpen(false)}
+                    />
                 </div>
 
                 {/* Mobile drawer */}
                 <Drawer open={open} onOpenChange={setOpen} side="right">
-                    <NavContent dictionary={dictionary} lang={lang} variant="mobile" closeDrawer={() => setOpen(false)} />
+                    <NavContent
+                        dictionary={dictionary}
+                        lang={lang}
+                        variant="mobile"
+                        closeDrawer={() => setOpen(false)}
+                    />
                 </Drawer>
             </div>
         </nav>
@@ -319,21 +342,41 @@ export default function NavContent({
     );
 
     // Helper that ALWAYS closes drawer then navigates (used on mobile)
-    const MobileNavItem: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
+    const MobileNavItem: React.FC<{ href: string; children: React.ReactNode }> = ({
+                                                                                      href,
+                                                                                      children,
+                                                                                  }) => (
         <button
             type="button"
             className="w-full text-left"
             onClick={() => {
-                closeDrawer();            // close first
-                router.push(href);        // then navigate
+                closeDrawer(); // close first
+                router.push(href); // then navigate
             }}
         >
             <span className="font-semibold text-[#15527B]/80">{children}</span>
         </button>
     );
 
+    // Expand/collapse state for the Media section on mobile
+    const isMediaActive = !!pathName?.startsWith("/media");
+    const [mediaOpen, setMediaOpen] = useState<boolean>(isMediaActive);
+
+    useEffect(() => {
+        // Keep it open when you're on /media/*
+        setMediaOpen(!!pathName?.startsWith("/media"));
+    }, [pathName]);
+
+    // Wrapper adds vertical spacing ONLY on mobile
+    const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
+        variant === "mobile" ? (
+            <div className="flex flex-col gap-4">{children}</div>
+        ) : (
+            <>{children}</>
+        );
+
     return (
-        <>
+        <Wrapper>
             {routes.map((route) => {
                 // Language switcher special case
                 if (route.href === "/lang") {
@@ -349,13 +392,38 @@ export default function NavContent({
                 // Media dropdown
                 if (route.isDropdown) {
                     if (variant === "mobile") {
-                        // Simpler: render as section with two links
                         return (
-                            <div key={route.label} className="flex flex-col gap-2">
-                                <span className="font-semibold text-[#15527B]/80">{route.label}</span>
-                                <div className="ml-3 flex flex-col gap-2">
-                                    <MobileNavItem href="/media/news">News</MobileNavItem>
-                                    <MobileNavItem href="/media/video">Video</MobileNavItem>
+                            <div key={route.label} className="flex flex-col">
+                                <button
+                                    type="button"
+                                    aria-expanded={mediaOpen}
+                                    aria-controls="mobile-media-submenu"
+                                    onClick={() => setMediaOpen((v) => !v)}
+                                    className="flex items-center justify-between py-2"
+                                >
+                  <span className="font-semibold text-[#15527B]/80">
+                    {route.label}
+                  </span>
+                                    <ChevronDown
+                                        className={cn(
+                                            "h-4 w-4 transition-transform",
+                                            mediaOpen ? "rotate-180" : ""
+                                        )}
+                                    />
+                                </button>
+
+                                {/* Collapsible area */}
+                                <div
+                                    id="mobile-media-submenu"
+                                    className={cn(
+                                        "ml-3 overflow-hidden transition-[max-height,opacity] duration-300",
+                                        mediaOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+                                    )}
+                                >
+                                    <div className="flex flex-col gap-2 py-1">
+                                        <MobileNavItem href="/media/news">News</MobileNavItem>
+                                        <MobileNavItem href="/media/video">Video</MobileNavItem>
+                                    </div>
                                 </div>
                             </div>
                         );
@@ -368,12 +436,8 @@ export default function NavContent({
                             label={route.label}
                             active={pathName?.startsWith("/media")}
                         >
-                            <DropdownItem href="/media/news">{/* closes dropdown automatically, no drawer here */}
-                                News
-                            </DropdownItem>
-                            <DropdownItem href="/media/video">
-                                Video
-                            </DropdownItem>
+                            <DropdownItem href="/media/news">News</DropdownItem>
+                            <DropdownItem href="/media/video">Video</DropdownItem>
                         </Dropdown>
                     );
                 }
@@ -384,22 +448,25 @@ export default function NavContent({
                         {route.label}
                     </MobileNavItem>
                 ) : (
-                    <CustomLink
-                        key={route.label}
-                        lang={lang}
-                        href={route.href}
-                        className="font-semibold"
-                    >
-            <span
-                className={cn(
-                    pathName === route.href ? "text-[#FAC225]" : "text-[#15527B]/80"
-                )}
-            >
-              {route.label}
-            </span>
-                    </CustomLink>
+                    // Wrap to guarantee cursor shows even if CustomLink doesn't forward className
+                    <div key={route.label} className="cursor-pointer">
+                        <CustomLink
+                            lang={lang}
+                            href={route.href}
+                            className="font-semibold hover:opacity-80 transition"
+                        >
+              <span
+                  className={cn(
+                      pathName === route.href ? "text-[#FAC225]" : "text-[#15527B]/80",
+                      "cursor-pointer"
+                  )}
+              >
+                {route.label}
+              </span>
+                        </CustomLink>
+                    </div>
                 );
             })}
-        </>
+        </Wrapper>
     );
 }
