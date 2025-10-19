@@ -17,7 +17,7 @@ import {
 function newsHref(n: Partial<News>) {
     // prefer slug if present; fall back to id
     const slug = (n as any)?.slug ?? (n as any)?.id ?? "";
-    return `/news/${slug}`;
+    return `/media/news/detail/${slug}`;
 }
 
 function ShareButtons({ title }: { title: string }) {

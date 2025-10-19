@@ -291,23 +291,36 @@ export async function deleteNews({id} : {id:string}): Promise<void> {
 
 
 
-export async function fetchLatestNews(  slug?: string, limit: number = 6): Promise<any[]> {
+export async function fetchLatestNews(slug?: string, limit: number = 6): Promise<any[]> {
     await connectToDb();
     try {
-        const filter: any = {};
+        const matchStage: any = {};
         if (slug && slug.trim().length > 0) {
-            filter.slug = { $ne: slug.trim() };
+            matchStage.slug = { $ne: slug.trim() };
         }
 
-        const items = await News.find(filter)
-            .sort({ createdAt: -1, _id: -1 })
-            .limit(limit)
-            .populate([
-                { path: "category", model: NewsCategory },
-                { path: "tags", model: Tag },
-                { path: "relatedNews" },
-            ])
-            .lean()
+        const items = await News.aggregate([
+            { $match: matchStage },
+            { $sample: { size: limit } },
+        ])
+            .lookup({
+                from: "newscategories",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
+            })
+            .lookup({
+                from: "tags",
+                localField: "tags",
+                foreignField: "_id",
+                as: "tags"
+            })
+            .lookup({
+                from: "news",
+                localField: "relatedNews",
+                foreignField: "_id",
+                as: "relatedNews"
+            })
             .exec();
 
         return items as any[];
