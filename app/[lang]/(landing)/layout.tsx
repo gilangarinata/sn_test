@@ -16,6 +16,7 @@ import QiscusWidget from "@/app/[lang]/(landing)/QiscusWidget";
 import {cookies} from "next/headers";
 import {Consent, CONSENT_COOKIE, defaultConsent} from "@/app/[lang]/(landing)/cookies";
 import ConsentProvider from "@/app/[lang]/(landing)/ConsentProvider";
+import LinkedInInsightTag from "@/app/[lang]/(landing)/linkedintag";
 
 export const metadata: Metadata = {
     title: 'SESNA Group',
@@ -61,6 +62,7 @@ export default async function RootLayout({
                     {/*        gtag('config', 'G-EM5J07JC7L');*/}
                     {/*    `}*/}
                     {/*</Script>*/}
+                    <LinkedInInsightTag />
                     <Script src="https://www.googletagmanager.com/gtag/js?id=AW-11457539871"/>
                     <Script id="google-analytics">
                         {`
