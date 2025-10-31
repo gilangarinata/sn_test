@@ -900,7 +900,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
 
                 {selectedRecommendation === -1 ? (<div></div>) : (
                     <div className="flex flex-col md:flex-row w-full px-10 md:px-60 gap-4">
-                        <div className="px-8 py-8 flex-1 bg-[#2190AE] rounded-sm flex flex-col gap-4">
+                        <div className="px-8 py-8 flex-1 rounded-sm flex flex-col gap-4">
                             <h1 className="text-white text-xl font-bold">{dictionary.choose_best_plan}</h1>
                             <p className="text-white/80 text-sm">{dictionary.choose_best_plan_desc}</p>
                             <ArrowRight color="#ffffff"></ArrowRight>
