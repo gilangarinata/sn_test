@@ -80,10 +80,7 @@ function CookieBanner() {
                 zIndex: 1000,
             }}
         >
-      <span style={{
-          width: "100%",
-          maxWidth: "320px",
-          fontSize: "14px", lineHeight: "1.4" }}>
+      <span style={{ maxWidth: "600px", fontSize: "14px", lineHeight: "1.4" }}>
         This site uses cookies for basic functions and optional
         analytics/marketing. Choose your preference.
       </span>
