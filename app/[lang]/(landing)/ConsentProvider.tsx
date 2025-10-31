@@ -57,33 +57,98 @@ export function useConsent() {
 function CookieBanner() {
     const { setConsent } = useConsent();
 
-    const acceptAll = () => setConsent({ necessary: true, analytics: true, marketing: true });
-    const rejectNonEssential = () => setConsent({ necessary: true, analytics: false, marketing: false });
+    const acceptAll = () =>
+        setConsent({ necessary: true, analytics: true, marketing: true });
+    const rejectNonEssential = () =>
+        setConsent({ necessary: true, analytics: false, marketing: false });
 
     return (
         <div
             style={{
                 position: "fixed",
-                inset: "auto 0 0 0",
+                bottom: 30,
+                left: 0,
+                right: 0,
                 background: "#15537a",
-                padding: "12px 16px",
                 color: "white",
+                padding: "16px",
                 display: "flex",
-                gap: 12,
+                flexDirection: "column",
                 alignItems: "center",
-                zIndex: 50,
+                textAlign: "center",
+                gap: "12px",
+                zIndex: 1000,
             }}
         >
-      <span>
-        This site uses cookies for basic functions and optional analytics/marketing. Choose your
-        preference.
+      <span style={{
+          width: "100%",
+          maxWidth: "320px",
+          fontSize: "14px", lineHeight: "1.4" }}>
+        This site uses cookies for basic functions and optional
+        analytics/marketing. Choose your preference.
       </span>
-            <button onClick={rejectNonEssential} style={{ padding: "8px 12px" }}>
-                Reject all except necessary
-            </button>
-            <button onClick={acceptAll} style={{ padding: "8px 12px" }}>
-                Accept all
-            </button>
+
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
+                    width: "100%",
+                    maxWidth: "320px",
+                }}
+            >
+                <button
+                    onClick={acceptAll}
+                    style={{
+                        padding: "10px",
+                        border: "1px solid white",
+                        borderRadius: "8px",
+                        background: "transparent",
+                        color: "white",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                    }}
+                >
+                    Accept all
+                </button>
+
+                <button
+                    onClick={rejectNonEssential}
+                    style={{
+                        padding: "10px",
+                        border: "1px solid white",
+                        borderRadius: "8px",
+                        background: "transparent",
+                        color: "white",
+                        fontWeight: "bold",
+                        cursor: "pointer",
+                    }}
+                >
+                    Only allow essential
+                </button>
+            </div>
+
+            <style jsx>{`
+        @media (min-width: 600px) {
+          div[style] {
+            flex-direction: row !important;
+            justify-content: center;
+            text-align: left;
+          }
+          span {
+            flex: 1;
+            text-align: left;
+            margin-right: 20px;
+          }
+          div > div {
+            flex-direction: row !important;
+            width: auto !important;
+          }
+          button {
+            min-width: 180px;
+          }
+        }
+      `}</style>
         </div>
     );
 }
