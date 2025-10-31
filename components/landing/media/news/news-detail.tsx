@@ -132,14 +132,17 @@ export default function NewsDetail({
                     <ShareButtons title={news?.title ?? ""} />
 
                     {/* Cover image */}
-                    <div className="relative w-full h-[500px] overflow-hidden rounded-2xl">
+                    <div className="w-full overflow-hidden rounded-none sm:rounded-2xl">
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                             src={news?.image}
                             alt={news?.title ?? "News cover"}
-                            className="h-full w-full object-cover"
+                            className="block w-full h-auto max-h-[90vh]"  // h-auto = tinggi dinamis
+                            loading="lazy"
+                            decoding="async"
                         />
                     </div>
+
 
                     {/* Content */}
                     <NewEditor
