@@ -336,7 +336,7 @@ export default function NavContent({
             { label: dictionary.media, href: "/media", isDropdown: true },
             { label: dictionary.career, href: "/career" },
             { label: dictionary.get_in_touch, href: "/get-in-touch" },
-            { label: dictionary.language, href: "/lang" },
+            { label: dictionary.language, href: "/lang", isDropdown: true },
         ],
         [dictionary]
     );
@@ -381,9 +381,10 @@ export default function NavContent({
                 // Language switcher special case
                 if (route.href === "/lang") {
                     return variant === "mobile" ? (
-                        <MobileNavItem key={route.label} href="/lang">
-                            {dictionary.language}
-                        </MobileNavItem>
+                        // <MobileNavItem key={route.label} href="/lang">
+                        //     {dictionary.language}
+                        // </MobileNavItem>
+                        <LocaleSwitcher key={route.label} />
                     ) : (
                         <LocaleSwitcher key={route.label} />
                     );
