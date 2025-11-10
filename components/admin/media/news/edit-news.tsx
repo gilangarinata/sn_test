@@ -28,6 +28,7 @@ import Spinner from "@/components/spinner";
 import {News} from "@/components/admin/media/news/news-table";
 import {NewsValidation} from "@/lib/validations/news";
 import {updateNews} from "@/lib/actions/admin/news.action";
+import {createContributor, getContributorsByNews, softDeleteContributor, updateContributor} from "@/lib/actions/admin/news-contributor.action";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem} from "@/components/ui/command";
 import {fetchCategories} from "@/lib/actions/admin/news-category.action";
@@ -92,17 +93,16 @@ function AddEditNews({ achievement }: Props) {
 
         (async () => {
             try {
-                const res = await fetch(`/api/news/${newsObjectId}/contributors`, { cache: "no-store" });
-                const items: Array<{ _id: string; role: ContributorRole; name: string; email?: string }> = await res.json();
+                const items = await getContributorsByNews(newsObjectId);
 
                 const pen = items.find((c) => c.role === "penulis");
                 const edt = items.find((c) => c.role === "editor");
 
-                setPenulisId(pen?._id ?? null);
+                setPenulisId(pen?._id?.toString() ?? null);
                 setPenulisName(pen?.name ?? "");
                 setPenulisEmail(pen?.email ?? "");
 
-                setEditorId(edt?._id ?? null);
+                setEditorId(edt?._id.toString() ?? null);
                 setEditorName(edt?.name ?? "");
                 setEditorEmail(edt?.email ?? "");
             } catch (e) {
@@ -167,15 +167,22 @@ function AddEditNews({ achievement }: Props) {
             if (newsObjectId) {
                 // helper calls to API
                 const upsert = async (role: ContributorRole, name: string, email?: string) => {
-                    await fetch(`/api/news-contributors`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ newsId: newsObjectId, role, name: name.trim(), email: email?.trim() || undefined }),
-                    });
+                    await createContributor(
+                        {
+                            newsId: newsObjectId,
+                            name: name,
+                            email: email,
+                            role: role,
+                         
+                        }
+                    );
                 };
 
+
+
+
                 const softDelete = async (contributorId: string) => {
-                    await fetch(`/api/news-contributors/${contributorId}`, { method: "DELETE" });
+                    await softDeleteContributor(contributorId);
                 };
 
                 // Penulis

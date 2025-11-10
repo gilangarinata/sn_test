@@ -3,6 +3,7 @@ const nextConfig = {
     output: 'standalone',
     images: {
         domains: ['images.unsplash.com', 'utfs.io', 'sesna.id', 'img.youtube.com', 'www.sesna.id'],
+        unoptimized: true,
         remotePatterns: [
             {
                 protocol: 'https',

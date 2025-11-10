@@ -22,6 +22,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Ensure next.config.js has: module.exports = { output: 'standalone' };
 RUN npm run build
 
+
 # ---------- Runtime ----------
 FROM node:${NODE_VERSION}-bookworm-slim AS runner
 WORKDIR /app
@@ -30,20 +31,19 @@ ENV NODE_ENV=production \
     PORT=3000 \
     HOSTNAME=0.0.0.0
 
-# Run as non-root
+# Create non-root user
 RUN useradd -m -u 1001 nextjs
+
+# Copy standalone output and ensure ownership at copy-time
+# (so the non-root user can write to /app/.next)
+COPY --from=builder --chown=1001:1001 /app/.next/standalone ./
+COPY --from=builder --chown=1001:1001 /app/.next/static ./.next/static
+COPY --from=builder --chown=1001:1001 /app/public ./public
+
+# Create a writable cache directory for Next image optimizer
+RUN mkdir -p .next/cache && chown -R 1001:1001 /app
+
 USER 1001
-
-# Copy standalone server + assets
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
-# If you use Prisma/native binaries, uncomment:
-# COPY --from=deps /app/node_modules ./node_modules
-
-
-
-
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
   CMD node -e "process.exit(0)"
