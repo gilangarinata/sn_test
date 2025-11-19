@@ -90,9 +90,11 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                         <Image src="/images/mission.png" alt="" width={80} height={80} />
                         <div className="flex flex-col text-[#FABD24]">
                             <h1 className="font-bold text-3xl">{dictionary.mission}</h1>
-                            <p>
-                                {translateText(visionMission.mission, lang)}
-                            </p>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: translateText(visionMission.mission, lang)
+                              }}
+                            />
                         </div>
                     </div>
                 </div>
