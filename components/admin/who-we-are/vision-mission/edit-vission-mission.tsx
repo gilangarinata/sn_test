@@ -158,7 +158,7 @@ function AddEditVisionMission({banner, onNeedRefresh}: Props) {
                         onEditorChange={(state) => {
                             setHeadingEditorState(state);
                         }}
-                        isFull={false}
+                        isFull={true}
                     />
                 </div>
 
