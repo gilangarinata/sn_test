@@ -132,7 +132,7 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
     // });
 
     return (
-            <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.jpg")`}}>
+            <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.webp")`}}>
                 <div className="bg-white/70 lg:hidden w-full h-full">
                     <h1 className="w-full text-center p-[60px] text-3xl font-bold text-[#f9c329] text-shadow-lg" dangerouslySetInnerHTML={{__html: dictionary.hitung_investasi}}></h1>
                 </div>

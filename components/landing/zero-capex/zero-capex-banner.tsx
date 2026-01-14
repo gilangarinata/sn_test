@@ -61,7 +61,7 @@ export default function ZeroCapexBanner({ lang, dictionary} : { lang: Locale, di
                                         <Image sizes="100vw"
                                                width={0}
                                                height={0}
-                                               style={{ width: '90%', height: 'auto' }} src="/images/zero-capex-banner-1.png" alt="logo" />
+                                               style={{ width: '90%', height: 'auto' }} src="/images/zero-capex-banner-1.webp" alt="logo" />
                                         {/*<div className="w-[120px] h-[120px] md:w-[500px] md:h-[500px] relative">*/}
                                         {/*    <Image fill src="/images/zero_capex.png" alt="banner animation" />*/}
                                         {/*</div>*/}
