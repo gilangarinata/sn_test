@@ -194,18 +194,37 @@ const selectedRoute = {
     isExpanded: false
 }
 
-const Sidebar = ( {isMobile = false} ) => {
+import { logout } from "@/lib/actions/admin/auth.action";
+import { LogOutIcon, ListTodoIcon } from "lucide-react";
+
+const Sidebar = ( {isMobile = false, session} : {isMobile?: boolean, session?: any} ) => {
     const pathName = usePathname();
     const [selectedManu,setSelectedMenu] = useState(selectedRoute);
-
     const router = useRouter();
-    const userName = cookie.get("username") || "";
 
+    const filteredRoutes = routes.filter(route => {
+        if (!session) return false;
+        if (session.role === 'hr') {
+            return route.label === "Career";
+        }
+        return true;
+    });
 
-    if(!userName) {
-        // router.push("/login");
+    if (session && (session.role === 'marketing' || session.role === 'it')) {
+        // Add Activity Log route
+        if (!filteredRoutes.find(r => r.label === "Activity Log")) {
+            filteredRoutes.push({
+                label: "Activity Log",
+                icon: ListTodoIcon,
+                href: "/admin-panel/activity-log",
+                children: []
+            });
+        }
     }
 
+    const handleLogout = async () => {
+        await logout();
+    };
 
     return (
         <div className="flex h-full overflow-auto">
@@ -217,21 +236,24 @@ const Sidebar = ( {isMobile = false} ) => {
                         </div>
                         <h1 className={cn("text-xl font-bold ml-[-4]", montserrat.className)}>CMS</h1>
                     </Link>
+                    <div className="px-3 mb-4 text-sm text-gray-500">
+                        Logged in as: <span className="font-bold text-gray-800">{session?.name} ({session?.role})</span>
+                    </div>
                     <div className="space-y-1">
-                        {routes.map(function(route, index, elements) {
+                        {filteredRoutes.map(function(route, index, elements) {
                             const children = route.children.map(e=> e.href);
 
                             return (
-                                <div className="flex flex-col space-y-1" key={route.href}>
+                                <div className="flex flex-col space-y-1" key={route.label}>
                                     <Link onClick={ (e) => {
                                         if(route.children.length > 0) {
                                             e.preventDefault();
                                             setSelectedMenu({
                                                 label: route.label,
-                                                isExpanded: !selectedManu.isExpanded
+                                                isExpanded: selectedManu.label === route.label ? !selectedManu.isExpanded : true
                                             })
                                         }
-                                    } } href={route.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition",  children.includes(pathName) ? "text-white bg-primary/60" : "text-zinc-600 hover:bg-primary/10")} >
+                                    } } href={route.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition",  children.includes(pathName) || pathName === route.href ? "text-white bg-primary/60" : "text-zinc-600 hover:bg-primary/10")} >
                                         <div className="flex items-center flex-1">
                                             <route.icon className="h-5 w5 mr-5"/>
                                             <p className="w-full">
@@ -240,13 +262,12 @@ const Sidebar = ( {isMobile = false} ) => {
 
                                             <div className={cn("",route.children.length > 0 ? "block" : "hidden")}>
                                                 {selectedManu.label === route.label && selectedManu.isExpanded ? (<ChevronDown className="w-5 h-5" />) : <ChevronRight className="w-5 h-5" />}
-
                                             </div>
                                         </div>
                                     </Link>
                                     <div className={cn("", selectedManu.isExpanded && selectedManu.label == route.label ? "block" : "hidden")}>
                                         {route.children.map(child => (
-                                            <Link key={child.label} href={child.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition", pathName === child.href ? "text-primary" : "text-zinc-600 hover:bg-primary/10")} >
+                                            <Link key={child.label} href={child.href} className={cn("text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition", pathName === child.href ? "text-primary font-bold" : "text-zinc-600 hover:bg-primary/10")} >
                                                 <div className="flex items-center flex-1">
                                                     <div className="h-5 w-5 mr-6 flex items-center justify-center"><p>-</p></div>
                                                     {child.label}
@@ -258,6 +279,17 @@ const Sidebar = ( {isMobile = false} ) => {
                             )
                         })}
                     </div>
+                </div>
+                <div className="px-6 py-4">
+                    <button
+                        onClick={handleLogout}
+                        className="text-sm group flex p-3 w-full justify-start font-medium cursor-pointer rounded-lg transition text-red-600 hover:bg-red-50"
+                    >
+                        <div className="flex items-center flex-1">
+                            <LogOutIcon className="h-5 w5 mr-5"/>
+                            Logout
+                        </div>
+                    </button>
                 </div>
             </div>
             <div className={cn("w-px bg-gray-100", isMobile === true ? "hidden" : "")}></div>

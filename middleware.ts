@@ -31,6 +31,40 @@ export function middleware(request: NextRequest) {
         locale => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
     )
 
+    // Auth and RBAC
+    const isAdminPanel = pathname.includes('/admin-panel');
+    const sessionCookie = request.cookies.get('admin-session')?.value;
+    let session: any = null;
+    if (sessionCookie) {
+        try {
+            session = JSON.parse(sessionCookie);
+        } catch (e) {}
+    }
+
+    if (isAdminPanel) {
+        if (!session) {
+            const locale = getLocale(request) || i18n.defaultLocale;
+            return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+        }
+
+        // HR can only access Career page
+        if (session.role === 'hr') {
+            const isCareerPage = pathname.includes('/admin-panel/career');
+            if (!isCareerPage) {
+                const locale = getLocale(request) || i18n.defaultLocale;
+                return NextResponse.redirect(new URL(`/${locale}/admin-panel/career`, request.url));
+            }
+        }
+        
+        // Activity logs should only be accessible by Marketing and IT
+        if (pathname.includes('/admin-panel/activity-log')) {
+             if (session.role !== 'marketing' && session.role !== 'it') {
+                 const locale = getLocale(request) || i18n.defaultLocale;
+                 return NextResponse.redirect(new URL(`/${locale}/admin-panel`, request.url));
+             }
+        }
+    }
+
     // Redirect if there is no locale
     if (pathnameIsMissingLocale) {
         const locale = getLocale(request)

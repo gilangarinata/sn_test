@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import Career from "@/lib/models/career.model";
 import NewsCategory from "@/lib/models/news-category.model";
 import News from "@/lib/models/news.model";
+import { createActivityLog } from "@/lib/actions/admin/auth.action";
 
 interface Params {
     id: string,
@@ -145,6 +146,7 @@ export async function updateCareer({
                 departement: dep._id
             }, { upsert: true }
         )
+        await createActivityLog('UPDATE', `Updated Career: ${title} (${currentId})`);
     }catch (error) {
         throw new Error(`Failed to update banner : ${error}`)
     }
@@ -158,6 +160,7 @@ export async function deleteCareer({id} : {id:string}): Promise<void> {
         await Career.findOneAndDelete(
             {id: id }
         )
+        await createActivityLog('DELETE', `Deleted Career: ${id}`);
     }catch (error) {
         throw new Error(`Failed to delete banner : ${error}`)
     }

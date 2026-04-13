@@ -2,6 +2,7 @@
 
 import {connectToDb} from "@/lib/mongoose";
 import Banner from "@/lib/models/banner.model";
+import { createActivityLog } from "@/lib/actions/admin/auth.action";
 
 interface Params {
     id: string,
@@ -80,6 +81,7 @@ export async function updateBanner({
                 description: description,
             }, { upsert: true }
         )
+        await createActivityLog('UPDATE', `Updated Banner: ${headingTitle} (${currentId})`);
     }catch (error) {
         throw new Error(`Failed to update banner : ${error}`)
     }
@@ -93,6 +95,7 @@ export async function deleteBanner({id} : {id:string}): Promise<void> {
         await Banner.findOneAndDelete(
             {id: id }
         )
+        await createActivityLog('DELETE', `Deleted Banner: ${id}`);
     }catch (error) {
         throw new Error(`Failed to delete banner : ${error}`)
     }

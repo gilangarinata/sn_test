@@ -6,6 +6,7 @@ import News from "@/lib/models/news.model";
 import NewsCategory from "@/lib/models/news-category.model";
 import mongoose, {Types} from "mongoose";
 import Tag from "@/lib/models/tag.model";
+import { createActivityLog } from "@/lib/actions/admin/auth.action";
 
 interface Params {
     id: string,
@@ -240,6 +241,8 @@ export async function updateNews({
                 tags : tgs.map((uy) => uy._id)
             },
         )
+
+        await createActivityLog('UPDATE', `Updated News: ${title} (${currentId})`);
     }catch (error) {
         throw new Error(`Failed to update news category : ${error}`)
     }
@@ -284,6 +287,7 @@ export async function deleteNews({id} : {id:string}): Promise<void> {
         await News.findOneAndDelete(
             {id: id }
         )
+        await createActivityLog('DELETE', `Deleted News: ${id}`);
     }catch (error) {
         throw new Error(`Failed to delete NewsCategory : ${error}`)
     }
