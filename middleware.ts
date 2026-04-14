@@ -52,7 +52,7 @@ export function middleware(request: NextRequest) {
             const isCareerPage = pathname.includes('/admin-panel/career');
             if (!isCareerPage) {
                 const locale = getLocale(request) || i18n.defaultLocale;
-                return NextResponse.redirect(new URL(`/${locale}/admin-panel/career`, request.url));
+                return NextResponse.redirect(new URL(`/${locale}/admin-panel/career/career_banner`, request.url));
             }
         }
         

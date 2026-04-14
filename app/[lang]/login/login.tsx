@@ -21,6 +21,10 @@ const Login = () => {
                 setError(result.error);
             }
         } catch (err: any) {
+            // If the error is a redirect, we should not catch it
+            if (err.message?.includes('NEXT_REDIRECT')) {
+                throw err;
+            }
             setError("Something went wrong. Please try again.");
         } finally {
             setIsLoading(false);
