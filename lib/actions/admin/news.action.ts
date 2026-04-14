@@ -7,6 +7,7 @@ import NewsCategory from "@/lib/models/news-category.model";
 import mongoose, {Types} from "mongoose";
 import Tag from "@/lib/models/tag.model";
 import { createActivityLog } from "@/lib/actions/admin/auth.action";
+import { getSession } from "@/lib/auth";
 
 interface Params {
     id: string,
@@ -16,6 +17,8 @@ interface Params {
     image: string,
     tags: string[],
     relatedNews: string[],
+    status?: string,
+    publishAt?: Date | string | null,
 }
 
 interface TagParam {
@@ -70,7 +73,19 @@ export async function fetchNewsByCategory(_categoryId: string, pageNumber: numbe
     try {
         const skipAmount = (pageNumber - 1) * pageSize;
 
-        const bannersQuery = News.find({category : _categoryId})
+        const session = await getSession();
+        const isAdmin = session && ['marketing', 'it', 'super_admin'].includes(session.role);
+
+        const filters: any = { category: _categoryId };
+        if (!isAdmin) {
+            filters.$or = [
+                { status: 'Published' },
+                { status: 'Scheduled', publishAt: { $lte: new Date() } },
+                { status: { $exists: false } }
+            ];
+        }
+
+        const bannersQuery = News.find(filters)
             .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
@@ -102,9 +117,19 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
         }
 
         if (year && year > 0) {
-            // Assuming you have a 'date' field in your news documents
             filters.createdAt = { $gte: new Date(`${year}-01-01`), $lte: new Date(`${year}-12-31`) };
         }
+        
+        const session = await getSession();
+        const isAdmin = session && ['marketing', 'it', 'super_admin'].includes(session.role);
+        if (!isAdmin) {
+            filters.$or = [
+                { status: 'Published' },
+                { status: 'Scheduled', publishAt: { $lte: new Date() } },
+                { status: { $exists: false } }
+            ];
+        }
+
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = News.find(filters)
@@ -190,9 +215,11 @@ export async function updateNews({
        title,
        content,
        category,
-        image,
-        tags,
-        relatedNews,
+       image,
+       tags,
+       relatedNews,
+       status,
+       publishAt,
    } : Params): Promise<void> {
     await connectToDb();
     try {
@@ -214,7 +241,9 @@ export async function updateNews({
                 category: cat._id,
                 image: image,
                 relatedNews: relatedNews,
-                slug: slug
+                slug: slug,
+                status: status || 'Draft',
+                publishAt: publishAt ? new Date(publishAt) : undefined,
             }, { upsert: true }
         )
 
@@ -298,9 +327,19 @@ export async function deleteNews({id} : {id:string}): Promise<void> {
 export async function fetchLatestNews(slug?: string, limit: number = 6): Promise<any[]> {
     await connectToDb();
     try {
+        const session = await getSession();
+        const isAdmin = session && ['marketing', 'it', 'super_admin'].includes(session.role);
+
         const matchStage: any = {};
         if (slug && slug.trim().length > 0) {
             matchStage.slug = { $ne: slug.trim() };
+        }
+        if (!isAdmin) {
+            matchStage.$or = [
+                { status: 'Published' },
+                { status: 'Scheduled', publishAt: { $lte: new Date() } },
+                { status: { $exists: false } }
+            ];
         }
 
         const items = await News.aggregate([

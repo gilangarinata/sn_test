@@ -7,12 +7,15 @@ import Video from "@/lib/models/video.model";
 import News from "@/lib/models/news.model";
 import NewsCategory from "@/lib/models/news-category.model";
 import Tag from "@/lib/models/tag.model";
+import { getSession } from "@/lib/auth";
 interface Params {
     id: string,
     title: string,
     description: string,
     videoUrl: string,
     category: string,
+    status?: string,
+    publishAt?: Date | string | null,
 }
 
 export async function fetchVideosByCategory(_categoryId: string, pageNumber: number, pageSize: number) {
@@ -20,7 +23,19 @@ export async function fetchVideosByCategory(_categoryId: string, pageNumber: num
     try {
         const skipAmount = (pageNumber - 1) * pageSize;
 
-        const bannersQuery = Video.find({category : _categoryId})
+        const session = await getSession();
+        const isAdmin = session && ['marketing', 'it', 'super_admin'].includes(session.role);
+
+        const filters: any = { category: _categoryId };
+        if (!isAdmin) {
+            filters.$or = [
+                { status: 'Published' },
+                { status: 'Scheduled', publishAt: { $lte: new Date() } },
+                { status: { $exists: false } }
+            ];
+        }
+
+        const bannersQuery = Video.find(filters)
             .sort({ _id: -1})
             .skip(skipAmount)
             .limit(pageSize)
@@ -56,6 +71,17 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number, categ
             // Assuming you have a 'date' field in your news documents
             filters.createdAt = { $gte: new Date(`${year}-01-01`), $lte: new Date(`${year}-12-31`) };
         }
+        
+        const session = await getSession();
+        const isAdmin = session && ['marketing', 'it', 'super_admin'].includes(session.role);
+        if (!isAdmin) {
+            filters.$or = [
+                { status: 'Published' },
+                { status: 'Scheduled', publishAt: { $lte: new Date() } },
+                { status: { $exists: false } }
+            ];
+        }
+
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = Video.find(filters)
@@ -105,7 +131,7 @@ export async function fetchVideoById(id: string) {
 
 export async function updateVideo({
        id,
-       title, description, videoUrl, category
+       title, description, videoUrl, category, status, publishAt
    } : Params): Promise<void> {
     await connectToDb();
     try {
@@ -122,6 +148,8 @@ export async function updateVideo({
                 description: description,
                 videoUrl: videoUrl,
                 category: cat._id,
+                status: status || 'Draft',
+                publishAt: publishAt ? new Date(publishAt) : undefined,
             }, { upsert: true }
         )
     }catch (error) {
