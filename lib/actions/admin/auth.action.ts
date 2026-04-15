@@ -68,7 +68,7 @@ export async function createActivityLog(action: string, details: string) {
 export async function fetchActivityLogs() {
     await connectToDb();
     const session = getSession();
-    if (!session || (session.role !== 'marketing' && session.role !== 'it')) {
+    if (!session || (session.role !== 'marketing' && session.role !== 'it' && session.role !== 'super_admin')) {
         throw new Error("Unauthorized");
     }
 
