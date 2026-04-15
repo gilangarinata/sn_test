@@ -278,7 +278,7 @@ function AddEditNews({ achievement }: Props) {
                             <FormItem className="flex w-full flex-col">
                                 <FormLabel className="text-base-semibold text-light-2">Schedule Date & Time</FormLabel>
                                 <FormControl>
-                                    <Input type="datetime-local" className="account-form_input no-focus" {...field} />
+                                    <Input type="datetime-local" className="account-form_input no-focus" {...field} value={field.value ? String(field.value) : ""} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
