@@ -19,6 +19,8 @@ export type News = {
     slug: string,
     content: string,
     image: string,
+    status?: string,
+    publishAt?: string,
     category: Category,
     createdAt: string,
     tags: [
@@ -171,7 +173,9 @@ const NewsTable = () => {
                             <TableHead>Title</TableHead>
                             <TableHead>Slug</TableHead>
                             <TableHead>Created at</TableHead>
+                            <TableHead>Publish At</TableHead>
                             <TableHead>Category</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead>Tags</TableHead>
                             <TableHead className="text-center">Image</TableHead>
                             <TableHead></TableHead>
@@ -184,7 +188,22 @@ const NewsTable = () => {
                                 <TableCell>{newsItem.title}</TableCell>
                                 <TableCell>{newsItem.slug}</TableCell>
                                 <TableCell>{formatDateString(newsItem.createdAt)}</TableCell>
+                                <TableCell>{newsItem.publishAt ? formatDateString(newsItem.publishAt) : '-'}</TableCell>
                                 <TableCell>{newsItem.category?.name}</TableCell>
+                                <TableCell>
+                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                        newsItem.status === 'Published' ? 'bg-green-100 text-green-800' :
+                                        newsItem.status === 'Scheduled' ? 'bg-blue-100 text-blue-800' :
+                                        'bg-yellow-100 text-yellow-800'
+                                    }`}>
+                                        {newsItem.status || 'Draft'}
+                                    </span>
+                                    {newsItem.status === 'Scheduled' && newsItem.publishAt && (
+                                        <div className="text-xs text-gray-500 mt-1 break-words w-24">
+                                            {new Date(newsItem.publishAt).toLocaleString()}
+                                        </div>
+                                    )}
+                                </TableCell>
                                 <TableCell>{newsItem.tags?.map((t) => t.tag).join(",")}</TableCell>
                                 <TableCell>
                                     <img className="mx-auto" width={60} height={60} src={newsItem.image} alt="" />

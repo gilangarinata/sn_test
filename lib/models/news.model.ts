@@ -14,6 +14,14 @@ const newsSchema = new  mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "NewsCategory"
     },
+    status: {
+        type: String,
+        enum: ['Draft', 'Scheduled', 'Published'],
+        default: 'Draft',
+    },
+    publishAt: {
+        type: Date,
+    },
     tags: [
         {
             type: mongoose.Schema.Types.ObjectId,

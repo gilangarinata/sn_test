@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {Check, ChevronsUpDown, PlusIcon} from "lucide-react";
 import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import Image from "next/image";
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {EditorState} from "react-draft-wysiwyg";
@@ -75,6 +76,8 @@ function AddEditNews({ achievement }: Props) {
             image: achievement?.image ?? "",
             tags: achievement?.tags?.map((t) => (t as any).tag).join(",") ?? "",
             relatedNews: achievement?.relatedNews?.map((t: any) => t._id).join(",") ?? "",
+            status: achievement?.status ?? "Draft",
+            publishAt: achievement?.publishAt ? new Date(achievement.publishAt).toISOString().slice(0, 16) : "",
         },
     });
 
@@ -161,6 +164,8 @@ function AddEditNews({ achievement }: Props) {
                 image: values.image,
                 tags: tags,
                 relatedNews: related,
+                status: values.status,
+                publishAt: values.status === 'Scheduled' && values.publishAt ? new Date(values.publishAt) : null,
             });
 
             // === Contributors (NEW): Upsert or Soft-delete based on fields ===
@@ -241,6 +246,45 @@ function AddEditNews({ achievement }: Props) {
                         </FormItem>
                     )}
                 />
+
+                <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                        <FormItem className="flex w-full flex-col">
+                            <FormLabel className="text-base-semibold text-light-2">Status</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select a status" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="Draft">Draft</SelectItem>
+                                    <SelectItem value="Scheduled">Scheduled</SelectItem>
+                                    <SelectItem value="Published">Published</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {form.watch("status") === "Scheduled" && (
+                    <FormField
+                        control={form.control}
+                        name="publishAt"
+                        render={({ field }) => (
+                            <FormItem className="flex w-full flex-col">
+                                <FormLabel className="text-base-semibold text-light-2">Schedule Date & Time</FormLabel>
+                                <FormControl>
+                                    <Input type="datetime-local" className="account-form_input no-focus" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                )}
 
                 <Popover open={open} onOpenChange={setOpen}>
                     <FormLabel className="text-base-semibold text-light-2">Category</FormLabel>

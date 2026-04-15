@@ -47,18 +47,27 @@ export function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
         }
 
-        // HR can only access Career page
+        // HR can only access Career page and Change Password
         if (session.role === 'hr') {
             const isCareerPage = pathname.includes('/admin-panel/career');
-            if (!isCareerPage) {
+            const isChangePassword = pathname.includes('/admin-panel/setting/change-password');
+            if (!isCareerPage && !isChangePassword) {
                 const locale = getLocale(request) || i18n.defaultLocale;
-                return NextResponse.redirect(new URL(`/${locale}/admin-panel/career`, request.url));
+                return NextResponse.redirect(new URL(`/${locale}/admin-panel/career/career_banner`, request.url));
             }
         }
         
-        // Activity logs should only be accessible by Marketing and IT
+        // Activity logs should only be accessible by Marketing, IT, and super_admin
         if (pathname.includes('/admin-panel/activity-log')) {
-             if (session.role !== 'marketing' && session.role !== 'it') {
+             if (session.role !== 'marketing' && session.role !== 'it' && session.role !== 'super_admin') {
+                 const locale = getLocale(request) || i18n.defaultLocale;
+                 return NextResponse.redirect(new URL(`/${locale}/admin-panel`, request.url));
+             }
+        }
+
+        // Users management should only be accessible by super_admin
+        if (pathname.includes('/admin-panel/users')) {
+             if (session.role !== 'super_admin') {
                  const locale = getLocale(request) || i18n.defaultLocale;
                  return NextResponse.redirect(new URL(`/${locale}/admin-panel`, request.url));
              }

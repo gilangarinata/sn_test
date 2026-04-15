@@ -13,6 +13,14 @@ const newsSchema = new  mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "NewsCategory"
     },
+    status: {
+        type: String,
+        enum: ['Draft', 'Scheduled', 'Published'],
+        default: 'Draft',
+    },
+    publishAt: {
+        type: Date,
+    },
 });
 
 const Video = mongoose.models.Video || mongoose.model('Video', newsSchema);

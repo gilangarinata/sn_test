@@ -6,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import {Check, ChevronsUpDown, PlusIcon} from "lucide-react";
 import {DialogBody} from "next/dist/client/components/react-dev-overlay/internal/components/Dialog";
 import {Input} from "@/components/ui/input";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import RichTextEditor from "@/components/rich-text-editor";
 import Image from "next/image";
 import React, {ChangeEvent, useEffect, useState} from "react";
@@ -58,9 +59,10 @@ interface Props {
 }
 
 export const VideoValidation = z.object({
-    title: z
-        .string(),
+    title: z.string(),
     videoUrl: z.string(),
+    status: z.string().optional(),
+    publishAt: z.union([z.string(), z.date(), z.undefined(), z.null()]).optional(),
 });
 
 
@@ -79,6 +81,8 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
         defaultValues: {
             title: achievement?.title ?? "",
             videoUrl: achievement?.videoUrl ?? "",
+            status: achievement?.status ?? "Draft",
+            publishAt: achievement?.publishAt ? new Date(achievement.publishAt).toISOString().slice(0, 16) : "",
         },
     });
 
@@ -110,6 +114,8 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
                 description: descTitle,
                 videoUrl: values.videoUrl,
                 category: value ?? "",
+                status: values.status,
+                publishAt: values.status === 'Scheduled' && values.publishAt ? new Date(values.publishAt) : null,
             })
 
             setSaveLoading(false)
@@ -146,6 +152,46 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
                         </FormItem>
                     )}
                 />
+
+                <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                        <FormItem className="flex w-full flex-col">
+                            <FormLabel className="text-base-semibold text-light-2">Status</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue placeholder="Select a status" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="Draft">Draft</SelectItem>
+                                    <SelectItem value="Scheduled">Scheduled</SelectItem>
+                                    <SelectItem value="Published">Published</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                {form.watch("status") === "Scheduled" && (
+                    <FormField
+                        control={form.control}
+                        name="publishAt"
+                        render={({ field }) => (
+                            <FormItem className="flex w-full flex-col">
+                                <FormLabel className="text-base-semibold text-light-2">Schedule Date & Time</FormLabel>
+                                <FormControl>
+                                    <Input type="datetime-local" className="account-form_input no-focus" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                )}
+
                     <FormLabel className='text-base-semibold text-light-2'>
                         Category
                     </FormLabel>

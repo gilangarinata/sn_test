@@ -16,7 +16,7 @@ import {
     LayoutDashboard,
     MessageSquare,
     Music, NewspaperIcon, PersonStandingIcon,
-    Settings, SettingsIcon,
+    Settings, SettingsIcon, Users,
     VideoIcon
 } from "lucide-react";
 import {usePathname, useRouter} from "next/navigation";
@@ -185,6 +185,10 @@ const routes = [
                 label : "Footer",
                 href: "/admin-panel/setting/footer"
             },
+            {
+                label : "Change Password",
+                href: "/admin-panel/setting/change-password"
+            },
         ]
     },
 ]
@@ -205,18 +209,29 @@ const Sidebar = ( {isMobile = false, session} : {isMobile?: boolean, session?: a
     const filteredRoutes = routes.filter(route => {
         if (!session) return false;
         if (session.role === 'hr') {
-            return route.label === "Career";
+            return route.label === "Career" || route.label === "Setting";
         }
         return true;
     });
 
-    if (session && (session.role === 'marketing' || session.role === 'it')) {
+    if (session && (session.role === 'marketing' || session.role === 'it' || session.role === 'super_admin')) {
         // Add Activity Log route
         if (!filteredRoutes.find(r => r.label === "Activity Log")) {
             filteredRoutes.push({
                 label: "Activity Log",
                 icon: ListTodoIcon,
                 href: "/admin-panel/activity-log",
+                children: []
+            });
+        }
+    }
+
+    if (session && session.role === 'super_admin') {
+        if (!filteredRoutes.find(r => r.label === "Users")) {
+            filteredRoutes.push({
+                label: "Users",
+                icon: Users,
+                href: "/admin-panel/users",
                 children: []
             });
         }

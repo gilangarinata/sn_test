@@ -40,6 +40,8 @@ export type Video = {
     title: string,
     description: string,
     videoUrl: string,
+    status?: string,
+    publishAt?: string,
     createdAt: Date,
     category: Category
 }
@@ -133,6 +135,7 @@ function VideoTable() {
                                 <TableHead>Description</TableHead>
                                 <TableHead>VideoUrl</TableHead>
                                 <TableHead>Category</TableHead>
+                                <TableHead>Status</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
@@ -145,6 +148,20 @@ function VideoTable() {
                                     </TableCell>
                                     <TableCell>{experience.videoUrl}</TableCell>
                                     <TableCell>{experience.category?.name}</TableCell>
+                                    <TableCell>
+                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                            experience.status === 'Published' ? 'bg-green-100 text-green-800' :
+                                            experience.status === 'Scheduled' ? 'bg-blue-100 text-blue-800' :
+                                            'bg-yellow-100 text-yellow-800'
+                                        }`}>
+                                            {experience.status || 'Draft'}
+                                        </span>
+                                        {experience.status === 'Scheduled' && experience.publishAt && (
+                                            <div className="text-xs text-gray-500 mt-1 break-words w-24">
+                                                {new Date(experience.publishAt).toLocaleString()}
+                                            </div>
+                                        )}
+                                    </TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
                                             <Trash2Icon onClick={() => setOpen({banner: experience, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
