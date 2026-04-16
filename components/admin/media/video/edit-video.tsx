@@ -98,7 +98,7 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
     },[])
 
 
-    const onSubmit = async (values: z.infer<typeof VideoValidation>, isAutosave = false) => {
+    const handleSave = async (values: z.infer<typeof VideoValidation>, isAutosave = false) => {
         try {
             if (!isAutosave) setSaveLoading(true)
 
@@ -130,13 +130,17 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
         }
     };
 
+    const onSubmit = async (values: z.infer<typeof VideoValidation>) => {
+        await handleSave(values, false);
+    };
+
     // Autosave logic
     useEffect(() => {
         if (form.watch("status") !== "Draft") return;
 
         const timer = setInterval(() => {
             if (form.formState.isDirty) {
-                form.handleSubmit((values) => onSubmit(values, true))();
+                form.handleSubmit((values) => handleSave(values, true))();
             }
         }, 60000); // 1 minute
 

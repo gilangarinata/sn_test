@@ -129,7 +129,7 @@ function AddEditNews({ achievement }: Props) {
         }
     };
 
-    const onSubmit = async (values: z.infer<typeof NewsValidation>, isAutosave = false) => {
+    const handleSave = async (values: z.infer<typeof NewsValidation>, isAutosave = false) => {
         try {
             if (!isAutosave) setSaveLoading(true);
 
@@ -207,13 +207,17 @@ function AddEditNews({ achievement }: Props) {
         }
     };
 
+    const onSubmit = async (values: z.infer<typeof NewsValidation>) => {
+        await handleSave(values, false);
+    };
+
     // Autosave logic
     useEffect(() => {
         if (form.watch("status") !== "Draft") return;
 
         const timer = setInterval(() => {
             if (form.formState.isDirty || content !== (achievement?.content ?? "")) {
-                form.handleSubmit((values) => onSubmit(values, true))();
+                form.handleSubmit((values) => handleSave(values, true))();
             }
         }, 60000); // 1 minute
 

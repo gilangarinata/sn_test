@@ -873,7 +873,7 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                                 {selectedRecommendation !== -1 ? (
                                     <div className={cn("flex flex-col py-6 gap-8 mx-10","")}>
                                         <div className="flex gap-4">
-                                            <img className="w-[50px] h-[50px]" src="/images/icon_zero_capex_1.png" alt="" width={50} height={30} />
+                                            <Image className="w-[50px] h-[50px]" src="/images/icon_zero_capex_1.png" alt="CO2 avoided icon" width={50} height={50} />
                                             <div className="flex flex-col">
                                                 <p className="text-white text-sm">{dictionary.co2_avoided}</p>
                                                 <h4 className="text-white text-2xl font-bold">{`${co2Avoided}`}</h4>
