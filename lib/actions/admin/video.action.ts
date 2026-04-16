@@ -28,10 +28,10 @@ export async function fetchVideosByCategory(_categoryId: string, pageNumber: num
 
         const filters: any = { category: _categoryId };
         if (!isAdmin) {
+            filters.status = { $in: ['Published', 'Scheduled'] };
             filters.$or = [
                 { status: 'Published' },
-                { status: 'Scheduled', publishAt: { $lte: new Date() } },
-                { status: { $exists: false } }
+                { status: 'Scheduled', publishAt: { $lte: new Date() } }
             ];
         }
 
@@ -75,10 +75,10 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number, categ
         const session = await getSession();
         const isAdmin = session && ['marketing', 'it', 'super_admin'].includes(session.role);
         if (!isAdmin) {
+            filters.status = { $in: ['Published', 'Scheduled'] };
             filters.$or = [
                 { status: 'Published' },
-                { status: 'Scheduled', publishAt: { $lte: new Date() } },
-                { status: { $exists: false } }
+                { status: 'Scheduled', publishAt: { $lte: new Date() } }
             ];
         }
 
@@ -132,7 +132,7 @@ export async function fetchVideoById(id: string) {
 export async function updateVideo({
        id,
        title, description, videoUrl, category, status, publishAt
-   } : Params): Promise<void> {
+   } : Params): Promise<string | null> {
     await connectToDb();
     try {
         const now = Date.now();
@@ -152,8 +152,10 @@ export async function updateVideo({
                 publishAt: publishAt ? new Date(publishAt) : undefined,
             }, { upsert: true }
         )
-    }catch (error) {
-        throw new Error(`Failed to update banner : ${error}`)
+        return currentId;
+    } catch (error) {
+        console.error(`Failed to update video : ${error}`);
+        return null;
     }
 }
 

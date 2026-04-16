@@ -78,10 +78,10 @@ export async function fetchNewsByCategory(_categoryId: string, pageNumber: numbe
 
         const filters: any = { category: _categoryId };
         if (!isAdmin) {
+            filters.status = { $in: ['Published', 'Scheduled'] };
             filters.$or = [
                 { status: 'Published' },
-                { status: 'Scheduled', publishAt: { $lte: new Date() } },
-                { status: { $exists: false } }
+                { status: 'Scheduled', publishAt: { $lte: new Date() } }
             ];
         }
 
@@ -123,11 +123,13 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
         const session = await getSession();
         const isAdmin = session && ['marketing', 'it', 'super_admin'].includes(session.role);
         if (!isAdmin) {
+            filters.status = { $in: ['Published', 'Scheduled'] };
             filters.$or = [
                 { status: 'Published' },
-                { status: 'Scheduled', publishAt: { $lte: new Date() } },
-                { status: { $exists: false } }
+                { status: 'Scheduled', publishAt: { $lte: new Date() } }
             ];
+        } else {
+            // Allow admins to see everything including drafts
         }
 
         const skipAmount = (pageNumber - 1) * pageSize;
@@ -149,7 +151,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
             ])
             .lean()
 
-        const totalBannersCount = await News.countDocuments();
+        const totalBannersCount = await News.countDocuments(filters);
         const banners = await bannersQuery.exec();
         // const isNext = totalBannersCount > skipAmount + banner.length;
         console.log("BN:")
@@ -220,7 +222,7 @@ export async function updateNews({
        relatedNews,
        status,
        publishAt,
-   } : Params): Promise<void> {
+   } : Params): Promise<string | null> {
     await connectToDb();
     try {
         const now = Date.now();
@@ -272,8 +274,10 @@ export async function updateNews({
         )
 
         await createActivityLog('UPDATE', `Updated News: ${title} (${currentId})`);
-    }catch (error) {
-        throw new Error(`Failed to update news category : ${error}`)
+        return currentId;
+    } catch (error) {
+        console.error(`Failed to update news : ${error}`);
+        return null;
     }
 }
 
@@ -335,10 +339,10 @@ export async function fetchLatestNews(slug?: string, limit: number = 6): Promise
             matchStage.slug = { $ne: slug.trim() };
         }
         if (!isAdmin) {
+            matchStage.status = { $in: ['Published', 'Scheduled'] };
             matchStage.$or = [
                 { status: 'Published' },
-                { status: 'Scheduled', publishAt: { $lte: new Date() } },
-                { status: { $exists: false } }
+                { status: 'Scheduled', publishAt: { $lte: new Date() } }
             ];
         }
 

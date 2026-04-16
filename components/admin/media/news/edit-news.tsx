@@ -51,14 +51,13 @@ function AddEditNews({ achievement }: Props) {
     const router = useRouter();
 
     const [content, setContent] = useState<string>(achievement?.content ?? "");
-    const [editorDescState, setEditorDescState] = useState(
-        descInitState !== undefined ? descInitState : EditorState?.createEmpty()
-    );
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState(achievement?.category?.name ?? "");
     const [categories, setCategories] = React.useState<Category[]>();
     const [saveLoading, setSaveLoading] = useState(false);
     const [logo, setLogo] = useState<File[]>([]);
+    const [activeId, setActiveId] = useState<string>(achievement?.id ?? "");
+    const [lastSaved, setLastSaved] = useState<string | null>(null);
 
     // === Contributors (NEW) ===
     const newsObjectId = (achievement as any)?._id as string | undefined;
@@ -130,9 +129,9 @@ function AddEditNews({ achievement }: Props) {
         }
     };
 
-    const onSubmit = async (values: z.infer<typeof NewsValidation>) => {
+    const onSubmit = async (values: z.infer<typeof NewsValidation>, isAutosave = false) => {
         try {
-            setSaveLoading(true);
+            if (!isAutosave) setSaveLoading(true);
 
             // handle image upload if base64
             const logoBlob = values.image;
@@ -147,17 +146,14 @@ function AddEditNews({ achievement }: Props) {
             const tags = values.tags === "" ? [] : values.tags.split(",");
             const related = values.relatedNews === "" ? [] : values.relatedNews.split(",");
 
-            let descTitle = draftToHtml(convertToRaw(editorDescState?.getCurrentContent()));
-            descTitle = convertToValidHtmlStyle(descTitle);
-
             if (values.image.includes("data:")) {
                 setSaveLoading(false);
                 return;
             }
 
             // Save news
-            await updateNews({
-                id: achievement?.id === undefined || achievement?.id === null ? "" : (achievement as any).id,
+            const resultId = await updateNews({
+                id: activeId,
                 title: values.title,
                 content: content,
                 category: value ?? "",
@@ -168,36 +164,32 @@ function AddEditNews({ achievement }: Props) {
                 publishAt: values.status === 'Scheduled' && values.publishAt ? new Date(values.publishAt) : null,
             });
 
+            if (resultId) {
+                setActiveId(resultId);
+                setLastSaved(new Date().toLocaleTimeString());
+            }
+
             // === Contributors (NEW): Upsert or Soft-delete based on fields ===
             if (newsObjectId) {
-                // helper calls to API
                 const upsert = async (role: ContributorRole, name: string, email?: string) => {
-                    await createContributor(
-                        {
-                            newsId: newsObjectId,
-                            name: name,
-                            email: email,
-                            role: role,
-                         
-                        }
-                    );
+                    await createContributor({
+                        newsId: newsObjectId,
+                        name: name,
+                        email: email,
+                        role: role,
+                    });
                 };
-
-
-
 
                 const softDelete = async (contributorId: string) => {
                     await softDeleteContributor(contributorId);
                 };
 
-                // Penulis
                 if (penulisName.trim()) {
                     await upsert("penulis", penulisName, penulisEmail);
                 } else if (penulisId) {
                     await softDelete(penulisId);
                 }
 
-                // Editor
                 if (editorName.trim()) {
                     await upsert("editor", editorName, editorEmail);
                 } else if (editorId) {
@@ -205,13 +197,28 @@ function AddEditNews({ achievement }: Props) {
                 }
             }
 
-            setSaveLoading(false);
-            router.back();
+            if (!isAutosave) {
+                setSaveLoading(false);
+                router.back();
+            }
         } catch (e) {
             setSaveLoading(false);
             console.log(`Failed Update News : ${e}`);
         }
     };
+
+    // Autosave logic
+    useEffect(() => {
+        if (form.watch("status") !== "Draft") return;
+
+        const timer = setInterval(() => {
+            if (form.formState.isDirty || content !== (achievement?.content ?? "")) {
+                form.handleSubmit((values) => onSubmit(values, true))();
+            }
+        }, 60000); // 1 minute
+
+        return () => clearInterval(timer);
+    }, [form, content, activeId, achievement]);
 
     const handleLogo = (e: ChangeEvent<HTMLInputElement>, fieldChange: (value: string) => void) => {
         e.preventDefault();
@@ -423,9 +430,14 @@ function AddEditNews({ achievement }: Props) {
                     )}
                 />
 
-                <Button disabled={saveLoading} type="submit" className="bg-primary-500">
-                    {saveLoading ? <Spinner /> : "Save"}
-                </Button>
+                <div className="flex items-center gap-4">
+                    <Button disabled={saveLoading} type="submit" className="bg-primary-500">
+                        {saveLoading ? <Spinner /> : "Save"}
+                    </Button>
+                    {lastSaved && (
+                        <p className="text-sm text-gray-400">Autosaved at {lastSaved}</p>
+                    )}
+                </div>
             </form>
         </Form>
     );

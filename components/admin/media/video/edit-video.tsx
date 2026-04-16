@@ -75,6 +75,8 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
 
     const [editorDescState, setEditorDescState] = useState(descInitState !== undefined ? descInitState : EditorState?.createEmpty() )
     const [saveLoading, setSaveLoading] = useState(false);
+    const [activeId, setActiveId] = useState<string>(achievement?.id ?? "");
+    const [lastSaved, setLastSaved] = useState<string | null>(null);
 
     const form = useForm<z.infer<typeof VideoValidation>>({
         resolver: zodResolver(VideoValidation),
@@ -96,20 +98,15 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
     },[])
 
 
-    const onSubmit = async (values: z.infer<typeof VideoValidation>) => {
+    const onSubmit = async (values: z.infer<typeof VideoValidation>, isAutosave = false) => {
         try {
-            setSaveLoading(true)
+            if (!isAutosave) setSaveLoading(true)
 
             let descTitle = draftToHtml(convertToRaw(editorDescState?.getCurrentContent()));
             descTitle = convertToValidHtmlStyle(descTitle)
 
-            // const selectedCategoryId = categories?.filter((el) => el.name === value)[0].id;
-
-
-            // console.log(`selected category id : ${value} ${selectedCategoryId} ${categories?.length}`)
-
-            await updateVideo({
-                id: achievement?.id === undefined || achievement?.id === null ? "" : achievement?.id,
+            const resultId = await updateVideo({
+                id: activeId,
                 title: values.title,
                 description: descTitle,
                 videoUrl: values.videoUrl,
@@ -118,13 +115,33 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
                 publishAt: values.status === 'Scheduled' && values.publishAt ? new Date(values.publishAt) : null,
             })
 
-            setSaveLoading(false)
-            onNeedRefresh()
+            if (resultId) {
+                setActiveId(resultId);
+                setLastSaved(new Date().toLocaleTimeString());
+            }
+
+            if (!isAutosave) {
+                setSaveLoading(false)
+                onNeedRefresh()
+            }
         } catch (e) {
             setSaveLoading(false)
-            console.log(`Failed Update Banner : ${e}`)
+            console.log(`Failed Update Video : ${e}`)
         }
     };
+
+    // Autosave logic
+    useEffect(() => {
+        if (form.watch("status") !== "Draft") return;
+
+        const timer = setInterval(() => {
+            if (form.formState.isDirty) {
+                form.handleSubmit((values) => onSubmit(values, true))();
+            }
+        }, 60000); // 1 minute
+
+        return () => clearInterval(timer);
+    }, [form, editorDescState, activeId, achievement]);
 
 
 
@@ -273,9 +290,14 @@ function AddEditVideo({ achievement, onNeedRefresh}: Props) {
                         </FormItem>
                     )}
                 />
-                <Button disabled={saveLoading} type='submit' className='bg-primary-500'>
-                    {saveLoading ? <Spinner /> : "Save"}
-                </Button>
+                <div className="flex items-center gap-4">
+                    <Button disabled={saveLoading} type='submit' className='bg-primary-500'>
+                        {saveLoading ? <Spinner /> : "Save"}
+                    </Button>
+                    {lastSaved && (
+                        <p className="text-sm text-gray-400">Autosaved at {lastSaved}</p>
+                    )}
+                </div>
             </form>
         </Form>
     )
