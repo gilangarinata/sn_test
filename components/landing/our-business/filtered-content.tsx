@@ -195,7 +195,7 @@ export default function FilteredContent({ category, lang, dictionary }: Filtered
                                     </svg>
                                 </div>
                                 <h4 className="text-[#1A4267] text-2xl font-bold">No projects found</h4>
-                                <p className="text-lg mt-2">We haven't uploaded any content for this category yet. Check back soon!</p>
+                                <p className="text-lg mt-2">We haven&apos;t uploaded any content for this category yet. Check back soon!</p>
                             </div>
                         )}
                     </div>
