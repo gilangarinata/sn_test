@@ -63,16 +63,16 @@ export default async function RootLayout({
                     {/*    `}*/}
                     {/*</Script>*/}
                     <LinkedInInsightTag />
-                    <Script src="https://www.googletagmanager.com/gtag/js?id=AW-11457539871"/>
-                    <Script id="google-analytics">
-                        {`
-                       window.dataLayer = window.dataLayer || [];
-                        function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
 
-                        gtag('config', 'AW-11457539871');
-                    `}
-                    </Script>
+
+
+
+
+
+
+
+
+
                 </div>
                 <div className="mx-auto h-full">
                     <LandingNavBar dictionary={dictionary} lang={params.lang}/>
