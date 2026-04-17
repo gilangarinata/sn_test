@@ -19,6 +19,8 @@ import {getDictionary} from "@/lib/dictionary";
 import {Metadata} from "next";
 import StructuredData from "@/app/[lang]/(landing)/StructuredDate";
 
+import FilteredContent from "@/components/landing/our-business/filtered-content";
+
 export const metadata: Metadata = {
     title: 'Our Business',
     description: "Sebagai perusahaan energi terbarukan yang berfokus pada pengembangan panel surya, kami melayani solusi lengkap mulai dari penyewaan sistem tenaga surya, instalasi dan konstruksi, perencanaan dan rekayasa sistem, manajemen proyek, pemilihan komponen dan tekonlogi, serta operasi dan pemeliharaan.",
@@ -36,9 +38,14 @@ export const metadata: Metadata = {
         url: new URL(`https://sesna.id/our-business`)
     }
 }
-async function LandingPage({params} : {params: { lang: Locale }}) {
+
+async function LandingPage({ params, searchParams }: { 
+    params: { lang: Locale }, 
+    searchParams: { category?: string } 
+}) {
     const ourBusiness = await fetchOurBusiness()
     const dictionary = await getDictionary(params.lang)
+    const selectedCategory = searchParams.category || null;
 
     const base = "https://sesna.id";
     const pageUrl = `${base}/our-business`;
@@ -91,18 +98,19 @@ async function LandingPage({params} : {params: { lang: Locale }}) {
     };
 
     return (
-       <div className="h-full">
-           {/* JSON-LD blocks */}
-           <StructuredData id="sd-service-our-business" data={serviceJsonLd} />
-           <StructuredData id="sd-webpage-our-business" data={webPageJsonLd} />
-           <StructuredData id="sd-breadcrumbs-our-business" data={breadcrumbsJsonLd} />
+        <div className="h-full">
+            {/* JSON-LD blocks */}
+            <StructuredData id="sd-service-our-business" data={serviceJsonLd} />
+            <StructuredData id="sd-webpage-our-business" data={webPageJsonLd} />
+            <StructuredData id="sd-breadcrumbs-our-business" data={breadcrumbsJsonLd} />
 
-           <OurBusinessBanner banner={ourBusiness.banner} lang={params.lang} dictionary={dictionary}/>
-           <WhySolar whySolar={ourBusiness.whySolar} lang={params.lang} dictionary={dictionary}/>
-           <SolarPowerWorks solarPowerWorks={ourBusiness.solarPowerWorks} lang={params.lang} dictionary={dictionary}/>
-           <ScopeOfWork scopeOfWork={ourBusiness.scopeOfWork} lang={params.lang} dictionary={dictionary}/>
-           <OurExperience ourExperience={ourBusiness.ourExperience} lang={params.lang} dictionary={dictionary}/>
-       </div>
+            <OurBusinessBanner banner={ourBusiness.banner} lang={params.lang} dictionary={dictionary} />
+            <WhySolar whySolar={ourBusiness.whySolar} lang={params.lang} dictionary={dictionary} />
+            <SolarPowerWorks solarPowerWorks={ourBusiness.solarPowerWorks} lang={params.lang} dictionary={dictionary} />
+            <ScopeOfWork scopeOfWork={ourBusiness.scopeOfWork} lang={params.lang} dictionary={dictionary} />
+            <OurExperience ourExperience={ourBusiness.ourExperience} lang={params.lang} dictionary={dictionary} activeCategory={selectedCategory}/>
+            <FilteredContent category={selectedCategory} lang={params.lang} dictionary={dictionary} />
+        </div>
     )
 }
 

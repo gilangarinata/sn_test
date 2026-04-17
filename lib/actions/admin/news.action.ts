@@ -107,6 +107,7 @@ export async function fetchNewsByCategory(_categoryId: string, pageNumber: numbe
 export async function fetchAllNews(pageNumber: number, pageSize: number,
                                    categoryId?: string,
                                    year?: number,
+                                   categoryName?: string,
                                    ) {
     await connectToDb();
     try {
@@ -114,6 +115,20 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
 
         if (categoryId) {
             filters.category = categoryId;
+        }
+
+        if (categoryName) {
+            const escapedCategoryName = categoryName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            // Match exactly the name or the name followed by [[Translation]]
+            const cat = await NewsCategory.findOne({ name: { $regex: new RegExp(`^${escapedCategoryName}(\\[\\[.*\\]\\])?$`, 'i') }, type: 'news' });
+            if (cat) {
+                filters.category = cat._id;
+            } else {
+                return {
+                    banners: [],
+                    totalPages: 0
+                };
+            }
         }
 
         if (year && year > 0) {
@@ -165,7 +180,7 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
             totalPages
         };
     }catch (error) {
-        console.log("Failed to get banner")
+        console.error("Failed to get news:", error);
         return null;
     }
 }

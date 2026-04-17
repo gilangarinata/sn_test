@@ -56,13 +56,28 @@ export async function fetchVideosByCategory(_categoryId: string, pageNumber: num
 }
 
 export async function fetchAllVideos(pageNumber: number, pageSize: number, categoryId?: string,
-                                   year?: number) {
+                                   year?: number,
+                                   categoryName?: string) {
     await connectToDb();
     try {
         const filters: any = {};
 
         if (categoryId) {
             filters.category = categoryId;
+        }
+
+        if (categoryName) {
+            const escapedCategoryName = categoryName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            // Match exactly the name or the name followed by [[Translation]]
+            const cat = await NewsCategory.findOne({ name: { $regex: new RegExp(`^${escapedCategoryName}(\\[\\[.*\\]\\])?$`, 'i') }, type: 'video' });
+            if (cat) {
+                filters.category = cat._id;
+            } else {
+                return {
+                    banners: [],
+                    totalPages: 0
+                };
+            }
         }
 
         console.log("catidg: " + categoryId)
@@ -97,7 +112,7 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number, categ
             .lean()
 
 
-        const totalBannersCount = await Video.countDocuments();
+        const totalBannersCount = await Video.countDocuments(filters);
         const banners = await bannersQuery.exec();
 
         const totalPages = Math.ceil(totalBannersCount / pageSize);
