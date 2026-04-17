@@ -1,10 +1,11 @@
 // ImageComponent.jsx
 import React from 'react';
+import Image from 'next/image';
 
 const ImageComponent = () => {
     return (
         <div>
-            <img src="/images/zero_capex_br_en.png" alt="My Image" />
+            <Image src="/images/zero_capex_br_en.png" alt="Zero Capex Banner" width={800} height={400} />
         </div>
     );
 };

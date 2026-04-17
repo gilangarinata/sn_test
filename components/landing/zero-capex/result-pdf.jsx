@@ -1,6 +1,6 @@
 "use client"
 
-import React, {ReactDOM, useEffect, useRef} from "react";
+import React, {useCallback, useEffect, useRef} from "react";
 import Image from "next/image";
 import {ScopeOfWOrk} from "@/components/admin/our-business/scope-of-works/scope-of-work-table";
 import {Input} from "@/components/ui/input";
@@ -365,7 +365,7 @@ export default function ZeroCapexResultPdf() {
 
     const ref = useRef(null)
     const [image, takeScreenshot] = useScreenshot()
-    const getImage = () => takeScreenshot(ref.current)
+    const getImage = useCallback(() => takeScreenshot(ref.current), [takeScreenshot])
 
     const download = (iImage, {name = 'img', extension = 'png'} = {}) => {
         const a = document.createElement('a')
@@ -384,7 +384,7 @@ export default function ZeroCapexResultPdf() {
         setTimeout(() => {
             getImage();
         }, 2000);
-    }, [])
+    }, [getImage])
 
 
     const MyDocument = () => (
@@ -551,7 +551,7 @@ export default function ZeroCapexResultPdf() {
                 {/*</div>*/}
 
                 <div className="relative w-[800px] h-[150px]">
-                    <img src="/images/banner_co2.png" alt="Avatar" width={800} height={150}/>
+                    <Image src="/images/banner_co2.png" alt="Banner CO2" width={800} height={150}/>
                     <div
                         className="absolute mb-6 w-full top-0 inset-x-0 h-full px-4 text-white text-xs text-center leading-4 flex flex-col justify-center">
                         <h1 className="font-bold text-lg">Dampak Lingkungan dalam 25 tahun</h1>
@@ -578,7 +578,7 @@ export default function ZeroCapexResultPdf() {
                                 <div className="flex w-[800px]">
                                     <h1 className="text-xl font-bold flex-1">Solar Rental Zero Capex</h1>
                                     <div style={{width: '30px', height: '30px', position: 'relative'}}>
-                                        <Image src="/images/ic_plan_1.png" layout='fill'/>
+                                        <Image src="/images/ic_plan_1.png" alt="Plan icon" layout='fill'/>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4">
