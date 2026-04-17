@@ -29,12 +29,7 @@ export async function login(formData: any) {
 
         // Log login
         try {
-            await ActivityLog.create({
-                userId: user._id,
-                username: user.username,
-                action: 'LOGIN',
-                details: `User ${user.username} logged in.`,
-            });
+            await createActivityLog('LOGIN', `User ${user.username} logged in.`);
         } catch (logErr) {
             console.error("Activity log error:", logErr);
         }
@@ -56,6 +51,16 @@ export async function createActivityLog(action: string, details: string) {
     await connectToDb();
     const session = getSession();
     if (!session) return;
+
+    // Truncate logs older than 14 days to keep DB size small
+    const fourteenDaysAgo = new Date();
+    fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+    
+    try {
+        await ActivityLog.deleteMany({ timestamp: { $lt: fourteenDaysAgo } });
+    } catch (err) {
+        console.error("Failed to truncate activity logs:", err);
+    }
 
     await ActivityLog.create({
         userId: session.id,
@@ -139,12 +144,7 @@ export async function changePassword(formData: any) {
     user.password = hashPassword(newPassword);
     await user.save();
 
-    await ActivityLog.create({
-        userId: user._id,
-        username: user.username,
-        action: 'CHANGE_PASSWORD',
-        details: `User ${user.username} changed their password.`,
-    });
+    await createActivityLog('CHANGE_PASSWORD', `User ${user.username} changed their password.`);
 
     return { success: true };
 }
