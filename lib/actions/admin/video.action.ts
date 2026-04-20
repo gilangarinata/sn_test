@@ -57,13 +57,24 @@ export async function fetchVideosByCategory(_categoryId: string, pageNumber: num
 
 export async function fetchAllVideos(pageNumber: number, pageSize: number, categoryId?: string,
                                    year?: number,
-                                   categoryName?: string) {
+                                   categoryName?: string,
+                                   search?: string,
+                                   status?: string) {
     await connectToDb();
     try {
         const filters: any = {};
 
         if (categoryId) {
             filters.category = categoryId;
+        }
+
+        if (search) {
+            const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            filters.title = { $regex: new RegExp(escapedSearch, 'i') };
+        }
+
+        if (status && status !== 'all') {
+            filters.status = status;
         }
 
         if (categoryName) {

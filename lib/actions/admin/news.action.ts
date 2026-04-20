@@ -108,6 +108,8 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
                                    categoryId?: string,
                                    year?: number,
                                    categoryName?: string,
+                                   search?: string,
+                                   status?: string,
                                    ) {
     await connectToDb();
     try {
@@ -115,6 +117,18 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
 
         if (categoryId) {
             filters.category = categoryId;
+        }
+
+        if (search) {
+            const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+            filters.$or = [
+                { title: { $regex: new RegExp(escapedSearch, 'i') } },
+                { slug: { $regex: new RegExp(escapedSearch, 'i') } }
+            ];
+        }
+
+        if (status && status !== 'all') {
+            filters.status = status;
         }
 
         if (categoryName) {
