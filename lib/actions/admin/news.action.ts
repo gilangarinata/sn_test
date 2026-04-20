@@ -133,8 +133,11 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
 
         if (categoryName) {
             const escapedCategoryName = categoryName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            // Match exactly the name or the name followed by [[Translation]]
-            const cat = await NewsCategory.findOne({ name: { $regex: new RegExp(`^${escapedCategoryName}(\\[\\[.*\\]\\])?$`, 'i') }, type: 'news' });
+            // Make matching flexible for "&", "dan", "and"
+            const flexiblePattern = escapedCategoryName.replace(/\\(&|dan|and)/gi, "(&|dan|and)");
+            const regex = new RegExp(`(^|\\b|\\[\\[)${flexiblePattern}(\\]\\]|\\b|$)`, 'i');
+            
+            const cat = await NewsCategory.findOne({ name: { $regex: regex }, type: 'news' });
             if (cat) {
                 filters.category = cat._id;
             } else {
@@ -182,11 +185,6 @@ export async function fetchAllNews(pageNumber: number, pageSize: number,
 
         const totalBannersCount = await News.countDocuments(filters);
         const banners = await bannersQuery.exec();
-        // const isNext = totalBannersCount > skipAmount + banner.length;
-        console.log("BN:")
-        console.log(banners.length)
-        console.log(categoryId)
-        console.log(banners)
         const totalPages = Math.ceil(totalBannersCount / pageSize);
 
         return {

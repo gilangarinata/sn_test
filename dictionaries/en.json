@@ -84,6 +84,7 @@
   "choose_plan": "Pilih Paket",
   "nama_user": "Nama Anda",
   "perusahaan": "Perusahaan",
-  "whatsapp": "Nomor Whatsapp"
-
+  "whatsapp": "Nomor Whatsapp",
+  "no_content": "Konten Tidak Tersedia",
+  "no_content_desc": "Ups! Sepertinya belum ada konten dalam kategori ini. Silakan pilih kategori lain atau kembali beberapa saat lagi."
 }

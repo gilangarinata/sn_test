@@ -19,7 +19,7 @@ async function MediaPage({ params }: { params: { categoryId: string, lang: Local
     return (
        <div className="h-full">
            <NewsBanner image={category?.banner ?? ""} title={category?.description ?? ""} lang={params.lang} dictionary={dictionary} />
-           <NewsContent categories={categories?.categories as Category[]} lang={params.lang} dictionary={dictionary} />
+           <NewsContent categoryId={params.categoryId} categories={categories?.categories as Category[]} lang={params.lang} dictionary={dictionary} />
        </div>
     )
 }

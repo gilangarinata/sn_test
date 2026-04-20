@@ -79,8 +79,11 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number, categ
 
         if (categoryName) {
             const escapedCategoryName = categoryName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-            // Match exactly the name or the name followed by [[Translation]]
-            const cat = await NewsCategory.findOne({ name: { $regex: new RegExp(`^${escapedCategoryName}(\\[\\[.*\\]\\])?$`, 'i') }, type: 'video' });
+            // Make matching flexible for "&", "dan", "and"
+            const flexiblePattern = escapedCategoryName.replace(/\\(&|dan|and)/gi, "(&|dan|and)");
+            const regex = new RegExp(`(^|\\b|\\[\\[)${flexiblePattern}(\\]\\]|\\b|$)`, 'i');
+            
+            const cat = await NewsCategory.findOne({ name: { $regex: regex }, type: 'video' });
             if (cat) {
                 filters.category = cat._id;
             } else {
@@ -90,8 +93,6 @@ export async function fetchAllVideos(pageNumber: number, pageSize: number, categ
                 };
             }
         }
-
-        console.log("catidg: " + categoryId)
 
         if (year) {
             // Assuming you have a 'date' field in your news documents

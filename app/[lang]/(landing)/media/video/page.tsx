@@ -40,15 +40,23 @@ export const metadata: Metadata = {
     }
 
 }
-async function MediaPage({params} : {params: { lang: Locale }}) {
-    const video = await fetchAllVideos(1,2000)
-    const categories = await fetchCategories("video")
-    const dictionary = await getDictionary(params.lang)
+async function MediaPage({params, searchParams} : {params: { lang: Locale }, searchParams?: { category?: string }}) {
+    const categoryName = searchParams?.category;
+    const video = await fetchAllVideos(1, 2000, undefined, undefined, categoryName);
+    const categories = await fetchCategories("video");
+    const dictionary = await getDictionary(params.lang);
+    
     return (
-       <div className="h-full">
-           <VideoContent categories={categories?.categories ?? []} videos={video?.banners as Video[]}  lang={params.lang} dictionary={dictionary} />
-       </div>
-    )
+        <div className="h-full">
+            <VideoContent 
+                categoryName={categoryName} 
+                categories={categories?.categories ?? []} 
+                videos={video?.banners as Video[]} 
+                lang={params.lang} 
+                dictionary={dictionary} 
+            />
+        </div>
+    );
 }
 
 export default MediaPage;

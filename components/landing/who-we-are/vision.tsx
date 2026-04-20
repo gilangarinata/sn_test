@@ -129,7 +129,7 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                             </div>
                             <div className="hidden w-0 md:w-full md:block mb-[-300px]">
                                 <div className="w-full h-[750px] relative">
-                                    <Image src="/images/manager2.png" alt="" fill style={{objectFit: "cover"}} />
+                                    <Image src="/images/pak_rico.webp" alt="" fill style={{objectFit: "contain"}} />
                                 </div>
                             </div>
                         </div>

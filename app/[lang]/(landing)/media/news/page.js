@@ -32,15 +32,21 @@ export const metadata = {
     }
 }
 
-async function MediaPage({params}) {
+async function MediaPage({params, searchParams}) {
     const categories = await fetchCategories("news")
-    // const news = await fetchAllNews(3, 200)
     const dictionary = await getDictionary(params.lang)
+    const categoryName = searchParams?.category;
+    
     return (
-       <div className="h-full">
-           <NewsBanner image="" title="" lang={params.lang} dictionary={dictionary}/>
-           <NewsContent categories={categories?.categories} lang={params.lang} dictionary={dictionary}/>
-       </div>
+        <div className="h-full">
+            <NewsBanner image="" title="" lang={params.lang} dictionary={dictionary}/>
+            <NewsContent 
+                categoryName={categoryName} 
+                categories={categories?.categories} 
+                lang={params.lang} 
+                dictionary={dictionary}
+            />
+        </div>
     )
 }
 export default MediaPage;

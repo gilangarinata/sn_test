@@ -84,5 +84,7 @@
   "choose_plan": "Choose Plan",
   "nama_user": "Your Name",
   "perusahaan": "Company",
-  "whatsapp": "Whatsapp Number"
+  "whatsapp": "Whatsapp Number",
+  "no_content": "No Content Available",
+  "no_content_desc": "Oops! It seems there is no content in this category yet. Please try another category or check back later."
 }

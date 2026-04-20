@@ -127,11 +127,7 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
         calculateEstimatedPowerUsage()
     }, [tagihanListrik, jenisProperty, rataRataHarian, luasArea])
 
-    // const currencyFormatter = new Intl.NumberFormat(window.navigator.language, {
-    //     style: 'currency',
-    //     currency: 'USD',
-    //     maximumFractionDigits: 2,
-    // });
+    const [isLoading, setIsLoading] = React.useState(false);
 
     return (
             <div className="w-full flex flex-col items-center min-h-screen justify-center" style={{ ...divStyle, 'backgroundImage': `url("/images/banner_1.webp")`}}>
@@ -144,14 +140,6 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                             <div className="flex flex-col items-center px-4 py-6 gap-4">
                                 <div className="rounded-2xl px-4 py-6 w-full shadow-xl bg-[#f9c329] flex flex-col items-center gap-4">
                                     <h1>{dictionary.mohon_input}</h1>
-                                    {/*<Input type="text" placeholder="Jenis Property" onChange={(e) => {*/}
-                                    {/*    setJenisProperty(e.target.value);*/}
-                                    {/*}} />*/}
-                                    {/*<Input type="text" value={lokasi} placeholder="Lokasi" onChange={(e) => {*/}
-                                    {/*    // setDayaListrik(e.target.value)*/}
-                                    {/*    // const vl = isNaN(parseFloat(e.target.value.replace(/,/g, ''))) ? "0" : parseFloat(e.target.value.replace(/,/g, '')).toLocaleString();*/}
-                                    {/*    setLokasi(e.target.value);*/}
-                                    {/*}} />*/}
                                     <Select onValueChange={(val) => {
                                         const lokasi = locationData.find(item => item.province === val)?.province
                                         setLokasi(lokasi ?? "")
@@ -217,12 +205,6 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         </div>
                                     </div>
 
-                                    {/*{jenisProperty?.needEmail && (*/}
-                                    {/*    */}
-                                    {/*)}*/}
-
-
-
                                     <Input type="text" placeholder={dictionary.nama_user} onChange={(e) => {
                                         setYourName(e.target.value)
                                     }} />
@@ -242,119 +224,118 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     <p className="text-red-500">{error}</p>
                                 </div>
 
-                                <Button onClick={(bt) => {
-                                    bt.preventDefault()
-
-                                    if (!jenisProperty) {
-                                        setError(lang === "id" ? "Please fill electricity installed PLN" : "Mohon isi daya terpasang PLN")
-                                        return;
-                                    }
-
-                                    if (lokasi === "") {
-                                        setError(lang === "id" ? "Please fill your location" : "Mohon isi lokasi anda")
-                                        return;
-                                    }
-
-                                    if (tagihanListrik === "") {
-                                        setError(lang === "id" ? "Please fill electricity bill" :"Mohon isi tagihan listrik")
-                                        return;
-                                    }
-
-                                    if (lokasiPemasangan === "") {
-                                        setError(lang === "id" ? "Please fill installation location" :"Mohon pilih lokasi pemasangan")
-                                        return;
-                                    }
-
-                                    if (lokasi === "") {
-                                        setError(lang === "id" ? "Please fill location" :"Mohon pilih lokasi")
-                                        return;
-                                    }
-
-                                    if (yourName === "") {
-                                        setError(lang === "id" ? "Please fill your nama" :"Mohon isi nama anda")
-                                        return;
-                                    }
-
-                                    if (yourCompany === "") {
-                                        setError(lang === "id" ? "Please fill your company" :"Mohon isi perusahaan anda")
-                                        return;
-                                    }
-
-                                    if (yourWhatsapp === "") {
-                                        setError(lang === "id" ? "Please fill your whatsapp number" :"Mohon isi whatsapp anda")
-                                        return;
-                                    }
-
-                                    if (yourEmail === "") {
-                                        setError(lang === "id" ? "Please fill your email" :"Mohon isi email anda")
-                                        return;
-                                    }
-
-                                    let dl = "";
-                                    if(dayaListrik === "") {
-                                        dl = "30000"
-                                    } else {
-                                        dl = dayaListrik.replaceAll(",","")
-                                    }
-
-                                    let la = "";
-                                    if(luasArea === "") {
-                                        la = "1000"
-                                    } else {
-                                        la = luasArea.replaceAll(",","")
-                                    }
-
-
-                                    cookie.set("jenisProperty",jenisProperty.categoryEn);
-                                    cookie.set("lokasi",lokasi);
-                                    cookie.set("dayaListrik",dl);
-                                    cookie.set("tarifListrik",jenisProperty.tariffCode.toString());
-                                    cookie.set("tagihanListrik",tagihanListrik.replaceAll(",",""));
-                                    cookie.set("luasArea",la);
-                                    cookie.set("lokasiPemasangan",lokasiPemasangan);
-                                    cookie.set("estimatedpowerusage",estimatedPowerUsage.toString().replaceAll(",",""));
-                                    cookie.set("youremail",yourEmail.toString());
-                                    cookie.set("yourname",yourName.toString());
-                                    cookie.set("yourwhatsapp",yourWhatsapp.toString());
-                                    cookie.set("yourcompany",yourCompany.toString());
-
-                                    cookie.set("rataRataHarian",rataRataHarian.toString().replaceAll(",",""));
-
-                                    const saveLead = async () => {
-                                        try {
-                                            const resultId = await createZeroCapex({
-                                                email: yourEmail.toString(),
-                                                dayaTerpasang: jenisProperty.categoryEn,
-                                                dayaListrik: dl + " kVA",
-                                                luasProperty: la + " m2",
-                                                tagihanPerBulan: "Rp " + tagihanListrik.replaceAll(",",""),
-                                                tarifListrik: "Rp " + jenisProperty.tariffCode.toString() + " per kWh",
-                                                estimasiPenggunaanDaya: Math.ceil(estimatedPowerUsage) + " kWh",
-                                                lokasiInstallasi: lokasiPemasangan,
-                                                rekomendasiInstallasi: "", 
-                                                areaPotensial: "",
-                                                jumlahModulSurya: "",
-                                                produksiEnergiPerTahun: "",
-                                                periodeInstallasi: "",
-                                                lokasi: lokasi,
-                                                name: yourName.toString(),
-                                                whatsapp: yourWhatsapp.toString(),
-                                                company: yourCompany.toString(),
-                                            });
-                                            cookie.set("currentZeroCapexId", resultId);
-                                        } catch (e) {
-                                            console.error("Failed to save initial lead:", e);
+                                <Button 
+                                    disabled={isLoading}
+                                    onClick={(bt) => {
+                                        bt.preventDefault()
+                                        
+                                        // Validation logic
+                                        if (!jenisProperty) {
+                                            setError(lang === "id" ? "Please fill electricity installed PLN" : "Mohon isi daya terpasang PLN")
+                                            return;
                                         }
-                                    };
 
-                                    saveLead().finally(() => {
-                                        if(lang === "en") {
-                                            router.push(`/zero-capex-result`);
-                                        } else {
-                                            router.push(`/${lang}/zero-capex-result`);
+                                        if (lokasi === "") {
+                                            setError(lang === "id" ? "Please fill your location" : "Mohon isi lokasi anda")
+                                            return;
                                         }
-                                    });
-                                }} className="bg-[#f9c329] text-blue-950 font-bold w-full">{dictionary.next}</Button>
+
+                                        if (tagihanListrik === "") {
+                                            setError(lang === "id" ? "Please fill electricity bill" :"Mohon isi tagihan listrik")
+                                            return;
+                                        }
+
+                                        if (lokasiPemasangan === "") {
+                                            setError(lang === "id" ? "Please fill installation location" :"Mohon pilih lokasi pemasangan")
+                                            return;
+                                        }
+
+                                        if (yourName === "") {
+                                            setError(lang === "id" ? "Please fill your nama" :"Mohon isi nama anda")
+                                            return;
+                                        }
+
+                                        if (yourCompany === "") {
+                                            setError(lang === "id" ? "Please fill your company" :"Mohon isi perusahaan anda")
+                                            return;
+                                        }
+
+                                        if (yourWhatsapp === "") {
+                                            setError(lang === "id" ? "Please fill your whatsapp number" :"Mohon isi whatsapp anda")
+                                            return;
+                                        }
+
+                                        if (yourEmail === "") {
+                                            setError(lang === "id" ? "Please fill your email" :"Mohon isi email anda")
+                                            return;
+                                        }
+
+                                        setIsLoading(true);
+                                        setError('');
+
+                                        let dl = dayaListrik === "" ? "30000" : dayaListrik.replaceAll(",","");
+                                        let la = luasArea === "" ? "1000" : luasArea.replaceAll(",","");
+
+                                        cookie.set("jenisProperty",jenisProperty.categoryEn);
+                                        cookie.set("lokasi",lokasi);
+                                        cookie.set("dayaListrik",dl);
+                                        cookie.set("tarifListrik",jenisProperty.tariffCode.toString());
+                                        cookie.set("tagihanListrik",tagihanListrik.replaceAll(",",""));
+                                        cookie.set("luasArea",la);
+                                        cookie.set("lokasiPemasangan",lokasiPemasangan);
+                                        cookie.set("estimatedpowerusage",estimatedPowerUsage.toString().replaceAll(",",""));
+                                        cookie.set("youremail",yourEmail.toString());
+                                        cookie.set("yourname",yourName.toString());
+                                        cookie.set("yourwhatsapp",yourWhatsapp.toString());
+                                        cookie.set("yourcompany",yourCompany.toString());
+                                        cookie.set("rataRataHarian",rataRataHarian.toString().replaceAll(",",""));
+
+                                        const saveLead = async () => {
+                                            try {
+                                                const resultId = await createZeroCapex({
+                                                    email: yourEmail.toString(),
+                                                    dayaTerpasang: jenisProperty.categoryEn,
+                                                    dayaListrik: dl + " kVA",
+                                                    luasProperty: la + " m2",
+                                                    tagihanPerBulan: "Rp " + tagihanListrik.replaceAll(",",""),
+                                                    tarifListrik: "Rp " + jenisProperty.tariffCode.toString() + " per kWh",
+                                                    estimasiPenggunaanDaya: Math.ceil(estimatedPowerUsage) + " kWh",
+                                                    lokasiInstallasi: lokasiPemasangan,
+                                                    rekomendasiInstallasi: "", 
+                                                    areaPotensial: "",
+                                                    jumlahModulSurya: "",
+                                                    produksiEnergiPerTahun: "",
+                                                    periodeInstallasi: "",
+                                                    lokasi: lokasi,
+                                                    name: yourName.toString(),
+                                                    whatsapp: yourWhatsapp.toString(),
+                                                    company: yourCompany.toString(),
+                                                });
+                                                cookie.set("currentZeroCapexId", resultId);
+                                            } catch (e) {
+                                                console.error("Failed to save initial lead:", e);
+                                            }
+                                        };
+
+                                        saveLead().finally(() => {
+                                            if(lang === "en") {
+                                                router.push(`/zero-capex-result`);
+                                            } else {
+                                                router.push(`/${lang}/zero-capex-result`);
+                                            }
+                                        });
+                                    }} 
+                                    className="bg-[#f9c329] text-blue-950 font-bold w-full"
+                                >
+                                    {isLoading ? (
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-4 h-4 border-2 border-blue-980 border-t-transparent rounded-full animate-spin" />
+                                            <span>Loading...</span>
+                                        </div>
+                                    ) : (
+                                        dictionary.next
+                                    )}
+                                </Button>
                             </div>
                         </div>
                         <h1 className="w-full hidden lg:block text-center lg:text-end p-[60px] lg:text-7xl font-bold text-[#f9c329] text-shadow-lg" dangerouslySetInnerHTML={{__html: dictionary.hitung_investasi}}></h1>
