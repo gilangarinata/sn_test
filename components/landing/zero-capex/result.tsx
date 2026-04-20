@@ -492,8 +492,12 @@ export default function ZeroCapexResult({ lang, dictionary} : { lang: Locale, di
                 // Step 4: Upload the PDF file
                 const result = await startUpload([pdfFile]);
                 console.log(`GILS ${result[0].fileUrl}`)
+                
+                const currentId = cookie.get("currentZeroCapexId");
+                
                 await createZeroCapex(
                     {
+                        id: currentId,
                         url: "",
                         email: cookie.get("youremail") ?? "-",
                         dayaTerpasang: selectedJenisProperty?.categoryEn ?? "",

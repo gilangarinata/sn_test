@@ -89,6 +89,8 @@ export const locationData = [
 const divStyle = {
     backgroundSize: 'cover',
 }
+import {createZeroCapex} from "@/lib/actions/admin/zero-capex.action";
+
 export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dictionary: any}) {
     const router = useRouter();
     const [jenisProperty, setJenisProperty] = React.useState<PricingCategory>();
@@ -253,26 +255,10 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                         return;
                                     }
 
-                                    // if (dayaListrik === "") {
-                                    //     setError(lang === "en" ? "Please fill electricity power" : "Mohon isi daya listrik")
-                                    //     return;
-                                    // }
-
-
-                                    // if (tarifListrik === "") {
-                                    //     setError(lang === "en" ? "Please fill electricity tariff" :"Mohon isi tarif listrik")
-                                    //     return;
-                                    // }
-
                                     if (tagihanListrik === "") {
                                         setError(lang === "id" ? "Please fill electricity bill" :"Mohon isi tagihan listrik")
                                         return;
                                     }
-
-                                    // if (luasArea === "") {
-                                    //     setError(lang === "en" ? "Please fill property area" :"Mohon isi luas area")
-                                    //     return;
-                                    // }
 
                                     if (lokasiPemasangan === "") {
                                         setError(lang === "id" ? "Please fill installation location" :"Mohon pilih lokasi pemasangan")
@@ -334,12 +320,40 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
 
                                     cookie.set("rataRataHarian",rataRataHarian.toString().replaceAll(",",""));
 
-                                     if(lang === "en") {
-                                         router.push(`/zero-capex-result`);
-                                     } else {
-                                         router.push(`/${lang}/zero-capex-result`);
-                                     }
-                                    // router.push(`/zero-capex-result`);
+                                    const saveLead = async () => {
+                                        try {
+                                            const resultId = await createZeroCapex({
+                                                email: yourEmail.toString(),
+                                                dayaTerpasang: jenisProperty.categoryEn,
+                                                dayaListrik: dl + " kVA",
+                                                luasProperty: la + " m2",
+                                                tagihanPerBulan: "Rp " + tagihanListrik.replaceAll(",",""),
+                                                tarifListrik: "Rp " + jenisProperty.tariffCode.toString() + " per kWh",
+                                                estimasiPenggunaanDaya: Math.ceil(estimatedPowerUsage) + " kWh",
+                                                lokasiInstallasi: lokasiPemasangan,
+                                                rekomendasiInstallasi: "", 
+                                                areaPotensial: "",
+                                                jumlahModulSurya: "",
+                                                produksiEnergiPerTahun: "",
+                                                periodeInstallasi: "",
+                                                lokasi: lokasi,
+                                                name: yourName.toString(),
+                                                whatsapp: yourWhatsapp.toString(),
+                                                company: yourCompany.toString(),
+                                            });
+                                            cookie.set("currentZeroCapexId", resultId);
+                                        } catch (e) {
+                                            console.error("Failed to save initial lead:", e);
+                                        }
+                                    };
+
+                                    saveLead().finally(() => {
+                                        if(lang === "en") {
+                                            router.push(`/zero-capex-result`);
+                                        } else {
+                                            router.push(`/${lang}/zero-capex-result`);
+                                        }
+                                    });
                                 }} className="bg-[#f9c329] text-blue-950 font-bold w-full">{dictionary.next}</Button>
                             </div>
                         </div>

@@ -68,14 +68,27 @@ function generateAndDownloadExcel({data, filename} : {data: GetInTouch[], filena
 function GetInTouchTable() {
 
     const [achievements, setAchievements] = useState<GetInTouch[]>()
-    async function getAchievements() {
-        const achievements = await fetchGetInTouch()
-        setAchievements(achievements?.banners);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    const pageSize = 10;
+
+    async function getAchievements(page = 1) {
+        try {
+            setIsLoading(true);
+            const achievements = await fetchGetInTouch(page, pageSize);
+            setAchievements(achievements?.banners);
+            setTotalPages(achievements?.totalPages || 1);
+        } catch (error) {
+            console.error("Failed to fetch GetInTouch:", error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     useEffect(() => {
-        getAchievements()
-    }, [])
+        getAchievements(currentPage);
+    }, [currentPage])
 
     const [open, setOpen] = useState<{banner : GetInTouch | null, isOpen : boolean}>({banner: null, isOpen:false});
     const [deleteLoading, setDeleteLoading] = useState(false);
@@ -183,25 +196,69 @@ function GetInTouchTable() {
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
-                        <TableBody>
-                            {achievements?.map((achievement) => (
+                    <TableBody>
+                        {isLoading ? (
+                            <TableRow>
+                                <TableCell colSpan={7} className="text-center py-10">
+                                    <Spinner />
+                                </TableCell>
+                            </TableRow>
+                        ) : achievements?.length === 0 ? (
+                            <TableRow>
+                                <TableCell colSpan={7} className="text-center py-10">
+                                    No lead data found.
+                                </TableCell>
+                            </TableRow>
+                        ) : (
+                            achievements?.map((achievement) => (
                                 <TableRow key={achievement.id}>
                                     <TableCell>{achievement.name}</TableCell>
                                     <TableCell>{achievement.email}</TableCell>
                                     <TableCell><div className="flex flex-col">{achievement.phone} <Button onClick={() => handleOpenWhatsApp(achievement.phone)}>Balas di Whatsapp</Button></div></TableCell>
                                     <TableCell>{achievement.namaPerusahaan}</TableCell>
                                     <TableCell>{achievement.message}</TableCell>
-                                    <TableCell>{achievement.createdAt?.toLocaleTimeString()}</TableCell>
+                                    <TableCell className="text-center whitespace-nowrap">
+                                        {achievement.createdAt ? new Date(achievement.createdAt).toLocaleString('id-ID', {
+                                            day: '2-digit',
+                                            month: '2-digit',
+                                            year: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            hour12: false
+                                        }).replace(/\//g, '-') : '-'}
+                                    </TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-center gap-4">
                                             <Trash2Icon onClick={() => setOpen({banner: achievement, isOpen: true})} width={18} color="red" className="hover:cursor-pointer" />
                                         </div>
                                     </TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            ))
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="flex items-center justify-center gap-4 mb-10">
+                <Button 
+                    variant="outline" 
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1 || isLoading}
+                >
+                    Previous
+                </Button>
+                <div className="text-sm font-medium">
+                    Page {currentPage} of {totalPages}
                 </div>
+                <Button 
+                    variant="outline" 
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages || isLoading}
+                >
+                    Next
+                </Button>
+            </div>
             </div>
     )
 }

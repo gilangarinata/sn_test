@@ -12,25 +12,33 @@ interface Params {
     message: string,
 }
 
-export async function fetchGetInTouch() {
+export async function fetchGetInTouch(pageNumber = 1, pageSize = 10) {
     await connectToDb();
     try {
-        const pageNumber = 1;
-        const pageSize = 200;
         const skipAmount = (pageNumber - 1) * pageSize;
 
         const bannersQuery = GetInTouchModel.find()
-            .sort({ _id: -1})
+            .sort({ createdAt: -1})
             .skip(skipAmount)
             .limit(pageSize)
+            .lean(); // Use lean() to fix plain object warning
 
         const totalBannersCount = await GetInTouchModel.countDocuments();
-
         const banners = await bannersQuery.exec();
-        const isNext = totalBannersCount > skipAmount + banners.length;
+        const totalPages = Math.ceil(totalBannersCount / pageSize);
+
+        // Sanitize data for client components
+        const sanitizedBanners = banners.map((item: any) => ({
+            ...item,
+            id: item._id.toString(),
+            _id: item._id.toString(),
+            createdAt: item.createdAt ? item.createdAt.toISOString() : null,
+            updatedAt: item.updatedAt ? item.updatedAt.toISOString() : null,
+        }));
+
         return {
-            banners,
-            isNext
+            banners: sanitizedBanners,
+            totalPages
         };
     }catch (error) {
         console.log(`Failed to get banners ${error}`)
@@ -65,7 +73,6 @@ export async function updateGetInTouch({
                 phone,
                 message,
                 namaPerusahaan,
-                createdAt: Date.now()
             },
             { upsert: true }
         )

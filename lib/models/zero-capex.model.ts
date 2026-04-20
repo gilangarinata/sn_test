@@ -20,7 +20,7 @@ const newsSchema = new  mongoose.Schema({
     whatsapp: String,
     company: String,
     pdfUrl: String
-});
+}, { timestamps: true });
 
 const ZeroCapexModel = mongoose.models?.ZeroCapexModel || mongoose.model('ZeroCapexModel', newsSchema);
 export default ZeroCapexModel;
