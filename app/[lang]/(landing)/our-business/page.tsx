@@ -20,6 +20,8 @@ import {Metadata} from "next";
 import StructuredData from "@/app/[lang]/(landing)/StructuredDate";
 
 import FilteredContent from "@/components/landing/our-business/filtered-content";
+import ProjectMap from "@/components/landing/our-business/project-map";
+import { fetchMapProjects } from "@/lib/actions/admin/map-project.action";
 
 export const metadata: Metadata = {
     title: 'Our Business',
@@ -46,6 +48,8 @@ async function LandingPage({ params, searchParams }: {
     const ourBusiness = await fetchOurBusiness()
     const dictionary = await getDictionary(params.lang)
     const selectedCategory = searchParams.category || null;
+    const mapProjectsData = await fetchMapProjects();
+    const mapProjects = mapProjectsData.projects || [];
 
     const base = "https://sesna.id";
     const pageUrl = `${base}/our-business`;
@@ -109,6 +113,7 @@ async function LandingPage({ params, searchParams }: {
             <SolarPowerWorks solarPowerWorks={ourBusiness.solarPowerWorks} lang={params.lang} dictionary={dictionary} />
             <ScopeOfWork scopeOfWork={ourBusiness.scopeOfWork} lang={params.lang} dictionary={dictionary} />
             <OurExperience ourExperience={ourBusiness.ourExperience} lang={params.lang} dictionary={dictionary} activeCategory={selectedCategory}/>
+            <ProjectMap projects={mapProjects} />
             <FilteredContent category={selectedCategory} lang={params.lang} dictionary={dictionary} />
         </div>
     )

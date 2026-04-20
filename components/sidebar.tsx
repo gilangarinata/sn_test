@@ -102,6 +102,10 @@ const routes = [
                 label : "Our Experience",
                 href: "/admin-panel/our-business/our-experience"
             },
+            {
+                label : "Map Projects",
+                href: "/admin-panel/our-business/map-projects"
+            },
         ]
     },
     // {
