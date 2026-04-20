@@ -6,6 +6,7 @@ import {VisionMission} from "@/components/landing/who-we-are/vision";
 import {fetchWhoWeAre} from "@/lib/actions/landing/who-we-are.action";
 import ZeroCapexBanner from "@/components/landing/zero-capex/zero-capex-banner";
 import HistungInvestasi from "@/components/landing/zero-capex/hitung-investasi";
+import {fetchZeroCapexBanners} from "@/lib/actions/admin/zero-capex-banner.action";
 import {getDictionary} from "@/lib/dictionary";
 import {Locale} from "@/i18n.config";
 import {Metadata} from "next";
@@ -83,6 +84,9 @@ async function WhoWeArePage({params} : {params: { lang: Locale }}) {
     };
 
 
+    const bannersData = await fetchZeroCapexBanners();
+
+
     return (
        <div className="relative">
            {/* JSON-LD blocks */}
@@ -90,7 +94,7 @@ async function WhoWeArePage({params} : {params: { lang: Locale }}) {
            <StructuredData id="sd-webpage-zero-capex" data={webPageJsonLd} />
            <StructuredData id="sd-breadcrumbs-zero-capex" data={breadcrumbsJsonLd} />
 
-           <ZeroCapexBanner lang={params.lang} dictionary={dictionary} />
+           <ZeroCapexBanner lang={params.lang} dictionary={dictionary} banners={bannersData?.banners} />
            <HistungInvestasi lang={params.lang} dictionary={dictionary}/>
        </div>
     )

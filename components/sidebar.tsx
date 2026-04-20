@@ -178,7 +178,16 @@ const routes = [
         label : "Zero Capex",
         icon : ContactIcon,
         href : "/admin-panel/zero-capex",
-        children: []
+        children: [
+            {
+                label : "Banner",
+                href: "/admin-panel/zero-capex/banner"
+            },
+            {
+                label : "Submission",
+                href: "/admin-panel/zero-capex"
+            },
+        ]
     },
     {
         label : "Setting",
