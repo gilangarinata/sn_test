@@ -256,6 +256,11 @@ export function LandingNavBar({
     lang: Locale;
 }) {
     const [open, setOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     return (
         // Prevent ghost hitbox: pointer-events-none on <nav>, enabled on inner wrapper
@@ -300,14 +305,16 @@ export function LandingNavBar({
                 </div>
 
                 {/* Mobile drawer */}
-                <Drawer open={open} onOpenChange={setOpen} side="right">
-                    <NavContent
-                        dictionary={dictionary}
-                        lang={lang}
-                        variant="mobile"
-                        closeDrawer={() => setOpen(false)}
-                    />
-                </Drawer>
+                {isMounted && (
+                    <Drawer open={open} onOpenChange={setOpen} side="right">
+                        <NavContent
+                            dictionary={dictionary}
+                            lang={lang}
+                            variant="mobile"
+                            closeDrawer={() => setOpen(false)}
+                        />
+                    </Drawer>
+                )}
             </div>
         </nav>
     );
