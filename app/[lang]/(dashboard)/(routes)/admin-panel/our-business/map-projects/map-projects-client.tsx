@@ -242,7 +242,7 @@ export default function MapProjectsClient({ initialProjects }: { initialProjects
                             <div 
                                 ref={mapContainerRef}
                                 onClick={handleMapClick}
-                                className="relative bg-[#A3C4D8] rounded cursor-crosshair overflow-hidden border-2 border-dashed border-gray-400 hover:border-blue-500 transition aspect-video w-full"
+                                className="relative bg-[#A3C4D8] rounded cursor-crosshair overflow-hidden ring-2 ring-dashed ring-gray-400 hover:ring-blue-500 transition aspect-video w-full"
                             >
                                 <Image
                                     src="/images/maps.webp"
