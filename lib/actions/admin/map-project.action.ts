@@ -73,3 +73,13 @@ export async function deleteMapProject(id: string, path: string) {
         return { error: `Failed to delete map project: ${error.message}` };
     }
 }
+
+export async function fetchMapProjectById(id: string) {
+    try {
+        await connectToDb();
+        const project = await MapProject.findOne({ id });
+        return { project: JSON.parse(JSON.stringify(project)) };
+    } catch (error: any) {
+        return { error: `Failed to fetch map project: ${error.message}` };
+    }
+}
