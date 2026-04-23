@@ -8,6 +8,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  PopoverAnchor,
 } from "@/components/ui/popover";
 import {
   HoverCard,
@@ -19,15 +20,13 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
     const [scale, setScale] = useState(1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hasMouse, setHasMouse] = useState(true);
+    const [activePopover, setActivePopover] = useState<string | null>(null);
     
     const masterContainerRef = useRef<HTMLDivElement>(null);
     const mapAreaRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // Detect if the device has a mouse (primary hover capability)
-        const checkMouse = () => {
-            setHasMouse(window.matchMedia('(hover: hover)').matches);
-        };
+        const checkMouse = () => setHasMouse(window.matchMedia('(hover: hover)').matches);
         checkMouse();
         window.addEventListener('resize', checkMouse);
         return () => window.removeEventListener('resize', checkMouse);
@@ -79,6 +78,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
     const handleReset = () => {
         setScale(1);
         setPosition({ x: 0, y: 0 });
+        setActivePopover(null);
     };
 
     const handleWheel = (e: React.WheelEvent) => {
@@ -88,13 +88,23 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                 const nextScale = Math.min(Math.max(prev + delta, 1), 5);
                 if (nextScale === 1) {
                     setPosition({ x: 0, y: 0 });
-                } else if (mapAreaRef.current && nextScale !== prev) {
-                    const rect = mapAreaRef.current.getBoundingClientRect();
+                } else if (masterContainerRef.current && nextScale !== prev) {
+                    const rect = masterContainerRef.current.getBoundingClientRect();
                     const mouseX = e.clientX - rect.left;
                     const mouseY = e.clientY - rect.top;
                     const imageX = (mouseX - position.x) / prev;
                     const imageY = (mouseY - position.y) / prev;
-                    setPosition(clampPosition(mouseX - imageX * nextScale, mouseY - imageY * nextScale, nextScale));
+                    
+                    const { offsetWidth, offsetHeight } = masterContainerRef.current;
+                    const minX = -(offsetWidth * nextScale - offsetWidth);
+                    const minY = -(offsetHeight * nextScale - offsetHeight);
+                    const targetX = mouseX - imageX * nextScale;
+                    const targetY = mouseY - imageY * nextScale;
+                    
+                    setPosition({
+                        x: Math.min(0, Math.max(minX, targetX)),
+                        y: Math.min(0, Math.max(minY, targetY))
+                    });
                 }
                 return nextScale;
             });
@@ -105,9 +115,14 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
         const container = masterContainerRef.current;
         if (!container) return;
         const preventDefault = (e: WheelEvent) => { if (e.ctrlKey || e.metaKey) e.preventDefault(); };
+        
         container.addEventListener('wheel', preventDefault, { passive: false });
-        return () => container.removeEventListener('wheel', preventDefault);
-    }, [position]);
+        // Removed mobile touch pinch bindings as requested.
+
+        return () => {
+            container.removeEventListener('wheel', preventDefault);
+        };
+    }, []);
 
     const getDragConstraints = () => {
         if (!mapAreaRef.current) return { left: 0, right: 0, top: 0, bottom: 0 };
@@ -151,7 +166,6 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                     </div>
                 )}
             </div>
-            {/* The Connecting Line */}
             <div className="absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-[30px] bg-gradient-to-b from-[#1A4267] to-transparent pointer-events-none" />
         </div>
     );
@@ -178,14 +192,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                     }}
                     transition={{ type: "spring", damping: 30, stiffness: 250, mass: 0.5 }}
                 >
-                    <Image
-                        src="/images/maps.webp"
-                        alt="Map"
-                        fill
-                        className="object-fill pointer-events-none"
-                        priority
-                        draggable={false}
-                    />
+                    <Image src="/images/maps.webp" alt="Map" fill className="object-fill pointer-events-none" priority draggable={false} />
 
                     {projects.map((project, idx) => {
                         const Dot = (
@@ -193,16 +200,16 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                                 animate={{ scale: 1 / scale, x: "-50%", y: "-50%" }}
                                 whileHover={{ scale: (1 / scale) * 1.15 }}
                                 transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                                className="absolute w-5 h-5 md:w-9 md:h-9 cursor-pointer drop-shadow-2xl pointer-events-auto"
+                                className="absolute w-5 h-5 md:w-9 md:h-9 cursor-pointer drop-shadow-2xl pointer-events-auto touch-none"
+                                onPointerDown={(e) => e.stopPropagation()}
+                                onTouchStart={(e) => e.stopPropagation()}
+                                onTap={() => {
+                                    if (!hasMouse) setActivePopover(activePopover === project.id ? null : project.id);
+                                }}
                             >
-                                <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-30" />
-                                <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center p-[1px] md:p-[3px] shadow-2xl ring-1 md:ring-2 ring-white overflow-hidden">
-                                    <Image
-                                        src="/images/logo_sesna.png"
-                                        alt="Sesna"
-                                        fill
-                                        className="object-contain p-[1px] md:p-[2px]"
-                                    />
+                                <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-30 pointer-events-none" />
+                                <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center p-[1px] md:p-[3px] shadow-2xl ring-1 md:ring-2 ring-white overflow-hidden pointer-events-none">
+                                    <Image src="/images/logo_sesna.png" alt="Sesna" fill className="object-contain p-[1px] md:p-[2px]" />
                                 </div>
                             </motion.div>
                         );
@@ -211,15 +218,19 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                             <div key={project.id || idx} className="absolute z-10 w-0 h-0" style={{ left: `${project.x}%`, top: `${project.y}%` }}>
                                 {hasMouse ? (
                                     <HoverCard openDelay={0} closeDelay={100}>
-                                        <HoverCardTrigger asChild>{Dot}</HoverCardTrigger>
+                                        <HoverCardTrigger asChild>
+                                            {Dot}
+                                        </HoverCardTrigger>
                                         <HoverCardContent className="w-[280px] md:w-[400px] p-0 bg-transparent border-none shadow-none" side="top" sideOffset={30}>
                                             <ProjectInfoCard project={project} />
                                         </HoverCardContent>
                                     </HoverCard>
                                 ) : (
-                                    <Popover>
-                                        <PopoverTrigger asChild>{Dot}</PopoverTrigger>
-                                        <PopoverContent className="w-[280px] md:w-[400px] p-0 bg-transparent border-none shadow-none" side="top" sideOffset={30}>
+                                    <Popover open={activePopover === project.id} onOpenChange={(o) => setActivePopover(o ? project.id : null)}>
+                                        <PopoverAnchor asChild>
+                                            {Dot}
+                                        </PopoverAnchor>
+                                        <PopoverContent className="w-[280px] md:w-[400px] p-0 bg-transparent border-none shadow-none z-[200]" side="top" sideOffset={30}>
                                             <ProjectInfoCard project={project} />
                                         </PopoverContent>
                                     </Popover>
@@ -231,13 +242,13 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
 
                 {/* Overlays */}
                 <div className="absolute top-4 right-4 md:top-8 md:right-8 z-[100] flex flex-col gap-2 md:gap-3">
-                    <button onClick={handleZoomIn} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><Plus className="w-5 h-5 md:w-6 md:h-6" /></button>
-                    <button onClick={handleZoomOut} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><Minus className="w-5 h-5 md:w-6 md:h-6" /></button>
-                    <button onClick={handleReset} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><RotateCcw className="w-5 h-5 md:w-6 md:h-6" /></button>
+                    <button type="button" onClick={handleZoomIn} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><Plus className="w-5 h-5 md:w-6 md:h-6" /></button>
+                    <button type="button" onClick={handleZoomOut} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><Minus className="w-5 h-5 md:w-6 md:h-6" /></button>
+                    <button type="button" onClick={handleReset} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><RotateCcw className="w-5 h-5 md:w-6 md:h-6" /></button>
                 </div>
 
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[100] px-4 py-2 bg-[#1A4267]/80 backdrop-blur-xl rounded-full border border-white/20 text-white text-[9px] md:text-[11px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] pointer-events-none opacity-0 md:opacity-100 transition-all shadow-2xl whitespace-nowrap">
-                   {scale > 1 ? "Drag to pan | Pinch / Ctrl + Scroll to Zoom" : "Pinch / Ctrl + Scroll to Zoom"}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[100] px-3 py-1.5 bg-[#1A4267]/40 backdrop-blur-md rounded-full border border-white/10 text-white/90 text-[7px] md:text-[9px] font-bold uppercase tracking-[0.2em] pointer-events-none opacity-0 md:opacity-100 transition-all shadow-xl whitespace-nowrap">
+                   {scale > 1 ? "Drag to pan | Ctrl + Scroll to Zoom" : "Ctrl + Scroll to Zoom"}
                 </div>
             </div>
         </div>
