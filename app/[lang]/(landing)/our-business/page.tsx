@@ -49,7 +49,7 @@ async function LandingPage({ params, searchParams }: {
     const dictionary = await getDictionary(params.lang)
     const selectedCategory = searchParams.category || null;
     const mapProjectsData = await fetchMapProjects();
-    const mapProjects = mapProjectsData.projects || [];
+    const mapProjects = JSON.parse(JSON.stringify(mapProjectsData.projects || []));
 
     const base = "https://sesna.id";
     const pageUrl = `${base}/our-business`;

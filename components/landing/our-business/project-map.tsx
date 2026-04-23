@@ -18,13 +18,19 @@ import {
 export default function ProjectMap({ projects }: { projects: any[] }) {
     const [scale, setScale] = useState(1);
     const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [isTouch, setIsTouch] = useState(false);
+    const [hasMouse, setHasMouse] = useState(true);
     
     const masterContainerRef = useRef<HTMLDivElement>(null);
     const mapAreaRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+        // Detect if the device has a mouse (primary hover capability)
+        const checkMouse = () => {
+            setHasMouse(window.matchMedia('(hover: hover)').matches);
+        };
+        checkMouse();
+        window.addEventListener('resize', checkMouse);
+        return () => window.removeEventListener('resize', checkMouse);
     }, []);
 
     const clampPosition = (xPos: number, yPos: number, currentScale: number) => {
@@ -114,7 +120,6 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
         };
     };
 
-    // Shared content for the info card to keep it consistent
     const ProjectInfoCard = ({ project }: { project: any }) => (
         <div className="p-4 md:p-6">
             <div className="relative mb-3 md:mb-4 flex justify-between items-start">
@@ -135,9 +140,13 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                     {project.capacity}
                 </div>
             </div>
-            {project.image && (
+            {project.image ? (
                 <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-gray-100 shadow-sm ring-1 ring-black/5">
                     <Image src={project.image} alt={project.name} fill className="object-cover" />
+                </div>
+            ) : (
+                <div className="w-full aspect-[16/10] bg-gray-50 rounded-xl flex items-center justify-center border border-dashed text-gray-300 text-xs font-bold uppercase tracking-widest">
+                    No Project Photo
                 </div>
             )}
         </div>
@@ -148,7 +157,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
             <div 
                 ref={masterContainerRef}
                 onWheel={handleWheel}
-                className="relative w-full max-w-5xl aspect-video bg-transparent group/map-outer overflow-hidden"
+                className="relative w-full max-w-5xl aspect-[1860/760] bg-transparent group/map-outer overflow-hidden"
             >
                 <motion.div 
                     ref={mapAreaRef}
@@ -169,7 +178,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                         src="/images/maps.webp"
                         alt="Map"
                         fill
-                        className="object-contain pointer-events-none"
+                        className="object-fill pointer-events-none"
                         priority
                         draggable={false}
                     />
@@ -177,11 +186,13 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                     {projects.map((project, idx) => {
                         const Dot = (
                             <motion.div
-                                animate={{ scale: 1 / scale }}
-                                className="relative w-4 h-4 md:w-6 md:h-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer drop-shadow-xl hover:scale-110 transition-transform duration-200 pointer-events-auto"
+                                animate={{ scale: 1 / scale, x: "-50%", y: "-50%" }}
+                                whileHover={{ scale: (1 / scale) * 1.15 }}
+                                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                                className="absolute w-5 h-5 md:w-9 md:h-9 cursor-pointer drop-shadow-2xl pointer-events-auto"
                             >
                                 <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-30" />
-                                <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center p-[2px] md:p-[3px] shadow-lg ring-1 md:ring-2 ring-white overflow-hidden">
+                                <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center p-[1px] md:p-[3px] shadow-2xl ring-1 md:ring-2 ring-white overflow-hidden">
                                     <Image
                                         src="/images/logo_sesna.png"
                                         alt="Sesna"
@@ -194,20 +205,20 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
 
                         return (
                             <div key={project.id || idx} className="absolute z-10 w-0 h-0" style={{ left: `${project.x}%`, top: `${project.y}%` }}>
-                                {isTouch ? (
-                                    <Popover>
-                                        <PopoverTrigger asChild>{Dot}</PopoverTrigger>
-                                        <PopoverContent className="w-[280px] md:w-[400px] p-0 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border-none overflow-hidden" side="top" sideOffset={15}>
-                                            <ProjectInfoCard project={project} />
-                                        </PopoverContent>
-                                    </Popover>
-                                ) : (
+                                {hasMouse ? (
                                     <HoverCard openDelay={0} closeDelay={100}>
                                         <HoverCardTrigger asChild>{Dot}</HoverCardTrigger>
                                         <HoverCardContent className="w-[280px] md:w-[400px] p-0 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border-none overflow-hidden" side="top" sideOffset={15}>
                                             <ProjectInfoCard project={project} />
                                         </HoverCardContent>
                                     </HoverCard>
+                                ) : (
+                                    <Popover>
+                                        <PopoverTrigger asChild>{Dot}</PopoverTrigger>
+                                        <PopoverContent className="w-[280px] md:w-[400px] p-0 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border-none overflow-hidden" side="top" sideOffset={15}>
+                                            <ProjectInfoCard project={project} />
+                                        </PopoverContent>
+                                    </Popover>
                                 )}
                             </div>
                         );
