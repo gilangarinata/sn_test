@@ -121,34 +121,38 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
     };
 
     const ProjectInfoCard = ({ project }: { project: any }) => (
-        <div className="p-4 md:p-6">
-            <div className="relative mb-3 md:mb-4 flex justify-between items-start">
-                <h3 className="font-black text-[#1A4267] text-lg md:text-2xl leading-tight uppercase tracking-tighter">
-                    {project.name}
-                </h3>
-                <div className="bg-[#48749b]/10 p-1.5 md:p-2 rounded-lg md:rounded-xl">
-                    <ZapIcon className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+        <div className="relative">
+            <div className="p-4 md:p-6 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden">
+                <div className="relative mb-3 md:mb-4 flex justify-between items-start">
+                    <h3 className="font-black text-[#1A4267] text-lg md:text-2xl leading-tight uppercase tracking-tighter">
+                        {project.name}
+                    </h3>
+                    <div className="bg-[#48749b]/10 p-1.5 md:p-2 rounded-lg md:rounded-xl">
+                        <ZapIcon className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+                    </div>
                 </div>
+                <div className="space-y-2 md:space-y-3 mb-4 md:mb-5">
+                    <div className="flex items-start gap-2 md:gap-2.5 text-[12px] md:text-sm font-medium text-[#4C7391]">
+                        <MapPinIcon className="w-4 h-4 md:w-5 md:h-5 shrink-0 text-blue-500/70" />
+                        <span className="leading-snug">{project.location}</span>
+                    </div>
+                    <div className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-1 bg-yellow-400/10 rounded-full text-[10px] md:text-xs font-bold text-[#1A4267] border border-yellow-400/20">
+                        <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-yellow-500 animate-pulse" />
+                        {project.capacity}
+                    </div>
+                </div>
+                {project.image ? (
+                    <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-gray-100 shadow-sm ring-1 ring-black/5">
+                        <Image src={project.image} alt={project.name} fill className="object-cover" />
+                    </div>
+                ) : (
+                    <div className="w-full aspect-[16/10] bg-gray-50 rounded-xl flex items-center justify-center border border-dashed text-gray-300 text-xs font-bold uppercase tracking-widest">
+                        No Project Photo
+                    </div>
+                )}
             </div>
-            <div className="space-y-2 md:space-y-3 mb-4 md:mb-5">
-                <div className="flex items-start gap-2 md:gap-2.5 text-[12px] md:text-sm font-medium text-[#4C7391]">
-                    <MapPinIcon className="w-4 h-4 md:w-5 md:h-5 shrink-0 text-blue-500/70" />
-                    <span className="leading-snug">{project.location}</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-1 bg-yellow-400/10 rounded-full text-[10px] md:text-xs font-bold text-[#1A4267] border border-yellow-400/20">
-                    <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-yellow-500 animate-pulse" />
-                    {project.capacity}
-                </div>
-            </div>
-            {project.image ? (
-                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-gray-100 shadow-sm ring-1 ring-black/5">
-                    <Image src={project.image} alt={project.name} fill className="object-cover" />
-                </div>
-            ) : (
-                <div className="w-full aspect-[16/10] bg-gray-50 rounded-xl flex items-center justify-center border border-dashed text-gray-300 text-xs font-bold uppercase tracking-widest">
-                    No Project Photo
-                </div>
-            )}
+            {/* The Connecting Line */}
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-[30px] bg-gradient-to-b from-[#1A4267] to-transparent pointer-events-none" />
         </div>
     );
 
@@ -208,14 +212,14 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                                 {hasMouse ? (
                                     <HoverCard openDelay={0} closeDelay={100}>
                                         <HoverCardTrigger asChild>{Dot}</HoverCardTrigger>
-                                        <HoverCardContent className="w-[280px] md:w-[400px] p-0 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border-none overflow-hidden" side="top" sideOffset={15}>
+                                        <HoverCardContent className="w-[280px] md:w-[400px] p-0 bg-transparent border-none shadow-none" side="top" sideOffset={30}>
                                             <ProjectInfoCard project={project} />
                                         </HoverCardContent>
                                     </HoverCard>
                                 ) : (
                                     <Popover>
                                         <PopoverTrigger asChild>{Dot}</PopoverTrigger>
-                                        <PopoverContent className="w-[280px] md:w-[400px] p-0 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border-none overflow-hidden" side="top" sideOffset={15}>
+                                        <PopoverContent className="w-[280px] md:w-[400px] p-0 bg-transparent border-none shadow-none" side="top" sideOffset={30}>
                                             <ProjectInfoCard project={project} />
                                         </PopoverContent>
                                     </Popover>
