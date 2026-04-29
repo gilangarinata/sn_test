@@ -5,15 +5,15 @@ import Image from "next/image";
 import { MapPinIcon, ZapIcon, Plus, Minus, RotateCcw } from "lucide-react";
 import { motion } from "framer-motion";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  PopoverAnchor,
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+    PopoverAnchor,
 } from "@/components/ui/popover";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
 export default function ProjectMap({ projects }: { projects: any[] }) {
@@ -21,7 +21,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hasMouse, setHasMouse] = useState(true);
     const [activePopover, setActivePopover] = useState<string | null>(null);
-    
+
     const masterContainerRef = useRef<HTMLDivElement>(null);
     const mapAreaRef = useRef<HTMLDivElement>(null);
 
@@ -94,13 +94,13 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                     const mouseY = e.clientY - rect.top;
                     const imageX = (mouseX - position.x) / prev;
                     const imageY = (mouseY - position.y) / prev;
-                    
+
                     const { offsetWidth, offsetHeight } = masterContainerRef.current;
                     const minX = -(offsetWidth * nextScale - offsetWidth);
                     const minY = -(offsetHeight * nextScale - offsetHeight);
                     const targetX = mouseX - imageX * nextScale;
                     const targetY = mouseY - imageY * nextScale;
-                    
+
                     setPosition({
                         x: Math.min(0, Math.max(minX, targetX)),
                         y: Math.min(0, Math.max(minY, targetY))
@@ -115,7 +115,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
         const container = masterContainerRef.current;
         if (!container) return;
         const preventDefault = (e: WheelEvent) => { if (e.ctrlKey || e.metaKey) e.preventDefault(); };
-        
+
         container.addEventListener('wheel', preventDefault, { passive: false });
         // Removed mobile touch pinch bindings as requested.
 
@@ -137,47 +137,46 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
 
     const ProjectInfoCard = ({ project }: { project: any }) => (
         <div className="relative">
-            <div className="p-4 md:p-6 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden">
-                <div className="relative mb-3 md:mb-4 flex justify-between items-start">
-                    <h3 className="font-black text-[#1A4267] text-lg md:text-2xl leading-tight uppercase tracking-tighter">
+            <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.12)] border-2 border-gray-800">
+                <div className="px-4 pt-4 pb-3 md:px-5 md:pt-5 md:pb-3.5">
+                    <h3 className="font-black text-[#1A2B3D] text-sm md:text-base leading-tight uppercase tracking-wide mb-2.5 md:mb-3">
                         {project.name}
                     </h3>
-                    <div className="bg-[#48749b]/10 p-1.5 md:p-2 rounded-lg md:rounded-xl">
-                        <ZapIcon className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+                    <div className="space-y-1.5 md:space-y-2">
+                        <div className="flex items-center gap-2 text-[11px] md:text-[13px] text-gray-600">
+                            <MapPinIcon className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0 text-[#3B7DD8]" />
+                            <span>{project.location}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-[11px] md:text-[13px] text-gray-600">
+                            <ZapIcon className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0 text-[#3B7DD8]" />
+                            <span>{project.capacity}</span>
+                        </div>
                     </div>
                 </div>
-                <div className="space-y-2 md:space-y-3 mb-4 md:mb-5">
-                    <div className="flex items-start gap-2 md:gap-2.5 text-[12px] md:text-sm font-medium text-[#4C7391]">
-                        <MapPinIcon className="w-4 h-4 md:w-5 md:h-5 shrink-0 text-blue-500/70" />
-                        <span className="leading-snug">{project.location}</span>
-                    </div>
-                    <div className="inline-flex items-center gap-1.5 md:gap-2 px-2.5 py-1 bg-yellow-400/10 rounded-full text-[10px] md:text-xs font-bold text-[#1A4267] border border-yellow-400/20">
-                        <span className="w-1 md:w-1.5 h-1 md:h-1.5 rounded-full bg-yellow-500 animate-pulse" />
-                        {project.capacity}
-                    </div>
+                <div className="px-3 pb-3 md:px-4 md:pb-4">
+                    {project.image ? (
+                        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden">
+                            <Image src={project.image} alt={project.name} fill className="object-cover" />
+                        </div>
+                    ) : (
+                        <div className="w-full aspect-[16/10] bg-gray-50 rounded-xl flex items-center justify-center text-gray-300 text-[10px] font-bold uppercase tracking-widest">
+                            No Project Photo
+                        </div>
+                    )}
                 </div>
-                {project.image ? (
-                    <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden border border-gray-100 shadow-sm ring-1 ring-black/5">
-                        <Image src={project.image} alt={project.name} fill className="object-cover" />
-                    </div>
-                ) : (
-                    <div className="w-full aspect-[16/10] bg-gray-50 rounded-xl flex items-center justify-center border border-dashed text-gray-300 text-xs font-bold uppercase tracking-widest">
-                        No Project Photo
-                    </div>
-                )}
             </div>
-            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-[30px] bg-gradient-to-b from-[#1A4267] to-transparent pointer-events-none" />
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-0.5 h-[20px] bg-gradient-to-b from-[#1A4267] to-transparent pointer-events-none" />
         </div>
     );
 
     return (
         <div className="w-full flex flex-col items-center py-10 px-4 gap-6">
-            <div 
+            <div
                 ref={masterContainerRef}
                 onWheel={handleWheel}
                 className="relative w-full max-w-5xl aspect-[1860/760] bg-transparent group/map-outer overflow-hidden"
             >
-                <motion.div 
+                <motion.div
                     ref={mapAreaRef}
                     className="relative w-full h-full"
                     animate={{ scale, x: position.x, y: position.y }}
@@ -196,32 +195,34 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
 
                     {projects.map((project, idx) => {
                         const Dot = (
-                            <motion.div
-                                animate={{ scale: 1 / scale, x: "-50%", y: "-50%" }}
-                                whileHover={{ scale: (1 / scale) * 1.15 }}
-                                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                                className="absolute w-5 h-5 md:w-9 md:h-9 cursor-pointer drop-shadow-2xl pointer-events-auto touch-none"
-                                onPointerDown={(e) => e.stopPropagation()}
-                                onTouchStart={(e) => e.stopPropagation()}
-                                onTap={() => {
-                                    if (!hasMouse) setActivePopover(activePopover === project.id ? null : project.id);
-                                }}
-                            >
-                                <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-30 pointer-events-none" />
-                                <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center p-[1px] md:p-[3px] shadow-2xl ring-1 md:ring-2 ring-white overflow-hidden pointer-events-none">
-                                    <Image src="/images/logo_sesna.png" alt="Sesna" fill className="object-contain p-[1px] md:p-[2px]" />
-                                </div>
-                            </motion.div>
+                            <div className="absolute" style={{ transform: 'translate(-50%, -50%)' }}>
+                                <motion.div
+                                    animate={{ scale: 1 / scale }}
+                                    whileHover={{ scale: (1 / scale) * 1.15 }}
+                                    transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                                    className="w-5 h-5 md:w-9 md:h-9 cursor-pointer drop-shadow-2xl pointer-events-auto touch-none"
+                                    onPointerDown={(e) => e.stopPropagation()}
+                                    onTouchStart={(e) => e.stopPropagation()}
+                                    onTap={() => {
+                                        if (!hasMouse) setActivePopover(activePopover === project.id ? null : project.id);
+                                    }}
+                                >
+                                    <div className="absolute inset-0 bg-yellow-400 rounded-full animate-ping opacity-30 pointer-events-none" />
+                                    <div className="relative w-full h-full bg-white rounded-full flex items-center justify-center p-[1px] md:p-[3px] shadow-2xl ring-1 md:ring-2 ring-white overflow-hidden pointer-events-none">
+                                        <Image src="/images/logo_sesna.png" alt="Sesna" fill className="object-contain p-[1px] md:p-[2px]" />
+                                    </div>
+                                </motion.div>
+                            </div>
                         );
 
                         return (
-                            <div key={project.id || idx} className="absolute z-10 w-0 h-0" style={{ left: `${project.x}%`, top: `${project.y}%` }}>
+                            <div key={project.id || idx} className="absolute z-10" style={{ left: `${project.x}%`, top: `${project.y}%` }}>
                                 {hasMouse ? (
                                     <HoverCard openDelay={0} closeDelay={100}>
                                         <HoverCardTrigger asChild>
                                             {Dot}
                                         </HoverCardTrigger>
-                                        <HoverCardContent className="w-[280px] md:w-[400px] p-0 bg-transparent border-none shadow-none" side="top" sideOffset={30}>
+                                        <HoverCardContent className="w-[200px] md:w-[260px] p-0 bg-transparent border-none shadow-none" side="top" sideOffset={20}>
                                             <ProjectInfoCard project={project} />
                                         </HoverCardContent>
                                     </HoverCard>
@@ -230,7 +231,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                                         <PopoverAnchor asChild>
                                             {Dot}
                                         </PopoverAnchor>
-                                        <PopoverContent className="w-[280px] md:w-[400px] p-0 bg-transparent border-none shadow-none z-[200]" side="top" sideOffset={30}>
+                                        <PopoverContent className="w-[200px] md:w-[260px] p-0 bg-transparent border-none shadow-none z-[200]" side="top" sideOffset={20}>
                                             <ProjectInfoCard project={project} />
                                         </PopoverContent>
                                     </Popover>
@@ -248,7 +249,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                 </div>
 
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[100] px-3 py-1.5 bg-[#1A4267]/40 backdrop-blur-md rounded-full border border-white/10 text-white/90 text-[7px] md:text-[9px] font-bold uppercase tracking-[0.2em] pointer-events-none opacity-0 md:opacity-100 transition-all shadow-xl whitespace-nowrap">
-                   {scale > 1 ? "Drag to pan | Ctrl + Scroll to Zoom" : "Ctrl + Scroll to Zoom"}
+                    {scale > 1 ? "Drag to pan | Ctrl + Scroll to Zoom" : "Ctrl + Scroll to Zoom"}
                 </div>
             </div>
         </div>

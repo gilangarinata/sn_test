@@ -246,9 +246,9 @@ export default function MapProjectForm({ initialData }: MapProjectFormProps) {
                             >
                                 <Image src="/images/maps.webp" alt="Map" fill className="object-fill pointer-events-none" priority />
                                 {x !== null && y !== null && (
-                                    <div className="absolute pointer-events-none" style={{ left: `${x}%`, top: `${y}%` }}>
+                                    <div className="absolute pointer-events-none" style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}>
                                         <motion.div
-                                            animate={{ scale: 1/scale, x: "-50%", y: "-50%" }}
+                                            animate={{ scale: 1/scale }}
                                             className="relative w-8 h-8 rounded-full bg-yellow-400 border-4 border-white shadow-xl flex items-center justify-center p-1"
                                         >
                                             <div className="absolute top-full left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-800 text-white text-[10px] font-bold px-3 py-1 rounded-full mt-2 shadow-lg">{name || "Pin"}</div>
