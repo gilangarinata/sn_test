@@ -137,7 +137,7 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                 </div>
 
                 <div className="w-full bg-[#FABD24] z-40 relative flex p-6 items-center justify-center">
-                    <Link href={director.companyProfileUrl} ><Button><DownloadIcon/>{dictionary.download_company_profile}</Button></Link>
+                    <Link id="download-compro-link" target="_blank" href={director.companyProfileUrl} ><Button><DownloadIcon/>{dictionary.download_company_profile}</Button></Link>
                 </div>
             </section>
 
