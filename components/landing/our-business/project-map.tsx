@@ -222,7 +222,7 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                                         <HoverCardTrigger asChild>
                                             {Dot}
                                         </HoverCardTrigger>
-                                        <HoverCardContent className="w-[200px] md:w-[260px] p-0 bg-transparent border-none shadow-none" side="top" sideOffset={20}>
+                                        <HoverCardContent className="w-[200px] md:w-[260px] p-0 bg-transparent border-none shadow-none z-[200]" side="top" sideOffset={20}>
                                             <ProjectInfoCard project={project} />
                                         </HoverCardContent>
                                     </HoverCard>
@@ -242,13 +242,13 @@ export default function ProjectMap({ projects }: { projects: any[] }) {
                 </motion.div>
 
                 {/* Overlays */}
-                <div className="absolute top-4 right-4 md:top-8 md:right-8 z-[100] flex flex-col gap-2 md:gap-3">
+                <div className="absolute top-4 right-4 md:top-8 md:right-8 z-30 flex flex-col gap-2 md:gap-3">
                     <button type="button" onClick={handleZoomIn} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><Plus className="w-5 h-5 md:w-6 md:h-6" /></button>
                     <button type="button" onClick={handleZoomOut} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><Minus className="w-5 h-5 md:w-6 md:h-6" /></button>
                     <button type="button" onClick={handleReset} className="p-2 md:p-3 bg-white/80 backdrop-blur-xl rounded-lg md:rounded-xl shadow-xl border border-gray-200 text-[#1A4267]"><RotateCcw className="w-5 h-5 md:w-6 md:h-6" /></button>
                 </div>
 
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[100] px-3 py-1.5 bg-[#1A4267]/40 backdrop-blur-md rounded-full border border-white/10 text-white/90 text-[7px] md:text-[9px] font-bold uppercase tracking-[0.2em] pointer-events-none opacity-0 md:opacity-100 transition-all shadow-xl whitespace-nowrap">
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 px-3 py-1.5 bg-[#1A4267]/40 backdrop-blur-md rounded-full border border-white/10 text-white/90 text-[7px] md:text-[9px] font-bold uppercase tracking-[0.2em] pointer-events-none opacity-0 md:opacity-100 transition-all shadow-xl whitespace-nowrap">
                     {scale > 1 ? "Drag to pan | Ctrl + Scroll to Zoom" : "Ctrl + Scroll to Zoom"}
                 </div>
             </div>
