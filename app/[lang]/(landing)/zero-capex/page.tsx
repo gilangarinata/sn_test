@@ -12,6 +12,8 @@ import {Locale} from "@/i18n.config";
 import {Metadata} from "next";
 import StructuredData from "@/app/[lang]/(landing)/StructuredDate";
 
+export const revalidate = 300; // ISR: re-generate every 5 minutes
+
 export const metadata: Metadata = {
     title: 'Sesna Zero Capex',
     description: 'Sesna secara khusus memberikan anda skema pembayaran yang tidak memerlukan biaya investasi atau skema zero capex',

@@ -9,7 +9,7 @@ export const connectToDb = async ()=> {
 
     if(!process.env.MONGODB_URL) return console.log('MongoDB Url not found')
 
-    // if(isConnected) return console.log('Already connected to MongoDB');
+    if(isConnected) return;
 
     try {
         await mongoose.connect(process.env.MONGODB_URL);

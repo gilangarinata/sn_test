@@ -38,10 +38,6 @@ export default function RootLayout({
                         })(window,document,'script','dataLayer','GTM-KRQVWTLH');
                     `}
                 </Script>
-                <link
-                    rel="stylesheet"
-                    href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-                />
             </head>
           <body className={poppins.className}>
             <noscript>

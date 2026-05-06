@@ -23,6 +23,8 @@ import FilteredContent from "@/components/landing/our-business/filtered-content"
 import ProjectMap from "@/components/landing/our-business/project-map";
 import { fetchMapProjects } from "@/lib/actions/admin/map-project.action";
 
+export const revalidate = 300; // ISR: re-generate every 5 minutes
+
 export const metadata: Metadata = {
     title: 'Our Business',
     description: "Sebagai perusahaan energi terbarukan yang berfokus pada pengembangan panel surya, kami melayani solusi lengkap mulai dari penyewaan sistem tenaga surya, instalasi dan konstruksi, perencanaan dan rekayasa sistem, manajemen proyek, pemilihan komponen dan tekonlogi, serta operasi dan pemeliharaan.",

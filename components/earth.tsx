@@ -10,11 +10,18 @@ export function Earth() {
     const [scrollY, setScrollY] = useState(0);
 
     useEffect(() => {
+        let ticking = false;
         const scrollListener = () => {
-            setScrollY(window.scrollY);
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    setScrollY(window.scrollY);
+                    ticking = false;
+                });
+                ticking = true;
+            }
         };
 
-        window.addEventListener('scroll', scrollListener);
+        window.addEventListener('scroll', scrollListener, { passive: true });
 
         return () => {
             window.removeEventListener('scroll', scrollListener);

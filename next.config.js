@@ -3,7 +3,6 @@ const nextConfig = {
     output: 'standalone',
     images: {
         domains: ['images.unsplash.com', 'utfs.io', 'sesna.id', 'img.youtube.com', 'www.sesna.id'],
-        unoptimized: true,
         remotePatterns: [
             {
                 protocol: 'https',
@@ -33,16 +32,30 @@ const nextConfig = {
             bodySizeLimit: '50mb',
         },
     },
-    optimizeFonts: false,
-    compress: false,
     compiler: {
-        removeConsole: false,
+        removeConsole: process.env.NODE_ENV === 'production',
     },
     eslint: {
         ignoreDuringBuilds: true,
     },
     typescript: {
         ignoreBuildErrors: true,
+    },
+    async headers() {
+        return [
+            {
+                source: '/images/:path*',
+                headers: [
+                    { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+                ],
+            },
+            {
+                source: '/_next/static/:path*',
+                headers: [
+                    { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+                ],
+            },
+        ];
     },
 }
 

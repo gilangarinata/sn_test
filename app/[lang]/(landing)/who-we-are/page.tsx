@@ -9,6 +9,8 @@ import {getDictionary} from "@/lib/dictionary";
 import {Metadata} from "next";
 import StructuredData from "@/app/[lang]/(landing)/StructuredDate";
 
+export const revalidate = 300; // ISR: re-generate every 5 minutes
+
 export const metadata: Metadata = {
     title: 'Who We Are',
     description: 'Sesna adalah perusahaan yang bergerak di bidang energi terbarukan yang berfokus pada pengembangan panel surya.',

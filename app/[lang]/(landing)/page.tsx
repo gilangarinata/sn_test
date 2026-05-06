@@ -13,6 +13,8 @@ import {Metadata} from "next";
 import {OpenGraphMetadata} from "next/dist/lib/metadata/generate/opengraph";
 import StructuredData from "@/app/[lang]/(landing)/StructuredDate";
 
+export const revalidate = 300; // ISR: re-generate every 5 minutes
+
 export const metadata: Metadata = {
     title: 'Homepage',
     description: 'SESNA Group (PT Sumber Energi Surya Nusantara) adalah perusahaan energi terbarukan Indonesia yang berfokus pada pengembangan pembangkit listrik tenaga surya dan penyedia layanan Rekayasa, Pengadaan & Konstruksi',

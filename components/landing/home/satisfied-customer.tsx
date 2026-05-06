@@ -39,7 +39,7 @@ export default function SatisfiedCustomer({customers, lang, dictionary} : {custo
                                 let currentVisibleSlide = 3;
                                 if(parentWidth < 950) currentVisibleSlide = 3;
                                 if(parentWidth < 700) currentVisibleSlide = 1;
-                                console.log(parentWidth);
+
                                 return (
                                     <StackedCarousel
                                         ref={carouselRef}

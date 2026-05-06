@@ -22,6 +22,8 @@ import {getDictionary} from "@/lib/dictionary";
 import {fetchCareerBanners} from "@/lib/actions/admin/career_banner.action";
 import {Metadata} from "next";
 
+export const revalidate = 300; // ISR: re-generate every 5 minutes
+
 export const metadata: Metadata = {
     title: 'Career',
     description: 'Bergabunglah menjadi bagian dari tim sesna',
