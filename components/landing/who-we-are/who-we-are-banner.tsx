@@ -21,8 +21,8 @@ const slideImages = [
     {
         url: '/',
         description: "A to Z Solutions,<br>End-to-End Service",
-        image: "/images/banner_1.jpg",
-        logo: "/images/banner-our-business.png"
+        image: "/images/banner_1.webp",
+        logo: "/images/banner-our-business.webp"
     }
 ];
 

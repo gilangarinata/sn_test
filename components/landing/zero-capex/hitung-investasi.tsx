@@ -196,11 +196,11 @@ export default function HistungInvestasi({lang, dictionary} : {lang: Locale, dic
                                     <p>{dictionary.lokasi_pemasangan + "*"}</p>
                                     <div className="flex gap-4">
                                         <div className={cn("flex flex-col items-center hover:cursor-pointer", lokasiPemasangan === "rooftop" ? "bg-yellow-500" : "")} onClick={()=> setLokasiPemasangan("rooftop")}>
-                                            <Image width={50} height={50} src="/images/ic_zero_capex_1.png" alt="" />
+                                            <Image width={50} height={50} src="/images/ic_zero_capex_1.webp" alt="" />
                                             <p>{dictionary.rooftop}</p>
                                         </div>
                                         <div className={cn("flex flex-col items-center", lokasiPemasangan === "ground_mounted" ? "bg-yellow-500" : "")} onClick={() => setLokasiPemasangan("ground_mounted")}>
-                                            <Image width={50} height={50} src="/images/ic_zero_capex_2.png" alt="" />
+                                            <Image width={50} height={50} src="/images/ic_zero_capex_2.webp" alt="" />
                                             <p>{dictionary.ground_mounted}</p>
                                         </div>
                                     </div>

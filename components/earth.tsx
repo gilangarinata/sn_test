@@ -48,7 +48,7 @@ export function Earth() {
             initial={{ rotate: 0 }}
             animate={controls}
         >
-            <Image fill style={{objectFit:"cover"}} src="/images/earth.png" alt="" />
+            <Image fill style={{objectFit:"cover"}} src="/images/earth.webp" alt="" />
         </motion.div>
     );
 }

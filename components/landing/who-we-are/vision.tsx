@@ -78,7 +78,7 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
             <section className="w-full pt-8">
                 <div className="bg-[#15537A] z-50 relative rounded-3xl max-w-5xl mx-auto flex flex-col justify-center items-center p-6 gap-4">
                     <div className="flex items-center gap-4">
-                        <Image src="/images/vision.png" alt="" width={80} height={80} />
+                        <Image src="/images/vision.webp" alt="" width={80} height={80} />
                         <div className="flex flex-col text-[#FABD24]">
                             <h1 className="font-bold text-3xl">{dictionary.vision}</h1>
                             <p>
@@ -87,7 +87,7 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Image src="/images/mission.png" alt="" width={80} height={80} />
+                        <Image src="/images/mission.webp" alt="" width={80} height={80} />
                         <div className="flex flex-col text-[#FABD24]">
                             <h1 className="font-bold text-3xl">{dictionary.mission}</h1>
                             <div

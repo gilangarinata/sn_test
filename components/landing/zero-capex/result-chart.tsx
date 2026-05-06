@@ -67,7 +67,7 @@ export default function ResultChart() {
     return (
             <div className="w-full flex flex-col bg-[#15537A] items-center justify-center">
                 <h1 className="mt-10 text-3xl text-white font-bold text-center">Grafik Penghematan</h1>
-                <Image className="py-10" src="/images/chart.png" alt="" width={600} height={340} />
+                <Image className="py-10" src="/images/chart.webp" alt="" width={600} height={340} />
                 <div className="w-full bg-[#f9c329] flex justify-center">
                     <Link className="my-4" href="" ><Button><DownloadIcon/> Download Hasil</Button></Link>
                 </div>

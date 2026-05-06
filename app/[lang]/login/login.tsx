@@ -38,7 +38,7 @@ const Login = () => {
             {/* Left Image Section - Hidden on mobile */}
             <div className="hidden lg:block lg:w-1/2 h-full relative">
                 <Image 
-                    src="/images/bg_login.jpg" 
+                    src="/images/bg_login.webp" 
                     alt="Solar Panels Background" 
                     fill 
                     className="object-cover"

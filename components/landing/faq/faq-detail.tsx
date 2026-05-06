@@ -86,7 +86,7 @@ export default function FaqDetail({content, title, lang, desc1, desc2} : {conten
                             <Image sizes="100vw"
                                    width={0}
                                    height={0}
-                                   style={{ width: '80%', height: 'auto' }} src="/images/foto.png" alt="logo" />
+                                   style={{ width: '80%', height: 'auto' }} src="/images/foto.webp" alt="logo" />
                             {/*<div className="w-[120px] h-[120px] md:w-[500px] md:h-[500px] relative">*/}
                             {/*    <Image fill src="/images/zero_capex.png" alt="banner animation" />*/}
                             {/*</div>*/}
