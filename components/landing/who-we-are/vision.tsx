@@ -117,19 +117,19 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                     </div>
                 </div>
 
-                <div className="w-full bg-[#15537A] py-10 lg:pt-8 lg:h-screen">
-                    <div className="w-full flex mx-auto flex-col">
-                        <div className="w-full flex items-center justify-center">
-                            <div className="flex w-full flex-col gap-6 px-10 lg:pl-[120px]">
+                <div className="w-full bg-[#15537A] pt-10 pb-0 lg:pt-8 lg:h-screen flex flex-col">
+                    <div className="w-full flex mx-auto flex-col flex-1">
+                        <div className="w-full flex items-end justify-center flex-1">
+                            <div className="flex w-full md:flex-[1.5] flex-col gap-6 pl-10 pr-0 lg:pl-[120px] self-center pb-10 lg:pb-20">
                                 <motion.div initial={{scale : 0}} whileInView={{scale: 1, transition: { duration: 1 }}}
                                     className="text-4xl font-bold">
                                     <h1 className="text-white text-2xl  font-semibold" dangerouslySetInnerHTML={{__html : translateText(director?.messageDirectorTitle ?? "", lang)}}/>
                                 </motion.div>
                                 <p className="text-white text-justify" dangerouslySetInnerHTML={{__html : translateText(director?.messageDirectorDescription ?? "", lang)}} />
                             </div>
-                            <div className="hidden w-0 md:w-full md:block mb-[-300px]">
-                                <div className="w-full h-[750px] relative">
-                                    <Image src="/images/pak_rico.webp" alt="" fill style={{objectFit: "contain"}} />
+                             <div className="hidden w-0 md:flex-1 md:block">
+                                <div className="w-full h-[900px] relative">
+                                    <Image src="/images/pak_rico.webp" alt="" fill style={{objectFit: "contain", objectPosition: "bottom"}} />
                                 </div>
                             </div>
                         </div>
