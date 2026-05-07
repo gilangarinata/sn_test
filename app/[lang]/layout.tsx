@@ -29,6 +29,7 @@ export default function RootLayout({
       <ClerkProvider>
         <html lang={params.lang}>
             <head>
+                <meta name="color-scheme" content="light only" />
                 <Script id="google-tag-manager" strategy="afterInteractive">
                     {`
                         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
