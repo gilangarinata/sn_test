@@ -66,7 +66,7 @@ export function Subsidiaries({subsidiaries, lang, dictionary} : {subsidiaries : 
                                                     <Image className="rounded-full" style={{objectFit: "contain"}} fill src={subsidiary.image} alt={subsidiary.description} draggable={false}/>
                                                 </div>
                                             </div>
-                                            <p className="text-white" dangerouslySetInnerHTML={{__html: translateText(subsidiary.description, lang)}} />
+                                            <p className="text-white text-justify" dangerouslySetInnerHTML={{__html: translateText(subsidiary.description, lang)}} />
                                         </motion.div>
                                     )
                                 }))}

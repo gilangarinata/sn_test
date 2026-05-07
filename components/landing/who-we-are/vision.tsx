@@ -81,7 +81,7 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                         <Image src="/images/vision.webp" alt="" width={80} height={80} />
                         <div className="flex flex-col text-[#FABD24]">
                             <h1 className="font-bold text-3xl">{dictionary.vision}</h1>
-                            <p>
+                            <p className="text-justify">
                                 {translateText(visionMission.vision, lang)}
                             </p>
                         </div>
@@ -91,6 +91,7 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                         <div className="flex flex-col text-[#FABD24]">
                             <h1 className="font-bold text-3xl">{dictionary.mission}</h1>
                             <div
+                              className="text-justify"
                               dangerouslySetInnerHTML={{ __html: translateText(visionMission.mission.replaceAll("<ul>", "<ul class=\"list-disc\">"), lang) }}
                             />
 
@@ -108,7 +109,7 @@ export function VisionMission({ourDna, director, visionMission, lang, dictionary
                                         <div key={dna.image} className="flex flex-col items-center w-full gap-4">
                                             <Image src={dna.image} alt={dna.title} width={150} height={150} />
                                             <h1 className="font-bold text-2xl text-center">{translateText(dna.title, lang)}</h1>
-                                            <p className="text-center w-full justify-center md:px-4">{translateText(dna.description, lang)}</p>
+                                            <p className="text-justify w-full justify-center md:px-4">{translateText(dna.description, lang)}</p>
                                         </div>
                                     )
                                 })

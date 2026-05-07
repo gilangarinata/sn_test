@@ -90,7 +90,7 @@ export default function HomeBanner({banners, lang, dictionary} : {banners: Banne
                                         <h2 className="text-sm lg:text-xl font-semibold" dangerouslySetInnerHTML={{
                                             __html: translateText(slideImage.subHeading, lang),
                                         }}/>
-                                        <p className="text-xs lg:text-lg" dangerouslySetInnerHTML={{
+                                        <p className="text-xs lg:text-lg text-justify" dangerouslySetInnerHTML={{
                                             __html: translateText(slideImage.description, lang),
                                         }}/>
                                         <Link href={slideImage.url} className="mt-4">

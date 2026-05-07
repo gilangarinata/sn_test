@@ -63,7 +63,7 @@ export default function ZeroCapexBanner({ lang, dictionary, banners } : { lang: 
                                         <h1 className="text-4xl font-bold" dangerouslySetInnerHTML={{
                                             __html: translateText(slideImage.title || "", lang),
                                         }}/>
-                                        <div dangerouslySetInnerHTML={{
+                                        <div className="text-justify" dangerouslySetInnerHTML={{
                                             __html: translateText(slideImage.description || "", lang),
                                         }}/>
                                     </motion.div>
